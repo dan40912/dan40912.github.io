@@ -1,0 +1,74 @@
+html, body {
+margin:				0px;
+padding:			0px;
+height:				100%;
+border:				none
+}
+
+A:link          	{color: #3366FF;}
+A:visited       	{color: #3366FF;}
+A:hover         	{color: #6699FF;}
+
+.logo {
+display: 			inline-block;
+float: 				left;
+margin:				4px 20px 4px 0px;
+}
+
+H1.title {
+display: 			inline-block;
+float: 				left;
+FONT-FAMILY:		varela round, arial rounded MT bold, arial, helvetica, san serif;
+FONT-SIZE:			20px;
+FONT-WEIGHT:		normal;
+margin:				14px 0px 0px 20px;
+COLOR:				#ffffff;
+}
+
+.ad {
+margin: 			10px 0px;
+}
+
+H1 {
+FONT-FAMILY:		varela round, arial rounded MT bold, arial, helvetica, san serif;
+FONT-SIZE:			22px;
+FONT-WEIGHT:		normal;
+MARGIN:				50px 0px 25px 0px;
+COLOR:				#666;
+}
+
+H2 {
+FONT-FAMILY:		varela round, arial rounded MT bold, arial, helvetica, san serif;
+FONT-SIZE:			20px;
+FONT-WEIGHT:		normal;
+MARGIN:				20px 0px 10px 0px;
+COLOR:				#39F;
+}
+
+HR {
+border:				0px;
+height:				1px;
+background:			#999;
+MARGIN:				30px 0px 15px 0px;
+}
+
+P, LI {
+FONT-FAMILY:		Arial, Helvetica, sans-serif;
+FONT-SIZE:			14px;
+LINE-HEIGHT:		150%;
+}
+
+UL {
+MARGIN:				0px;
+}
+
+.red {	
+color:				#F00;
+}
+
+.copyright {
+FONT-FAMILY:		Arial, Helvetica, sans-serif;
+FONT-SIZE:			11px;
+COLOR:				#ffffff;
+MARGIN:				10px;
+}

@@ -1,0 +1,168 @@
+html, body {
+margin: 			0px;
+padding: 			0px;
+height: 			100%;
+border: 			none
+}
+
+body {
+background-color: #ffffff;
+-webkit-text-size-adjust:100%;
+}
+
+A:link         		{color: #ff6600;}
+A:visited      		{color: #ff6600;}
+A:hover        		{color: #ff9933;}
+
+.logo {
+display: 			inline-block;
+float: 				left;
+margin:				4px 20px 4px 0px;
+}
+
+H1.title {
+display: 			inline-block;
+width:				580px;
+white-space:		nowrap;
+overflow:			hidden;
+float: 				left;
+FONT-FAMILY:		varela round, arial rounded MT bold, arial, helvetica, san serif;
+FONT-SIZE:			20px;
+FONT-WEIGHT:		normal;
+MARGIN:				14px 0px 0px 20px;
+COLOR:				#f60;
+}
+
+#indicators TR {
+height:				54px;
+}
+
+.name {
+text-align:			center;
+FONT-FAMILY:		varela round, helvetica, arial, san serif;
+FONT-SIZE:			20px;
+FONT-WEIGHT:		normal;
+line-height:		100%;
+COLOR:				#333333;
+padding:			0px 30px 0px 0px;
+}
+
+.pic {
+max-width:			100px;
+max-height:			48px;
+}
+
+.start {
+FONT-FAMILY:		varela round, helvetica, arial, san serif;
+FONT-SIZE:			16px;
+line-height:		100%;
+text-align:			right;
+padding:			0px;
+}
+
+.bar {
+padding:			0px;
+}
+
+.end {
+FONT-FAMILY:		varela round, helvetica, arial, san serif;
+FONT-SIZE:			16px;
+line-height:		100%;
+padding:			0px;
+}
+
+.unit {
+FONT-FAMILY:		varela round, helvetica, arial, san serif;
+FONT-SIZE:			16px;
+line-height:		100%;
+padding:			0px 10px;
+}
+
+.indicatorBox {
+display:			inline-block; 
+width:				400px; 
+height:				20px; 
+border-style:		solid; 
+border-width:		1px; 
+padding:			3px; 
+margin:				10px; 
+background-color:	#eeeeee;
+}
+
+.indicatorBar {
+height:				20px;
+}
+
+.progContainer {
+position: 			relative;
+width: 				0;
+height: 			0;
+}
+
+.prog {
+display:			inline;
+FONT-FAMILY:		varela round, helvetica, arial, san serif;
+FONT-SIZE:			14px;
+margin:				0px 5px;
+position:			absolute;
+top:				2px;
+}
+
+.check {
+position:			absolute;
+top:				0px;
+left:				378px;
+}
+
+.share {
+FONT-FAMILY:		Arial, Helvetica, sans-serif;
+FONT-SIZE:			14px;
+LINE-HEIGHT:		150%;
+margin:				15px;
+}
+
+.share:link         {color: #999;}
+.share:visited      {color: #999;}
+.share:hover        {color: #bbb;}
+
+.shareOptions {
+margin:				18px 0px 18px 50px;
+}
+
+.shareOptions TD {
+padding:			0px 10px;
+}
+
+.linkBox {
+width: 				450px;
+font-size: 			14px;
+background-color: 	#eee;
+border: 			1px solid #ccc;
+padding: 			4px;
+margin: 			0px;
+}
+
+.note {
+FONT-FAMILY:		Arial, Helvetica, sans-serif;
+FONT-SIZE:			11px;
+COLOR:				#666666;
+}
+
+.copyright {
+FONT-FAMILY:		Arial, Helvetica, sans-serif;
+FONT-SIZE:			11px;
+COLOR:				#f60;
+MARGIN:				10px;
+}
+
+#instructions {
+FONT-FAMILY:		Arial, Helvetica, sans-serif;
+FONT-SIZE:			14px;
+LINE-HEIGHT:		100%;
+HEIGHT: 			30px;
+background-color: 	#FFFDD4;
+}
+
+#instructions A:link 	{color: #3366FF;}
+#instructions A:visited {color: #3366FF;}
+#instructions A:hover 	{color: #6699FF;}

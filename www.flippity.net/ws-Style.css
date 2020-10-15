@@ -1,0 +1,242 @@
+html, body {
+margin: 			0px;
+padding: 			0px;
+height: 			100%;
+border: 			none;
+}
+
+body {
+background-color: #ffffff;
+-webkit-text-size-adjust:100%;
+}
+
+A:link          	{color: #3366FF;}
+A:visited       	{color: #3366FF;}
+A:hover         	{color: #6699FF;}
+
+.logo {
+display: 			inline-block;
+float: 				left;
+margin:				4px 20px 4px 0px;
+}
+
+.ad {
+margin: 			10px 0px;
+}
+
+H1.title {
+display: 			inline-block;
+width:				580px;
+white-space:		nowrap;
+overflow:			hidden;
+float: 				left;
+FONT-FAMILY:		varela round, arial rounded MT bold, arial, helvetica, san serif;
+FONT-SIZE:			20px;
+FONT-WEIGHT:		normal;
+MARGIN:				14px 0px 0px 20px;
+COLOR:				#FFF;
+}
+
+P {
+font-family: 		varela round, arial rounded MT bold, arial, helvetica, san serif;
+font-size:			12px;
+margin:				20px;
+color:				#666;
+}
+
+.directions DIV {
+font-family:		'Roboto', Helvetica, Arial, sans-serif;
+font-size:			13px;
+display:			inline-block;
+position:			relative;
+top:				-2px;
+margin:				0px 4px;
+color:				#666;
+}
+
+.directions IMG {
+margin:				0px 4px;
+}
+
+.pic {
+max-width:			100px;
+max-height:			75px;
+width:				auto;
+height:				auto;
+}
+
+.desmos {
+width:				100px;
+height:				100px;
+}
+
+.printTitle {
+float: 				left;
+FONT-FAMILY:		varela round, arial rounded MT bold, arial, helvetica, san serif;
+FONT-SIZE:			20px;
+FONT-WEIGHT:		normal;
+MARGIN:				0px;
+MARGIN-BOTTOM:		20px;
+COLOR:				#000;
+}
+
+.button {
+cursor:				pointer;
+margin:				20px 5px;
+}
+
+.legalBox {
+width:				500px;
+margin:				0px auto 30px auto;
+}
+
+.legalBox P {
+color:				#999;
+FONT-FAMILY:		Arial, Helvetica, sans-serif;
+FONT-SIZE:			11px;
+MARGIN:				10px;
+TEXT-ALIGN:			left;
+}
+
+.legal:link         {color: #999;}
+.legal:visited      {color: #999;}
+.legal:hover        {color: #bbb;}
+
+.share {
+FONT-FAMILY:		Arial, Helvetica, sans-serif;
+FONT-SIZE:			14px;
+LINE-HEIGHT:		150%;
+margin:				15px;
+}
+
+.share:link         {color: #999;}
+.share:visited      {color: #999;}
+.share:hover        {color: #bbb;}
+
+.shareOptions {
+margin:				18px 0px 18px 50px;
+}
+
+.shareOptions TD {
+padding:			0px 10px;
+}
+
+.linkBox {
+width: 				450px;
+font-size: 			14px;
+background-color: 	#eee;
+border: 			1px solid #ccc;
+padding: 			4px;
+margin: 			0px;
+}
+
+.copyright {
+FONT-FAMILY:		Arial, Helvetica, sans-serif;
+FONT-SIZE:			11px;
+COLOR:				#FFFFFF;
+MARGIN:				10px;
+}
+
+#instructions {
+FONT-FAMILY:		Arial, Helvetica, sans-serif;
+FONT-SIZE:			14px;
+LINE-HEIGHT:		100%;
+HEIGHT: 			30px;
+background-color: 	#FFFDD4;
+}
+
+#instructions A:link 	{color: #3366FF;}
+#instructions A:visited {color: #3366FF;}
+#instructions A:hover 	{color: #6699FF;}
+
+.print {display: none;}
+
+#wordsBox { 
+margin:				30px 0px;
+width:				720px;
+}
+
+@media print {
+#wordsBox { page-break-inside: avoid; }
+.noPrint {display: none;}
+.print {display: table-row;}
+}
+
+/**
+* Wordfind.js 0.0.1
+* (c) 2012 Bill, BunKat LLC.
+* Wordfind is freely distributable under the MIT license.
+* For all details and documentation:
+*     http://github.com/bunkat/wordfind
+*/
+
+#wordLabel {
+font-family:		'Roboto', Helvetica, Arial, sans-serif;
+FONT-SIZE:			17px;
+font-weight:		bold;
+margin:				20px;
+}
+
+/**
+* Styles for the puzzle
+*/
+#puzzle {
+  display: table;
+  border: 1px solid black;
+  padding: 10px;
+  margin: 0px;
+}
+
+#puzzle div {
+  margin: 0 auto;
+    white-space: nowrap;
+}
+
+/* style for each square in the puzzle */
+#puzzle .puzzleSquare {
+	display: table-cell;
+	height: 32px;
+	width: 32px;
+	text-transform: uppercase;
+	text-align: center;
+	vertical-align: middle;
+	background-color: white;
+	font-family: 'Roboto', Helvetica, Arial, sans-serif;
+	font-size: 15px;
+	border: none;
+}
+
+#puzzle .solved {
+  background-color: hsl(120, 100%, 90%);
+}
+
+/**
+* Styles for the word list
+*/
+#words {
+display: inline-block;
+margin: 0px;
+
+-webkit-column-count: 1; /* Chrome, Safari, Opera */
+-moz-column-count: 1; /* Firefox */
+column-count: 1;
+
+-webkit-column-gap: 40px; /* Chrome, Safari, Opera */
+-moz-column-gap: 40px; /* Firefox */
+column-gap: 40px;
+}
+
+#words ul {
+list-style-type: circle;
+margin: 0;
+padding: 0;
+}
+
+#words li {
+margin-bottom: 10px;
+font-family: 'Roboto', Helvetica, Arial, sans-serif;
+font-size: 15px;
+text-align: left;
+line-height: 120%;
+text-indent: 0px;
+}

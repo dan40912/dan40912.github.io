@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html>
+
+<!-- Mirrored from www.flippity.net/sc.php?k=0 by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 15 Oct 2020 10:16:42 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Word Scramble on Flippity.net</title>
+<LINK href='https://fonts.googleapis.com/css?family=Varela+Round' rel='stylesheet' type='text/css'>
+<link href="https://fonts.googleapis.com/css?family=Coming+Soon" rel="stylesheet">
+<LINK rel=stylesheet href="sc-Style.css">
+<LINK rel="icon" type="image/png" href="favicon.png">
+
+<SCRIPT>
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','../www.google-analytics.com/analytics.js','ga');
+	
+	ga('create', 'UA-23823535-6', 'flippity.net');
+	ga('send', 'pageview');
+</SCRIPT>
+
+
+<script type="text/javascript">
+
+	var pageURL = window.location.href
+	var encodedURL = encodeURIComponent(pageURL)
+	var words = new Array()
+	var cardSide = ""
+	var list = ""
+	var sheetTitle = ""
+	var docTitle = "Word Scramble on Flippity.net"
+	var pageTitle = "Word Scramble"
+	var final = ""
+	var showKey = false
+	var loadError = true
+
+	function loadSSContent(json) {
+
+		sheetTitle = json.feed.title.$t
+		if ("0" == "1Eq5oIU9OIpZTmhexX9lAr09XoeZBR7pH3Qb7LKzpIpY") {
+			sheetTitle = "Superheroes"
+			}
+		if (sheetTitle != "Demo") {
+			docTitle = sheetTitle + " Word Scramble on Flippity.net"
+			pageTitle = sheetTitle + " Word Scramble"
+			}
+				
+		if (cardSide != "") { // coming from Flashcards
+			if (cardSide == 1) {
+				for (var i=1; i<json.feed.entry.length; i++) {			
+					words[i-1] = json.feed.entry[i].gsx$side1.$t.toUpperCase() // uppercase to help find multimedia later
+					}
+				}
+			else if (cardSide == 2) {
+				for (var i=1; i<json.feed.entry.length; i++) {			
+					words[i-1] = json.feed.entry[i].gsx$side2.$t.toUpperCase() // uppercase to help find multimedia later
+					}
+				}
+			//Remove all multimedia words
+			for (var i=0; i<words.length; i++) {
+				if (words[i].indexOf("HTTP") > -1) {
+					words.splice(i,1)
+					i--
+					}
+				}
+			}
+		else if (list != "") { // coming from Spelling Words
+			for (var i=2; i<json.feed.entry.length; i++) {			
+				if (json.feed.entry[i].gsx$list.$t == "") { break }
+				words[i-2] = json.feed.entry[i].gsx$list.$t
+				words[i-2] = words[i-2].replace(/ ".*"/,'') // Remove context phrases in quotes from spelling words list
+				}
+			}		
+		else {
+			for (var i=0; i<json.feed.entry.length; i++) {			
+				words[i] = json.feed.entry[i].gsx$word.$t
+				}
+			}
+		
+		loadError = false
+		prepContent()
+		}
+
+	function loadWebContent() {
+		var rawWords = ""
+		words = rawWords.split(",")
+		loadError = false
+		prepContent()
+		}
+
+	function prepContent() {
+
+		encodedDocTitle = encodeURIComponent(docTitle)
+
+		for (var i=0; i<words.length; i++) {
+			words[i] = words[i].substr(0,50).toUpperCase().trim() // shorten, uppercase, & trim entries
+			if (words[i][0] == "#") { // extract final phrase
+				final = words[i].substr(1) // remove #
+				preppedFinal = final.replace(/ /g,"") // remove spaces
+				words.splice(i,1)
+				i--
+				}
+			if (words[i] == "") { // remove blank entries
+				words.splice(i,1)
+				i--
+				}
+			}
+		allWords = words.join("").replace(/ /g,"") // remove spaces
+		}
+
+	function loadScramble() {
+		boxClass = "words key"
+		var table = "<TABLE class='scrambles'>"
+		for (var i=0; i<words.length; i++) {
+			var prepped = prepWord(words[i])
+			var scrambled = scrambleWord(words[i])
+			table += "<TR><TD class='writing padded'>" + scrambled + "</TD><TD>" + prepped + "</TD></TR>"
+			}
+		table += "</TABLE>"
+		document.getElementById("scrambles").innerHTML = table
+		if (final != "") {
+			boxClass = "final"
+			document.getElementById("final").innerHTML = "<HR />" + prepWord(final)
+			document.getElementById("final").style.display = "block"
+			prepFinal()
+			}
+		toggleKey()
+		toggleKey() // two times to ensure they are hidden even after a reload
+		}
+
+	function scrambleWord(trm){
+		var scrambled = ""
+		var trm = trm.split(' ')
+		for (var j=0; j<trm.length; j++) {
+			var wrd = trm[j].split('')
+			while (wrd.length > 0) {
+				scrambled +=  wrd.splice(wrd.length * Math.random() << 0, 1)
+				}
+			scrambled += " "
+			}
+		var badWords = ['FUCK','BITCH','DAMN','SHIT','CUNT','COCK','DICK','ASS','TITS','NIG']
+		for (var j=0; j<badWords.length; j++) {
+			if (scrambled.indexOf(badWords[j]) >= 0) {
+				return scrambleWord(scrambled)
+				break
+				}
+		}
+		return scrambled
+		}
+
+	function prepWord(wrd) {
+		var prepped = "<TABLE class='boxes'><TR>"
+		for (var j=0; j<wrd.length; j++) {
+			var let = wrd[j]
+			if (let == " " ) {
+				prepped += "</TR></TABLE><TABLE class='boxes'><TR>"
+				}
+			else {
+				prepped += "<TD><DIV class='num'></DIV><DIV class='writing " + boxClass + "'>" + let + "</DIV></TD>"
+				}
+			}
+		prepped += "</TR></TABLE>"
+		return prepped
+		}
+
+	function prepFinal() {
+		var num = 1
+		var numBoxes = document.getElementsByClassName("num")
+		var finalBoxes = document.getElementsByClassName("final")
+		for (var i = 0; i < preppedFinal.length; i++) {
+			var charPos = allWords.indexOf(preppedFinal[i])
+			if (!(finalBoxes[i].classList.contains('key')) && charPos >= 0) {
+				numBoxes[charPos].innerHTML = num
+				for (var j = i; j < preppedFinal.length; j++) {
+					if (finalBoxes[j].innerHTML == preppedFinal[i]) {
+						numBoxes[allWords.length + j].innerHTML = num
+						finalBoxes[j].classList.add("key")
+						}
+					}
+				num++
+				}
+			}
+		}
+
+	function hideLetters() {
+		var x = document.getElementsByClassName("key")
+		for (var i = 0; i < x.length; i++) {
+			x[i].style.visibility = "hidden"
+			}
+		}
+
+	function showLetters() {
+		var x = document.getElementsByClassName("key")
+		for (var i = 0; i < x.length; i++) {
+			x[i].style.visibility = "visible"
+			}
+		}		
+
+	function toggleKey() {
+		if (showKey) {
+			hideLetters()
+			}
+		else {
+			showLetters()
+			}
+		showKey = !showKey
+		}
+		
+</SCRIPT>
+
+</head>
+
+<body onload=loadScramble()>
+
+<SCRIPT type='text/javascript'>loadWebContent()</SCRIPT>
+<SCRIPT type="text/javascript">
+	if (loadError) {
+		window.location.replace("error22d9.html?k=0")
+		}
+</SCRIPT>
+
+<TABLE width="100%" height="100%" cellpadding="0" cellspacing="0" border="0" align="center">
+<TR ID="instructions" STYLE="display: none;"><TD align="center"><A HREF="WordScramble.html" TARGET="_blank">Want to Make Your Own Word Scramble?</A></TD></TR>
+  <TR height="1" class="noPrint">
+    <TD bgcolor="#6c3"><DIV STYLE="width: 728px; margin: 0px auto;">
+		<DIV Class="logo"><A href="index.html"><IMG src="images/Flippity-Logo-White.png" alt="Flippity.net" width="100" height="43" border="0" align="left"></A></DIV>
+		<H1 id="title" class="title">Word Scramble</H1>
+      </DIV></TD>
+  </TR>
+    <tr height="1" class="noPrint">
+    <td align="center" bgcolor="#eee">
+    <CENTER>
+    <div class="ad">
+    
+		<script async src="../pagead2.googlesyndication.com/pagead/js/f.txt"></script>
+        <!-- Flippity Autosize Header -->
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="ca-pub-1997516241738614"
+             data-ad-slot="2645243298"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+        <script>
+             (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+    
+    </div>
+    </CENTER>
+    </td>
+    </tr>
+<TR height="1" class="print">
+    <TD><img src="images/Flippitynet-Small-Gray.png" width="80" height="21" align="right" /><P id="printTitle" class="printTitle">Word Scramble</P></TD>
+</TR>
+  <TR height="1" class="noPrint" id="buttons">
+    <TD align="CENTER">
+		<P>Flippity word scrambles are designed to be printed, not played online.</P>
+        <img src="images/Button-Reload-Green3.png" width="45" height="45" onclick="loadScramble()" TITLE="Reload Word Scramble" class="button">
+		<img src="images/Button-Key-Green3.png" width="45" height="45" onclick="toggleKey()" TITLE="Show/Hide Answer Key" class="button">
+		<img src="images/Button-Print-Green3.png" width="45" height="45" onclick="print()" TITLE="Print Word Scramble" class="button">
+    </TD>
+  </TR>
+
+  <TR>
+    <TD align="CENTER" VALIGN="top">
+
+    <div id="scrambles"></div>
+    <div id="final" STYLE="display: none;"></div>
+
+	</TD>
+  </TR>
+  <TR height="1" align="CENTER" class="noPrint">
+    <TD>
+	<SCRIPT type="text/javascript">
+		function showHide(blk) {
+			if (document.getElementById(blk).style.display == 'none') {
+                document.getElementById(blk).style.display = 'inline'
+                }
+            else {
+                document.getElementById(blk).style.display = 'none'
+                }
+            }
+    </SCRIPT>
+
+      <P class="share" STYLE='display: none;'><A class="share" href="javascript:showHide('share')" title="Show/Hide Sharing Options"><IMG SRC="images/Share-Icon-Gray.png" width="15" height="16" border="0" align="absmiddle" style="margin-right: 6px;">share</A></P>
+     
+      <DIV ID="share" STYLE="display: none;">
+      
+      <IMG src="images/Link-Icon.png" width="16" height="16" hspace="10" align="absmiddle">
+        <INPUT id="linkURL" type="text" class="linkBox" onClick="this.select()" value="">
+         
+        <TABLE align="center" class="shareOptions">
+          <TR>
+            <TD>
+				<script src="../apis.google.com/js/platform.js" async defer></script>
+                <g:sharetoclassroom url="sc22d9-2.html?k=0" size="20"></g:sharetoclassroom>
+            </TD>
+            <TD>
+	            <SCRIPT type="text/javascript">document.write("<a href='mailto:?subject=" + encodedDocTitle + "&body=Check out this " + encodedDocTitle + ": " + encodedURL + "' TARGET='_blank'><img src='images/Icon-Email.png' width='22' height='20' border='0' title='Email'></a>")</SCRIPT>
+            </TD>
+            <TD>
+	            <SCRIPT type="text/javascript">
+					encodedQRurl = "QR076c.html?u=" + encodedURL + "&p=" + encodeURIComponent(pageTitle)
+					document.write("<a href='" + encodedQRurl + "' target='_blank'><img src='images/Flippity-QR-Code.gif' width='20' height='20' border='0' title='Get QR Code'></a>")
+                </SCRIPT>
+            </TD>
+            <TD>
+                <a href="#" class="twitter-share"><IMG SRC="images/Twitter-Button.gif" width="60" height="20" ALT="Tweet"></a>
+                <SCRIPT type="text/javascript">
+                
+                    var getWindowOptions = function() {
+                    var width = 500;
+                    var height = 350;
+                    var left = (window.innerWidth / 2) - (width / 2);
+                    var top = (window.innerHeight / 2) - (height / 2);
+                    
+                    return [
+                        'resizable,scrollbars,status',
+                        'height=' + height,
+                        'width=' + width,
+                        'left=' + left,
+                        'top=' + top,
+                        ].join();
+                        };
+                    
+                    var twitterBtn = document.querySelector('.twitter-share');
+                    var shareUrl = 'https://twitter.com/intent/tweet?url=' + encodedURL + '&text=' + encodedDocTitle
+                    twitterBtn.href = shareUrl; // 1
+                    
+                    twitterBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    var win = window.open(shareUrl, 'ShareOnTwitter', getWindowOptions());
+                    win.opener = null; // 2
+                    });
+                    
+                </SCRIPT>
+            </TD>
+            <TD>
+                <a href="https://docs.google.com/spreadsheets/d/0" target="_blank"><img src="images/Google-Sheets-Icon.gif" width="16" height="20" border="0" title="Original Spreadsheet"></a>
+            </TD>
+          </TR>
+        </TABLE>
+      
+      </DIV> 
+
+    </TD>
+  </TR>
+  <TR height="1" align="CENTER" bgcolor="#3366ff" class="noPrint">
+    <TD bgcolor="#6c3"><P class="copyright">Copyright&copy; 2018 Flippity.net. All Rights Reserved.</P></TD>
+  </TR>
+ </TABLE>
+
+<SCRIPT type="text/javascript">
+	document.getElementById('linkURL').value = pageURL
+	document.title = docTitle
+	document.getElementById('title').innerHTML = pageTitle
+	document.getElementById('printTitle').innerHTML = pageTitle
+	if ("0" == "1Eq5oIU9OIpZTmhexX9lAr09XoeZBR7pH3Qb7LKzpIpY") { document.getElementById('instructions').style.display = "table-row" }
+</SCRIPT>
+
+</BODY>
+
+<!-- Mirrored from www.flippity.net/sc.php?k=0 by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 15 Oct 2020 10:16:42 GMT -->
+</HTML>

@@ -1,0 +1,104 @@
+html, body {
+margin:				0px;
+padding:			0px;
+height:				100%;
+border:				none
+}
+
+body {
+background-color: #ffffff;
+}
+
+A:link				{color: #666666;}
+A:visited			{color: #666666;}
+A:hover				{color: #999999;}
+
+.header { width: 728px; margin: 0px auto; }
+
+.logo {
+display: 			inline-block;
+float: 				left;
+margin:				4px 20px 4px 0px;
+}
+
+H1 {
+display: 			inline-block;
+float: 				left;
+FONT-FAMILY:		varela round, arial rounded MT bold, arial, helvetica, san serif;
+FONT-SIZE:			20px;
+FONT-WEIGHT:		normal;
+MARGIN:				14px 0px 0px 20px;
+COLOR:				#999999;
+}
+
+#title { max-width: 580px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}
+
+H2 {
+FONT-FAMILY:		varela round, arial rounded MT bold, arial, helvetica, san serif;
+FONT-SIZE:			20px;
+FONT-WEIGHT:		normal;
+MARGIN:				30px 0px;
+COLOR:				#3399FF;
+}
+
+P {
+font-family: 		Helvetica, Arial, sans-serif;
+line-height: 		100%;
+font-size: 			16px;
+color: 				#333333;
+margin: 			5px 0px;
+}
+
+#container {
+width: 1000px;
+height: 560px;
+margin: 0;
+padding: 0;
+}
+
+.share {
+FONT-FAMILY:		Arial, Helvetica, sans-serif;
+FONT-SIZE:			14px;
+LINE-HEIGHT:		150%;
+margin:				15px;
+}
+
+.share:link         {color: #999;}
+.share:visited      {color: #999;}
+.share:hover        {color: #bbb;}
+
+.shareOptions {
+margin:				18px 0px 18px 50px;
+}
+
+.shareOptions TD {
+padding:			0px 10px;
+}
+
+.linkBox {
+width: 				450px;
+font-size: 			14px;
+background-color: 	#eee;
+border: 			1px solid #ccc;
+padding: 			4px;
+margin: 			0px;
+}
+
+.copyright {
+FONT-FAMILY:		Arial, Helvetica, sans-serif;
+FONT-SIZE:			11px;
+COLOR:				#333333;
+MARGIN:				10px;
+}
+
+#instructions {
+FONT-FAMILY:		Arial, Helvetica, sans-serif;
+FONT-SIZE:			14px;
+LINE-HEIGHT:		100%;
+HEIGHT: 			30px;
+background-color: 	#FFFDD4;
+}
+
+#instructions A:link 	{color: #3366FF;}
+#instructions A:visited {color: #3366FF;}
+#instructions A:hover 	{color: #6699FF;}

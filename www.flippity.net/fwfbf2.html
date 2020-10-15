@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html>
+
+<!-- Mirrored from www.flippity.net/fw.asp?k=1cYRTEw13i4BIMKgciX6jk4Su1Qt1q33oxapxyfPt-0s&tab=LP by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 15 Oct 2020 10:16:40 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Fun with Words on Flippity.net</title>
+<LINK href='https://fonts.googleapis.com/css?family=Varela+Round' rel='stylesheet' type='text/css'>
+<LINK rel=stylesheet href="fw-Style.css">
+<LINK rel="icon" type="image/png" href="favicon.png">
+
+<SCRIPT>
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','../www.google-analytics.com/analytics.js','ga');
+	
+	ga('create', 'UA-23823535-6', 'flippity.net');
+	ga('send', 'pageview');
+</SCRIPT>
+
+
+<script type="text/javascript">
+
+	var pageURL = window.location.href
+	var encodedURL = encodeURIComponent(pageURL)
+	var col1 = new Array()
+		var col2 = new Array() // extra columns
+		var col3 = new Array()
+		var col4 = new Array()
+		var col5 = new Array()
+	var orig1 = new Array() // for upper and lower case entries
+	var refer = ""
+	var list = ""
+	var tab = ""
+	var sheetTitle = ""
+	var docTitle = "Fun with Words on Flippity.net"
+	var pageTitle = "Fun with Words"
+	var loadError = true
+	var loadError = false
+
+	function loadSSContent(json) {
+
+		sheetTitle = json.feed.title.$t
+		if (sheetTitle != "Demo") {
+			docTitle = sheetTitle + " Fun with Words on Flippity.net"
+			pageTitle = sheetTitle + " Fun with Words"
+			}
+		if (refer == "r") { // from Random Name Picker
+			for (i=0;i<json.feed.entry.length;i++) {			
+				col1[i] = prepText(json.feed.entry[i].gsx$name.$t)
+				orig1[i] = json.feed.entry[i].gsx$name.$t.trim()
+				}
+			}
+		else if (list != "") { // from Spelling Words
+			for (i=2;i<json.feed.entry.length;i++) {			
+				if (json.feed.entry[i].gsx$list.$t == "") { break }
+				col1[i-2] = prepText(json.feed.entry[i].gsx$list.$t.replace(/ ".*"/,'')) // Remove context phrases in quotes
+				orig1[i-2] = json.feed.entry[i].gsx$list.$t.replace(/ ".*"/,'')
+				}
+			}		
+		else {
+			for (i=0;i<json.feed.entry.length;i++) {			
+				col1[i] = prepText(json.feed.entry[i].gsx$col1.$t)
+				col2[i] = prepText(json.feed.entry[i].gsx$col2.$t)
+				col3[i] = prepText(json.feed.entry[i].gsx$col3.$t)
+				col4[i] = prepText(json.feed.entry[i].gsx$col4.$t)
+				col5[i] = prepText(json.feed.entry[i].gsx$col5.$t)
+				orig1[i] = json.feed.entry[i].gsx$col1.$t
+				}
+			}
+
+		loadError = false
+		prepContent()
+		}
+
+	function loadWebContent() {
+		var rawWords = ""
+		col1 = prepText(rawWords).split(",")
+		orig1 = rawWords.trim().split(",")
+		loadError = false
+		prepContent()
+		}
+
+	function prepText(txt) {
+		txt = txt.toUpperCase().trim() // uppercase, & trim entries
+		txt = txt.replace(/[ÀÁÂÃÄÅ]/g,"A").replace(/[Ç]/g,"C").replace(/[ÈÉÊË]/g,"E").replace(/[Ñ]/g,"N").replace(/[ÒÓÔÕÖ]/g,"O").replace(/[ÚÛÜÙ]/g,"U")
+		return txt
+		}
+
+	function prepContent() {
+		encodedDocTitle = encodeURIComponent(docTitle)
+		}
+	
+	var printWords = document.getElementsByClassName("printWord")		
+	
+	var pBreak = false
+	
+	function pageBreak() {
+		pBreak = !pBreak
+		if (pBreak) {
+			for (i=0; i<printWords.length; i++) {
+				printWords[i].style.pageBreakAfter = "always"
+				}
+			}
+		else {
+			for (i=0; i<printWords.length; i++) {
+				printWords[i].style.pageBreakAfter = "auto"
+				}
+			}
+		}
+	
+	function showNa() {
+		var output = ""
+		var texts = new Array()
+		var letterSet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789,.!?"
+		for (i=0;i<col1.length;i++) {
+			texts[i] = ""
+			for (j=0;j<col1[i].length;j++) {
+				char = col1[i].charAt(j)
+				if (char == " ") {
+					text = "<DIV class='space'></DIV>"
+					}
+				else if (letterSet.indexOf(char) > -1) {
+					char = char.replace(",","comma").replace(".","period").replace("!","exclamation").replace("?","question")
+					text = "<IMG SRC='images/letters/nature/" + char + ".jpg'>"
+					}
+				else {
+					text = ""
+					}
+				texts[i] += text
+				}
+			output = output + "<DIV class='printWord'>" + texts[i] + "</DIV>"
+			}
+		document.getElementById('Words').innerHTML = output
+		}
+
+	function showASL() {
+		var output = ""
+		var signs = new Array()
+		var letterSet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+		for (i=0;i<col1.length;i++) {
+			signs[i] = ""
+			for (j=0;j<col1[i].length;j++) {
+				char = col1[i].charAt(j)
+				if (char == " ") {
+					sign = "<DIV class='space'></DIV>"
+					}
+				else if (letterSet.indexOf(char) > -1) {
+					sign = "<IMG SRC='images/letters/ASL/" + char + ".jpg'>"
+					}
+				else {
+					sign = ""
+					}
+				signs[i] += sign
+				}
+			output = output + "<DIV class='printWord'>" + signs[i] + "</DIV>"
+			}
+		document.getElementById('Words').innerHTML = output
+		}
+
+	function showBl() {
+		var output = ""
+		var blocks = new Array()
+		var letterSet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890-+="
+		for (i=0;i<col1.length;i++) {
+			blocks[i] = ""
+			for (j=0;j<col1[i].length;j++) {
+				char = col1[i].charAt(j)
+				if (char == " ") {
+					block = "<DIV class='space'></DIV>"
+					}
+				else if (letterSet.indexOf(char) > -1) {
+					char = char.replace("+","plus").replace("-","minus").replace("=","equal")
+					block = "<IMG SRC='images/letters/blocks/" + char + ".jpg'>"
+					}
+				else {
+					block = ""
+					}
+				blocks[i] += block
+				}
+			output = output + "<DIV class='printWord'>" + blocks[i] + "</DIV>"
+			}
+		document.getElementById('Words').innerHTML = output
+		}
+
+	function showHi() {
+		var output = ""
+		for (i=0;i<orig1.length;i++) {
+			if (orig1[i] == "") {var HiTxt = "&nbsp;"} else {var HiTxt = orig1[i]} 
+			output = output + "<DIV class='printWord'><DIV class='highwaySign1'><DIV class='highwaySign2'>" + HiTxt + "</DIV></DIV></DIV>"
+			}
+		document.getElementById('Words').innerHTML = output
+		}
+
+	function showKe() {
+		var output = ""
+		var keys = new Array()
+		var letterSet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789,."
+		for (i=0;i<col1.length;i++) {
+			keys[i] = ""
+			for (j=0;j<col1[i].length;j++) {
+				char = col1[i].charAt(j)
+				if (char == " ") {
+					key = "<DIV class='space'></DIV>"
+					}
+				else if (letterSet.indexOf(char) > -1) {
+					char = char.replace(",","comma").replace(".","period")
+					key = "<IMG SRC='images/letters/keys/" + char + ".jpg'>"
+					}
+				else {
+					key = ""
+					}
+				keys[i] += key
+				}
+			output = output + "<DIV class='printWord'>" + keys[i] + "</DIV>"
+			}
+		document.getElementById('Words').innerHTML = output
+		}
+
+	function showLED() {
+		var output = ""
+		var letters = new Array()
+		var letterSet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ 0123456789-+*/"
+		for (i=0;i<col1.length;i++) {
+			letters[i] = "<IMG SRC='images/letters/LED/End.png'>"
+			for (j=0;j<col1[i].length;j++) {
+				char = col1[i].charAt(j)
+				if (letterSet.indexOf(char) > -1) {
+					char = char.replace(" ","space").replace("-","minus").replace("+","plus").replace("*","asterisk").replace("index.html","slash")
+					letter = "<IMG SRC='images/letters/LED/" + char + ".png'>"
+					}
+				else {
+					letter = ""
+					}
+				letters[i] += letter
+				}
+			letters[i] += "<IMG SRC='images/letters/LED/End.png'>"
+			output = output + "<DIV class='printWord'>" + letters[i] + "</DIV>"
+			}
+		document.getElementById('Words').innerHTML = output
+		}
+
+	function showLe() {
+		var output = ""
+		var plates = new Array()
+		var letterSet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ 0123456789,.!?:+-="
+		for (i=0;i<col1.length;i++) {
+			plates[i] = "<IMG SRC='images/letters/lego/end-lt.jpg'>"
+			for (j=0;j<col1[i].length;j++) {
+				char = col1[i].charAt(j)
+				if (letterSet.indexOf(char) > -1) {
+					char = char.replace(" ","space").replace(",","comma").replace(".","period").replace("!","exclamation").replace("?","question").replace(":","colon").replace("+","plus").replace("-","minus").replace("=","equal")
+					plate = "<IMG SRC='images/letters/lego/" + char + ".jpg'>"
+					}
+				else {
+					plate = ""
+					}
+				plates[i] += plate
+				}
+			plates[i] += "<IMG SRC='images/letters/lego/end-rt.jpg'>"
+			output = output + "<DIV class='printWord'>" + plates[i] + "</DIV>"
+			}
+		document.getElementById('Words').innerHTML = output
+		}
+
+	function showLP() {
+		var output = ""
+		var colSchemes = [{col:'Black',bg:'LightBlue'},
+							{col:'Black',bg:'LightGreen'},
+							{col:'Black',bg:'White'},
+							{col:'Black',bg:'Yellow'},
+							{col:'Blue',bg:'LightBlue'},
+							{col:'Blue',bg:'White'},
+							{col:'DarkBlue',bg:'GoldenRod'},
+							{col:'DarkBlue',bg:'LightBlue'},
+							{col:'DarkBlue',bg:'White'},
+							{col:'DarkBlue',bg:'Yellow'},
+							{col:'DarkGreen',bg:'White'},
+							{col:'DarkRed',bg:'White'},
+							{col:'GoldenRod',bg:'DarkBlue'},
+							{col:'Red',bg:'Yellow'},
+							{col:'SaddleBrown',bg:'Yellow'},
+							{col:'White',bg:'Black'},
+							{col:'White',bg:'Blue'},
+							{col:'White',bg:'DarkBlue'},
+							{col:'White',bg:'DarkGreen'},
+							{col:'White',bg:'DarkRed'},
+							{col:'White',bg:'Red'},
+							{col:'Yellow',bg:'DarkBlue'},
+							{col:'DarkBlue',bg:'LightSteelBlue'} 
+							]
+
+		for (i=0;i<col1.length;i++) {
+			var ranNum = Math.floor(Math.random() * colSchemes.length)
+			if (col1[i] == "") {var LPtxt = "&nbsp;"} else {var LPtxt = col1[i].replace(/[^0-9a-z ]/gi,'').substring(0,8)} 
+			if (col2[i] == "" || col2[i] == null) {var LPcol = colSchemes[ranNum].col} else {var LPcol = col2[i]}
+			if (col3[i] == "" || col3[i] == null) {var LPbg = colSchemes[ranNum].bg} else {var LPbg = col3[i]}
+			if (col4[i] == "" || col4[i] == null) {var LPtop = "&nbsp;"} else {var LPtop = col4[i].replace(/[^0-9a-z ]/gi,'').substring(0,25)} 
+			if (col5[i] == "" || col5[i] == null) {var LPbot = "&nbsp;"} else {var LPbot = col5[i].replace(/[^0-9a-z ]/gi,'').substring(0,25)}
+			output = output + "<DIV class='plate printWord' STYLE='background-color: " + LPbg + "'>"
+			output = output + "<DIV class='plate2' STYLE='border-color: " + LPcol + "'>"
+			output = output + "<DIV class='lpLetters top' STYLE='color: " + LPcol + "'>" + LPtop + "</DIV>"
+			output = output + "<DIV class='lpLetters' STYLE='color: " + LPcol + "'>" + LPtxt + "</DIV>"
+			output = output + "<DIV class='lpLetters bottom' STYLE='color: " + LPcol + "'>" + LPbot + "</DIV>"
+			output = output + "</DIV></DIV>"
+			}
+		document.getElementById('Words').innerHTML = output
+		}
+
+	function showPT() {
+		var elementSymbols = ["H","He","Li","Be","B","C","N","O","F","Ne","Na","Mg","Al","Si","P","S","Cl","Ar","K","Ca","Sc","Ti","V","Cr","Mn","Fe","Co","Ni","Cu","Zn","Ga","Ge","As","Se","Br","Kr","Rb","Sr","Y","Zr","Nb","Mo","Tc","Ru","Rh","Pd","Ag","Cd","In","Sn","Sb","Te","I","Xe","Cs","Ba","La","Ce","Pr","Nd","Pm","Sm","Eu","Gd","Tb","Dy","Ho","Er","Tm","Yb","Lu","Hf","Ta","W","Re","Os","Ir","Pt","Au","Hg","Tl","Pb","Bi","Po","At","Rn","Fr","Ra","Ac","Th","Pa","U","Np","Pu","Am","Cm","Bk","Cf","Es","Fm","Md","No","Lr","Rf","Db","Sg","Bh","Hs","Mt","Ds","Rg","Cn","Nh","Fl","Mc","Lv","Ts","Og"]
+		
+		var elementSymbolsUpper = elementSymbols.map(item=>item.toUpperCase())
+		
+		var elementNames = ["Hydrogen","Helium","Lithium","Beryllium","Boron","Carbon","Nitrogen","Oxygen","Fluorine","Neon","Sodium","Magnesium","Aluminium","Silicon","Phosphorus","Sulfur","Chlorine","Argon","Potassium","Calcium","Scandium","Titanium","Vanadium","Chromium","Manganese","Iron","Cobalt","Nickel","Copper","Zinc","Gallium","Germanium","Arsenic","Selenium","Bromine","Krypton","Rubidium","Strontium","Yttrium","Zirconium","Niobium","Molybdenum","Technetium","Ruthenium","Rhodium","Palladium","Silver","Cadmium","Indium","Tin","Antimony","Tellurium","Iodine","Xenon","Caesium","Barium","Lanthanum","Cerium","Praseodymium","Neodymium","Promethium","Samarium","Europium","Gadolinium","Terbium","Dysprosium","Holmium","Erbium","Thulium","Ytterbium","Lutetium","Hafnium","Tantalum","Tungsten","Rhenium","Osmium","Iridium","Platinum","Gold","Mercury","Thallium","Lead","Bismuth","Polonium","Astatine","Radon","Francium","Radium","Actinium","Thorium","Protactinium","Uranium","Neptunium","Plutonium","Americium","Curium","Berkelium","Californium","Einsteinium","Fermium","Mendelevium","Nobelium","Lawrencium","Rutherfordium","Dubnium","Seaborgium","Bohrium","Hassium","Meitnerium","Darmstadtium","Roentgenium","Copernicium","Nihonium","Flerovium","Moscovium","Livermorium","Tennessine","Oganesson"]
+		
+		var elementColors = ["bfd7ef","e1cfe5","f8aac0","ffdcaa","94d7f4","bfd7ef","bfd7ef","bfd7ef","e1e0f0","e1cfe5","f8aac0","ffdcaa","d4ebd7","94d7f4","bfd7ef","bfd7ef","e1e0f0","e1cfe5","f8aac0","ffdcaa","fffcdd","fffcdd","fffcdd","fffcdd","fffcdd","fffcdd","fffcdd","fffcdd","fffcdd","fffcdd","d4ebd7","94d7f4","94d7f4","bfd7ef","e1e0f0","e1cfe5","f8aac0","ffdcaa","fffcdd","fffcdd","fffcdd","fffcdd","fffcdd","fffcdd","fffcdd","fffcdd","fffcdd","fffcdd","d4ebd7","d4ebd7","94d7f4","94d7f4","e1e0f0","e1cfe5","f8aac0","ffdcaa","e7dad4","e7dad4","e7dad4","e7dad4","e7dad4","e7dad4","e7dad4","e7dad4","e7dad4","e7dad4","e7dad4","e7dad4","e7dad4","e7dad4","e7dad4","fffcdd","fffcdd","fffcdd","fffcdd","fffcdd","fffcdd","fffcdd","fffcdd","fffcdd","d4ebd7","d4ebd7","d4ebd7","94d7f4","e1e0f0","e1cfe5","f8aac0","ffdcaa","f4dbd4","f4dbd4","f4dbd4","f4dbd4","f4dbd4","f4dbd4","f4dbd4","f4dbd4","f4dbd4","f4dbd4","f4dbd4","f4dbd4","f4dbd4","f4dbd4","f4dbd4","fffcdd","fffcdd","fffcdd","fffcdd","fffcdd","fffcdd","fffcdd","fffcdd","fffcdd","d4ebd7","d4ebd7","d4ebd7","d4ebd7","e1e0f0","e1cfe5"]
+		
+		var output = ""
+		elements = new Array()
+		for (i=0;i<col1.length;i++) {
+			elements[i] = ""
+			for (j=0;j<col1[i].length;j++) {			
+				char = col1[i].charAt(j)
+				chars = col1[i].substring(j,j+2)
+				if (char == " ") {
+					element = "<DIV class='space'></DIV>"
+					}
+				else if (elementSymbolsUpper.includes(chars)) {
+					for (k=0;k<elementSymbols.length;k++) {
+						if (chars == elementSymbolsUpper[k]) {
+							elemNum = k + 1
+							element = "<DIV class='elementBox' STYLE='background-color: #" + elementColors[k] + "'><DIV class='elementNumber'>" + elemNum + "</DIV><DIV class='elementSymbol'>" + elementSymbols[k] + "</DIV><DIV class='elementName'>" + elementNames[k] + "</DIV></DIV>"
+							j++
+							break
+							}
+						}
+					}
+				else if (elementSymbols.includes(char)) {
+					for (k=0;k<elementSymbols.length;k++) {
+						if (char == elementSymbols[k]) {
+							elemNum = k + 1
+							element = "<DIV class='elementBox' STYLE='background-color: #" + elementColors[k] + "'><DIV class='elementNumber'>" + elemNum + "</DIV><DIV class='elementSymbol'>" + elementSymbols[k] + "</DIV><DIV class='elementName'>" + elementNames[k] + "</DIV></DIV>"
+							break
+							}
+						}
+					}
+				else {
+					element = "<DIV class='elementBox' STYLE='border-color: #fff; width: auto;'><DIV class='elementNumber'>&nbsp;</DIV><DIV class='elementSymbol'>" + char + "</DIV><DIV class='elementName'>&nbsp;</DIV></DIV>"
+					}
+				elements[i] += element
+				}
+			output = output + "<DIV class='printWord'>" + elements[i] + "</DIV>"
+			}
+		document.getElementById('Words').innerHTML = output
+		}
+
+	function showSa() {
+		var output = ""
+		var sandLetters = new Array()
+		var letterSet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ 0123456789,.!?"
+		for (i=0;i<col1.length;i++) {
+			sandLetters[i] = "<IMG SRC='images/letters/sand/end-lt.jpg'>"
+			for (j=0;j<col1[i].length;j++) {
+				char = col1[i].charAt(j)
+				if (letterSet.indexOf(char) > -1) {
+					char = char.replace(" ","space").replace(",","comma").replace(".","period").replace("!","exclamation").replace("?","question")
+					sandLetter = "<IMG SRC='images/letters/sand/" + char + ".jpg'>"
+					}
+				else {
+					sandLetter = ""
+					}
+				sandLetters[i] += sandLetter
+				}
+			sandLetters[i] += "<IMG SRC='images/letters/sand/end-rt.jpg'>"
+			output = output + "<DIV class='printWord'>" + sandLetters[i] + "</DIV>"
+			}		
+		document.getElementById('Words').innerHTML = output
+		}
+
+	function showSc() {
+		var output = ""
+		var tiles = new Array()
+		var letterSet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+		for (i=0;i<col1.length;i++) {
+			tiles[i] = ""
+			for (j=0;j<col1[i].length;j++) {			
+				char = col1[i].charAt(j)
+				if (char == " ") {
+					tile = "<DIV class='space'></DIV>"
+					}
+				else if (letterSet.indexOf(char) > -1) {
+					tile = "<IMG SRC='images/letters/scrabble/" + char + ".jpg'>"
+					}
+				else {
+					tile = "<IMG SRC='images/letters/scrabble/blank.jpg'>"
+					}
+				tiles[i] += tile
+				}
+			output = output + "<DIV class='printWord'>" + tiles[i] + "</DIV>"
+			}
+		document.getElementById('Words').innerHTML = output
+		}
+
+	function showSi() {
+		var output = ""
+		var clips = new Array()
+		var letterSet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+		for (i=0;i<col1.length;i++) {
+			clips[i] = ""
+			for (j=0;j<col1[i].length;j++) {
+				char = col1[i].charAt(j)
+				if (char == " ") {
+					clip = "<DIV class='space'></DIV>"
+					}
+				else if (letterSet.indexOf(char) > -1) {
+					clip = "<IMG SRC='images/letters/signs/" + char + ".jpg'>"
+					}
+				else {
+					clip = "<IMG SRC='images/letters/random/blank.html'>"
+					}
+				clips[i] += clip
+				}
+			output = output + "<DIV class='printWord'>" + clips[i] + "</DIV>"
+			}
+		document.getElementById('Words').innerHTML = output
+		}
+	
+	function showVi() {
+		var output = ""
+		var letters = new Array()
+		var letterSet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+		for (i=0;i<col1.length;i++) {
+			letters[i] = ""
+			for (j=0;j<col1[i].length;j++) {
+				char = col1[i].charAt(j)
+				if (char == " ") {
+					letter = "<DIV class='space'></DIV>"
+					}
+				else if (letterSet.indexOf(char) > -1) {
+					letter = "<IMG SRC='images/letters/videoGame/" + char + ".png'>"
+					}
+				else {
+					letter = ""
+					}
+				letters[i] += letter
+				}
+			output = output + "<DIV class='printWord video'>" + letters[i] + "</DIV>"
+			}
+		document.getElementById('Words').innerHTML = output
+		}
+
+	function show3D() {
+		var output = ""
+		var texts = new Array()
+		var letterSet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ 0123456789,.!?:+-="
+		for (i=0;i<col1.length;i++) {
+			texts[i] = ""
+			for (j=0;j<col1[i].length;j++) {
+				char = col1[i].charAt(j)
+				if (char == " ") {
+					text = "<DIV class='space'></DIV>"
+					}
+				else if (letterSet.indexOf(char) > -1) {
+					char = char.replace(" ","space").replace(",","comma").replace(".","period").replace("!","exclamation").replace("?","question").replace(":","colon").replace("+","plus").replace("-","minus").replace("=","equal")
+					text = "<IMG SRC='images/letters/3D/" + char + ".png' STYLE='height: 152px; margin-left: -15px;'>"
+					}
+				else {
+					text = ""
+					}
+				texts[i] += text
+				}
+			output = output + "<DIV class='printWord'>" + texts[i] + "</DIV>"
+			}
+		document.getElementById('Words').innerHTML = output
+		}
+	
+</script>
+
+</head>
+
+<body>
+
+<SCRIPT type='text/javascript' src='https://spreadsheets.google.com/feeds/list/1cYRTEw13i4BIMKgciX6jk4Su1Qt1q33oxapxyfPt-0s/1/public/values?alt=json-in-script&amp;callback=loadSSContent'></SCRIPT>
+<SCRIPT type="text/javascript">
+	if (loadError) {
+		window.location.replace("erroree13.html?k=1cYRTEw13i4BIMKgciX6jk4Su1Qt1q33oxapxyfPt-0s")
+		}
+</SCRIPT>
+
+<TABLE width="100%" height="100%" cellpadding="0" cellspacing="0" border="0" align="center">
+<TR ID="instructions" STYLE="display: none;"><TD align="center"><A HREF="FunWithWords.html" TARGET="_blank">Want to Make Your Own Fun With Words List?</A></TD></TR>
+	<TR height="1">
+  <TR height="1" class="noPrint">
+    <TD bgcolor="#c06"><DIV STYLE="width: 728px; margin: 0px auto;">
+		<DIV Class="logo"><A href="index.html"><IMG src="images/Flippity-Logo-White.png" alt="Flippity.net" width="100" height="43" border="0" align="left"></A></DIV>
+		<H1 id="title" class="title">Fun with Words</H1>
+      </DIV></TD>
+  </TR>
+    <tr height="1" class="noPrint" bgcolor="#eee">
+    <td>
+    <CENTER>
+    <div class="ad">
+    
+	<script async src="../pagead2.googlesyndication.com/pagead/js/f.txt"></script>
+    <!-- Flippity Autosize Header -->
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-1997516241738614"
+         data-ad-slot="2645243298"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+    </div>
+    </CENTER>
+    </td>
+    </tr>
+  <tr>
+    <TD align="CENTER" VALIGN="top" STYLE="padding: 20px;">
+	<div STYLE="margin-top: 20px;" class="noPrint">
+    <div class="button" onclick="showNa()">Nature</div>
+    <div class="button" onclick="showASL()">ASL</div>
+    <div class="button" onclick="showBl()">Blocks</div>
+	<div class="button" onclick="showHi()">Highway</div>
+	<div class="button" onclick="showKe()">Keyboard</div>
+  	<div class="button" onclick="showLED()">LED</div>
+    <div class="button" onclick="showLe()">Lego</div>
+	<div class="button" onclick="showLP()">License Plates</div>
+   	<div class="button" onclick="showPT()">Periodic Table</div>
+	<div class="button" onclick="showSa()">Sand</div>
+    <div class="button" onclick="showSc()">Scrabble</div>
+    <div class="button" onclick="showSi()">Signs</div>
+	<div class="button" onclick="showVi()">Video Game</div>
+	<div class="button" onclick="show3D()">3D</div>
+    <p><input type="checkbox" onClick="pageBreak()">print page breaks between words</p></div>
+
+    <div id="Words"></div>
+
+	</TD>
+  </TR>
+  <TR height="1" align="CENTER" class="noPrint">
+    <TD>
+	<SCRIPT type="text/javascript">
+		function showHide(blk) {
+			if (document.getElementById(blk).style.display == 'none') {
+                document.getElementById(blk).style.display = 'inline'
+                }
+            else {
+                document.getElementById(blk).style.display = 'none'
+                }
+            }
+    </SCRIPT>
+
+      <P class="share" ><A class="share" href="javascript:showHide('share')" title="Show/Hide Sharing Options"><IMG SRC="images/Share-Icon-Gray.png" width="15" height="16" border="0" align="absmiddle" style="margin-right: 6px;">share</A></P>
+     
+      <DIV ID="share" STYLE="display: none;">
+      
+      <IMG src="images/Link-Icon.png" width="16" height="16" hspace="10" align="absmiddle">
+        <INPUT id="linkURL" type="text" class="linkBox" onClick="this.select()" value="">
+         
+        <TABLE align="center" class="shareOptions">
+          <TR>
+            <TD>
+				<script src="../apis.google.com/js/platform.js" async defer></script>
+                <g:sharetoclassroom url="fwfbf2-2.html?k=1cYRTEw13i4BIMKgciX6jk4Su1Qt1q33oxapxyfPt-0s&amp;tab=LP" size="20"></g:sharetoclassroom>
+            </TD>
+            <TD>
+	            <SCRIPT type="text/javascript">document.write("<a href='mailto:?subject=" + encodedDocTitle + "&body=Check out " + encodedDocTitle + ": " + encodedURL + "' TARGET='_blank'><img src='images/Icon-Email.png' width='22' height='20' border='0' title='Email'></a>")</SCRIPT>
+            </TD>
+            <TD>
+	            <SCRIPT type="text/javascript">
+					encodedQRurl = "QR076c.html?u=" + encodedURL + "&p=" + encodeURIComponent(pageTitle)
+					document.write("<a href='" + encodedQRurl + "' target='_blank'><img src='images/Flippity-QR-Code.gif' width='20' height='20' border='0' title='Get QR Code'></a>")
+                </SCRIPT>
+            </TD>
+            <TD>
+                <a href="#" class="twitter-share"><IMG SRC="images/Twitter-Button.gif" width="60" height="20" ALT="Tweet"></a>
+                <SCRIPT type="text/javascript">
+                
+                    var getWindowOptions = function() {
+                    var width = 500;
+                    var height = 350;
+                    var left = (window.innerWidth / 2) - (width / 2);
+                    var top = (window.innerHeight / 2) - (height / 2);
+                    
+                    return [
+                        'resizable,scrollbars,status',
+                        'height=' + height,
+                        'width=' + width,
+                        'left=' + left,
+                        'top=' + top,
+                        ].join();
+                        };
+                    
+                    var twitterBtn = document.querySelector('.twitter-share');
+                    var shareUrl = 'https://twitter.com/intent/tweet?url=' + encodedURL + '&text=' + encodedDocTitle
+                    twitterBtn.href = shareUrl; // 1
+                    
+                    twitterBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    var win = window.open(shareUrl, 'ShareOnTwitter', getWindowOptions());
+                    win.opener = null; // 2
+                    });
+                    
+                </SCRIPT>
+            </TD>
+            <TD>
+                <a href="https://docs.google.com/spreadsheets/d/1cYRTEw13i4BIMKgciX6jk4Su1Qt1q33oxapxyfPt-0s" target="_blank"><img src="images/Google-Sheets-Icon.gif" width="16" height="20" border="0" title="Original Spreadsheet"></a>
+            </TD>
+          </TR>
+        </TABLE>
+      
+      </DIV> 
+
+    </TD>
+  </TR>
+  <TR height="1" align="CENTER" class="noPrint">
+    <TD bgcolor="#c06"><P class="copyright">Copyright&copy; 2018-2019 Flippity.net. All Rights Reserved.</P></TD>
+  </TR>
+ </TABLE>
+
+<SCRIPT type="text/javascript">
+	document.getElementById('linkURL').value = pageURL
+	document.title = docTitle
+	document.getElementById('title').innerHTML = pageTitle
+	showNa()
+	if ("1cYRTEw13i4BIMKgciX6jk4Su1Qt1q33oxapxyfPt-0s" == "1NL3YTo6sUtgF3g1kaM7y0OFNVuqgfV8UOrDP8f2_jS4") { document.getElementById('instructions').style.display = "table-row" }
+</SCRIPT>
+
+</BODY>
+
+<!-- Mirrored from www.flippity.net/fw.asp?k=1cYRTEw13i4BIMKgciX6jk4Su1Qt1q33oxapxyfPt-0s&tab=LP by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 15 Oct 2020 10:16:40 GMT -->
+</HTML>

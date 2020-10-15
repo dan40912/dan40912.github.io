@@ -1,0 +1,156 @@
+html, body {
+margin: 			0px;
+padding: 			0px;
+height: 			100%;
+border: 			none;
+}
+
+body {
+background-color: #ffffff;
+-webkit-text-size-adjust:100%;
+}
+
+A:link    			{color: #003366;}
+A:visited 			{color: #003366;}
+A:hover   			{color: #40668c;}
+
+.logo {
+display: 			inline-block;
+float: 				left;
+margin:				4px 20px 4px 0px;
+}
+
+.ad {
+margin: 			10px 0px;
+}
+
+H1.title {
+display: 			inline-block;
+width:				580px;
+white-space:		nowrap;
+overflow:			hidden;
+float: 				left;
+FONT-FAMILY:		varela round, arial rounded MT bold, arial, helvetica, san serif;
+FONT-SIZE:			20px;
+FONT-WEIGHT:		normal;
+MARGIN:				14px 0px 0px 20px;
+COLOR:				#FFF;
+}
+
+.subnav {
+FONT-FAMILY:		varela round, arial rounded MT bold, arial, helvetica, san serif;
+MARGIN:				0px;
+FONT-WEIGHT:		bold;
+COLOR:				#666666;
+cursor: 			pointer;
+}
+
+H2 {
+FONT-FAMILY:		varela round, arial rounded MT bold, arial, helvetica, san serif;
+FONT-SIZE:			22px;
+FONT-WEIGHT:		normal;
+color:				#3366CC;
+MARGIN:				10px 0px 30px 0px;
+}
+
+table.list td {
+FONT-FAMILY:		varela round, arial rounded MT bold, arial, helvetica, san serif;
+FONT-SIZE:			15px;
+padding:			8px 20px;
+vertical-align:		top;
+max-width:			300px;
+word-wrap:			break-word;
+}
+
+P, INPUT, SELECT {
+FONT-FAMILY:		Arial, Helvetica, sans-serif;
+FONT-SIZE:			16px;
+PADDING:			0px;
+MARGIN:				10px 0px;
+}
+
+.pic {
+max-width:			100px;
+max-height:			75px;
+width:				auto;
+height:				auto;
+}
+
+.desmos {
+height:				100px;
+width:				100px;
+margin:				0px;
+}
+
+.button {
+display: 			inline-block;
+margin: 			0px 15px;
+background-color: 	#003366;
+padding: 			5px 15px;
+border-radius: 		8px;
+text-transform: 	uppercase;
+FONT-FAMILY:		varela round, arial rounded MT bold, arial, helvetica, san serif;
+font-weight: 		bold;
+font-size: 			13px;
+color:				#ffffff;
+cursor: 			pointer;
+}
+
+.button:hover {
+background-color: 	#40668c;
+}
+
+HR {
+border:				0px; 
+height:				1px;
+background-color: 	#003366;
+width:				700px;
+margin:				30px;
+}
+
+.share {
+FONT-FAMILY:		Arial, Helvetica, sans-serif;
+FONT-SIZE:			14px;
+LINE-HEIGHT:		150%;
+margin:				15px;
+}
+
+.share:link         {color: #999;}
+.share:visited      {color: #999;}
+.share:hover        {color: #bbb;}
+
+.shareOptions {
+margin:				18px 0px 18px 50px;
+}
+
+.shareOptions TD {
+padding:			0px 10px;
+}
+
+.linkBox {
+width: 				450px;
+font-size: 			14px;
+background-color: 	#eee;
+border: 			1px solid #ccc;
+padding: 			4px;
+margin: 			0px;
+}
+
+.copyright {
+FONT-FAMILY:		Arial, Helvetica, sans-serif;
+FONT-SIZE:			11px;
+COLOR:				#FFFFFF;
+MARGIN:				10px;
+}
+
+#instructions {
+FONT-FAMILY:		Arial, Helvetica, sans-serif;
+FONT-SIZE:			14px;
+LINE-HEIGHT:		100%;
+HEIGHT: 			30px;
+background-color: 	#FFFDD4;
+}
+
+#instructions A:link 	{color: #3366FF;}
+#instructions A:visited {color: #3366FF;}
+#instructions A:hover 	{color: #6699FF;}

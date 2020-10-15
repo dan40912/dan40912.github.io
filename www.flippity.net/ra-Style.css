@@ -1,0 +1,211 @@
+html, body {
+margin:			0px;
+padding:		0px;
+height:			100%;
+border:			none
+}
+
+body {
+background-color: #fff;
+}
+
+A:link		{color: #fff;}
+A:visited	{color: #fff;}
+A:hover		{color: #eee;}
+
+.result A:link, #bigResult A:link			{color: blue;}
+.result A:visited, #bigResult A:visited 	{color: blue;}
+.result A:hover, #bigResult A:hover 		{color: red;}
+
+.logo {
+display: 			inline-block;
+float: 				left;
+margin:				4px 20px 4px 0px;
+}
+
+H1 {
+display: 			inline-block;
+float: 				left;
+FONT-FAMILY:		"varela round", "arial rounded MT bold", arial, helvetica, "san serif";
+FONT-SIZE:			20px;
+FONT-WEIGHT:		normal;
+MARGIN:				14px 0px 0px 20px;
+COLOR:				#fff;
+}
+
+.header {
+font-family:		Archivo Narrow, arial, helvetica, san serif;
+font-size:		    24px;
+color:              #fff;
+background-color:   #ccc;
+border-radius:      20px;
+margin:				20px 2px;
+text-align:			center;
+}
+
+.result, #bigResult {
+font-family:		Archivo Narrow, arial, helvetica, san serif;
+font-size:		    24px;
+text-align:			center;
+}
+
+.result .pic, #bigResult .pic {
+max-height:			24px;
+}
+
+.pic {
+max-width:			90%;
+max-height:			90%;
+vertical-align:		middle;
+}
+
+.column {
+background-color:	#000;
+}
+
+.shading {
+display:			none;
+position:			absolute;
+content:			url("images/Wheel-Shading.png");
+height:				404px;
+margin-top:			-2px;
+pointer-events:		none;
+z-index:			100;
+}
+
+.scene {
+margin:				0px;
+perspective:		1000000px;
+}
+
+.wheel, .wheel1, .wheel2, .wheel3, .wheel4, .wheel5, .wheel6, .wheel7, .wheel8, .wheel9, .wheel10 {
+height:				100%;
+position:			absolute;
+transition:			transform 3s;
+transform-style:	preserve-3d;
+transition-timing-function: cubic-bezier(.14,.51,.24,1);
+}
+
+.wheelSide1, .wheelSide2, .wheelSide3, .wheelSide4, .wheelSide5, .wheelSide6, .wheelSide7, .wheelSide8, .wheelSide9, .wheelSide10  {
+display:			inline-block;
+position:			absolute;
+padding:			0px;
+border:				2px solid #000;
+color:				#fff;
+text-shadow:		0px 0px 4px black;
+font-family:		Archivo Narrow, arial, helvetica, san serif;
+font-size: 			24px;
+text-align:			center;
+white-space:		nowrap;
+overflow:			hidden;
+text-overflow:		clip;
+}
+
+.button {
+display:			inline-block;
+cursor: 			pointer;
+width:				35px;
+margin:				8px 1px;
+padding:			5px 0px;
+background-image:	linear-gradient(#fefefe, #f0f0f0);
+border:				1px solid #a9a9a9;
+border-radius:		2px;
+font-size:			2px;
+}
+
+.button:hover {
+border-color:		#666;
+}
+
+.wide {
+width:				74px;
+}
+
+.narrow {
+width:				initial;
+padding:			3px;
+}
+
+#fullScreen {
+position: 			absolute;
+height: 			100%;
+width: 				100%;
+text-align: 		center;
+vertical-align: 	middle;
+display: 			none;
+background-color: 	rgba(0,0,0,0.5);
+z-index: 			1000;
+}
+
+#fullScreen TR TD {
+align: 				center;
+vertical-align: 	middle;
+}
+
+#bigResult {
+display: 			inline-block;
+max-width: 			20%;
+background-color:	#fff;
+margin: 	 		0px auto;
+margin-right:	 	+106px;
+padding: 			10px 15px;
+box-shadow:			0px 0px 5px #000;
+transform: 			scale(4);
+background-image: 	url('images/Button-Close2.png');
+background-repeat: 	no-repeat;
+background-position: right top;
+background-size: 	9px 9px;
+cursor: 			pointer;
+}
+
+#bigResult DIV {
+display: 			inline-block;
+margin: 			0px 10px;
+}
+
+.share {
+FONT-FAMILY:		Arial, Helvetica, sans-serif;
+FONT-SIZE:			14px;
+LINE-HEIGHT:		150%;
+margin:				15px;
+}
+
+.share:link         {color: #999;}
+.share:visited      {color: #999;}
+.share:hover        {color: #bbb;}
+
+.shareOptions {
+margin:				18px 0px 18px 50px;
+}
+
+.shareOptions TD {
+padding:			0px 10px;
+}
+
+.linkBox {
+width: 				450px;
+font-size: 			14px;
+background-color: 	#eee;
+border: 			1px solid #ccc;
+padding: 			4px;
+margin: 			0px;
+}
+
+.copyright {
+FONT-FAMILY:		Arial, Helvetica, sans-serif;
+FONT-SIZE:			11px;
+COLOR:				#fff;
+MARGIN:				10px;
+}
+
+#instructions {
+FONT-FAMILY:		Arial, Helvetica, sans-serif;
+FONT-SIZE:			14px;
+LINE-HEIGHT:		100%;
+HEIGHT: 			30px;
+background-color: 	#FFFDD4;
+}
+
+#instructions A:link 	{color: #3366FF;}
+#instructions A:visited {color: #3366FF;}
+#instructions A:hover 	{color: #6699FF;}

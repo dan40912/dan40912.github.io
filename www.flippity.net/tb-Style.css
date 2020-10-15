@@ -1,0 +1,157 @@
+html, body {
+margin:				0px;
+padding:			0px;
+height:				100%;
+border:				none
+}
+
+body {
+background-color: #ffffff;
+-webkit-text-size-adjust:100%;
+}
+
+A:link				{color: #993333;}
+A:visited			{color: #993333;}
+A:hover				{color: #cc6666;}
+
+.logo {
+display: 			inline-block;
+float: 				left;
+margin:				4px 20px 4px 0px;
+}
+
+H1 {
+display: 			inline-block;
+float: 				left;
+FONT-FAMILY:		varela round, arial rounded MT bold, arial, helvetica, san serif;
+FONT-SIZE:			20px;
+FONT-WEIGHT:		normal;
+MARGIN:				14px 0px 0px 20px;
+COLOR:				#FFF;
+}
+
+.printTitle {
+float: 				left;
+FONT-FAMILY:		varela round, arial rounded MT bold, arial, helvetica, san serif;
+FONT-SIZE:			20px;
+FONT-WEIGHT:		normal;
+MARGIN:				0px;
+MARGIN-BOTTOM:		20px;
+COLOR:				#000;
+}
+
+P {
+FONT-FAMILY:		Arial, Helvetica, sans-serif;
+FONT-SIZE:			14px;
+}
+
+.button {
+cursor:				pointer;
+margin:				0px 10px;
+}
+
+.bracket {
+border-collapse:	collapse;
+font-family:		BenchNine, arial, helvetica, san serif;
+}
+
+.bracket TD {
+position:			relative;
+padding:			0px;
+vertical-align:		bottom;
+}
+
+.bracket TD.line {
+border-bottom:		solid 1px #000;
+}
+
+.bracket TD.line DIV {
+position:			absolute;
+cursor:				pointer;
+overflow:			hidden;
+}
+
+.right {
+text-align: 		right;
+}
+
+.champBox {
+z-index:			1000;
+text-align: 		center;
+position:			absolute;
+width:				178px;
+min-height:			29px;
+overflow:			hidden;
+background-image: 	url('images/WinnerStars.png');
+background-repeat:	no-repeat;
+background-position:bottom; 
+}
+
+.champ {
+font-family:		BenchNine, arial, helvetica, san serif;
+line-height:		100%;
+font-size: 			24px;
+cursor:				pointer;
+margin-bottom:		30px;
+}
+
+.champBox IMG {
+max-height:			121px;
+max-width:			178px;
+width:				auto;
+height:				auto;
+}
+
+.share {
+FONT-FAMILY:		Arial, Helvetica, sans-serif;
+FONT-SIZE:			14px;
+LINE-HEIGHT:		150%;
+margin:				15px;
+}
+
+.share:link         {color: #999;}
+.share:visited      {color: #999;}
+.share:hover        {color: #bbb;}
+
+.shareOptions {
+margin:				18px 0px 18px 50px;
+}
+
+.shareOptions TD {
+padding:			0px 10px;
+}
+
+.linkBox {
+width: 				450px;
+font-size: 			14px;
+background-color: 	#eee;
+border: 			1px solid #ccc;
+padding: 			4px;
+margin: 			0px;
+}
+
+.copyright {
+FONT-FAMILY:		Arial, Helvetica, sans-serif;
+FONT-SIZE:			11px;
+COLOR:				#FFF;
+MARGIN:				10px;
+}
+
+#instructions {
+FONT-FAMILY:		Arial, Helvetica, sans-serif;
+FONT-SIZE:			14px;
+LINE-HEIGHT:		100%;
+HEIGHT: 			30px;
+background-color: 	#FFFDD4;
+}
+
+#instructions A:link 	{color: #3366FF;}
+#instructions A:visited {color: #3366FF;}
+#instructions A:hover 	{color: #6699FF;}
+
+.print {display: none;}
+
+@media print {
+.noPrint {display: none;}
+.print {display: table-row;}
+}

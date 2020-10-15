@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html>
+
+<!-- Mirrored from www.flippity.net/wc.php?k=1rcqerrVNU4nUr3iG5pABb-XNFNjQzfeYY2Cu1LrFY8E by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 15 Oct 2020 10:15:27 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=500, initial-scale=.75">
+<title>Word Cloud on Flippity.net</title>
+<link href="https://fonts.googleapis.com/css?family=Varela+Round|Caveat|Lobster|Merriweather:900|Pacifico|Balsamiq+Sans|Special+Elite&amp;display=swap" rel="stylesheet">
+<LINK rel=stylesheet href="wc-Style.css">
+<LINK rel="icon" type="image/png" href="favicon.png">
+
+
+</head>
+
+<BODY bgcolor="#999999" text="#000000" onLoad="preloadFonts()">
+
+<TABLE width="100%" height="100%" cellpadding="0" cellspacing="0" border="0" align="center">
+	<TR ID="instructions" STYLE="display: none;"><TD align="center"><A HREF="WordCloud.html" TARGET="_blank">Want to Make Your Own Word Cloud?</A></TD></TR>
+	<TR>
+    <TD height="1" bgcolor="#eeeeee">
+      <DIV class="header">  
+		<DIV Class="logo"><A href="index.html"><IMG src="images/Flippity-Logo-Gray.png" alt="Flippity.net" width="100" height="43" border="0" align="left"></A></DIV>
+		<H1 id="title">Word Cloud</H1>
+      </DIV>
+    </TD>
+  </TR>
+  <TR>
+    <TD height="1">
+        <DIV STYLE="margin: 30px 0px; text-align: center;">
+        <img id="shuffle" onClick="reShuffle()" class="option button" src="images/Button-ReShuffle.png" width="50" height="30" TITLE="Re-Shuffle [R]" STYLE="display: none;">
+        <img id="print" onClick="printFriendly()" class="option button" src="images/Button-PrinterFriendly.png" width="28" height="30" TITLE="Toggle Printer Friendly" STYLE="display: none;">
+        <img id="save" onClick="saveConfig()" class="option button" src="images/Button-Save.png" width="22" height="30" TITLE="Save Column/Row Configuration" STYLE="display: none;">
+        </DIV>
+    </TD>
+  </TR>
+  <TR valign="middle">
+    <TD align="center">
+
+	<SCRIPT type="text/javascript">
+    
+		var pageURL = window.location.href
+		var encodedURL = encodeURIComponent(pageURL)
+		var orig = new Array()
+		var data = new Array()
+		var cardSide = ""
+		var list = ""
+		var sheetTitle = ""
+		var titleOpt = true
+		var loadError = true
+
+		function loadSSContent(json) {
+
+			if (cardSide != "") { //coming from Flashcards
+				if (cardSide == 1) {
+					for (i=1;i<json.feed.entry.length;i++) {
+						orig[i-1] = {"x": json.feed.entry[i].gsx$side1.$t}
+						}
+					}
+				else if (cardSide == 2) {
+					for (i=1;i<json.feed.entry.length;i++) {			
+						orig[i-1] = {"x": json.feed.entry[i].gsx$side2.$t}
+						}
+					}
+				//Remove all multimedia terms
+				for (i=0;i<orig.length;i++) {
+					if (orig[i].x.toUpperCase().indexOf("HTTP") > -1) {
+						orig.splice(i,1)
+						i--
+						}
+					}
+				//Set relative sizes
+				for (i=0;i<orig.length;i++) {
+					orig[i].value = Math.pow((orig.length-i),2)
+					}				
+				}
+			
+			
+			else {
+				for (i=0;i<json.feed.entry.length;i++) {
+					var x = json.feed.entry[i].gsx$term.$t
+					var value = json.feed.entry[i].gsx$size.$t
+					if (value == "") {
+						value = Math.pow((json.feed.entry.length-i),2)
+						}
+					orig[i] = {"x": x, "value": value}
+					}
+				}
+		
+			sheetTitle = json.feed.title.$t
+			if ("1rcqerrVNU4nUr3iG5pABb-XNFNjQzfeYY2Cu1LrFY8E" == "1rcqerrVNU4nUr3iG5pABb-XNFNjQzfeYY2Cu1LrFY8E") {
+				sheetTitle = "AFI Top 50 Films"
+				}            
+			loadError = false
+			prepContent()
+            }
+    
+        function loadWebContent() {
+			var rawTerms = ""
+                rawTerms = rawTerms.split(",")
+            for (i=0;i<rawTerms.length;i++) {
+                if (rawTerms[i] != "") {
+                    orig[i] = {"x": rawTerms[i], "value": Math.pow((rawTerms.length-i),2)}
+                    }
+                }
+			titleOpt = false
+			loadError = false
+            prepContent()
+            }
+    
+        function prepContent() {
+			docTitle = "Word Cloud on Flippity.net"
+			pageTitle = "Word Cloud"
+	
+			if (sheetTitle != "Demo") {
+				docTitle = sheetTitle + " Word Cloud on Flippity.net"
+				pageTitle = sheetTitle + " Word Cloud"
+				}
+			encodedDocTitle = encodeURIComponent(docTitle)
+            data = orig.slice()
+            }
+    
+    </SCRIPT>
+
+	<SCRIPT type='text/javascript' src='https://spreadsheets.google.com/feeds/list/1rcqerrVNU4nUr3iG5pABb-XNFNjQzfeYY2Cu1LrFY8E/1/public/values?alt=json-in-script&amp;callback=loadSSContent'></SCRIPT>
+	<SCRIPT type="text/javascript">
+        if (loadError) {
+            window.location.replace("error77fe.html?k=1rcqerrVNU4nUr3iG5pABb-XNFNjQzfeYY2Cu1LrFY8E")
+            }
+    </SCRIPT>
+ 
+	<table cellpadding="10"><tr><td>
+		
+	<div id="container"></div>
+		
+	<script src="../cdn.anychart.com/releases/8.8.0/js/anychart-base.min.js"></script>
+    <script src="../cdn.anychart.com/releases/8.8.0/js/anychart-tag-cloud.min.js"></script>
+
+	<script type="text/javascript">
+	
+	anychart.onDocumentReady(function () {
+ 
+	anychart.licenseKey("Flippity.net-b85d7dc0-5ad00eab");
+		
+    // create a tag cloud chart
+    chart = anychart.tagCloud(data);
+
+    state = chart.normal();
+
+    state.fontFamily('Merriweather');
+
+    custom = anychart.palettes.distinctColors();
+    custom.items(['#579cd0','#1567b1','#b91c00','#c8580e','#d9b34d','#14707a']);
+	chart.palette(custom);
+	
+	chart.fromAngle(0);
+	chart.toAngle(0);
+	chart.anglesCount(5);
+
+    chart.title(" ")
+	//titleCol = "#fff"
+	title = chart.title();
+	title.enabled(true);
+	title.fontColor("#fff");
+	title.fontFamily("Varela Round"); 
+	   
+	chart.mode("spiral");
+
+	bgColor = "#000"
+	chart.background().fill(bgColor);
+
+    // format tooltips
+	chart.tooltip().format("");
+    chart.tooltip(true);
+
+    chart.container("container");
+    chart.draw();
+
+    });
+
+	function changeAngle(fr,to,ct) {
+		chart.fromAngle(fr)
+		chart.toAngle(to)
+		chart.anglesCount(ct)
+		}
+
+		function customAngle() {
+			document.getElementById('C1').checked = true
+			lay = document.getElementById('layout').value.split(",")
+			chart.fromAngle(lay[0])
+			chart.toAngle(lay[1])
+			chart.anglesCount(lay[2])
+			}
+
+	function changePalette(pal) {
+		chart.palette(pal);
+		}
+
+		function customPalette() {
+			document.getElementById('C2').checked = true
+			pal = document.getElementById('palette').value.split(",")
+			chart.palette(pal)
+			}
+
+	function changeFont(fnt) {
+		state.fontFamily(fonts[fnt])
+		}
+
+		function customFont() {
+			document.getElementById('C3').checked = true
+			fnt = document.getElementById('font').value
+			state.fontFamily(fnt)
+			}		
+
+	function changeSpacing(val) {
+		chart.textSpacing(val);
+		}
+		
+		function customSpacing() {
+			document.getElementById('C4').checked = true
+			val = document.getElementById('space').value
+			chart.textSpacing(val)
+			}		
+		
+	function changeBG(clr1,clr2) {
+		bgColor = clr1
+		titleCol = clr2
+		chart.background().fill(bgColor)
+		title.fontColor(clr2)
+		}
+
+		function customBG() {
+			document.getElementById('C5').checked = true
+			bgColor = document.getElementById('BG').value
+			chart.background().fill(bgColor)
+			}
+		
+	var t = false
+	function changeTitle() {
+    	if (t) { title.text(" ") }
+		else { title.text(sheetTitle) }
+		t = !t
+		}
+		
+	fonts = ['Merriweather','Balsamiq Sans','Caveat','Lobster','Pacifico','Special Elite']
+
+	def = ['#579cd0','#1567b1','#b91c00','#c8580e','#d9b34d','#14707a']
+	cool = ['hsl(220,100%,55%)','hsl(270,100%,50%)','hsl(300,100%,40%)']
+	warm = ['hsl(0,100%,45%)','hsl(20,100%,55%)','hsl(50,100%,50%)']
+	spring = ['hsl(50,100%,50%)','hsl(70,100%,45%)','hsl(120,100%,35%)','hsl(220,100%,55%)']
+	blues = ['hsl(200,100%,50%)','hsl(210,100%,50%)','hsl(220,100%,50%)','hsl(230,100%,50%)','hsl(240,100%,50%)']
+	rainbow = ['hsl(0,100%,50%)','hsl(20,100%,55%)','hsl(50,100%,50%)','hsl(120,100%,35%)','hsl(220,100%,50%)','hsl(270,100%,50%)']
+	
+	paletteNames = ["Default","Cool","Warm","Spring","Blues","Rainbow"]
+	paletteColors = [def,cool,warm,spring,blues,rainbow]
+	paletteCodes = []
+		
+	for (var i=0; i<paletteNames.length; i++) {
+		paletteCodes[i] = ""
+		k = 0
+		for (var j=0; j<paletteNames[i].length; j++) {
+			if (k >= paletteColors[i].length) { k=0 }
+			paletteCodes[i] += "<SPAN style='color:" + paletteColors[i][k] + ";'>" + paletteNames[i][j] + "</SPAN>"
+			k++
+			}
+		}
+		
+	function preloadFonts() {
+		for (var i=fonts.length-1; i>=0; i--) {
+			changeFont(i)
+			}
+		}
+   
+	function showHideCustom() {
+		if (document.getElementById('custom').style.display == 'none') {
+			document.getElementById('custom').style.display = 'table-row'
+			}
+		else {
+			document.getElementById('custom').style.display = 'none'
+			}
+		}
+
+    </script>
+	</td>
+	<td align="center"><p STYLE="margin-bottom: 15px; color: #999;">screenshot <br>
+	  instructions</p>
+
+	  <p><img src="images/ScreenshotIntructions.png" width="126" height="284" alt="screenshot instructions"/></p></td>
+	</tr>
+	<tr><td align="center">
+		
+	<style> 
+		.help { font-size: 9px; color: #666; margin-left: 25px; margin-top 5px; line-height: 125%;}
+	</style>
+		
+    <table border="0" cellspacing="0" cellpadding="10">
+	<tr valign="top" ID="custom" STYLE="display: none;">
+	  <td><input type="radio" name="layout" id="C1" onClick="customAngle()"> <INPUT type="text" VALUE="0,360,8" id="layout" STYLE="width: 99px;" onChange="customAngle()">
+	    <P class="help">initial angle, ending angle,<BR>total no. of angles</P>
+	    </td>
+	  <td colspan="2"><input type="radio" name="palette" id="C2" onClick="customPalette()"> <INPUT type="text" VALUE="DarkBlue,Crimson" id="palette" STYLE="width: 153px;" onChange="customPalette()">
+	    <P class="help">any HTML color or a set of colors<BR>separated by commas</P>
+	    </td>
+	  <td><input type="radio" name="font" id="C3" onClick="customFont()"> <INPUT type="text" VALUE="Arial" id="font" STYLE="width: 104px;" onChange="customFont()">
+	    <P class="help">exact name of any font<BR> installed on your device</P>
+	    </td>
+	  <td><input type="radio" name="spacing" id="C4" onClick="customSpacing()"> <INPUT type="text" VALUE="2" id="space" STYLE="width: 43px;" onChange="customSpacing()">
+	    <P class="help">integer from<BR>-1 to 10</P>
+	    </td>
+	  <td><input type="radio" name="BG" id="C5" onClick="customBG()"> <INPUT type="text" VALUE="Linen" id="BG" STYLE="width: 48px;" onChange="customBG()">
+	    <P class="help">any HTML<BR>color</P>
+	    </td>
+	  <td></td>
+	  <td></td>
+	  </tr>    <tr valign="top">
+        <td>
+            <P><input type="radio" name="layout" onClick="changeAngle(0,0,1)" checked> Horizontal</P>
+            <P><input type="radio" name="layout" onClick="changeAngle(-90,0,2)"> Horiz/Vert</P>
+            <P><input type="radio" name="layout" onClick="changeAngle(-90,0,3)"> Horiz/Vert/Diag</P>
+            <P><input type="radio" name="layout" onClick="changeAngle(-45,-45,1)"> Diagonal</P>
+            <P><input type="radio" name="layout" onClick="changeAngle(-45,90,data.length)"> Wild</P>
+        </td>
+        <td>
+            <P><input type="radio" name="palette" onClick="changePalette(paletteColors[0])" checked> <script type="text/javascript">document.write(paletteCodes[0]);</script></P>
+            <P><input type="radio" name="palette" onClick="changePalette(paletteColors[1])"> <script type="text/javascript">document.write(paletteCodes[1]);</script></P>
+            <P><input type="radio" name="palette" onClick="changePalette(paletteColors[2])"> <script type="text/javascript">document.write(paletteCodes[2]);</script></P>
+			<P><input type="radio" name="palette" onClick="changePalette(paletteColors[3])"> <script type="text/javascript">document.write(paletteCodes[3]);</script></P>
+			<P><input type="radio" name="palette" onClick="changePalette(paletteColors[4])"> <script type="text/javascript">document.write(paletteCodes[4]);</script></P>
+            <P><input type="radio" name="palette" onClick="changePalette(paletteColors[5])"> <script type="text/javascript">document.write(paletteCodes[5]);</script></P
+        </td>
+        <td>
+            <P><input type="radio" name="palette" onClick="changePalette(['hsl(0,100%,45%)'])"> <SPAN STYLE="color: hsl(0,100%,45%);">Red</SPAN></P>
+            <P><input type="radio" name="palette" onClick="changePalette(['hsl(25,100%,55%)'])"> <SPAN STYLE="color: hsl(25,100%,55%);">Orange</SPAN></P>
+            <P><input type="radio" name="palette" onClick="changePalette(['hsl(50,100%,55%)'])"> <SPAN STYLE="color: hsl(50,100%,55%);">Yellow</SPAN></P>
+			<P><input type="radio" name="palette" onClick="changePalette(['hsl(120,100%,35%)'])"> <SPAN STYLE="color: hsl(120,100%,35%);">Green</SPAN></P>
+            <P><input type="radio" name="palette" onClick="changePalette(['hsl(220,100%,50%)'])"> <SPAN STYLE="color: hsl(220,100%,50%);">Blue</SPAN></P>
+            <P><input type="radio" name="palette" onClick="changePalette(['hsl(270,100%,50%)'])"> <SPAN STYLE="color: hsl(270,100%,50%);">Purple</SPAN></P>
+        </td>
+         <td>
+            <P><input type="radio" name="font" onClick="changeFont(0)" checked> <SPAN STYLE="font-family: Merriweather;">Merriweather</SPAN></P>
+            <P><input type="radio" name="font" onClick="changeFont(1)"> <SPAN STYLE="font-family: Balsamiq Sans;">Balsamiq Sans</SPAN></P>
+            <P><input type="radio" name="font" onClick="changeFont(2)"> <SPAN STYLE="font-family: Caveat;">Caveat</SPAN></P>
+			<P><input type="radio" name="font" onClick="changeFont(3)"> <SPAN STYLE="font-family: Lobster;">Lobster</SPAN></P>
+            <P><input type="radio" name="font" onClick="changeFont(4)"> <SPAN STYLE="font-family: Pacifico;">Pacifico</SPAN></P>
+            <P><input type="radio" name="font" onClick="changeFont(5)"> <SPAN STYLE="font-family: Special Elite;">Special Elite</SPAN></P>
+        </td>
+       <td>
+            <P><input type="radio" name="spacing" onClick="changeSpacing(1)" checked> <SPAN STYLE="letter-spacing: 0px;">Normal</P>
+            <P><input type="radio" name="spacing" onClick="changeSpacing(5)"> <SPAN STYLE="letter-spacing: 2px;">Loose</P>
+            <P><input type="radio" name="spacing" onClick="changeSpacing(0)"> <SPAN STYLE="letter-spacing: -1px;">Tight</P>
+        </td>
+         <td>
+            <P><input type="radio" name="BG" onClick="changeBG('#000','#fff')" checked> <SPAN STYLE="display: inline-block; width: 50px; text-align: center; color: #fff; background-color: black; padding: 3px;">Black</SPAN></P>
+            <P><input type="radio" name="BG" onClick="changeBG('#ccc','#fff')"> <SPAN STYLE="display: inline-block; width: 50px; text-align: center; background-color: #ccc; padding: 3px;">Gray</SPAN></P>
+			<P><input type="radio" name="BG" onClick="changeBG('#fff','#999')"> <SPAN STYLE="display: inline-block; width: 50px; text-align: center; padding: 2px; border: 1px solid #999;">White</SPAN></P>
+        </td>
+		<td >
+            <P><input type="checkbox" onClick="changeTitle()"> Title</P>
+        </td>
+		<td><img src="images/Icon-Wrench.png" width="16" height="16" title="Show/Hide Customization Options" onClick="showHideCustom()" STYLE="cursor: pointer; margin-top: 6px;"></td>
+	</tr>
+	</table>
+		   
+	</td>
+	<td></td>	
+	</tr>
+	</table>
+
+    </TD>
+  </TR>
+  <TR>
+    <TD height="1" align="CENTER" valign="MIDDLE">
+	<SCRIPT type="text/javascript">
+   
+   		function showHide(blk) {
+			if (document.getElementById(blk).style.display == 'none') {
+                document.getElementById(blk).style.display = 'inline'
+                }
+            else {
+                document.getElementById(blk).style.display = 'none'
+                }
+            }
+
+    </SCRIPT>
+      <BR>
+      <P class="share" ><A class="share" href="javascript:showHide('share')" title="Show/Hide Sharing Options"><IMG SRC="images/Share-Icon-Gray.png" width="15" height="16" border="0" align="absmiddle" style="margin-right: 6px;">share</A></P>
+      
+      <DIV ID="share" style="display: none;">
+      
+      <IMG src="images/Link-Icon.png" width="16" height="16" hspace="10" align="absmiddle">
+        <INPUT id="linkURL" type="text" class="linkBox" onClick="this.select()" value="">
+    
+        <TABLE align="center" class="shareOptions">
+          <TR>
+            <TD>
+				<script src="../apis.google.com/js/platform.js" async defer></script>
+                <g:sharetoclassroom url="wc77fe.html?k=1rcqerrVNU4nUr3iG5pABb-XNFNjQzfeYY2Cu1LrFY8E" size="20"></g:sharetoclassroom>
+            </TD>
+            <TD>
+	            <SCRIPT type="text/javascript">document.write("<a href='mailto:?subject=" + encodedDocTitle + "&body=Check out this " + encodedDocTitle + ": " + encodedURL + "' TARGET='_blank'><img src='images/Icon-Email.png' width='22' height='20' border='0' title='Email'></a>")</SCRIPT>
+            </TD>
+            <TD>
+	            <SCRIPT type="text/javascript">
+					encodedQRurl = "QR076c.html?u=" + encodedURL + "&p=" + encodeURIComponent(pageTitle)
+					document.write("<a href='" + encodedQRurl + "' target='_blank'><img src='images/Flippity-QR-Code.gif' width='20' height='20' border='0' title='Get QR Code'></a>")
+                </SCRIPT>
+            </TD>
+            <TD>
+                <A href="https://twitter.com/share" class="twitter-share-button" data-count="horizontal">Tweet</A><SCRIPT type="text/javascript" src="../platform.twitter.com/widgets.js"></SCRIPT>
+            </TD>
+       		<TD>
+                <a href="https://docs.google.com/spreadsheets/d/1rcqerrVNU4nUr3iG5pABb-XNFNjQzfeYY2Cu1LrFY8E" target="_blank"><img src="images/Google-Sheets-Icon.gif" width="16" height="20" border="0" title="Original Spreadsheet"></a>
+            </TD>
+          </TR>
+        </TABLE>
+      </DIV>
+    </TD>
+  </TR>
+  <TR>
+    <TD height="1" align="CENTER" valign="MIDDLE" bgcolor="#eeeeee">
+      <P class="copyright">Copyright&copy; 2020 Flippity.net. All Rights Reserved.</P>
+    </TD>
+  </TR>
+ </TABLE>
+
+    <SCRIPT type="text/javascript">
+		document.getElementById('linkURL').value = pageURL
+		document.title = docTitle
+		document.getElementById('title').innerHTML = pageTitle
+		if ("1rcqerrVNU4nUr3iG5pABb-XNFNjQzfeYY2Cu1LrFY8E" == "1rcqerrVNU4nUr3iG5pABb-XNFNjQzfeYY2Cu1LrFY8E") { document.getElementById('instructions').style.display = "table-row" }
+	</SCRIPT>
+
+ </BODY>
+
+<!-- Mirrored from www.flippity.net/wc.php?k=1rcqerrVNU4nUr3iG5pABb-XNFNjQzfeYY2Cu1LrFY8E by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 15 Oct 2020 10:15:30 GMT -->
+</HTML>

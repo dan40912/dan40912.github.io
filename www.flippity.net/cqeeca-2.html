@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html>
+
+<!-- Mirrored from www.flippity.net/cq.php?<%=queryVars%> by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 15 Oct 2020 10:16:44 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Certificate Quiz on Flippity.net</title>
+<LINK href='https://fonts.googleapis.com/css?family=Varela+Round' rel='stylesheet' type='text/css'>
+<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+<LINK rel=stylesheet href="cq-Style.css">
+<LINK rel="icon" type="image/png" href="favicon.png">
+
+<link rel="prefetch" href="images/CertificateHeader.png">
+<link rel="prefetch" href="images/CertificateBG.png">
+
+<SCRIPT>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','../www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-23823535-6', 'flippity.net');
+  ga('send', 'pageview');
+</SCRIPT>
+
+<script type='text/javascript'>
+
+
+var certificateDate = "Thursday, October 15, 2020"
+
+pageURL = window.location.href
+encodedURL = encodeURIComponent(pageURL)
+
+preLoads = new Array()
+pl = 0
+
+function preLoad(img) {
+	preLoads[pl] = new Image()
+	preLoads[pl].src = img
+	pl++
+	}
+
+function loadVars() {
+	document.getElementById("courseTitle").innerHTML = courseTitle
+	document.getElementById("date").innerHTML = certificateDate
+	document.getElementById("certificateTitle").innerHTML = courseTitle
+	document.getElementById("qTot").innerHTML = questions.length
+
+	document.getElementById("formTeacherName").value = mailtoName
+	document.getElementById("formTeacherEmail").value = mailtoAddress
+	document.getElementById("formDate").value = certificateDate
+	document.getElementById("formCourseTitle").value = "&quot;" + courseTitle + "&quot;"
+	document.getElementById("formCourseURL").value = window.location.href
+	if (headerImg != "") {
+		preLoad(headerImg)
+		document.getElementById("headerImg").src = headerImg
+		}
+	document.getElementById('title').innerHTML = pageTitle
+	document.getElementById("loadingScreen").style.display = "none" // prevent starting before quiz is loaded
+	document.getElementById("startScreen").style.display = "block"
+	document.getElementById("studentName").focus()
+	}
+
+num = 0
+
+data = new Array()
+dataType = new Array()
+
+function createQuiz(json) {
+	for (i=0;i<json.feed.entry.length;i++) {
+		data[i] = json.feed.entry[i].gsx$text.$t 
+		dataType[i] = json.feed.entry[i].gsx$type.$t
+		}
+	}
+
+loadError = true
+
+function loadOptions(json) {
+	courseTitle = json.feed.entry[0].gsx$setting.$t
+	shuffleQuestions = json.feed.entry[1].gsx$setting.$t.toLowerCase()
+	shuffleChoices = json.feed.entry[2].gsx$setting.$t.toLowerCase()
+	mailResults = json.feed.entry[3].gsx$setting.$t.toLowerCase()
+	mailtoName = json.feed.entry[4].gsx$setting.$t
+	mailtoAddress = json.feed.entry[5].gsx$setting.$t
+	headerImg = json.feed.entry[6].gsx$setting.$t
+
+	docTitle = courseTitle + " Certificate Quiz on Flippity.net"
+	pageTitle = courseTitle + " Certificate Quiz"
+	encodedDocTitle = encodeURIComponent(docTitle)
+
+	loadError = false
+
+	}
+
+</script>
+
+<SCRIPT type="text/javascript" src="https://spreadsheets.google.com/feeds/list//1/public/values?alt=json-in-script&amp;callback=createQuiz"></SCRIPT>
+<SCRIPT type="text/javascript" src="https://spreadsheets.google.com/feeds/list//2/public/values?alt=json-in-script&amp;callback=loadOptions"></SCRIPT>
+
+<SCRIPT type="text/javascript">
+	if (loadError) {
+		window.location.replace("error7de2.html?k=")
+		}
+</SCRIPT>
+
+<SCRIPT type="text/javascript">
+
+var questions = new Array()
+
+var choices = new Array(99)
+for (i=0; i<choices.length; i++) {
+    choices[i] = new Array()
+	}
+
+var j = -1
+
+for (i = 0; i < data.length; i++) {
+	if (dataType[i] == "Q") {
+		j++
+		k = 0
+		questions[j] = prepQues(data[i])
+		}
+	else {		
+		if (dataType[i].indexOf("*") != -1) {
+			choices[j][k] = "*" + prepChoice(data[i])
+			}
+		else {
+			choices[j][k] = prepChoice(data[i])
+			}
+		k++
+		}
+	}
+
+function prepQues(ques) {
+	if (ques.toLowerCase().indexOf("[[image:") > -1) {
+		imgSRC = ques.match(/\[\[Image:(.*?)\]\]/i)[1]
+		preLoad(imgSRC)
+		ques = ques.replace(/\[\[Image:/i,"<IMG class='qPic' SRC='")
+		ques = ques.replace("]]","'>")
+		}
+	if (ques.indexOf("youtu.be") > -1) {
+		ques = ques.replace("cqeeca-2.html","cqeeca-2.html")
+		ques = ques.replace("%5b%5bhttps_/youtu.be/index.html","<iframe class='qVid' src='//www.youtube.com/embed/")
+		ques = ques.replace("]]","?rel=0&amp;showinfo=0' frameborder='0' allow='autoplay; encrypted-media' allowfullscreen></iframe>")
+		}
+	return ques
+	}
+
+function prepChoice(choice) {
+	if (choice.toLowerCase().indexOf("[[image:") > -1) {
+		imgSRC = choice.match(/\[\[Image:(.*?)\]\]/i)[1]
+		preLoad(imgSRC)
+		choice = choice.replace(/\[\[Image:/i,"<IMG class='aPic' SRC='")
+		choice = choice.replace("]]","'>")
+		}
+	if (choice.indexOf("youtu.be") > -1) {
+		choice = choice.replace("cqeeca-2.html","cqeeca-2.html")
+		choice = choice.replace("%5b%5bhttps_/youtu.be/index.html","<iframe class='aVid' src='//www.youtube.com/embed/")
+		choice = choice.replace("]]","?rel=0&amp;showinfo=0' frameborder='0' allow='autoplay; encrypted-media' allowfullscreen></iframe>")
+		}
+	return choice
+	}
+
+var responses = new Array()
+
+function rand(x) {
+	return Math.floor(x*(Math.random())) }
+
+if (shuffleQuestions == "yes") {
+	var i, k, tQ, tC
+ 	for (i = questions.length-1; i > 0; i--) {
+		k = rand(i+1)
+		tQ = questions[i]
+		tC = choices[i]
+		questions[i] = questions[k]
+		choices[i] = choices[k]
+		questions[k] = tQ
+		choices[k] = tC
+		}
+	}
+
+if (shuffleChoices == "yes") {
+	for (i = 0; i < questions.length; i++) {
+		var j, k, tC
+		for (j = choices[i].length-1; j > 0; j--) {
+			k = rand(j+1)
+			tC = choices[i][j]
+			choices[i][j] = choices[i][k]
+			choices[i][k] = tC
+			}
+		}
+	}
+
+var answers = new Array()
+
+for (i = 0; i < questions.length; i++) {
+	for (j = 0; j < choices[i].length; j++) {
+		if (choices[i][j].indexOf("*") != -1) {
+			choices[i][j] = choices[i][j].replace("*","")
+			answers[i] = j
+			}
+		}
+	}
+
+attempts = 0
+
+function loadQuiz() {
+	attempts++
+	if (document.getElementById("studentName").value == "") {
+		alert("Please enter your name.")
+		document.getElementById("studentName").focus()
+		}
+	else {
+		signin = false
+		retry = false
+		quiz = true
+		num = 0
+		document.getElementById("startScreen").style.display = "none"
+		document.getElementById("resultsScreen").style.display = "none"
+		document.getElementById("quizScreen").style.display = "block"
+		loadQuestion()
+		if (attempts > 1) {
+			change(Number(wrong[0]))
+			}
+		else {
+			document.getElementById("certificateName").innerHTML = document.getElementById("studentName").value	
+			document.getElementById("formStudentName").value = document.getElementById("studentName").value
+			change(0)
+			}
+		}
+	}
+
+function loadQuestion() {
+	document.getElementById("question").innerHTML = questions[num]
+	numChoices = 0
+	checkBox = -1
+	multiChoice = "<TABLE class='choices'>"
+	for (i = 0; i < choices[num].length; i++) { 
+		multiChoice = multiChoice + "<TR><TD class='checkbox'><IMG SRC='images/RadioBox.png' onClick='submitResponse(" + i + ")' id='checkBox" + i + "' STYLE='cursor: pointer;'></TD><TD class='choice'><P>" + choices[num][i] + "</P></TD></TR>"
+		numChoices++
+		}
+	multiChoice = multiChoice + "</TABLE>"
+	document.getElementById("choices").innerHTML = multiChoice
+	}
+
+function submitResponse(ch) {
+	if (num != questions.length-1) {
+		showNext()
+		}
+	if (ch == "up") {
+		if (checkBox > 0) {
+			checkBox--
+			submitResponse(checkBox)	
+			}
+		}
+	else if (ch == "down") {
+		if (checkBox < numChoices - 1) {
+			checkBox++
+			submitResponse(checkBox)
+			}
+		}
+	else if (ch < numChoices) {
+		if (responses[num] != ch) {
+			for (i = 0; i < choices[num].length; i++) {
+				document.getElementById("checkBox" + i).src = "images/RadioBox.png"
+				}
+			document.getElementById("checkBox" + ch).src = "images/RadioBox-Checked.png"
+			checkBox = ch
+			responses[num] = ch
+			if (responses[questions.length-1] != undefined) {
+				showSubmit()
+				}
+			}
+		}
+	}
+
+function hideBack() {
+	document.getElementById("back").style.visibility = "hidden"
+	backButton = false
+	}
+
+function showBack() {
+	document.getElementById("back").style.visibility = "visible"
+	backButton = true
+	}
+	
+function hideNext() {
+	document.getElementById("next").style.visibility = "hidden"
+	nextButton = false
+	}
+
+function showNext() {
+	document.getElementById("next").style.visibility = "visible"
+	nextButton = true
+	}
+
+function showSubmit() {
+	document.getElementById("submit").style.visibility = "visible"
+	done = true
+	}
+
+function change(dir) {
+	num = num + dir
+	document.getElementById("qNum").innerHTML = num + 1
+	loadQuestion()
+	if (responses[num] != undefined) {
+		document.getElementById("checkBox" + responses[num]).src = "images/RadioBox-Checked.png"
+		checkBox = responses[num]
+		showNext()
+		}
+	else {
+		hideNext()
+		}
+	if (num == questions.length-1) {
+		hideNext()
+		}
+	if (num == 0) {
+		hideBack()
+		}
+	else {
+		showBack()
+		}
+	}
+
+function submitQuiz() {
+	quiz = false
+	wrong = new Array()
+	var summary = ""
+	var j = 0
+	for (i = 0; i < answers.length; i++) { 
+		if (responses[i] != answers[i]) {
+			wrong[j] = i
+			j++
+			}
+		}
+	if (wrong[0] != undefined) {
+		summary = "<h2>You answered the following questions incorrectly:</h2>"
+		for (i=0; i<wrong.length; i++) {
+			wrongNum = Number(wrong[i]) + 1
+			summary = summary + "<P>" + wrongNum + ":&nbsp;&nbsp;" + questions[wrong[i]].replace(/<.*>/,'') + "</P>"
+			}
+		document.getElementById("quizScreen").style.display = "none"
+		document.getElementById("results").innerHTML = summary
+		document.getElementById("resultsScreen").style.display = "block"
+		retry = true
+		}
+	else {
+		document.getElementById("quizScreen").style.display = "none"
+		document.getElementById("certificateScreen").style.display = "block"
+		if (mailResults == "yes") {
+			sendCertificate()
+			}
+		}
+	}
+
+function sendCertificate() {
+	document.getElementById("emailForm").submit()
+	}
+
+signin = true
+quiz = false
+nextButton = false
+backButton = false
+done = false
+retry = false
+
+function keyCode(event) {
+	if (!event.ctrlKey) {
+		var x = event.keyCode
+		if (x==13) { // Enter
+			if (signin || retry) {
+				loadQuiz()
+				}
+			else if (done) {
+				submitQuiz()
+				}
+			}
+		if (nextButton) {
+			if (x==78 || x==39) { // N, right arrow
+				change(1)
+				}
+			}
+		if (backButton) {
+			if (x==66 || x==37) { // B, left arrow
+				change(-1)
+				}
+			}
+		if (quiz) {	
+			if (x==38) { // up arrow
+				submitResponse("up")
+				}
+			if (x==40) { // down arrow
+				submitResponse("down")
+				}
+			}
+		}
+	}
+
+</script>
+
+</head>
+
+<body onLoad="loadVars()" onkeydown="keyCode(event)">
+
+<table width="100%" height="100%" cellpadding="0" cellspacing="0" border="0" align="center" ID="main">
+	<TR ID="instructions" STYLE="display: none;"><TD align="center"><A HREF="CertificateQuiz.html" TARGET="_blank">Want to Make Your Own Certificate Quiz?</A></TD></TR>
+	<TR height="1" class="noPrint">
+		<TD bgcolor="#CCCCCC">
+    <DIV STYLE="width: 728px; margin: 0px auto;">  
+		<DIV Class="logo"><A href="index.html"><IMG src="images/Flippity-Logo-Blue.png" alt="Flippity.net" width="100" height="43" border="0" align="left"></A></DIV>
+		<h1 id="title" class="title">Certificate Quiz</h1>
+     </DIV>
+        </TD>
+	</TR>
+
+    <tr height="1" class="noPrint" ID="ad">
+    <td align="center" bgcolor="#eee">
+    <CENTER>
+    <div class="ad">
+    
+    <script async src="../pagead2.googlesyndication.com/pagead/js/f.txt"></script>
+    <!-- Flippity Fixed Header -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:728px;height:90px"
+         data-ad-client="ca-pub-1997516241738614"
+         data-ad-slot="8452412342"></ins>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+    
+    </div>
+    </CENTER>
+    </td>
+    </tr>
+
+  <tr valign="middle">
+    <td valign="top" align="center" STYLE="padding-top: 50px;" ID="main">
+
+<DIV id="loadingScreen" STYLE="width: 100px; margin: 100px auto;">
+<IMG SRC="images/Loading-Indicator-Lg.gif" ALT="loading">
+</DIV>
+<DIV id="startScreen" STYLE="width: 600px; margin: auto; display: none;">
+<P>Earn a Certificate in:</P>
+<h2 id="courseTitle"></h2>
+<br>
+<P>Your Name: 
+  <input id="studentName" type="text" class="inputBox"></P>
+<DIV class="line"></DIV>
+<SPAN class="button" onClick="loadQuiz()">Continue</SPAN>
+</DIV>
+
+<DIV id="quizScreen" STYLE="display: none; width: 600px; margin: auto;">
+<h2 id="question"></h2>
+<SPAN id="choices"></SPAN>
+<P class="status" align="right"><SPAN id="qNum">1</SPAN> / <SPAN id="qTot"></SPAN></P>
+<DIV class="line"></DIV>
+<table width="600" border="0" align="center" cellpadding="0" cellspacing="0" class="buttons">
+  <tr>
+    <td width="33%" align="left"><SPAN class="button" onClick="change(-1)" ID="back">&lt; Back</SPAN></td>
+    <td width="34%" align="center"><SPAN class="button" onClick="submitQuiz()" ID="submit" STYLE="visibility: hidden;">Submit Responses</SPAN></td>
+    <td width="33%" align="right"><SPAN class="button" onClick="change(1)" ID="next">Next &gt;</SPAN></td>
+  </tr>
+</table>
+</DIV>
+
+<DIV id="resultsScreen" STYLE="display: none; width: 600px; margin: auto;">
+<SPAN id="results" class="results"></SPAN>
+<DIV class="line"></DIV>
+<SPAN class="button" onClick="loadQuiz()">Try Again</SPAN>
+</DIV>
+
+<DIV id="certificateScreen" STYLE="display: none; width: 678px; margin: auto;">
+<table border="0" align="center" cellpadding="0" cellspacing="0" class="certificate">
+  <tr>
+    <td align="center">
+    <img src="images/CertificateHeader.png" id="headerImg" width="530" height="100" alt="Certificate of Completion" STYLE="margin: 20px 0px;">
+      <p class="cert">This certificate is awarded to</p>
+        <h2 id="certificateName" class="name"></h2>
+        <p class="cert">for successful completion of</p>
+        <h2 id="certificateTitle" class="title"></h2>
+        <p class="cert" STYLE="margin-bottom: 40px;">on <SPAN id="date"></SPAN>.</p>   
+    </td>
+  </tr>
+</table>
+<img src="images/CertificateShadow.png" width="678" height="20" STYLE="margin: 0px auto;">
+
+    <iframe src="blank.html" height="35" width="678" frameborder="0" name="emailFrame" scrolling="no" seamless class="noPrint"></iframe>
+    <FORM method="post" id="emailForm" action="https://www.flippity.net/cq-Email.php" target="emailFrame">
+    <INPUT type="hidden" id="formTeacherName" name="formTeacherName" value=""> 
+    <INPUT type="hidden" id="formTeacherEmail" name="formTeacherEmail" value="">
+    <INPUT type="hidden" id="formDate" name="formDate" value=""> 
+    <INPUT type="hidden" id="formStudentName" name="formStudentName" value="">
+    <INPUT type="hidden" id="formCourseTitle" name="formCourseTitle" value=""> 
+    <INPUT type="hidden" id="formCourseURL" name="formCourseURL" value=""> 
+    </FORM>
+
+    <center>
+    <DIV STYLE="width: 600px; margin: 20px auto;" class="noPrint">
+    <SPAN class="button" onClick="window.print()">Print</SPAN>
+    </DIV>
+    </center>
+
+</DIV>
+
+</td></tr>
+
+  <tr class="noPrint">
+    <TD height="1" align="CENTER" valign="MIDDLE">
+		<SCRIPT type="text/javascript">
+		function showHideShare() {
+            if (document.getElementById('share').style.display == 'none') {
+                document.getElementById('share').style.display = 'inline'
+                }
+            else {
+                document.getElementById('share').style.display = 'none'
+                }
+            }
+        </SCRIPT>
+
+        <BR>
+      <P class="share"><A class="share" href="javascript:showHideShare()" title="Show/Hide Sharing Options"><IMG SRC="images/Share-Icon-Gray.png" width="15" height="16" border="0" align="absmiddle" style="margin-right: 6px;">share</A></P>
+
+	<DIV ID="share" style="display: none;">
+    
+    <IMG src="images/Link-Icon.png" width="16" height="16" align="absmiddle" hspace="10">
+     <INPUT id="linkURL" type="text" class="linkBox" onClick="this.select()" value="">
+
+    <TABLE align="center" class="shareOptions">
+        <TR>
+            <TD>
+				<script src="../apis.google.com/js/platform.js" async defer></script>
+                <g:sharetoclassroom url="cqeeca-2.html?<%=queryVars%>" size="20"></g:sharetoclassroom>
+            </TD>
+            <TD>
+	            <SCRIPT type="text/javascript">document.write("<a href='mailto:?subject=" + encodedDocTitle + "&body=Check out this " + encodedDocTitle + ": " + encodedURL + "' TARGET='_blank'><img src='images/Icon-Email.png' width='22' height='20' border='0' title='Email'></a>")</SCRIPT>
+            </TD>
+            <TD>
+	            <SCRIPT type="text/javascript">
+					encodedQRurl = "QR076c.html?u=" + encodedURL + "&p=" + encodeURIComponent(pageTitle)
+					document.write("<a href='" + encodedQRurl + "' target='_blank'><img src='images/Flippity-QR-Code.gif' width='20' height='20' border='0' title='Get QR Code'></a>")
+                </SCRIPT>
+            </TD>
+            <TD>
+                <a href="#" class="twitter-share"><IMG SRC="images/Twitter-Button.gif" width="60" height="20" ALT="Tweet"></a>
+                <SCRIPT type="text/javascript">
+                
+                    var getWindowOptions = function() {
+                    var width = 500;
+                    var height = 350;
+                    var left = (window.innerWidth / 2) - (width / 2);
+                    var top = (window.innerHeight / 2) - (height / 2);
+                    
+                    return [
+                        'resizable,scrollbars,status',
+                        'height=' + height,
+                        'width=' + width,
+                        'left=' + left,
+                        'top=' + top,
+                        ].join();
+                        };
+                    
+                    var twitterBtn = document.querySelector('.twitter-share');
+                    var shareUrl = 'https://twitter.com/intent/tweet?url=' + encodedURL + '&text=' + encodedDocTitle
+                    twitterBtn.href = shareUrl; // 1
+                    
+                    twitterBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    var win = window.open(shareUrl, 'ShareOnTwitter', getWindowOptions());
+                    win.opener = null; // 2
+                    });
+                    
+                </SCRIPT>
+            </TD>
+            <TD>
+                <a href="https://docs.google.com/spreadsheets/d/" target="_blank"><img src="images/Google-Sheets-Icon.gif" width="16" height="20" border="0" title="Original Spreadsheet"></a>
+            </TD>
+        </TR>
+    </TABLE>
+</DIV>
+
+  <TR class="noPrint">
+    <TD height="1" align="CENTER" valign="MIDDLE" bgcolor="#cccccc">
+      <P class="copyright">Copyright&copy; 2013-2019 Flippity.net. All Rights Reserved.</P>
+    </TD>
+  </TR>
+ </TABLE>
+
+<SCRIPT type="text/javascript">
+	document.getElementById('linkURL').value = pageURL
+	document.title = docTitle
+	if ("" == "1w_CSQWNxLalvPNzZ5WktJ6t-WQ0rIMK6ZuDW7Rq1_dw") { document.getElementById('instructions').style.display = "table-row" }
+</SCRIPT>
+
+</body>
+
+<!-- Mirrored from www.flippity.net/cq.php?<%=queryVars%> by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 15 Oct 2020 10:16:44 GMT -->
+</html>

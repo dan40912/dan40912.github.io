@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html>
+
+<!-- Mirrored from www.flippity.net/sw.php?k=1LaXauLqIe39hJ82FJVoAca--av39yezWDfmRPbWb4CI by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 15 Oct 2020 10:14:43 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Spelling Words on Flippity.net</title>
+<LINK href='https://fonts.googleapis.com/css?family=Varela+Round' rel='stylesheet' type='text/css'>
+<link href="https://fonts.googleapis.com/css?family=Questrial&amp;display=swap" rel="stylesheet">
+<LINK rel=stylesheet href="sw-Style.css">
+<LINK rel="icon" type="image/png" href="favicon.png">
+
+<SCRIPT>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','../www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-23823535-6', 'flippity.net');
+  ga('send', 'pageview');
+</SCRIPT>
+
+
+</head>
+
+<BODY bgcolor="#999999" text="#000000">
+
+<TABLE width="100%" height="100%" cellpadding="0" cellspacing="0" border="0" align="center">
+	<TR ID="instructions" STYLE="display: none;"><TD align="center"><A HREF="SpellingWords.html" TARGET="_blank">Want to Make Your Own Spelling Words Manager?</A></TD></TR>
+	<TR height="1">
+    <TD bgcolor="#ddcdff">
+    <DIV STYLE="width: 728px; margin: 0px auto;">  
+		<DIV class="logo"><A href="index.html"><IMG src="images/Flippity-Logo-Purple.png" alt="Flippity.net" width="100" height="43" border="0" align="left"></A></DIV>
+		<H1 id="title">Spelling Words</H1>
+     </DIV>
+     </TD>
+  </TR>
+  <TR valign="middle">
+    <TD align="center" valign="top">
+
+<SCRIPT type="text/javascript">
+
+	pageURL = window.location.href
+	encodedURL = encodeURIComponent(pageURL)
+
+	data = new Array()
+
+	quizOnly = ""
+
+	var isEdge = !!window.StyleMedia; // test for Edge; audio doesn't work well: https://stackoverflow.com/questions/9847580/how-to-detect-safari-chrome-ie-firefox-and-opera-browser
+	if ('speechSynthesis' in window && !isEdge) {
+		var speech = true
+		}
+	else {
+		var speech = false
+		}
+
+	loadError = true
+	
+	function loadContent(json) {
+		sheetTitle = json.feed.title.$t
+		if (sheetTitle == "Demo" || sheetTitle == "Spelling Words") {
+			docTitle = "Spelling Words on Flippity.net"
+			pageTitle = "Spelling Words"
+			}
+		else {
+			docTitle = sheetTitle + " Spelling Words on Flippity.net"
+			pageTitle = sheetTitle + " Spelling Words"
+			}
+		encodedDocTitle = encodeURIComponent(docTitle)
+		
+		listLength = json.feed.entry.length
+		
+		for (i=0; i<listLength; i++) {
+			data[i] = new Array()
+			data[i][1] = json.feed.entry[i].gsx$list1.$t.trim()
+			data[i][2] = json.feed.entry[i].gsx$list2.$t.trim()
+			data[i][3] = json.feed.entry[i].gsx$list3.$t.trim()
+			data[i][4] = json.feed.entry[i].gsx$list4.$t.trim()
+			data[i][5] = json.feed.entry[i].gsx$list5.$t.trim()
+			data[i][6] = json.feed.entry[i].gsx$list6.$t.trim()
+			data[i][7] = json.feed.entry[i].gsx$list7.$t.trim()
+			data[i][8] = json.feed.entry[i].gsx$list8.$t.trim()
+			data[i][9] = json.feed.entry[i].gsx$list9.$t.trim()
+			data[i][10] = json.feed.entry[i].gsx$list10.$t.trim()
+			data[i][11] = json.feed.entry[i].gsx$list11.$t.trim()
+			data[i][12] = json.feed.entry[i].gsx$list12.$t.trim()
+			data[i][13] = json.feed.entry[i].gsx$list13.$t.trim()
+			data[i][14] = json.feed.entry[i].gsx$list14.$t.trim()
+			data[i][15] = json.feed.entry[i].gsx$list15.$t.trim()
+			data[i][16] = json.feed.entry[i].gsx$list16.$t.trim()
+			data[i][17] = json.feed.entry[i].gsx$list17.$t.trim()
+			data[i][18] = json.feed.entry[i].gsx$list18.$t.trim()
+			data[i][19] = json.feed.entry[i].gsx$list19.$t.trim()
+			data[i][20] = json.feed.entry[i].gsx$list20.$t.trim()
+			data[i][21] = json.feed.entry[i].gsx$list21.$t.trim()
+			data[i][22] = json.feed.entry[i].gsx$list22.$t.trim()
+			data[i][23] = json.feed.entry[i].gsx$list23.$t.trim()
+			data[i][24] = json.feed.entry[i].gsx$list24.$t.trim()
+			data[i][25] = json.feed.entry[i].gsx$list25.$t.trim()
+			data[i][26] = json.feed.entry[i].gsx$list26.$t.trim()
+			data[i][27] = json.feed.entry[i].gsx$list27.$t.trim()
+			data[i][28] = json.feed.entry[i].gsx$list28.$t.trim()
+			data[i][29] = json.feed.entry[i].gsx$list29.$t.trim()
+			data[i][30] = json.feed.entry[i].gsx$list30.$t.trim()
+			data[i][31] = json.feed.entry[i].gsx$list31.$t.trim()
+			data[i][32] = json.feed.entry[i].gsx$list32.$t.trim()
+			data[i][33] = json.feed.entry[i].gsx$list33.$t.trim()
+			data[i][34] = json.feed.entry[i].gsx$list34.$t.trim()
+			data[i][35] = json.feed.entry[i].gsx$list35.$t.trim()
+			data[i][36] = json.feed.entry[i].gsx$list36.$t.trim()
+			data[i][37] = json.feed.entry[i].gsx$list37.$t.trim()
+			data[i][38] = json.feed.entry[i].gsx$list38.$t.trim()
+			data[i][39] = json.feed.entry[i].gsx$list39.$t.trim()
+			data[i][40] = json.feed.entry[i].gsx$list40.$t.trim()
+			data[i][41] = json.feed.entry[i].gsx$list41.$t.trim()
+			data[i][42] = json.feed.entry[i].gsx$list42.$t.trim()
+			data[i][43] = json.feed.entry[i].gsx$list43.$t.trim()
+			data[i][44] = json.feed.entry[i].gsx$list44.$t.trim()
+			data[i][45] = json.feed.entry[i].gsx$list45.$t.trim()
+			data[i][46] = json.feed.entry[i].gsx$list46.$t.trim()
+			data[i][47] = json.feed.entry[i].gsx$list47.$t.trim()
+			data[i][48] = json.feed.entry[i].gsx$list48.$t.trim()
+			data[i][49] = json.feed.entry[i].gsx$list49.$t.trim()
+			data[i][50] = json.feed.entry[i].gsx$list50.$t.trim()
+			}			
+
+		//Set number of lists
+		numLists = 0
+		for (i=1;i<50;i++) {	
+			if (data[0][i] == "") {
+				break
+				}
+			else {
+				numLists++
+				}
+			}
+
+		loadError = false
+
+		}
+
+	//For backwards compatibility
+	speakVoice = "Google US English"
+	lang = "en-US"
+	rate = .7
+	chromeRate = .55 
+
+	prompts = ["space","period","dash","apostrophe","capital","Good!","Oops!","Spell:","Great job!"]
+
+	function loadOptions(json) {
+		language = json.feed.entry[0].gsx$setting.$t
+		rate = json.feed.entry[1].gsx$setting.$t
+		chromeRate = json.feed.entry[2].gsx$setting.$t
+		
+		if (language == "English (UK)") {
+			speakVoice = "Google UK English"
+			lang = "en-GB"
+			}
+		else if (language == "Dutch") {
+			speakVoice = "Google Nederlands"
+			lang = "nl"
+			prompts = ["spatie","punt","streepje","apostrof","hoofdletter","Prima!","Oeps!","spel:","Goed gedaan!"]
+			}
+		else if (language == "French") {
+			speakVoice = "Google français"
+			lang = "fr"
+			prompts = ["espace","point","trait d'union","apostrophe","majuscule","Bon!","Oups!","Épelle:","Très bien!"]
+			}
+		else if (language == "German") {
+			speakVoice = "Google Deutsch"
+			lang = "de"
+			prompts = ["abstand","punkt","bindestrich","apostroph","grossbuchstabe","Gut!","Hoppla!","Schreiben sie:","Gut gemacht!"]
+			}
+		else if (language == "Portuguese") {
+			speakVoice = "Google português do Brasil"
+			lang = "pt"
+			prompts = ["espaço","punto","hífen","apóstrofo","maiúscula","Muito bem!","Opa!","Soletrar:","Bom trabalho!"]
+			}
+		else if (language == "Spanish") {
+			speakVoice = "Google español de Estados Unidos"
+			lang = "es-US"
+			prompts = ["espacio","ponto","guión","apóstrafo","mayúsculo","Bueno!","Oops!","Deletrea:","Bien Hecho!"]
+			}
+		else {
+			speakVoice = "Google US English"
+			lang = "en-US"
+			}
+		}
+
+	function showList(num) {
+		document.getElementById('menu').style.display = "none"
+		list = num // for use in moreLink()
+		prepWords(num)
+		listCode = ""
+		if (speech) {
+			for (i=0;i<writtenWords.length;i++) {
+				listCode = listCode + "<P class='list'><IMG SRC='images/Play-Green-Small.png' align='absmiddle' height='32' width='32' onclick='playWord(" + i + ")' CLASS='button' STYLE='margin-right: 10px;' TITLE='Play Word'> " + writtenWords[i] + "</P>"
+				}
+			}
+		else {
+			for (i=0;i<writtenWords.length;i++) {
+				listCode = listCode + "<P class='list'>" + writtenWords[i] + "</P>"
+				}
+			}
+		document.getElementById('playWords').innerHTML = listCode
+		document.getElementById('listName').innerHTML =  data[0][num]
+		document.getElementById('formStudentName').value = data[0][num]
+		submitEmail = data[1][num] // also used later to determine if results are emailed or not
+		document.getElementById('formSubmitEmail').value = submitEmail
+		switchTab('list')
+		document.getElementById('main').style.display = "block"
+
+		if (writtenWords.length == 0) {
+			document.getElementById('noWords').style.display = "block"
+			document.getElementById('practiceTab').style.visibility = "hidden"
+			document.getElementById('quizTab').style.visibility = "hidden"
+			document.getElementById('moreTab').style.visibility = "hidden"
+			}
+		else {
+			document.getElementById('noWords').style.display = "none"
+			}
+
+		if (!speech) {
+			document.getElementById('practiceTab').style.visibility = "hidden"
+			document.getElementById('quizTab').style.visibility = "hidden"
+			}
+
+		if (quizOnly=="y") {
+			document.getElementById('listTab').style.visibility = "hidden"
+			document.getElementById('practiceTab').style.visibility = "hidden"
+			document.getElementById('moreTab').style.visibility = "hidden"
+			switchTab('quiz')
+			startQuiz()
+			}
+
+		}
+		
+	function hideList(num) {
+		speechSynthesis.cancel()
+		document.getElementById('main').style.display = "none"
+		document.getElementById('menu').style.display = "block"			
+		}
+
+	function prepWords(col) {
+		list = col
+		writtenWords = new Array()
+		spokenWords = new Array()
+		context = new Array()
+		for (i=0; i<listLength-2; i++) {
+			if (data[i+2][col] != "") {
+				writtenWords[i] = data[i+2][col]
+				}
+			else {
+				break
+				}
+			splt = writtenWords[i].indexOf("\"")
+			if (splt > -1) {
+				context[i] = writtenWords[i].substring(splt+1,writtenWords[i].length-1)
+				writtenWords[i] = writtenWords[i].substring(0,splt-1).trim()
+				spokenWords[i] = writtenWords[i]
+				}
+			else {
+				context[i] = ""
+				spokenWords[i] = writtenWords[i]
+				}
+			}
+		quizWords = writtenWords.slice()
+		quizContext = context.slice()
+		}
+
+	voices = window.speechSynthesis.getVoices()
+	
+	var chromeOS = /(CrOS)/.test(navigator.userAgent)
+	
+	function speak(message) {
+		var msg = new SpeechSynthesisUtterance()
+		msg.voice = speechSynthesis.getVoices().filter(function(voice) { return voice.name == speakVoice; })[0]
+		msg.voiceURI = 'native'
+		msg.volume = 1
+		if (chromeOS) {
+			msg.rate = chromeRate
+			}
+		else {
+			msg.rate = rate
+			}
+		msg.text = message
+		msg.lang = lang
+		speechSynthesis.speak(msg)
+		}
+		
+	function playWord(num) {
+		speechSynthesis.cancel()
+		var spell = ""
+		speak(spokenWords[num])
+		if (context[num] != "") {
+			speak(context[num])
+			}
+		spellWord(writtenWords[num])
+		speak(spokenWords[num])
+		}
+
+	spanAccents = ["á","é","í","ó","ú","Á","É","Í","Ó","Ú"]
+
+	function spellWord(word) {
+
+		for (i=0;i<word.length;i++) {
+			var preLetter = ""
+			var postLetter = ""
+			var checkLetter = word.charAt(i)
+			var letter = checkLetter
+
+			//Check for special Dutch characters
+			if (language == "Dutch") {
+				if (checkLetter.toLowerCase() == "i" && word.charAt(i+1).toLowerCase() == "j") {
+					letter = "lange ij"
+					i++
+					}
+				else if (checkLetter.toLowerCase() == "e" && word.charAt(i+1).toLowerCase() == "i") {
+					letter = "korte ei"
+					i++
+					}
+				}
+
+			//Check for punctuation
+			if (checkLetter == " ") {
+				letter = prompts[0]
+				}
+			else if (checkLetter == ".") {
+				letter = prompts[1]
+				}
+			else if (checkLetter == "-") {
+				letter = prompts[2]
+				}
+			else if (checkLetter == "'") {
+				letter = prompts[3]
+				}
+			
+			//Check for uppercase
+			else if (checkLetter == checkLetter.toUpperCase()) {
+				if (language == "French" || language == "Portuguese" || language == "Spanish") {
+					postLetter = prompts[4]
+					}
+				else {
+					preLetter = prompts[4] + " "
+					}
+				}
+
+			speak(preLetter + letter + postLetter)
+			}
+		}
+
+	function startPractice() {
+		speechSynthesis.cancel()
+		wordNum = 0
+		document.getElementById('practiceWord').style.visibility = "visible"
+		document.getElementById('practiceBox').style.display = "inline"
+		document.getElementById('practiceDone').style.display = "none"
+		nextWord()
+		}
+
+	function repeatWord() {
+		speechSynthesis.cancel()
+		document.getElementById('practiceWord').focus()
+		speak(spokenWords[wordNum])
+		if (context[wordNum] != "") {
+			speak(context[wordNum])
+			speak(spokenWords[wordNum])
+			}
+		}
+
+	function checkWord() {
+		if (document.getElementById('practiceWord').value == "") {
+			document.getElementById('practiceWord').focus()
+			}
+		else {
+			speechSynthesis.cancel()
+			document.getElementById('confirm').innerHTML = writtenWords[wordNum]
+			if (document.getElementById('practiceWord').value.trim() == writtenWords[wordNum]) {
+				document.getElementById('checkmark').src = "images/Green-Check.png"
+				document.getElementById('checkmark').style.visibility = "visible"
+				document.getElementById('check').style.display = "none"
+				document.getElementById('repeat').style.display = "none"
+				document.getElementById('next').style.display = "inline"
+				speak(prompts[5])
+				}
+			else {
+				writtenWords.splice(writtenWords.length,0,writtenWords[wordNum])
+				spokenWords.splice(spokenWords.length,0,spokenWords[wordNum])
+				context.splice(context.length,0,context[wordNum])
+				document.getElementById('checkmark').src = "images/Red-X.png"
+				document.getElementById('checkmark').style.visibility = "visible"
+				document.getElementById('check').style.display = "none"
+				document.getElementById('repeat').style.display = "none"
+				document.getElementById('next').style.display = "inline"
+				speak(prompts[6])
+				speak(spokenWords[wordNum])
+				spellWord(writtenWords[wordNum])
+				}
+			wordNum++
+			}
+		}
+
+	function nextWord() {
+		speechSynthesis.cancel()
+		if (wordNum == writtenWords.length) {
+			finishPractice()
+			}
+		else {
+			document.getElementById('confirm').innerHTML = "&nbsp;"
+			document.getElementById('checkmark').style.visibility = "hidden"
+			document.getElementById('next').style.display = "none"
+			document.getElementById('check').style.display = "inline"
+			document.getElementById('repeat').style.display = "inline"
+			document.getElementById('practiceWord').value = ""
+			document.getElementById('practiceWord').focus()
+			speak(prompts[7])
+			speak(spokenWords[wordNum])
+			if (context[wordNum] != "") {
+				speak(context[wordNum])
+				speak(spokenWords[wordNum])
+				}
+			}
+		}
+
+	function finishPractice() {
+		document.getElementById('practiceWord').blur()
+		document.getElementById('practiceBox').style.display = "none"
+		document.getElementById('practiceDone').style.display = "inline"
+		speak(prompts[8])
+		}
+
+	function shuffleQuizWords() {
+		for (i = quizWords.length - 1; i > 0; i--) {
+			var j = Math.floor(Math.random() * (i + 1))
+			var tempWord = quizWords[i]
+			var tempContext = quizContext[i]
+			quizWords[i] = quizWords[j]
+			quizContext[i] = quizContext[j]
+			quizWords[j] = tempWord
+			quizContext[j] = tempContext
+			}
+		}
+
+	function startQuiz() {
+		quizAnswers = new Array()
+		speechSynthesis.cancel()
+		document.getElementById('nextButtonQuiz').src = "images/Next-Pink.png"
+		document.getElementById('nextButtonQuiz').title = "Next Word"
+		document.getElementById('quizResults').style.display = "none"
+		document.getElementById('quizEmail').style.display = "none"
+		document.getElementById('quizBox').style.display = "inline"
+		shuffleQuizWords(quizWords)
+		wordNum = 0
+		document.getElementById('quizWord').style.visibility = "visible"
+		document.getElementById('quizTot').innerHTML = quizWords.length
+		document.getElementById('quizWord').value = "quiz"
+		nextQuizWord()
+		}
+
+	function repeatQuizWord() {
+		speechSynthesis.cancel()
+		document.getElementById('quizWord').focus()
+		speak(quizWords[wordNum - 1])
+		if (quizContext[wordNum - 1] != "") {
+			speak(quizContext[wordNum - 1])
+			speak(quizWords[wordNum - 1])
+			}
+		}
+
+	function nextQuizWord() {
+		if (document.getElementById('quizWord').value == "") {
+			document.getElementById('quizWord').focus()
+			}
+		else {
+			speechSynthesis.cancel()
+			quizAnswers[wordNum - 1] = document.getElementById('quizWord').value.trim()
+			if (wordNum == quizWords.length) {
+				finishQuiz()
+				}
+			else {
+				document.getElementById('quizWord').value = ""
+				document.getElementById('quizWord').focus()
+				speak(prompts[7])
+				speak(quizWords[wordNum])
+				if (quizContext[wordNum] != "") {
+					speak(quizContext[wordNum])
+					speak(quizWords[wordNum])
+					}
+				wordNum++
+				document.getElementById('quizNum').innerHTML = wordNum
+				if (wordNum == quizWords.length) {
+					document.getElementById('nextButtonQuiz').src = "images/Submit-Pink.png"
+					document.getElementById('nextButtonQuiz').title = "Submit for Scoring"
+					}	
+				}
+			}
+		}
+
+	function sendResults() {
+		document.getElementById("formQuizResults").value = resultsTable
+		document.getElementById("emailForm").submit()
+		document.getElementById('quizEmail').style.display = "inline"
+		}
+
+	function updateLang() {
+		if (language == "Dutch") {
+			instructTxt = "Kies een lijst:"
+			listTxt = "Lijst"
+			pracTxt = "Oefen"
+			quizTxt = "Quiz"	
+			moreTxt = "More"	
+			}
+		else if (language == "French") {
+			instructTxt = "Choisissez une liste:"
+			listTxt = "Liste"
+			pracTxt = "Pratique"
+			quizTxt = "Quiz"	
+			moreTxt = "More"	
+			}
+		else if (language == "German") {
+			instructTxt = "Wählen Sie eine Liste:"
+			listTxt = "Liste"
+			pracTxt = "Training"
+			quizTxt = "Quiz"	
+			moreTxt = "mehr"
+			}
+		else if (language == "Portuguese") {
+			instructTxt = "Escolha uma lista:"
+			listTxt = "Lista"
+			pracTxt = "Praticar"
+			quizTxt = "Teste"	
+			moreTxt = "Mais"	
+			}
+		else if (language == "Spanish") {
+			instructTxt = "Elige una lista:"
+			listTxt = "Lista"
+			pracTxt = "Pr&aacute;ctica"
+			quizTxt = "Prueba"	
+			moreTxt = "M&aacute;s"	
+			}
+		else {
+			instructTxt = "Choose a list:"
+			listTxt = "List"
+			pracTxt = "Practice"
+			quizTxt = "Quiz"	
+			moreTxt = "More"	
+			}
+		document.getElementById("instructTxt").innerHTML = instructTxt
+		document.getElementById("listTxt").innerHTML = listTxt
+		document.getElementById("pracTxt").innerHTML = pracTxt
+		document.getElementById("quizTxt").innerHTML = quizTxt
+		document.getElementById("moreTxt").innerHTML = moreTxt
+		}
+
+	function finishQuiz() {
+		document.getElementById('quizWord').blur()
+		document.getElementById('quizBox').style.display = "none"
+		resultsTable = "<TABLE class='results-table' STYLE='margin: 30px 0px;'>"
+		numCorrect = 0
+		for (i=0; i < quizWords.length; i++) {
+			if (quizWords[i] == quizAnswers[i]) {
+				checkImage = "images/Green-Check-Small.png"
+				numCorrect++
+				}
+			else {
+				checkImage = "images/Red-X-small.png"
+				}
+			resultsTable = resultsTable + "<TR><TD STYLE='font-size: 20px; padding: 8px 25px;'>" + quizWords[i] + "</TD><TD STYLE='font-size: 20px; padding: 8px 25px;'>" + quizAnswers[i] + "</TD><TD STYLE='padding: 8px 25px;'><IMG SRC='" + checkImage + "'></TD></TR>"
+			}
+		resultsTable = resultsTable + "</TABLE>"
+		resultsTable = "<P STYLE='font-size: 24px;'>" + numCorrect + " / " + i + " (" + (numCorrect/i*100).toFixed(0) + "%)</P>" + resultsTable
+		document.getElementById('quizResults').innerHTML = resultsTable
+		document.getElementById('quizResults').style.display = "inline"
+		if (submitEmail != "") {
+			sendResults()
+			}
+		}
+
+	function moreLink(tmp) {
+		window.open("https://www.flippity.net/" + tmp + ".php?k=1LaXauLqIe39hJ82FJVoAca--av39yezWDfmRPbWb4CI&l=" + list, "_blank")
+		}
+
+</SCRIPT>
+
+<SCRIPT type="text/javascript" src="https://spreadsheets.google.com/feeds/list/1LaXauLqIe39hJ82FJVoAca--av39yezWDfmRPbWb4CI/1/public/values?alt=json-in-script&amp;callback=loadContent"></SCRIPT>
+<SCRIPT type="text/javascript" src="https://spreadsheets.google.com/feeds/list/1LaXauLqIe39hJ82FJVoAca--av39yezWDfmRPbWb4CI/2/public/values?alt=json-in-script&amp;callback=loadOptions"></SCRIPT>
+
+<SCRIPT type="text/javascript">
+	if (loadError) {
+		window.location.replace("error396f.html?k=1LaXauLqIe39hJ82FJVoAca--av39yezWDfmRPbWb4CI")
+		}
+</SCRIPT>
+
+<DIV id="menu" STYLE="display: block; margin-top: 100px;">
+<center>
+<P ID="instructTxt" STYLE="margin-bottom: 30px; color: #666;"></P>
+
+<SCRIPT type="text/javascript">
+
+	document.write("<TABLE BORDER='0'>")
+	cols = Math.ceil(Math.sqrt(numLists))
+	tdWidth = Math.round(100 / cols)
+	k = 1
+	while (k <= numLists) {
+		document.write("<TR>")
+		for (i=1; i <= cols; i++) {			
+			if (k <= numLists) {
+				document.write("<TD width='" + tdWidth + "%'><P class='menu-item' onClick='showList(" + k + ")'>" + data[0][k] + "</A></P></TD>")
+				}
+			else {
+				document.write("<TD></TD>")
+				}
+				k++
+			}
+		document.write("</TR>")
+		}
+	document.write("</TABLE>")
+
+</SCRIPT>   
+
+</center>
+</DIV>
+
+<DIV ID="main" STYLE="display: none;">
+
+	<SCRIPT type="text/javascript">
+        var tabs = new Array('list','practice','quiz','more')
+        
+        function switchTab(tab) {
+            if (speech) {
+				speechSynthesis.cancel()
+				}
+			for(i = 0; i < tabs.length; i++) {
+                document.getElementById(tabs[i] + 'Tab').style.backgroundImage='url(images/SubNavTabRounded.png)'
+                document.getElementById(tabs[i] + 'Page').style.display = 'none'
+                }
+            document.getElementById(tab + 'Tab').style.backgroundImage='url(images/SubNavTabRounded-On.png)'
+            document.getElementById(tab + 'Page').style.display = 'inline-block'
+            }
+    </SCRIPT>
+
+    <DIV STYLE="width: 728px; margin: 20px auto 0px auto;">  
+        <DIV class="back-button"><img src="images/Back-Purple.png" width="32" height="31" title="Back to Menu" onClick="hideList()" align="left"></DIV>
+        <H2 class="list-name" ID="listName"></H2>
+    </DIV>
+
+    <center>
+    
+    <DIV STYLE="width: 728px; margin: 20px auto;">
+    
+        <TABLE width="728" cellspacing="0" cellpadding="0" height="40" background="images/SubNavRoundedBG.png" style="margin-bottom: 40px;">
+          <TR>
+            <TD>&nbsp;</TD>
+            <TD width="140" id="listTab" align="center" class="subnav" onClick="switchTab('list')" background="images/SubNavTabRounded-On.png"><P class="subnav" ID="listTxt" STYLE="color:#00cc00;"></P></TD>
+            <TD width="10">&nbsp;</TD>
+            <TD width="140" id="practiceTab" align="center" class="subnav" onClick="switchTab('practice'),startPractice()" background="images/SubNavTabRounded.png"><P class="subnav" ID="pracTxt" STYLE="color:#0000ff;"></P></TD>
+            <TD width="10">&nbsp;</TD>
+            <TD width="140" id="quizTab" align="center" class="subnav" onClick="switchTab('quiz'),startQuiz()" background="images/SubNavTabRounded.png"><P class="subnav" ID="quizTxt" STYLE="color:#ff00cc;"></P></TD>
+            <TD width="10">&nbsp;</TD>
+            <TD width="140" id="moreTab" align="center" class="subnav" onClick="switchTab('more')" background="images/SubNavTabRounded.png"><P class="subnav" ID="moreTxt" STYLE="color:#999;"></P></TD>
+            <TD>&nbsp;</TD>
+          </TR>
+        </TABLE>
+    
+    </DIV>
+
+    <DIV ID="noWords" STYLE="display: none;">
+        <P class="note">There are currently no words in this list.</P>
+    </DIV>
+    
+<DIV ID="listPage" STYLE="display: none;">
+    <DIV ID="playWords" ALIGN="left" STYLE="width: 250px; margin: 50px auto 0px auto;"></DIV>
+</DIV>
+
+<DIV ID="practicePage" STYLE="display: none;">
+    <DIV ID="practiceBox" STYLE="display: inline;">
+        <P ID="confirm">&nbsp;</P>
+        <img src="images/Red-X.png" width="44" height="32" class="checkmark" STYLE="visibility:hidden">
+        <input type="text" class="practice-box" id="practiceWord" STYLE="visibility:hidden" autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false" onKeyPress="handlePractice(event)" value="practice">
+        <img src="images/Green-Check.png" width="44" height="32" ID="checkmark" class="checkmark" STYLE="visibility:hidden"> 
+
+        <script>
+            function handlePractice(e){
+                if (e.keyCode === 13){
+                    if (document.getElementById('confirm').innerHTML == "&nbsp;") {
+                        checkWord()
+                        }
+                    else {
+                        nextWord()
+                        }
+                    }
+                }
+        </script>
+    
+        <BR>
+    
+        <SPAN ID="repeat" STYLE="display: none;"><A onClick="repeatWord()"><img src="images/Repeat-Blue-Small.png" class="button" width="43" height="43" title="Repeat Word" STYLE="margin-bottom:24px;"></A></SPAN>
+        <SPAN ID="check"><A onClick="checkWord()"><img src="images/Check-Blue.png" class="button" width="65" height="63" title="Check Word"></A></SPAN>
+        <SPAN ID="next" STYLE="display: none;"><A onClick="nextWord()"><img src="images/Next-Blue.png" class="button" width="64" height="63" title="Next Word"></A></SPAN>
+    </DIV>
+   
+    <DIV id="practiceDone" STYLE="display: none;"><img src="images/Green-Check-Big.png" width="86" height="65" STYLE="margin: 61px;"><BR>
+    <A onClick="startPractice()"><img src="images/Reload-Blue.png" class="button" width="64" height="63" title="Practice Again"></A>
+    </DIV>   
+
+</DIV>
+    
+<DIV ID="quizPage" STYLE="display: none;">
+    
+    <DIV ID="quizBox">
+        <P><SPAN ID="quizNum"></SPAN> / <SPAN ID="quizTot"></SPAN></P>
+        <input type="text" class="quiz-box" id="quizWord" autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false" onKeyPress="handleQuiz(event)" value="quiz">
+        <script>
+            function handleQuiz(e) {
+            if (e.keyCode === 13){
+                nextQuizWord()
+                }
+            }
+        </script>
+    
+        <BR>
+    
+        <A onClick="repeatQuizWord()"><img src="images/Repeat-Pink-Small.png" class="button" width="43" height="43" title="Repeat Word" STYLE="margin-bottom:24px;"></A>
+        <A onClick="nextQuizWord()"><img src="images/Next-Pink.png" ID="nextButtonQuiz" class="button" width="64" height="64" title="Next Word"></A>
+ 	</DIV>
+
+    <DIV ID="quizResults" STYLE="display: none;"></DIV>
+        
+    <DIV ID="quizEmail" STYLE="display: none;">
+        <center>
+        <iframe src="blank.html" height="180" width="600" frameborder="0" name="emailFrame" scrolling="no" seamless></iframe>
+        </center>
+     </DIV>
+
+<FORM method="post" id="emailForm" action="https://www.flippity.net/sw-email.php" target="emailFrame">
+<INPUT type="hidden" id="formStudentName" name="formStudentName" value=""> 
+<INPUT type="hidden" id="formSubmitEmail" name="formSubmitEmail" value="">
+<INPUT type="hidden" id="formQuizResults" name="formQuizResults" value="">
+</FORM>
+ 
+</DIV>
+
+<DIV ID="morePage" STYLE="width: 275px; display: none;">
+    <p class='menu-item' STYLE="margin-top: 30px;" onClick="moreLink('fw')">Fun With Words<img src="images/Button-Launch-Purple.png" alt="" width="20" height="20" hspace="6" border="0" align="absmiddle"></p>
+    <p class='menu-item' STYLE="margin-top: 30px;" onClick="moreLink('mg')">Matching Game<img src="images/Button-Launch-Purple.png" alt="" width="20" height="20" hspace="6" border="0" align="absmiddle"></p>
+    <p class='menu-item' STYLE="margin-top: 30px;" onClick="moreLink('hm')">Snowman<img src="images/Button-Launch-Purple.png" alt="" width="20" height="20" hspace="6" border="0" align="absmiddle"></p>
+    <p class='menu-item' STYLE="margin-top: 30px;" onClick="moreLink('sc')">Word Scramble<img src="images/Button-Launch-Purple.png" alt="" width="20" height="20" hspace="6" border="0" align="absmiddle"></p>
+    <p class='menu-item' STYLE="margin-top: 30px;" onClick="moreLink('ws')">Word Search<img src="images/Button-Launch-Purple.png" alt="" width="20" height="20" hspace="6" border="0" align="absmiddle"></p>
+</DIV>
+
+</TD>
+  </TR>
+  <TR>
+    <TD height="1" align="CENTER" valign="MIDDLE">
+	<SCRIPT type="text/javascript">
+	if (!speech) {
+		document.write("<P class='note'>This browser does not support speech.<BR>You will not be able to practice or take a quiz.</P>")
+		}
+    </SCRIPT>
+	<SCRIPT type="text/javascript">
+		function showHideShare() {
+            if (document.getElementById('share').style.display == 'none') {
+                document.getElementById('share').style.display = 'inline'
+                }
+            else {
+                document.getElementById('share').style.display = 'none'
+                }
+            }
+    </SCRIPT>
+
+      <BR>
+      <P class="share"><A class="share" href="javascript:showHideShare()" title="Show/Hide Sharing Options"><IMG SRC="images/Share-Icon-Gray.png" width="15" height="16" border="0" align="absmiddle" style="margin-right: 6px;">share</A></P>
+     
+      <DIV ID="share" style="display: none;">
+      
+      <IMG src="images/Link-Icon.png" width="16" height="16" hspace="10" align="absmiddle">
+        <INPUT id="linkURL" type="text" class="linkBox" onClick="this.select()" value="">
+         
+        <TABLE align="center" class="shareOptions">
+          <TR>
+            <TD>
+				<script src="../apis.google.com/js/platform.js" async defer></script>
+                <g:sharetoclassroom url="sw396f.html?k=1LaXauLqIe39hJ82FJVoAca--av39yezWDfmRPbWb4CI" size="20"></g:sharetoclassroom>
+            </TD>
+            <TD>
+	            <SCRIPT type="text/javascript">document.write("<a href='mailto:?subject=" + encodedDocTitle + "&body=Check out these " + encodedDocTitle + ": " + encodedURL + "' TARGET='_blank'><img src='images/Icon-Email.png' width='22' height='20' border='0' title='Email'></a>")</SCRIPT>            
+            </TD>
+            <TD>
+	            <SCRIPT type="text/javascript">
+					encodedQRurl = "QR076c.html?u=" + encodedURL + "&p=" + encodeURIComponent(pageTitle)
+					document.write("<a href='" + encodedQRurl + "' target='_blank'><img src='images/Flippity-QR-Code.gif' width='20' height='20' border='0' title='Get QR Code'></a>")
+                </SCRIPT>
+            <TD>
+                <a href="#" class="twitter-share"><IMG SRC="images/Twitter-Button.gif" width="60" height="20" ALT="Tweet"></a>
+                <SCRIPT type="text/javascript">
+                
+                    var getWindowOptions = function() {
+                    var width = 500;
+                    var height = 350;
+                    var left = (window.innerWidth / 2) - (width / 2);
+                    var top = (window.innerHeight / 2) - (height / 2);
+                    
+                    return [
+                        'resizable,scrollbars,status',
+                        'height=' + height,
+                        'width=' + width,
+                        'left=' + left,
+                        'top=' + top,
+                        ].join();
+                        };
+                    
+                    var twitterBtn = document.querySelector('.twitter-share');
+                    var shareUrl = 'https://twitter.com/intent/tweet?url=' + encodedURL + '&text=' + encodedDocTitle
+                    twitterBtn.href = shareUrl; // 1
+                    
+                    twitterBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    var win = window.open(shareUrl, 'ShareOnTwitter', getWindowOptions());
+                    win.opener = null; // 2
+                    });
+                    
+                </SCRIPT>
+            </TD>
+            <TD>
+                <a href="https://docs.google.com/spreadsheets/d/1LaXauLqIe39hJ82FJVoAca--av39yezWDfmRPbWb4CI" target="_blank"><img src="images/Google-Sheets-Icon.gif" width="16" height="20" border="0" title="Original Spreadsheet"></a>
+            </TD>
+          </TR>
+        </TABLE>
+       </DIV> 
+
+    </TD>
+  </TR>
+  <TR>
+    <TD height="1" align="CENTER" valign="MIDDLE" bgcolor="#ddcdff">
+      <P class="copyright">Copyright&copy; 2013-2020 Flippity.net. All Rights Reserved.</P>
+    </TD>
+  </TR>
+ </TABLE>
+ 
+    <SCRIPT type="text/javascript">
+		document.getElementById('linkURL').value = pageURL
+		document.title = docTitle
+		document.getElementById('title').innerHTML = pageTitle
+		updateLang()
+		if ("1LaXauLqIe39hJ82FJVoAca--av39yezWDfmRPbWb4CI" == "1LaXauLqIe39hJ82FJVoAca--av39yezWDfmRPbWb4CI") { document.getElementById('instructions').style.display = "table-row" }
+    </SCRIPT>
+
+</BODY>
+
+<!-- Mirrored from www.flippity.net/sw.php?k=1LaXauLqIe39hJ82FJVoAca--av39yezWDfmRPbWb4CI by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 15 Oct 2020 10:14:49 GMT -->
+</HTML>

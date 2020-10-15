@@ -1,0 +1,230 @@
+html, body {
+margin: 			0px;
+padding: 			0px;
+height: 			100%;
+border: 			none;
+}
+
+body {
+background-color: #ffffff;
+-webkit-text-size-adjust:100%;
+}
+
+A:link          	{color: #3366FF;}
+A:visited       	{color: #3366FF;}
+A:hover         	{color: #6699FF;}
+
+.logo {
+display: 			inline-block;
+float: 				left;
+margin:				4px 20px 4px 0px;
+}
+
+.ad {
+margin: 			10px 0px;
+}
+
+H1.title {
+display: 			inline-block;
+width:				580px;
+white-space:		nowrap;
+overflow:			hidden;
+float: 				left;
+FONT-FAMILY:		varela round, arial rounded MT bold, arial, helvetica, san serif;
+FONT-SIZE:			20px;
+FONT-WEIGHT:		normal;
+MARGIN:				14px 0px 0px 20px;
+COLOR:				#FFF;
+}
+
+P {
+font-family: 		varela round, arial rounded MT bold, arial, helvetica, san serif;
+font-size:			16px;
+margin:				10px;
+}
+
+.button {
+display: 			inline-block;
+margin: 			10px 5px;
+background-color: 	#906;
+padding: 			5px 15px;
+border-radius: 		100px;
+text-transform: 	uppercase;
+FONT-FAMILY:		varela round, arial rounded MT bold, arial, helvetica, san serif;
+font-weight: 		bold;
+font-size: 			13px;
+color:				#fff;
+cursor: 			pointer;
+}
+
+.space {
+display: 			inline-block;
+width: 				75px;
+}
+
+.elementBox {
+display: 			inline-block;
+margin:				5px;
+height:				175px;
+width:				175px;
+border:				solid #000 1px;
+font-family:		Arial, Helvetica, sans-serif;
+}
+
+.elementNumber {
+text-align:			left;
+margin:				5px 0px 0px 10px;
+font-size:			16px;
+}
+
+.elementSymbol {
+margin:				0px;
+font-weight:		bold;
+font-size:			100px;
+line-height:		125px;
+}
+
+.elementName {
+margin:				0px;
+font-size:			20px;
+line-height:		100%;
+}
+
+.plate {
+width:				600px;
+height:				315px;
+background-color:	white;
+margin:				20px;
+border:				1px solid black;
+border-radius:		30px;
+}
+
+.plate2 {
+position:			absolute;
+margin:				10px;
+width:				570px;
+height:				285px;
+border:				5px solid darkBlue;
+border-radius:		20px;
+}
+
+@font-face {
+font-family: licenseplate;
+src: url('LicensePlate.ttf');
+}
+
+.lpLetters {
+margin-top:			7px;
+font-family:		licenseplate, Arial, Helvetica, sans-serif;
+font-size:			155px;
+color:				darkBlue;
+text-shadow:		3px 3px 5px rgba(0,0,0,.5);
+}
+
+@font-face {
+font-family: highwaysign;
+src: url('HighwayGothic.ttf');
+}
+
+.highwaySign1 {
+display:			inline-block;
+min-width:			600px;
+margin:				20px;
+background-color:	green;
+padding:			2px;
+}
+
+.highwaySign2 {
+padding:			25px 100px;
+font-family:		highwaysign, Arial, Helvetica, sans-serif;
+font-size:			120px;
+color:				white;
+border:				7px solid white;
+border-radius:		25px;
+}
+
+.top {
+margin-top:			12px;
+font-size:			40px;
+letter-spacing:		3px;
+text-shadow:		2px 2px 3px rgba(0,0,0,.5);
+-webkit-text-stroke-width: 2px;
+}
+
+.bottom {
+margin-top:			-8px;
+font-size:			40px;
+letter-spacing:		3px;
+text-shadow:		2px 2px 3px rgba(0,0,0,.5);
+-webkit-text-stroke-width: 2px;
+}
+
+.video IMG {
+height:				144px;
+}
+
+.printWord {
+margin:				25px 0px;
+}
+
+.pageBreak {
+page-break-after:	always;
+}
+
+.printWord IMG {
+height:				150px;
+margin:				25px 0px;
+}
+
+.share {
+FONT-FAMILY:		Arial, Helvetica, sans-serif;
+FONT-SIZE:			14px;
+LINE-HEIGHT:		150%;
+margin:				15px;
+}
+
+.share:link         {color: #999;}
+.share:visited      {color: #999;}
+.share:hover        {color: #bbb;}
+
+.shareOptions {
+margin:				18px 0px 18px 50px;
+}
+
+.shareOptions TD {
+padding:			0px 10px;
+}
+
+.linkBox {
+width: 				450px;
+font-size: 			14px;
+background-color: 	#eee;
+border: 			1px solid #ccc;
+padding: 			4px;
+margin: 			0px;
+}
+
+.copyright {
+FONT-FAMILY:		Arial, Helvetica, sans-serif;
+FONT-SIZE:			11px;
+COLOR:				#FFFFFF;
+MARGIN:				10px;
+}
+
+#instructions {
+FONT-FAMILY:		Arial, Helvetica, sans-serif;
+FONT-SIZE:			14px;
+LINE-HEIGHT:		100%;
+HEIGHT: 			30px;
+background-color: 	#FFFDD4;
+}
+
+#instructions A:link 	{color: #3366FF;}
+#instructions A:visited {color: #3366FF;}
+#instructions A:hover 	{color: #6699FF;}
+
+.print {display: none;}
+
+@media print {
+.noPrint {display: none;}
+}

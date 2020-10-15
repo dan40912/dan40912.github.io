@@ -1,0 +1,53 @@
+html, body {
+	margin: 0px;
+	padding: 0px;
+	height: 100%;
+	border: none
+	}
+
+body {
+	-webkit-text-size-adjust:100%;
+	}
+
+A:link          {color: #3366FF;}
+A:visited       {color: #3366FF;}
+A:hover         {color: #6699FF;}
+
+P {
+FONT-FAMILY:	arial, helvetica, san serif;
+FONT-SIZE:		13px;
+}
+
+table.quiz {
+border-collapse:collapse;
+}
+
+table.quiz td {
+FONT-FAMILY:	arial, helvetica, san serif;
+FONT-SIZE:		13px;
+padding:		14px 12px 0px 0px;
+vertical-align:	top;
+}
+
+.blank {
+border-bottom:	1px solid #000000;
+vertical-align:	bottom;
+}
+
+.pic {
+height:			50px;
+margin:			4px;
+}
+
+.desmos {
+height:			100px;
+width:			100px;
+margin:			0px;
+}
+
+H2 {
+FONT-FAMILY:	varela round, arial rounded MT bold, arial, helvetica, san serif;
+FONT-SIZE:		20px;
+FONT-WEIGHT:	normal;
+MARGIN:			0px;
+}

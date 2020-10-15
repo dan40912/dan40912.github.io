@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html>
+
+<!-- Mirrored from www.flippity.net/hm.asp?k=0 by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 15 Oct 2020 10:15:40 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Snowman on Flippity.net</title>
+<LINK href='https://fonts.googleapis.com/css?family=Varela+Round' rel='stylesheet' type='text/css'>
+<LINK rel=stylesheet href="hm-Style.css">
+<LINK rel="icon" type="image/png" href="favicon.png">
+<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+
+
+<SCRIPT type="text/javascript">
+
+	var pageURL = window.location.href
+	var encodedURL = encodeURIComponent(pageURL)
+	var puzzles = new Array()
+	var hints = new Array()
+	var cardSide = ""
+	var list = ""
+	var sheetTitle = ""
+	var game = "Snowman"
+	var punct = "().',-+=?!\""
+	var wins = 0
+	var losses = 0
+	var hintsUsed = 0
+	var loadError = true
+
+	function loadSSContent(json) {
+		
+		if (cardSide != "") { //coming from Flashcards
+			game = "Snowman"
+			if (cardSide == 1) {
+				for (i=1;i<json.feed.entry.length;i++) {			
+					puzzles[i-1] = json.feed.entry[i].gsx$side1.$t
+					hints[i-1] = json.feed.entry[i].gsx$side2.$t
+					}
+				}
+			else if (cardSide == 2) {
+				for (i=1;i<json.feed.entry.length;i++) {			
+					puzzles[i-1] = json.feed.entry[i].gsx$side2.$t
+					hints[i-1] = json.feed.entry[i].gsx$side1.$t
+					}
+				}
+			//Remove all multimedia puzzles
+			for (i=0;i<puzzles.length;i++) {
+				if (puzzles[i].indexOf("HTTP") > -1) {
+					puzzles.splice(i,1)
+					hints.splice(i,1)
+					i--
+					}
+				}
+			}
+		else if (list != "") { //coming from Spelling Words
+			game = "Snowman"
+			for (i=2;i<json.feed.entry.length;i++) {			
+				if (json.feed.entry[i].gsx$list.$t == "") { break }
+				puzzles[i-2] = json.feed.entry[i].gsx$list.$t
+				puzzles[i-2] = puzzles[i-2].replace(/ ".*"/,'') // Remove context phrases in quotes from spelling words list
+				hints[i-2] = "" // spelling words don't have a hints column
+				}
+			}		
+		else {
+			game = json.feed.entry[0].gsx$puzzle.$t.replace("Game: ", "")
+			if (game == "Classic Hangman") {
+				game = "Hangman"
+				}
+			for (i=1;i<json.feed.entry.length;i++) {			
+				puzzles[i-1] = json.feed.entry[i].gsx$puzzle.$t
+				hints[i-1] = "" // for backwards compatibility with templates that don't have a hint column
+				}
+			}
+
+		sheetTitle = json.feed.title.$t
+
+		loadError = false
+		prepContent()
+		}
+
+	function loadSSHints(json) { //this function exists for backwards compatibility with templates that don't have a hint column
+		for (i=1;i<json.feed.entry.length;i++) {			
+			hints[i-1] = json.feed.entry[i].gsx$hint.$t
+			}
+		}
+
+	function loadWebContent() {
+		game = "Snowman"
+		var webPuzzles = ""
+		webPuzzles = webPuzzles.split(",")
+		var n=0
+		for (i=0; i<webPuzzles.length; i++) { // Remove blank entries
+			if (webPuzzles[i] != "") {
+				puzzles[n] = webPuzzles[i].toUpperCase()
+				hints[n] = "" // No hints when loaded from web
+				n++
+				}
+			}
+		loadError = false
+		prepContent()
+		}
+
+	function prepContent() {
+		docTitle = game + " on Flippity.net"
+		pageTitle = game
+
+		if (sheetTitle != "Demo" && sheetTitle != "Puzzles" && sheetTitle != "") {
+			docTitle = sheetTitle + " " +  game + " on Flippity.net"
+			pageTitle = sheetTitle + " " +  game
+			}
+
+		encodedDocTitle = encodeURIComponent(docTitle)
+
+		for (i=0;i<puzzles.length;i++) {			
+			puzzles[i] = puzzles[i].substr(0,50).replace(/\r?\n|\r/g,"").toUpperCase()
+			hints[i] = hints[i].substr(0,50)
+			}
+
+		if (game == "Apple Picker") {
+			images = new Array("Apple0.html","Apple1.html","Apple2.html","Apple3.html","Apple4.html","Apple5.html","Apple6.html","Apple7.html","Apple8.html","Apple9.html","Apple10.html")
+			winImg = "AppleW.html"
+			losImg = "AppleL.html"
+			}
+		else if (game == "Bomb Squad") {
+			images = new Array("Bomb0.html","Bomb1.html","Bomb2.html","Bomb3.html","Bomb4.html","Bomb5.html","Bomb6.html","Bomb7.html","Bomb8.html","Bomb9.html")
+			winImg = "BombW.html"
+			losImg = "BombL.html"
+			}
+		else if (game == "Flower Power") {
+			images = new Array("Flower0.html","Flower1.html","Flower2.html","Flower3.html","Flower4.html","Flower5.html","Flower6.html","Flower7.html","Flower8.html")
+			winImg = "FlowerW.html"
+			losImg = "FlowerL.html"
+			}
+		else if (game == "Snowman") {
+			images = new Array("Snowman0.html","Snowman1.html","Snowman2.html","Snowman3.html","Snowman4.html","Snowman5.html","Snowman6.html","Snowman7.html")
+			winImg = "SnowmanW.html"
+			losImg = "SnowmanL.html"
+			}
+		else {
+			images = new Array("Hangman0.html","Hangman1.html","Hangman2.html","Hangman3.html","Hangman4.html","Hangman5.html","Hangman6.html","Hangman7.html")
+			winImg = "HangmanW.html"
+			losImg = "HangmanL.html"
+			}
+		}
+
+	function prepHints() {
+
+		var picFormats = new Array(".gif",".png",".jpg",".jpeg",".webp")
+		var	otherFormats = new Array("https://equatio-/","https://docs.google.com/drawings")
+
+		for (i=0; i<hints.length; i++) {
+			hintText = hints[i]
+			for (j=0; j<picFormats.length; j++) {
+				if (hintText.slice(0,4) == "http" && hintText.toLowerCase().slice(-1*picFormats[j].length) == picFormats[j]) {
+					hints[i] = "<IMG SRC='" + hintText + "' class='pic'>"
+					}
+				}
+			for (j=0; j<otherFormats.length; j++) {
+				if (hintText.slice(0,otherFormats[j].length) == otherFormats[j]) {
+					hints[i] = "<IMG SRC='" + hintText + "' class='pic'>"
+					}
+				}
+			if (hintText.indexOf("youtu.be") > -1) {
+				hintText = hintText.replace("hm22d9.html","hm22d9.html")
+				hints[i] = "<iframe class='vid' src='//www.youtube.com/embed/" + hintText.slice(16) + "?rel=0&amp;showinfo=0' frameborder='0' allow='autoplay; encrypted-media' allowfullscreen></iframe><BR>"
+				}
+			if (hintText.indexOf("vocaroo.com/i/index.html") > -1) {
+				hintText = hintText.replace("hm22d9.html","hm22d9.html")
+				hintText = hintText.replace("https://vocaroo.com/i/","")
+				hints[i] = "<object width='148' height='44'><DIV>(This feature requires Flash.)</DIV><param name='movie' value='https://vocaroo.com/player.swf?playMediaID=" + hintText + "&autoplay=1'></param><param name='wmode' value='transparent'></param><embed src='https://vocaroo.com/player.swf?playMediaID=" + hintText + "&autoplay=1' width='148' height='44' wmode='transparent' type='application/x-shockwave-flash'></embed></object>"
+				}
+			if (hintText.indexOf("desmos.com/calculator/index.html") > -1) {
+				hints[i] = "<iframe class='desmos' src='" + hintText + "?embed' frameborder=0></iframe>"
+				}
+			}
+		}
+
+	puzzleNum = -1
+	
+	function loadPuzzle() {
+		if (puzzleNum >= puzzles.length - 1) {
+			puzzleNum = 0
+			}
+		else {
+			puzzleNum++
+			}
+		document.getElementById("guess").disabled = false
+		document.getElementById("image").src = "images/" + images[1]
+		used = ""
+		numWrong = 0
+		numRight = 0
+		document.getElementById("used").innerHTML = "&nbsp;"
+		document.getElementById("guess").value = ""
+		document.getElementById("guess").focus()		
+		document.getElementById("checkButton").style.display = "block"
+		document.getElementById("nextButton").style.display = "none"
+		document.getElementById("puzzle" + puzzleNum).style.display = "inline-block"
+		}
+
+	function checkGuess() {
+		letter = document.getElementById('guess').value.toUpperCase()
+		if (letter != "") {
+			checkLetter(letter)
+			}
+		}
+
+	function checkLetter(char) {	
+		if (used.indexOf(char) < 0) {
+			used = used + char
+			document.getElementById("used").innerHTML = used
+			success = 0
+			for (i=0; i<=puzzles[puzzleNum].length; i++) {
+				if (char == puzzles[puzzleNum].charAt(i)) {
+					document.getElementById("letter" + puzzleNum + "-" + i).innerHTML = char
+					numRight++
+					success = 1
+					}
+				}
+			if (success == 1) {
+				if (numRight == numChars[puzzleNum]) {
+					winGame()
+					}
+				}
+			if (success == 0) {
+				numWrong++
+				document.getElementById("image").src = "images/" + images[numWrong + 1]
+				if (numWrong == images.length - 2) {
+					loseGame()
+					}
+				}
+			}
+		else {
+			document.getElementById("used").style.animationName = "redGlow"
+			setTimeout(function() { document.getElementById("used").style.animation = "" }, 1500) }
+		continueGame()
+		}
+
+	function loseGame() {
+		document.getElementById("guess").disabled = true
+		for (i=0; i<puzzles[puzzleNum].length; i++) {
+			if (document.getElementById("letter" + puzzleNum + "-" + i).innerHTML == "&nbsp;") {
+				document.getElementById("letter" + puzzleNum + "-" + i).innerHTML = "<SPAN STYLE='color: red;'>" + puzzles[puzzleNum][i] + "</SPAN>"
+				}
+			}
+		document.getElementById("checkButton").style.display = "none"
+		document.getElementById("nextButton").style.display = "block"
+		losses++
+		document.getElementById("losses").innerHTML = losses
+		}
+
+	function continueGame() {
+		document.getElementById("guess").value = ""
+		document.getElementById("guess").focus()		
+		}
+
+	function winGame() {
+		document.getElementById("guess").disabled = true
+		document.getElementById("image").src = "images/" + images[0]
+		document.getElementById("checkButton").style.display = "none"
+		document.getElementById("nextButton").style.display = "block"
+		wins++
+		document.getElementById("wins").innerHTML = wins
+		}
+
+	function nextPuzzle() {
+        recordHints = true
+		letters = document.getElementsByClassName("letter")
+		for (i=0; i<letters.length; i++) {
+			if (!(punct.includes(letters[i].innerHTML))) {
+				letters[i].innerHTML = "&nbsp;"
+				}
+			}
+		document.getElementById("puzzle" + puzzleNum).style.display = "none"
+		if (hints[puzzleNum] != "") {
+			document.getElementById("hint" + puzzleNum).innerHTML = hints[puzzleNum] //reload hints so that multimedia hints stop playing when next puzzle loads
+			document.getElementById("hint" + puzzleNum).style.display = "none"
+			}
+		loadPuzzle()
+		}
+
+	function handleCheck(e) {
+		if (e.keyCode === 13){
+			checkGuess()
+			}
+		}
+
+	function showHideHint(nm) {
+		recordHint()
+		if (document.getElementById("hint" + nm).style.display == "none") {
+			document.getElementById("hint" + nm).style.display = "inline"
+			}
+		else {
+			document.getElementById("hint" + nm).style.display = "none"
+			}
+		document.getElementById("guess").focus()		
+		}
+
+	var recordHints = true
+	function recordHint() {
+		if (recordHints) {
+			hintsUsed++
+			document.getElementById("hintsUsed").innerHTML = hintsUsed
+			recordHints = false
+			}
+		}
+
+</SCRIPT>
+
+</head>
+
+<BODY bgcolor="#999999" text="#000000">
+
+<TABLE width=100% height=100% cellpadding="0" cellspacing="0" border="0" align="center">
+	<TR ID="instructions" STYLE="display: none;"><TD align="center"><A HREF="Snowman.html" TARGET="_blank">Want to Make Your Own Snowman Game?</A></TD></TR>	<TR height="1">
+    <TD bgcolor="#99cc00">
+    <DIV STYLE="width: 728px; margin: 0px auto;">  
+		<DIV Class="logo"><A href="index.html"><IMG src="images/Flippity-Logo-White.png" alt="Flippity.net" width="100" height="43" border="0" align="left"></A></DIV>
+		<H1 id="title" class="title"></H1>
+     </DIV>
+     </TD>
+	</TR>
+  <TR valign="middle">
+    <TD align="center">
+
+<SCRIPT type='text/javascript'>loadWebContent()</SCRIPT>
+ <!-- loadHints exists solely for backwards compatibility with templates that don't have a hint column-->
+    
+<SCRIPT type="text/javascript">
+	if (loadError) {
+		window.location.replace("error22d9.html?k=0")
+		}
+</SCRIPT>
+    
+    <SPAN id="used" class="used">&nbsp;</SPAN>
+
+	<TABLE BORDER="0" cellpadding="0" cellspacing="0" ALIGN="center">
+    <TR>
+    <TD width="100"></TD>
+    <TD width="375"><img src="images/HangmanBlank.png" name="image" width="375" height="250" id="image" STYLE="margin: 20px;"></TD>
+    <TD width="100" valign="top">
+    <SCRIPT type="text/javascript">
+		document.write("<P class='results'><img src='images/" + winImg + "' title='Wins' width='22' height='18' align='absmiddle'> <b><SPAN ID='wins'>0</SPAN></b></P>")
+		document.write("<P class='results'><img src='images/" + losImg + "' title='Losses' width='22' height='18' align='absmiddle'> <b><SPAN ID='losses'>0</SPAN></b></P>")
+    </SCRIPT>
+	<P class='results' ID='hintTally' STYLE="display: none;"><img src='images/Lightbulb-sm.png' title='Hints used' width='22' height='18' align='absmiddle'> <b><SPAN ID='hintsUsed'>0</SPAN></b></P>
+    </TD></TR>
+    </TABLE>
+    <br>
+	
+	<SCRIPT type="text/javascript">
+
+		function shuffle() {
+			var i = puzzles.length
+			if ( i == 0 ) return false
+			while ( --i ) {
+				var j = Math.floor( Math.random() * ( i + 1 ) )
+				var tempPuzi = puzzles[i]
+				var tempPuzj = puzzles[j]
+				var tempHini = hints[i]
+				var tempHinj = hints[j]
+				puzzles[i] = tempPuzj
+				puzzles[j] = tempPuzi
+				hints[i] = tempHinj
+				hints[j] = tempHini
+				}
+			}
+
+		shuffle()
+		prepHints()
+
+		numChars = new Array()
+		for (i=0; i<puzzles.length; i++) {
+			numChars[i] = 0
+			document.write("<DIV ID='puzzle" + i + "' STYLE='display: none;'>")
+			document.write("<SPAN class='divider'>")
+			for (j=0; j<puzzles[i].length; j++) {
+				char = puzzles[i].charAt(j)
+				if (char == " ") {
+					document.write("</SPAN><DIV id='letter" + i + "-" + j + "' class='space'></DIV><SPAN class='divider'>")
+					}
+				else if (punct.includes(char)) {
+					document.write("<DIV id='letter" + i + "-" + j + "' class='letter'>" + char + "</DIV>")
+					}
+				else {
+					document.write("<DIV id='letter" + i + "-" + j + "' class='letter'>&nbsp;</DIV>")
+					numChars[i]++
+					}
+				}
+			document.write("</SPAN>")
+			
+			if (hints[i] != "") {
+				document.write("<P class='hint'><IMG SRC='images/Lightbulb.png' width='21' height='30' TITLE='Show/Hide Hint' onClick='showHideHint(" + i  + ")' STYLE='cursor: pointer; margin-right: 10px; vertical-align: top;'><SPAN STYLE='display: none;' ID='hint" + i  + "'>" + hints[i]  + "</SPAN></P>")
+				}
+
+			document.write("</DIV>")			
+			}
+
+    </SCRIPT>
+    
+    <TABLE border="0" cellpadding="10" STYLE="margin: 30px;">
+    <TR HEIGHT="1">
+        <TD><INPUT type="TEXT" class="letterGuess" id="guess" maxlength="1" onKeyPress="handleCheck(event)"></TD>
+        <TD><img src="images/Button-Check-Green.png" width="64" height="63" ID="checkButton" STYLE="cursor: pointer;" title="Check Letter" onClick="checkGuess()" >
+        <img src="images/Button-Next-Green.png" width="63" height="63" ID="nextButton" STYLE="cursor: pointer;" title="Next" onClick="nextPuzzle()"></TD>
+    </TR>
+    </TABLE>
+
+	<SCRIPT type="text/javascript">
+		loadPuzzle()
+
+		//Check if there are any hints
+		for (i=0; i<hints.length; i++) {			
+			if (hints[i] != "") {
+				document.getElementById("hintTally").style.display = "inline"
+				break
+				}
+			}
+    </SCRIPT>
+    
+    </TD>
+  </TR>
+  <TR>
+    <TD height="1" align="CENTER" valign="MIDDLE">
+	
+	<SCRIPT type="text/javascript">
+		function showHideShare() {
+            if (document.getElementById('share').style.display == 'none') {
+                document.getElementById('share').style.display = 'inline'
+                }
+            else {
+                document.getElementById('share').style.display = 'none'
+                }
+            }
+        </SCRIPT>
+      
+      <BR>
+      <P class="share" STYLE='display: none;'><A class="share" href="javascript:showHideShare()" title="Show/Hide Sharing Options"><IMG SRC="images/Share-Icon-Gray.png" width="15" height="16" border="0" align="absmiddle" style="margin-right: 6px;">share</A></P>
+      
+      <DIV ID="share" style="display: none;">
+      
+      <IMG src="images/Link-Icon.png" alt="" width="16" height="16" hspace="10" align="absmiddle">
+        <INPUT id="linkURL" type="text" class="linkBox" onClick="this.select()" value="">
+
+        <TABLE align="center" class="shareOptions">
+          <TR>
+            <TD>
+				<script src="../apis.google.com/js/platform.js" async defer></script>
+                <g:sharetoclassroom url="hm22d9-2.html?k=0" size="20"></g:sharetoclassroom>
+            </TD>
+            <TD>
+	            <SCRIPT type="text/javascript">document.write("<a href='mailto:?subject=" + encodedDocTitle + "&body=Check out " + encodedDocTitle + ": " + encodedURL + "' TARGET='_blank'><img src='images/Icon-Email.png' width='22' height='20' border='0' title='Email'></a>")</SCRIPT>
+            </TD>
+            <TD>
+	            <SCRIPT type="text/javascript">
+					encodedQRurl = "QR076c.html?u=" + encodedURL + "&p=" + encodeURIComponent(pageTitle)
+					document.write("<a href='" + encodedQRurl + "' target='_blank'><img src='images/Flippity-QR-Code.gif' width='20' height='20' border='0' title='Get QR Code'></a>")
+                </SCRIPT>
+            <TD>
+                <a href="#" class="twitter-share"><IMG SRC="images/Twitter-Button.gif" width="60" height="20" ALT="Tweet"></a>
+                <SCRIPT type="text/javascript">
+                
+                    var getWindowOptions = function() {
+                    var width = 500;
+                    var height = 350;
+                    var left = (window.innerWidth / 2) - (width / 2);
+                    var top = (window.innerHeight / 2) - (height / 2);
+                    
+                    return [
+                        'resizable,scrollbars,status',
+                        'height=' + height,
+                        'width=' + width,
+                        'left=' + left,
+                        'top=' + top,
+                        ].join();
+                        };
+                    
+                    var twitterBtn = document.querySelector('.twitter-share');
+                    var shareUrl = 'https://twitter.com/intent/tweet?url=' + encodedURL + '&text=' + encodedDocTitle
+                    twitterBtn.href = shareUrl; // 1
+                    
+                    twitterBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    var win = window.open(shareUrl, 'ShareOnTwitter', getWindowOptions());
+                    win.opener = null; // 2
+                    });
+                    
+                </SCRIPT>
+            </TD>
+            <TD>
+                <a href="https://docs.google.com/spreadsheets/d/0" target="_blank"><img src="images/Google-Sheets-Icon.gif" width="16" height="20" border="0" title="Original Spreadsheet"></a>
+            </TD>
+          </TR>
+        </TABLE>
+        
+      </DIV>
+    </TD>
+  </TR>
+  <TR>
+    <TD height="1" align="CENTER" valign="MIDDLE" bgcolor="#99cc00">
+      <P class="copyright">Copyright&copy; 2013-2018 Flippity.net. All Rights Reserved.</P>
+    </TD>
+  </TR>
+</TABLE>
+
+    <SCRIPT type="text/javascript">
+		document.getElementById('linkURL').value = pageURL
+		document.title = docTitle
+		document.getElementById('title').innerHTML = pageTitle
+		if ("0" == "1KTQTeZdjQbHlrxZOFUhZhFXes7nZYFS0rJv-rmfiQu0") { document.getElementById('instructions').style.display = "table-row" }
+    </SCRIPT>
+
+</BODY>
+
+<!-- Mirrored from www.flippity.net/hm.asp?k=0 by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 15 Oct 2020 10:15:40 GMT -->
+</HTML>

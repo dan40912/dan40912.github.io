@@ -1,0 +1,161 @@
+@import url('https://fonts.googleapis.com/css2?family=Tinos&amp;family=Poppins&amp;family=Balsamiq+Sans&amp;family=Special+Elite&amp;display=swap');
+
+html, body {
+margin: 			0px;
+padding: 			0px;
+height: 			100%;
+border: 			none;
+}
+
+body {
+background-color: #ffffff;
+}
+
+A:link          	{color: #3366FF;}
+A:visited       	{color: #3366FF;}
+A:hover         	{color: #6699FF;}
+
+.logo {
+display: 			inline-block;
+float: 				left;
+margin:				0px 15px;
+}
+
+H1.title {
+display: 			inline-block;
+float: 				left;
+FONT-FAMILY:		varela round, arial rounded MT bold, arial, helvetica, san serif;
+FONT-SIZE:			15px;
+FONT-WEIGHT:		normal;
+MARGIN:				5px 0px;
+COLOR:				#000;
+}
+
+H2 {
+FONT-FAMILY:		varela round, arial rounded MT bold, arial, helvetica, san serif;
+FONT-SIZE:			22px;
+FONT-WEIGHT:		normal;
+color:				#3366CC;
+MARGIN:				10px 0px 30px 0px;
+}
+
+#container {
+background-repeat:	no-repeat;
+background-size:	100% 100%;
+touch-action:		none;
+padding:			20px;
+overflow:			hidden;
+}
+
+.item {
+display:			inline-block;
+font-family:		'Tinos',Georgia, Times New Roman, Times, serif;
+max-width:			15em;
+color:				#000;
+border:				solid 1px #000;
+margin:				.3em;
+background-color: 	white;
+cursor:				move;
+padding:			.1em 0em;
+box-shadow:			1px 2px 2px rgba(0,0,0,.25);
+touch-action:		none;
+user-select:		none;
+position:			relative;
+cursor:				pointer;
+}
+
+.item:active {
+cursor: move;
+}
+
+#optionBar {
+display:			inline-block;
+align:				right;
+border:				1px solid #ccc; 
+background-color:	#fff;
+border-radius:		50px;
+}
+
+.option {
+cursor: pointer; 
+}
+
+.img  {
+max-width:			7.1em;
+max-height:			4em;
+padding:			.5em;
+margin:				.5em;
+}
+
+.vid {
+max-width:			7.1em;
+max-height:			4em;
+frameborder:		0px;
+margin:				0px;
+padding:			.25em 1em;
+margin:				.5em;
+}
+
+.des {
+max-width:			4em;
+max-height:			4em;
+frameborder:		0px;
+margin:				0px;
+padding:			.25em 1em;
+margin:				.5em;
+}
+
+.voc {
+width:				260px;
+height:				60px; 
+frameborder:		0px;
+margin:				0px;
+padding:			.25em 1em;
+margin:				.5em;
+}
+
+.share {
+font-family:		Arial, Helvetica, sans-serif;
+font-size:			14px;
+margin:				10px;
+}
+
+.share:link         {color: #999;}
+.share:visited      {color: #999;}
+.share:hover        {color: #bbb;}
+
+.shareOptions {
+margin:				18px 0px 18px 50px;
+}
+
+.shareOptions TD {
+padding:			0px 10px;
+}
+
+.linkBox {
+width: 				450px;
+font-size: 			14px;
+background-color: 	#eee;
+border: 			1px solid #ccc;
+padding: 			4px;
+margin: 			8px 0px 0px 0px;
+}
+
+.copyright {
+FONT-FAMILY:		Arial, Helvetica, sans-serif;
+FONT-SIZE:			11px;
+COLOR:				#999;
+MARGIN:				10px;
+}
+
+#instructions {
+FONT-FAMILY:		Arial, Helvetica, sans-serif;
+FONT-SIZE:			14px;
+LINE-HEIGHT:		100%;
+HEIGHT: 			30px;
+background-color: 	#FFFDD4;
+}
+
+#instructions A:link 	{color: #3366FF;}
+#instructions A:visited {color: #3366FF;}
+#instructions A:hover 	{color: #6699FF;}

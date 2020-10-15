@@ -1,0 +1,223 @@
+html, body {
+margin:			0px;
+padding:		0px;
+height:			100%;
+border:			none;
+}
+
+body {
+background-color: #ffffff;
+-webkit-text-size-adjust:100%;
+}
+
+A:link		{color: #3366FF;}
+A:visited	{color: #3366FF;}
+A:hover		{color: #6699FF;}
+
+.logo {
+display: 			inline-block;
+float: 				left;
+margin:				4px 20px 4px 0px;
+}
+
+H1.title {
+display: 			inline-block;
+width:				580px;
+white-space:		nowrap;
+overflow:			hidden;
+float: 				left;
+FONT-FAMILY:		varela round, arial rounded MT bold, arial, helvetica, san serif;
+FONT-SIZE:			20px;
+FONT-WEIGHT:		normal;
+margin:				14px 0px 0px 20px;
+COLOR:				#3399FF;
+}
+
+.ad {
+margin: 			10px 0px;
+}
+
+.screen {
+margin-top: 		50px;
+}
+
+H2 {
+font-family:        'Roboto', sans-serif;
+font-weight: 		normal;
+font-size: 			24px;
+line-height:		125%;
+color: 				#666666;
+margin: 			20px 0px;
+}
+
+H2.name {
+font-family: 		Georgia, Times New Roman, Times, serif;
+font-weight: 		bold;
+color: 				#666666;
+margin: 			14px;
+}
+
+H2.title {
+font-family: 		Georgia, Times New Roman, Times, serif;
+font-weight: 		bold;
+color: 				#3399ff;
+margin: 			14px;
+}
+
+P {
+font-family:        'Roboto', sans-serif;
+font-weight: 		normal;
+font-size: 			16px;
+color: 				#333333;
+}
+
+P.cert {
+font-family: 		Georgia, Times New Roman, Times, serif;
+font-weight: 		normal;
+font-size: 			16px;
+color: 				#333333;
+margin:				0px;
+}
+
+.status {
+color: 				#999999;
+}
+
+.choices TD {
+vertical-align: 	top;
+padding: 			6px;
+cursor: 			default;
+}
+
+.choice P {
+font-family:        'Roboto', sans-serif;
+font-weight: 		normal;
+font-size: 			16px;
+color: 				#333333;
+margin: 			0px;
+}
+
+.checkbox {
+margin: 			0px;
+}
+
+.line {
+margin: 			40px 0px 20px 0px;
+width: 				100%;
+height: 			1px;
+background: 		#cccccc;
+}
+
+.button {
+display: 			inline-block;
+margin: 			0px 5px;
+border: 			1px solid #66ccff;
+background-color: 	#3399ff;
+padding: 			7px 12px 5px 12px;
+border-radius: 		100px;
+text-transform: 	uppercase;
+font-family:        'Roboto', sans-serif;
+margin: 			0px;
+font-weight: 		bold;
+font-size: 			12px;
+color: 				#ffffff;
+cursor: 			pointer;
+}
+
+.results {
+font-family:        'Roboto', sans-serif;
+font-weight:		normal;
+font-size: 			16px;
+color: 				#333333;
+margin: 			0px;
+}
+
+.certificate {
+border: 			1px solid #999999;
+padding: 			60px;
+background-image:	url(images/CertificateBG.png);
+background-repeat:	no-repeat;
+width:				678px; 
+height:				491px;
+-webkit-print-color-adjust: exact;
+}
+
+.qPic {
+display:			block;
+height:				200px;
+max-width:			550px;
+margin:				20px 0px;
+}
+
+.aPic {
+display:			block;
+height:				100px;
+max-width:			400px;
+margin:				5px 0px;
+}
+
+.qVid {
+display:			block;
+height:				315px;
+width:				560px;
+margin:				20px auto;
+}
+
+.aVid {
+display:			block;
+height:				100px;
+max-width:			178px;
+margin:				5px 0px;
+}
+
+.share {
+FONT-FAMILY:		Arial, Helvetica, sans-serif;
+FONT-SIZE:			14px;
+LINE-HEIGHT:		150%;
+margin:				15px;
+}
+
+.share:link         {color: #999;}
+.share:visited      {color: #999;}
+.share:hover        {color: #bbb;}
+
+.shareOptions {
+margin:				18px 0px 18px 50px;
+}
+
+.shareOptions TD {
+padding:			0px 10px;
+}
+
+.linkBox {
+width: 				450px;
+font-size: 			14px;
+background-color: 	#eee;
+border: 			1px solid #ccc;
+padding: 			4px;
+margin: 			0px;
+}
+
+.copyright {
+FONT-FAMILY:		Arial, Helvetica, sans-serif;
+FONT-SIZE:			11px;
+COLOR:				#666666;
+MARGIN:				10px;
+}
+
+#instructions {
+FONT-FAMILY:		Arial, Helvetica, sans-serif;
+FONT-SIZE:			14px;
+LINE-HEIGHT:		100%;
+HEIGHT: 			30px;
+background-color: 	#FFFDD4;
+}
+
+#instructions A:link 	{color: #3366FF;}
+#instructions A:visited {color: #3366FF;}
+#instructions A:hover 	{color: #6699FF;}
+
+@media print {
+.noPrint { display: none; }
+#main    { vertical-align: middle; }
+}

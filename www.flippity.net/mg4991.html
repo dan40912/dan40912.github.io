@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html>
+
+<!-- Mirrored from www.flippity.net/mg.php?k=1_qjAM_8I4vDhbanHv7GEaNOTgePbEBMjPlPO0S5hVm0 by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 15 Oct 2020 10:14:33 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Matching Game on Flippity.net</title>
+<LINK href='https://fonts.googleapis.com/css?family=Varela+Round' rel='stylesheet' type='text/css'>
+<link href="https://fonts.googleapis.com/css?family=Questrial&amp;display=swap" rel="stylesheet">
+<LINK rel=stylesheet href="mg-Style.css">
+<LINK rel="icon" type="image/png" href="favicon.png">
+
+<SCRIPT>
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','../www.google-analytics.com/analytics.js','ga');
+	
+	ga('create', 'UA-23823535-6', 'flippity.net');
+	ga('send', 'pageview');
+</SCRIPT>
+
+
+<SCRIPT type="text/javascript">
+
+	var pageURL = window.location.href
+	var encodedURL = encodeURIComponent(pageURL)
+	var rawTerms1 = []
+	var rawTerms2 = []
+	var terms1 = []
+	var terms2 = []
+	var terms = []
+	var key1 = []
+	var key2 = []
+	var key = []
+	var refer = ""
+	var list = ""
+	var blankCode = []
+	var numberedCode = []
+	var cardBackCode = []
+	var cardBackImg = "images/MemoryCard-Red.gif" // failsafe
+	var doneText = "Done!" // failsafe
+	var memory = true
+	var bgImg = "images/BG-Gray-Felt.jpg" // failsafe
+	var numbers = false
+	var sheetTitle = ""
+	var docTitle = "Matching Game on Flippity.net"
+	var encodedDocTitle = encodeURIComponent(docTitle)
+	var pageTitle = "Matching Game"
+	var audioOn = false
+	var soundOn = false
+	var loadError = true
+	function loadSSContent(json) {
+
+		sheetTitle = json.feed.title.$t
+		if (sheetTitle != "Demo") {
+			docTitle = sheetTitle + " Matching Game on Flippity.net"
+			pageTitle = sheetTitle + " Matching Game"
+			}
+
+		var startAt = 0
+		if (refer == "f") { var startAt = 0 } // from flashcards
+		else if (list != "") { var startAt = 2 }  // from Spelling Words
+
+		for (i=0; i<json.feed.entry.length - startAt; i++) {
+			if (refer == "f") { // coming from Flashcards
+				rawTerms1[i] = json.feed.entry[i + startAt].gsx$side1.$t.trim()
+				rawTerms2[i] = json.feed.entry[i + startAt].gsx$side2.$t.trim()
+				}
+			else if (list != "") { // coming from Spelling Words
+				if (json.feed.entry[i + startAt].gsx$list.$t == "") { break }
+				rawTerms1[i] = json.feed.entry[i + startAt].gsx$list.$t
+				rawTerms1[i] = rawTerms1[i].replace(/ ".*"/,'') // Remove context phrases in quotes from Spelling Words
+				rawTerms2[i] = "" // No alt clues for Spelling Words
+				}		
+			else {
+				rawTerms1[i] = json.feed.entry[i].gsx$terms.$t.trim()
+				rawTerms2[i] = json.feed.entry[i].gsx$altterms.$t.trim()
+				}
+			}
+			
+		loadError = false
+		prepContent()
+
+		}
+	
+	function loadSSOptions(json) {		
+		if (refer == "" && list == "") {
+			cardBack = json.feed.entry[0].gsx$setting.$t.toLowerCase()
+			if (cardBack == "red") {
+				cardBackImg = "images/MemoryCard-Red.gif"
+				}
+			else if (cardBack == "orange") {
+				cardBackImg = "images/MemoryCard-Orange.gif"
+				}
+			else if (cardBack == "yellow") {
+				cardBackImg = "images/MemoryCard-Yellow.gif"
+				}
+			else if (cardBack == "green") {
+				cardBackImg = "images/MemoryCard-Green.gif"
+				}
+			else if (cardBack == "blue") {
+				cardBackImg = "images/MemoryCard-Blue.gif"
+				}
+			else if (cardBack == "purple") {
+				cardBackImg = "images/MemoryCard-Purple.gif"
+				}			
+			else if (cardBack == "black") {
+				cardBackImg = "images/MemoryCard-Black.gif"
+				}
+			else {
+				cardBackImg = cardBack
+				}
+			doneText = json.feed.entry[1].gsx$setting.$t
+			var gameStyle = json.feed.entry[2].gsx$setting.$t
+				if (gameStyle == "Matching") { memory = false }
+			bgImg = json.feed.entry[3].gsx$setting.$t
+			}
+		}
+
+	function loadWebContent() {
+		var webTerms = ""
+		webTerms = webTerms.split(",")
+		var n=0
+		for (i=0; i<webTerms.length; i++) { // Remove blank entries
+			if (webTerms[i] != "") {
+				rawTerms1[n] = webTerms[i]
+				rawTerms2[n] = "" // No alt terms when loaded from web
+				n++
+				}
+			}
+		loadError = false
+		prepContent()
+		}
+
+	function prepContent() {
+
+		var isEdge = !!window.StyleMedia; // test for Edge; audio doesn't work well: https://stackoverflow.com/questions/9847580/how-to-detect-safari-chrome-ie-firefox-and-opera-browser
+		if ('speechSynthesis' in window && !isEdge) {
+			voices = window.speechSynthesis.getVoices()
+			audioOn = true // audio is possible
+			soundOn = true // sound turned on
+			}
+
+		var langs = ["Audio: None","Audio: Chinese (Mandarin)","Audio: Dutch","Audio: English (UK)","Audio: English (US)","Audio: French","Audio: German","Audio: Hindi","Audio: Indonesian","Audio: Italian","Audio: Japanese","Audio: Korean","Audio: Portuguese","Audio: Russian","Audio: Spanish","Audio: Spanish (Spain)"]
+		var ChromeLangCodes = ["none","Google 普通话（中国大陆）","Google Nederlands","Google UK English Female","Google US English","Google français","Google Deutsch","Google हिन्दी","Google Bahasa Indonesia","Google italiano","Google 日本語","Google 한국의","Google português do Brasil","Google русский","Google español de Estados Unidos","Google español"]
+		var langCodes = ["none","zh-CN","nl-NL","en-GB","en-US","fr-FR","de-DE","hi-IN","id-ID","it-IT","ja-JP","ko-KR","pt-BR","ru-RU","es-US","es-ES"]
+
+        if (rawTerms1[0].indexOf("Audio:") != -1) { // audio has been properly selected
+
+			for (i=0; i<langs.length; i++) {
+				if (rawTerms1[0] == langs[i]) {
+					lang1 = langCodes[i]
+					ChromeLang1 = ChromeLangCodes[i]
+					}
+				if (rawTerms2[0] == langs[i]) {
+					lang2 = langCodes[i]
+					ChromeLang2 = ChromeLangCodes[i]
+					}
+				}
+ 
+            if (lang1 == "none" && lang2 == "none") {
+                audioOn = false
+                soundOn = false
+                }
+								
+			audioLang = [lang1,lang2]
+			ChromeAudioLang = [ChromeLang1,ChromeLang2]
+			rawTerms1.splice(0,1) // remove audio setting from terms
+			rawTerms2.splice(0,1) // remove audio setting from terms
+			}
+            
+		else { // failsafe if problem with audio
+			audioOn = false
+			soundOn = false
+            }
+			
+		var audio1 = []
+		var audio2 = []
+
+		var picFormats = new Array(".gif",".png",".jpg",".jpeg",".webp")
+		var	otherFormats = new Array("https://equatio-/","https://docs.google.com/drawings")
+
+		for (i=0; i<rawTerms1.length; i++) {
+			
+			var t1 = rawTerms1[i] // text
+			var t2 = rawTerms2[i]
+
+			var l1 = 0 // keep track of language
+			var l2 = 1
+			
+			if (t1 == "") {	t1 = t2; l1 = l2 } // if one column is blank, use the other for both, text and language
+			if (t2 == "") {	t2 = t1; l2 = l1 }
+			
+			var aud1 = t1 // text for audio
+			var aud2 = t2
+			
+			var t1raw = t1.replace(/(<([^>]+)>)/ig,"") // strips out any HTML formatting
+			var t2raw = t2.replace(/(<([^>]+)>)/ig,"")
+			var fontSize1 = Math.min(150 * Math.pow(findLongest(t1raw),-1), 57 * Math.pow(t1raw.length,-.35)) + 2
+			var fontSize2 = Math.min(150 * Math.pow(findLongest(t2raw),-1), 57 * Math.pow(t2raw.length,-.35)) + 2
+
+			var trm1 = "<SPAN STYLE='font-size: " + fontSize1 + "px;'>" + t1 + "</SPAN>"
+			var trm2 = "<SPAN STYLE='font-size: " + fontSize2 + "px;'>" + t2 + "</SPAN>"
+
+			//Prep Pictures
+
+			for (j=0;j<picFormats.length;j++) {
+				if (t1.slice(0,4) == "http" && t1.toLowerCase().slice(-1*picFormats[j].length) == picFormats[j]) {
+					preLoad(t1)
+					trm1 = "<IMG SRC='" + t1 + "'>"
+					aud1 = ""
+					}
+				if (t2.slice(0,4) == "http" && t2.toLowerCase().slice(-1*picFormats[j].length) == picFormats[j]) {
+					preLoad(t2)
+					trm2 = "<IMG SRC='" + t2 + "'>"
+					aud2 = ""
+					}
+				}
+
+			for (j=0;j<otherFormats.length;j++) {
+				if (t1.slice(0,otherFormats[j].length) == otherFormats[j]) {
+					preLoad(t1)
+					trm1 = "<IMG SRC='" + t1 + "'>"
+					aud1 = ""
+					}
+	
+				if (t2.slice(0,otherFormats[j].length) == otherFormats[j]) {
+					preLoad(t2)
+					trm2 = "<IMG SRC='" + t2 + "'>"
+					aud2 = ""
+					}
+				}
+
+			//Prep multimedia
+
+			if (t1.indexOf("youtu.be") > -1) {
+				t1 = t1.replace("mg4991.html","mg4991.html")
+				trm1 = "<iframe class='vid' src='//www.youtube.com/embed/" + t1.slice(16) + "?rel=0' frameborder='0' allow='autoplay; encrypted-media' allowfullscreen></iframe>"
+				aud1 = ""
+				}
+			if (t2.indexOf("youtu.be") > -1) {
+				t2 = t2.replace("mg4991.html","mg4991.html")
+				trm2 = "<iframe class='vid' src='//www.youtube.com/embed/" + t2.slice(16) + "?rel=0' frameborder='0' allow='autoplay; encrypted-media' allowfullscreen></iframe>"
+				aud2 = ""
+				}
+			
+			if (t1.indexOf("vocaroo.com/i/index.html") > -1) { // Old Vocaroo
+				vocText = t1.replace("mg4991.html","mg4991.html")
+				vocText = vocText.replace("https://vocaroo.com/i/","")
+				trm1 = "<object width='100' height='30'><DIV>(This feature requires Flash.)</DIV><param name='movie' value='https://vocaroo.com/player.swf?playMediaID=" + vocText + "&autoplay=1'></param><param name='wmode' value='transparent'></param><embed src='https://vocaroo.com/player.swf?playMediaID=" + vocText + "&autoplay=1' width='100' height='30' wmode='transparent' type='application/x-shockwave-flash'></embed></object>"
+				aud1 = ""
+				}
+			if (t2.indexOf("vocaroo.com/i/index.html") > -1) {
+				vocText = t2.replace("mg4991.html","mg4991.html")
+				vocText = vocText.replace("https://vocaroo.com/i/","")
+				trm2 = "<object width='100' height='30'><DIV>(This feature requires Flash.)</DIV><param name='movie' value='https://vocaroo.com/player.swf?playMediaID=" + vocText + "&autoplay=1'></param><param name='wmode' value='transparent'></param><embed src='https://vocaroo.com/player.swf?playMediaID=" + vocText + "&autoplay=1' width='100' height='30' wmode='transparent' type='application/x-shockwave-flash'></embed></object>"
+				aud2 = ""
+				}
+
+			if (t1.indexOf("https://voca.ro/") > -1) { // New Vocaroo
+				vocText = t1.replace("https://voca.ro/","")
+				trm1 = "<DIV class='voc'><iframe width='200' height='60' src='https://vocaroo.com/embed/" + vocText + "' frameborder='0'></iframe></DIV><SPAN STYLE='font-size: 11px;'>Vocaroo.com</SPAN>"
+				aud1 = ""
+				}
+			if (t2.indexOf("https://voca.ro/") > -1) {
+				vocText = t2.replace("https://voca.ro/","")
+				trm2 = "<DIV class='voc'><iframe width='200' height='60' src='https://vocaroo.com/embed/" + vocText + "' frameborder='0'></iframe></DIV><SPAN STYLE='font-size: 11px;'>Vocaroo.com</SPAN>"			
+				aud2 = ""
+				}
+				
+			if (t1.indexOf("desmos.com/calculator/index.html") > -1) {
+				trm1 = "<iframe class='desmos' src='" + t1 + "?embed' frameborder=0></iframe>"
+				aud1 = ""
+				}
+			if (t2.indexOf("desmos.com/calculator/index.html") > -1) {
+				trm2 = "<iframe class='desmos' src='" + t2 + "?embed' frameborder=0></iframe>"
+				aud2 = ""
+				}
+				
+			key1[i] = i
+			key2[i] = i
+			terms1[i] = trm1
+			terms2[i] = trm2
+			audio1[i] = [l1,aud1] // 0 = indicates language of first column
+			audio2[i] = [l2,aud2] // 1 = indicates language of second column
+			}
+
+		terms = terms1.concat(terms2)
+		audio = audio1.concat(audio2)
+		key = key1.concat(key2)
+
+		for (i=0; i<terms.length; i++) {
+			var nm = i+1
+			blankCode[i] = "<IMG SRC='" + cardBackImg + "' class='cardBack'>"
+			numberedCode[i] = "<DIV class='num'>" + nm + "</DIV><IMG SRC='" + cardBackImg + "' class='cardBack'>"
+			}
+		cardBackCode = [blankCode,numberedCode]
+
+		}
+
+	function findLongest(str) {
+		var strSplit = str.split(' ')
+		var longest = 0
+		for (var i=0; i<strSplit.length; i++) {
+			if(strSplit[i].length > longest) {
+				longest = strSplit[i].length
+				}
+	  		}
+		return longest
+		}
+
+	preLoads = new Array()
+	pl = 0
+
+	function preLoad(img) {
+		preLoads[pl] = new Image()
+		preLoads[pl].src = img
+		pl++
+		}
+
+	function rotateCards() {
+		for (i=0; i<terms.length; i++) {
+			degs = Math.floor(Math.random() * 5) - 2
+			document.getElementById(i).style.transform = "rotate(" + degs + "deg)"			
+			}
+		}
+		
+	function shuffleTerms() {
+		var i = terms.length
+		if ( i == 0 ) return false
+		while ( --i ) {
+			var j = Math.floor( Math.random() * ( i + 1 ) )
+			var tempTermsi = terms[i]
+			var tempTermsj = terms[j]
+			var tempAudi = audio[i]
+			var tempAudj = audio[j]
+			var tempKeyi = key[i]
+			var tempKeyj = key[j]
+			terms[i] = tempTermsj
+			terms[j] = tempTermsi
+			audio[i] = tempAudj
+			audio[j] = tempAudi
+			key[j] = tempKeyi
+			key[i] = tempKeyj
+			}
+		}
+
+	function clickCard(crd) {
+		if (!runClock) { startClock() }
+		if (clicked < 2) {
+			if (soundOn) { speak(audio[crd][0],audio[crd][1]) }
+			if (crd != card1) {
+				if (memory) {
+					document.getElementById(crd).innerHTML = terms[crd]
+					}
+				else {
+					document.getElementById(crd).style.boxShadow = "0px 0px 15px #36c"
+					}
+				document.getElementById(crd).style.cursor = "default"
+				document.getElementById(crd).removeAttribute('title')
+				clicked++
+				if (clicked == 2) {
+					card = crd
+					checkCards()
+					}
+				else {
+					card1 = crd
+					}
+				}
+			}
+		else {
+			if (cardsAction == "hide") {
+				hideCards()
+				}
+			else if (cardsAction == "reset") {
+				resetCards()
+				}
+			}
+		}
+
+	function checkCards() {
+		for (i=0; i<terms.length; i++) {
+			document.getElementById(i).style.cursor = "default"
+			document.getElementById(i).removeAttribute('title')
+			}
+		document.getElementById(card1).style.cursor = "pointer"
+		document.getElementById(card).style.cursor = "pointer"
+		if (key[card1] == key[card]) {
+			document.getElementById(card1).style.boxShadow = "0px 0px 15px #090"
+			document.getElementById(card).style.boxShadow = "0px 0px 15px #090"	
+			document.getElementById(card1).title = "Click to Remove Match"
+			document.getElementById(card).title = "Click to Remove Match"	
+			cardsAction = "hide"
+			}
+		else {
+			document.getElementById(card1).style.boxShadow = "0px 0px 15px #f33"
+			document.getElementById(card).style.boxShadow = "0px 0px 15px #f33"
+			document.getElementById(card1).title = "Click to Continue"
+			document.getElementById(card).title = "Click to Continue"	
+			cardsAction = "reset"
+			}
+		}
+
+	function hideCards() {
+		matches++
+		document.getElementById(card1).style.visibility = "hidden"
+		document.getElementById(card).style.visibility = "hidden"
+		if (matches == (terms.length/2)) {
+			stopClock()
+            document.getElementById("table").style.display = "none"
+			document.getElementById("done").style.display = "block"
+			}
+		else {
+			resetCards()
+			}
+		}
+
+	function loadCards() {
+		document.getElementById('screen').style.backgroundImage = "url('" + bgImg + "')"
+		var width = Math.ceil(Math.sqrt(terms.length * 1.78)) * 132 // 1.78 = 16:9 aspect ratio, 132 = pixels taken up by each square
+		document.getElementById('table').style.maxWidth = width + "px"
+		var cardDeck = ""
+		for (i=0; i<terms.length; i++) {
+			cardDeck = cardDeck + "<DIV class='card' id='" + i + "' onClick='clickCard(this.id)'></DIV>"
+			}
+		document.getElementById('table').innerHTML = cardDeck
+		reloadCards()
+		}
+	
+	function resetCards() {
+		document.getElementById(card1).style.boxShadow = "0px 2px 5px #ccc"
+		document.getElementById(card).style.boxShadow = "0px 2px 5px #ccc"
+		if (memory) {
+			var cardTitle = "Click to Flip"
+			document.getElementById(card1).innerHTML = cardBackCode[+numbers][card1]
+			document.getElementById(card).innerHTML = cardBackCode[+numbers][card]
+			}
+		else {
+			var cardTitle = "Click to Select"
+			}
+		for (i=0; i<terms.length; i++) {
+			document.getElementById(i).style.cursor = "pointer"		
+			document.getElementById(i).title = cardTitle		
+			}
+		clicked = 0
+		card1 = "-1"
+		card = "-1"		
+		}
+
+	function reloadCards() {
+        clicked = 0
+		card1 = "-1"
+		card = "-1"
+		matches = 0
+		shuffleTerms()
+		for (i=0; i<terms.length; i++) {
+			if (memory) {
+				var cardTitle = "Click to Flip"
+				document.getElementById(i).title = "Click to Flip"
+				document.getElementById(i).innerHTML = cardBackCode[+numbers][i]
+				}
+			else {
+				var cardTitle = "Click to Select"
+				document.getElementById(i).title = "Click to Select"
+				document.getElementById(i).innerHTML = terms[i]
+				}
+			document.getElementById(i).style.boxShadow = "0px 2px 5px #ccc"
+			document.getElementById(i).style.visibility = "visible"
+			document.getElementById(i).style.cursor = "pointer"		
+			document.getElementById(i).title = cardTitle
+			}
+		document.getElementById("done").style.display = "none"
+		document.getElementById("table").style.display = "block"
+		stopClock()
+        t = 0
+        document.getElementById("clock").innerHTML = "0:00"
+		rotateCards()
+		}
+        
+// Clock Functions
+
+	runClock = false
+	m = 0
+	s = 0
+	t = 0
+
+	function startClock(){
+		runClock = setInterval(updateClock,1000)
+		}
+
+	function updateClock() {
+		if (m == 59 && s == 59) {
+			stopClock()
+			}
+		else {
+			t++
+			m = Math.floor(t / 60)
+			s = t - (m * 60)
+			if (s < 10) {s = "0" + s}
+			displayTime = m + ":" + s
+			document.getElementById("clock").innerHTML = displayTime
+			}
+		}
+		
+	function stopClock() {
+		clearInterval(runClock)
+		runClock = false
+		}
+
+// Speech
+
+	function speak(langNum,content) {
+		speechSynthesis.cancel()
+		if (content != "") {
+			var msg = new SpeechSynthesisUtterance()
+			msg.voice = speechSynthesis.getVoices().filter(function(voice) { return voice.name == ChromeAudioLang[langNum]; })[0]
+			msg.voiceURI = 'native'
+			msg.text = content
+			msg.lang = audioLang[langNum]
+			if (msg.lang != "none") {
+				speechSynthesis.speak(msg)
+				}
+			}
+		}
+
+	var soundButtons = ["Button-Sound-On.png","Button-Sound-Off.png"]
+	var soundTitles = ["Turn sound off","Turn sound on"]
+	
+	function toggleSound() {
+		if (soundOn) { speechSynthesis.cancel() }
+		document.getElementById("sound").src = "images/" + soundButtons[+soundOn] // + turns true into 1, false into 0
+		document.getElementById("sound").title = soundTitles[+soundOn]
+		document.getElementById("sound").alt = soundTitles[+soundOn]
+		soundOn = !soundOn
+		}
+
+	function toggleNumbers() {
+		numbers = !numbers
+		for (i=0; i<terms.length; i++) {
+			if (i != card1  && i != card) {
+				document.getElementById(i).innerHTML = cardBackCode[+numbers][i]
+				}
+			}
+		}
+
+</SCRIPT>
+
+</HEAD>
+
+<BODY bgcolor="#999999" text="#000000">
+
+<SCRIPT type='text/javascript' src='https://spreadsheets.google.com/feeds/list/1_qjAM_8I4vDhbanHv7GEaNOTgePbEBMjPlPO0S5hVm0/2/public/values?alt=json-in-script&amp;callback=loadSSOptions'></SCRIPT><SCRIPT type='text/javascript' src='https://spreadsheets.google.com/feeds/list/1_qjAM_8I4vDhbanHv7GEaNOTgePbEBMjPlPO0S5hVm0/1/public/values?alt=json-in-script&amp;callback=loadSSContent'></SCRIPT>
+<SCRIPT type="text/javascript">
+	if (loadError) {
+		window.location.replace("error4991.html?k=1_qjAM_8I4vDhbanHv7GEaNOTgePbEBMjPlPO0S5hVm0")
+		}
+</SCRIPT>
+
+<TABLE width="100%" height="100%" cellpadding="0" cellspacing="0" border="0" align="center" class="table" ID="screen">
+	<TR ID="instructions" STYLE="display: none;"><TD align="center"><A HREF="MatchingGame.html" TARGET="_blank">Want to Make Your Own Matching Game?</A></TD></TR>
+	<TR valign="middle" height="40">
+      <TD align="center">
+            <IMG src='images/Button-Sound-On.png' width='25' height='20' onClick='toggleSound()' id='sound' title='Turn sound off' STYLE='cursor: pointer; margin-right: 10px; display: none;'>
+            <img src="images/Button-Numbers.png" width="24" height="20" onClick="toggleNumbers()" id='numbers' title="Show/hide numbers" STYLE="cursor: pointer; margin-right: 10px; display: none; ">
+            <img src="images/Button-Timer-Black.png" width="20" height="20" onClick="showHide('clock')" title="Show/hide timer" STYLE="cursor: pointer; margin-right: 10px;">
+            <DIV class="clock" ID="clock" STYLE="display: none; margin-right: 10px;">0:00</DIV>
+    <DIV style="width: 1px; height: 20px; border-right: solid #000 1px; display:inline-block;"></DIV>
+            <img src="images/Button-Reload-Black-XSmall.png" width="18" height="18" onClick="reloadCards()" title="Reload" STYLE="cursor: pointer; margin-left: 10px;">
+      </TD>
+  </TR>
+  <TR valign="middle">
+    <TD>
+    <CENTER>    
+
+         <DIV id="done" STYLE="display: none;">
+            <IMG SRC="images/HappyFace-Sm.png" width="64" height="64">
+            <P class="text" STYLE="font-size: 26px; font-weight: bold;" id="doneText">Done!</P>
+            <img src="images/Button-Reload-Black-Small.png" width="25" height="24" onClick="reloadCards()" title="Reload to play again" STYLE="cursor: pointer;">
+        </DIV>
+
+        <DIV id="table"></DIV>
+             
+    </CENTER>
+	</TD>
+  </TR>
+  <TR bgcolor="#fff">
+    <TD height="1" align="CENTER" valign="MIDDLE">
+	<SCRIPT type="text/javascript">
+		function showHide(blk) {
+			if (document.getElementById(blk).style.display == 'none') {
+                document.getElementById(blk).style.display = 'inline'
+                }
+            else {
+                document.getElementById(blk).style.display = 'none'
+                }
+            }
+    </SCRIPT>
+
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td width="33%">
+                <DIV Class="logo"><A href="index.html"><IMG src="images/Flippity-Logo-Small-Black.png" alt="Flippity.net" width="67" height="29" border="0" align="left"></A></DIV>
+                <H1 id="title" class="title">Matching Game</H1>
+            </td>
+            <td width="34%" align="center">
+                <P class="share" ><A class="share" href="javascript:showHide('share')" title="Show/Hide Sharing Options"><IMG SRC="images/Share-Icon-Gray.png" width="15" height="16" border="0" align="absmiddle" style="margin-right: 6px;">share</A></P>
+            </td>
+            <td width="33%" align="right">
+                <P class="copyright">Copyright&copy; 2017-2020 Flippity.net. All Rights Reserved.</P>
+            </td>
+          </tr>
+        </table>
+     
+      <DIV ID="share" STYLE="display: none;">
+      
+      <IMG src="images/Link-Icon.png" width="16" height="16" hspace="10" align="absmiddle">
+        <INPUT id="linkURL" type="text" class="linkBox" onClick="this.select()" value="">
+         
+        <TABLE align="center" class="shareOptions">
+          <TR>
+            <TD>
+				<script src="../apis.google.com/js/platform.js" async defer></script>
+                <g:sharetoclassroom url="mg4991.html?k=1_qjAM_8I4vDhbanHv7GEaNOTgePbEBMjPlPO0S5hVm0" size="20"></g:sharetoclassroom>
+            </TD>
+            <TD>
+	            <SCRIPT type="text/javascript">document.write("<a href='mailto:?subject=" + encodedDocTitle + "&body=Check out this " + encodedDocTitle + ": " + encodedURL + "' TARGET='_blank'><img src='images/Icon-Email.png' width='22' height='20' border='0' title='Email'></a>")</SCRIPT>
+            </TD>
+            <TD>
+	            <SCRIPT type="text/javascript">
+					encodedQRurl = "QR076c.html?u=" + encodedURL + "&p=" + encodeURIComponent(pageTitle)
+					document.write("<a href='" + encodedQRurl + "' target='_blank'><img src='images/Flippity-QR-Code.gif' width='20' height='20' border='0' title='Get QR Code'></a>")
+                </SCRIPT>
+            </TD>
+            <TD>
+                <a href="#" class="twitter-share"><IMG SRC="images/Twitter-Button.gif" width="60" height="20" ALT="Tweet"></a>
+                <SCRIPT type="text/javascript">
+                
+                    var getWindowOptions = function() {
+                    var width = 500;
+                    var height = 350;
+                    var left = (window.innerWidth / 2) - (width / 2);
+                    var top = (window.innerHeight / 2) - (height / 2);
+                    
+                    return [
+                        'resizable,scrollbars,status',
+                        'height=' + height,
+                        'width=' + width,
+                        'left=' + left,
+                        'top=' + top,
+                        ].join();
+                        };
+                    
+                    var twitterBtn = document.querySelector('.twitter-share');
+                    var shareUrl = 'https://twitter.com/intent/tweet?url=' + encodedURL + '&text=' + encodedDocTitle
+                    twitterBtn.href = shareUrl; // 1
+                    
+                    twitterBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    var win = window.open(shareUrl, 'ShareOnTwitter', getWindowOptions());
+                    win.opener = null; // 2
+                    });
+                    
+                </SCRIPT>
+            </TD>
+            <TD>
+                <a href="https://docs.google.com/spreadsheets/d/1_qjAM_8I4vDhbanHv7GEaNOTgePbEBMjPlPO0S5hVm0" target="_blank"><img src="images/Google-Sheets-Icon.gif" width="16" height="20" border="0" title="Original Spreadsheet"></a>
+            </TD>
+          </TR>
+        </TABLE>
+      
+      </DIV> 
+
+    </TD>
+  </TR>
+ </TABLE>
+
+	<SCRIPT type="text/javascript">
+		if (audioOn) {
+			document.getElementById('sound').style.display = "inline"
+			}
+		if (memory) {
+			document.getElementById('numbers').style.display = "inline"
+			}
+		document.getElementById('doneText').innerHTML = doneText
+		document.getElementById('linkURL').value = pageURL
+		document.title = docTitle
+		document.getElementById('title').innerHTML = pageTitle
+		loadCards()
+		if ("1_qjAM_8I4vDhbanHv7GEaNOTgePbEBMjPlPO0S5hVm0" == "1_qjAM_8I4vDhbanHv7GEaNOTgePbEBMjPlPO0S5hVm0") { document.getElementById('instructions').style.display = "table-row" }
+    </SCRIPT>
+
+</BODY>
+
+<!-- Mirrored from www.flippity.net/mg.php?k=1_qjAM_8I4vDhbanHv7GEaNOTgePbEBMjPlPO0S5hVm0 by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 15 Oct 2020 10:14:38 GMT -->
+</HTML>

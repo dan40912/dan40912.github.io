@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html>
+
+<!-- Mirrored from www.flippity.net/cw.php?k=1GY9A3JAEXXdKa8PSByIaU4qYSNZBfXShVuwGP04qr_Y&s=2 by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 15 Oct 2020 10:16:20 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Crossword on Flippity.net</title>
+<LINK href='https://fonts.googleapis.com/css?family=Varela+Round' rel='stylesheet' type='text/css'>
+<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+<LINK rel=stylesheet href="cw-Style.css">
+<LINK rel="icon" type="image/png" href="favicon.png">
+
+<SCRIPT>
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','../www.google-analytics.com/analytics.js','ga');
+	
+	ga('create', 'UA-23823535-6', 'flippity.net');
+	ga('send', 'pageview');
+</SCRIPT>
+
+
+<script type="text/javascript" id="jScript"></script>
+
+<script type="text/javascript">
+
+	pageURL = window.location.href
+	encodedURL = encodeURIComponent(pageURL)
+
+	words = new Array()
+	clues = new Array()
+	cardSide = "2"
+
+	side1 = new Array()
+	side2 = new Array()
+
+	loadError = true
+	
+	function loadContent(json) {
+
+		sheetTitle = json.feed.title.$t
+		if (sheetTitle == "Demo" || sheetTitle == "Crossword") {
+			docTitle = "Crossword on Flippity.net"
+			pageTitle = "Crossword"
+			}
+		else {
+			docTitle = sheetTitle + " Crossword on Flippity.net"
+			pageTitle = sheetTitle + " Crossword"
+			}
+		encodedDocTitle = encodeURIComponent(docTitle)
+
+		if (cardSide != "") { // from Flashcards
+			document.getElementById("jScript").src="cw.js"
+			if (cardSide == 1) { // Side 1
+				for (i=1;i<json.feed.entry.length;i++) {			
+					words[i-1] = json.feed.entry[i].gsx$side1.$t.replace(/[.,!?:;"'¡¿ ]/g,"").toUpperCase()
+					clues[i-1] = json.feed.entry[i].gsx$side2.$t
+					}
+				}
+			else { // Side 2
+				for (i=1;i<json.feed.entry.length;i++) {			
+					words[i-1] = json.feed.entry[i].gsx$side2.$t.replace(/[.,!?:;"'¡¿ ]/g,"").toUpperCase()
+					clues[i-1] = json.feed.entry[i].gsx$side1.$t
+					}
+				}
+			}
+		else { // normal
+			for (i=0;i<json.feed.entry.length;i++) {			
+				words[i] = json.feed.entry[i].gsx$word.$t.replace(/[.,!?:;"'¡¿ ]/g,"").toUpperCase()
+				clues[i] = json.feed.entry[i].gsx$clue.$t
+				}
+			if (words[0] == "DIRECTION" && clues[0].toUpperCase() == "RTL") { // For Right-to-Left languages like Hebrew
+				document.getElementById("jScript").src = "cw-rtl.js"
+				words.shift()
+				clues.shift()
+				}
+			else {
+				document.getElementById("jScript").src="cw.js"
+				}
+			}
+
+		//Remove multimedia words and all YouTube and Vocaroo from puzzle
+		
+		for (i=0;i<words.length;i++) {
+			if (words[i].toLowerCase().indexOf("http") > -1 || clues[i].toLowerCase().indexOf("youtu.be") > -1 || clues[i].toLowerCase().indexOf("vocaroo.com/i/index.html") > -1) {
+				words.splice(i,1)
+				clues.splice(i,1)
+				i--
+				}
+			}
+
+		//Prep multimedia clues
+		
+		var picFormats = new Array(".gif",".png",".jpg",".jpeg",".webp")
+		var otherFormats = new Array("https://equatio-/","https://docs.google.com/drawings")
+
+		for (i=0;i<clues.length;i++) {
+
+			for (j=0;j<picFormats.length;j++) {
+				if (clues[i].slice(0,4) == "http" && clues[i].toLowerCase().slice(-1*picFormats[j].length) == picFormats[j]) {
+					clues[i] = "<IMG SRC='" + clues[i] + "' class='pic'>"
+					}
+				}
+				
+			for (j=0;j<otherFormats.length;j++) {
+				if (clues[i].slice(0,otherFormats[j].length) == otherFormats[j]) {
+					clues[i] = "<IMG SRC='" + clues[i] + "' class='pic'>"
+					}
+				}
+
+			if (clues[i].indexOf("desmos.com/calculator/index.html") > -1) {
+				clues[i] = "<iframe class='desmos' src='" + clues[i] + "?embed' frameborder=0></iframe>"
+				}
+
+			}
+			
+		loadError = false
+		
+		}
+
+	function loadCrossword() {
+	
+		// Create crossword object with the words and clues
+		var cw = new Crossword(words, clues);
+	
+		// create the crossword grid (try to make it have a 1:1 width to height ratio in 10 tries)
+		var tries = 10; 
+		var grid = cw.getSquareGrid(tries);
+	
+		// report a problem with the words in the crossword
+		if (grid == null){
+			var bad_words = cw.getBadWords();
+			var str = [];
+			for (i = 0; i < bad_words.length; i++){
+				str.push(bad_words[i].word);
+				}
+			showError("Crossword could not be created with these words:<BR>" + str.join("<BR>"))
+			return;
+			}
+	
+		// turn the crossword grid into HTML
+		document.getElementById("crossword").innerHTML = CrosswordUtils.toHtml(grid);
+	
+		// make a nice legend for the clues
+		var legend = cw.getLegend(grid);
+		addLegendToPage(legend);
+
+		if (showKey) {
+			showLetters()
+			}
+		else {
+			hideLetters()
+			}
+
+		};
+
+	function addLegendToPage(groups) {
+		for (var k in groups){
+			var html = [];
+			for ( var i = 0; i < groups[k].length; i++) {
+				html.push("<tr><td align='right' width='1'><b>" + groups[k][i]['position'] + ".</b></td><td>" + groups[k][i]['clue'] + "</td></tr>");
+				}
+				document.getElementById(k).innerHTML = html.join("\n");
+			}
+		document.getElementById('clues').style.display = "table"
+		};
+	
+	function hideLetters() {
+		var x = document.getElementsByClassName("let")
+		for (var i = 0; i < x.length; i++) {
+			x[i].style.visibility = "hidden"
+			}
+		}
+
+	function showLetters() {
+		var x = document.getElementsByClassName("let")
+		for (var i = 0; i < x.length; i++) {
+			x[i].style.visibility = "visible"
+			}
+		}		
+
+	showKey = false
+
+	function toggleKey() {
+		if (showKey) {
+			hideLetters()
+			showKey = false
+			}
+		else {
+			showLetters()
+			showKey = true
+			}
+		}
+
+	function showError(msg) {
+		document.getElementById('error').innerHTML = "<B>Error:</B> " + msg
+		document.getElementById('buttons').style.display = "none"
+		document.getElementById('error').style.display = "block"
+		}
+		
+</SCRIPT>
+
+</head>
+
+<body onload=loadCrossword()>
+
+<SCRIPT type="text/javascript" src="https://spreadsheets.google.com/feeds/list/1GY9A3JAEXXdKa8PSByIaU4qYSNZBfXShVuwGP04qr_Y/1/public/values?alt=json-in-script&amp;callback=loadContent"></SCRIPT>
+
+<SCRIPT type="text/javascript">
+	if (loadError) {
+		window.location.replace("errorc18e.html?k=1GY9A3JAEXXdKa8PSByIaU4qYSNZBfXShVuwGP04qr_Y")
+		}
+</SCRIPT>
+
+<TABLE width="100%" height="100%" cellpadding="0" cellspacing="0" border="0" align="center">
+	<TR ID="instructions" STYLE="display: none;"><TD align="center"><A HREF="Crossword.html" TARGET="_blank">Want to Make Your Own Crossword Puzzle?</A></TD></TR>
+  <TR height="1" class="noPrint">
+    <TD bgcolor="#390"><DIV STYLE="width: 728px; margin: 0px auto;">
+		<DIV Class="logo"><A href="index.html"><IMG src="images/Flippity-Logo-White.png" alt="Flippity.net" width="100" height="43" border="0" align="left"></A></DIV>
+		<H1 id="title" class="title">Crossword</H1>
+      </DIV></TD>
+  </TR>
+
+    <tr height="1" class="noPrint">
+    <td align="center" bgcolor="#eee">
+    <CENTER>
+    <div class="ad">
+    
+		<script async src="../pagead2.googlesyndication.com/pagead/js/f.txt"></script>
+        <!-- Flippity Autosize Header -->
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="ca-pub-1997516241738614"
+             data-ad-slot="2645243298"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+        <script>
+             (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+    
+    </div>
+    </CENTER>
+    </td>
+    </tr>
+
+<TR height="1" class="print">
+    <TD><img src="images/Flippitynet-Small-Gray.png" width="80" height="21" align="right" /><P id="printTitle" class="printTitle">Crossword</P></TD>
+</TR>
+  <TR height="1" class="noPrint" id="buttons">
+    <TD align="CENTER">
+		<P>Flippity crosswords are designed to be printed, not played online.</P>
+        <img src="images/Button-Reload-Green2.png" width="45" height="45" onclick="loadCrossword()" TITLE="Reload Crossword" class="button">
+		<img src="images/Button-Key-Green2.png" width="45" height="45" onclick="toggleKey()" TITLE="Show/Hide Answer Key" class="button">
+		<img src="images/Button-Print-Green2.png" width="45" height="45" onclick="print()" TITLE="Print Crossword" class="button">
+    </TD>
+  </TR>
+
+  <TR>
+    <TD align="CENTER" VALIGN="top">
+
+    <div id="error" class="error"></div>
+
+    <div id="crossword"></div>
+
+    <table id="clues">
+        <tr>
+            <th width="50%">Across</th>
+            <th width="50%">Down</th>
+        </tr>
+        <tr>
+            <td><table id="across"></table></td>
+            <td><table id="down"></table></td>
+        </tr>
+    </table>
+    
+	</TD>
+  </TR>
+  <TR height="1" class="noPrint">
+    <TD>
+    <DIV class="legalBox">
+    <P STYLE="text-align: center;"><A class="legal" href="javascript:showHide('legal')" title="Show/Hide More Information">Crossword generator code copyright&copy; 2011 Matt Johnson</A></P>
+    <SPAN ID="legal" STYLE="display: none;"><P>Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:</P>
+    <p>The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.</p>
+    <p>THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON INFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p></SPAN>
+    </DIV>
+    </TD>
+  </TR>
+  <TR height="1" align="CENTER" class="noPrint">
+    <TD>
+	<SCRIPT type="text/javascript">
+		function showHide(blk) {
+			if (document.getElementById(blk).style.display == 'none') {
+                document.getElementById(blk).style.display = 'inline'
+                }
+            else {
+                document.getElementById(blk).style.display = 'none'
+                }
+            }
+    </SCRIPT>
+
+      <P class="share"><A class="share" href="javascript:showHide('share')" title="Show/Hide Sharing Options"><IMG SRC="images/Share-Icon-Gray.png" width="15" height="16" border="0" align="absmiddle" style="margin-right: 6px;">share</A></P>
+     
+      <DIV ID="share" STYLE="display: none;">
+      
+      <IMG src="images/Link-Icon.png" width="16" height="16" hspace="10" align="absmiddle">
+        <INPUT id="linkURL" type="text" class="linkBox" onClick="this.select()" value="">
+         
+        <TABLE align="center" class="shareOptions">
+          <TR>
+            <TD>
+				<script src="../apis.google.com/js/platform.js" async defer></script>
+                <g:sharetoclassroom url="cwfc29.html?k=1GY9A3JAEXXdKa8PSByIaU4qYSNZBfXShVuwGP04qr_Y&amp;s=2" size="20"></g:sharetoclassroom>
+            </TD>
+            <TD>
+	            <SCRIPT type="text/javascript">document.write("<a href='mailto:?subject=" + encodedDocTitle + "&body=Check out this " + encodedDocTitle + ": " + encodedURL + "' TARGET='_blank'><img src='images/Icon-Email.png' width='22' height='20' border='0' title='Email'></a>")</SCRIPT>
+            </TD>
+            <TD>
+	            <SCRIPT type="text/javascript">
+					encodedQRurl = "QR076c.html?u=" + encodedURL + "&p=" + encodeURIComponent(pageTitle)
+					document.write("<a href='" + encodedQRurl + "' target='_blank'><img src='images/Flippity-QR-Code.gif' width='20' height='20' border='0' title='Get QR Code'></a>")
+                </SCRIPT>
+            </TD>
+            <TD>
+                <a href="#" class="twitter-share"><IMG SRC="images/Twitter-Button.gif" width="60" height="20" ALT="Tweet"></a>
+                <SCRIPT type="text/javascript">
+                
+                    var getWindowOptions = function() {
+                    var width = 500;
+                    var height = 350;
+                    var left = (window.innerWidth / 2) - (width / 2);
+                    var top = (window.innerHeight / 2) - (height / 2);
+                    
+                    return [
+                        'resizable,scrollbars,status',
+                        'height=' + height,
+                        'width=' + width,
+                        'left=' + left,
+                        'top=' + top,
+                        ].join();
+                        };
+                    
+                    var twitterBtn = document.querySelector('.twitter-share');
+                    var shareUrl = 'https://twitter.com/intent/tweet?url=' + encodedURL + '&text=' + encodedDocTitle
+                    twitterBtn.href = shareUrl; // 1
+                    
+                    twitterBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    var win = window.open(shareUrl, 'ShareOnTwitter', getWindowOptions());
+                    win.opener = null; // 2
+                    });
+                    
+                </SCRIPT>
+            </TD>
+            <TD>
+                <a href="https://docs.google.com/spreadsheets/d/1GY9A3JAEXXdKa8PSByIaU4qYSNZBfXShVuwGP04qr_Y" target="_blank"><img src="images/Google-Sheets-Icon.gif" width="16" height="20" border="0" title="Original Spreadsheet"></a>
+            </TD>
+          </TR>
+        </TABLE>
+      
+      </DIV> 
+
+    </TD>
+  </TR>
+  <TR height="1" align="CENTER" bgcolor="#3366ff" class="noPrint">
+    <TD bgcolor="#390"><P class="copyright">Copyright&copy; 2017-2020 Flippity.net. All Rights Reserved.</P></TD>
+  </TR>
+ </TABLE>
+
+<SCRIPT type="text/javascript">
+	document.getElementById('linkURL').value = pageURL
+	document.title = docTitle
+	document.getElementById('title').innerHTML = pageTitle
+	document.getElementById('printTitle').innerHTML = pageTitle
+	if ("1GY9A3JAEXXdKa8PSByIaU4qYSNZBfXShVuwGP04qr_Y" == "1DtxxpNKD1K1EW_706I0CiQu8aCLwNUZcUNjwsYd0SSo") { document.getElementById('instructions').style.display = "table-row" }
+</SCRIPT>
+
+</BODY>
+
+<!-- Mirrored from www.flippity.net/cw.php?k=1GY9A3JAEXXdKa8PSByIaU4qYSNZBfXShVuwGP04qr_Y&s=2 by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 15 Oct 2020 10:16:20 GMT -->
+</HTML>

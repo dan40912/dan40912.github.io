@@ -1,0 +1,312 @@
+html, body {
+margin:			0px;
+padding:		0px;
+height:			100%;
+border:			none
+}
+
+body {
+background-color: #ffffff;
+-webkit-text-size-adjust:100%;
+}
+
+.logo {
+display: 			inline-block;
+float: 				left;
+margin:				4px 20px 4px 0px;
+}
+
+H1 {
+display: 			inline-block;
+float: 				left;
+FONT-FAMILY:		varela round, arial rounded MT bold, arial, helvetica, san serif;
+FONT-SIZE:			20px;
+FONT-WEIGHT:		normal;
+MARGIN:				14px 0px 0px 20px;
+COLOR:				#fff;
+}
+
+.printTitle {
+float: 				left;
+FONT-FAMILY:		varela round, arial rounded MT bold, arial, helvetica, san serif;
+FONT-SIZE:			20px;
+FONT-WEIGHT:		normal;
+MARGIN:				0px;
+MARGIN-BOTTOM:		20px;
+COLOR:				#000;
+}
+
+.locks {
+display:			inline-block;
+margin:				10px 20px;
+}
+
+.aLock {
+display:			inline-block;
+width:				85px;
+height:				130px;
+background-image:	url(images/Padlock-Red.png); 
+background-image:	url(images/Lock-Red.png); 
+cursor:				pointer;
+}
+
+.dLock {
+display:			none;
+width:				85px;
+height:				130px;
+background-image:	url(images/Padlock-Gray.png); 
+background-image:	url(images/Lock-Gray.png); 
+opacity:			0.4;
+}
+
+.uLock {
+display:			none;
+width:				85px;
+height:				130px;
+background-image:	url(images/Padlock-Green.png); 
+background-image:	url(images/Lock-Green.png); 
+cursor:				pointer;
+}
+
+.lockNum {
+position:			absolute;
+font-family: 		varela round, arial rounded MT bold, arial, helvetica, san serif;
+font-size:			16px;
+width:				85px;
+color:				#ef3f44;
+font-weight:		bold;
+text-align:			center;
+margin-top:			88px;
+}
+
+.aLock .lockNum { color: #c00;}
+.dLock .lockNum { color: #333;}
+.uLock .lockNum { color: #090;}
+
+P {
+font-family: 		varela round, arial rounded MT bold, arial, helvetica, san serif;
+color:				#666;
+font-size:			24px;
+margin:				10px;
+}
+
+.small {
+font-size:			16px;
+}
+
+#nameField {
+width:				300px;
+height:				40px;
+FONT-FAMILY:		varela round, arial rounded MT bold, arial, helvetica, san serif;
+FONT-SIZE:			24px;
+padding-left:		10px;
+}
+
+#back {
+cursor:				pointer;
+display:			none;
+position:			absolute;
+margin-top:			40px;
+}
+
+.clue {
+font-size:			32px;
+text-align:			left;
+margin:				30px 0px;
+}
+
+.hint {
+font-size:			20px;
+margin:				20px 0px 10px 0px;
+min-height:			35px;
+}
+
+.hint .img {
+cursor:				pointer;
+}
+
+.pic {
+display:			block;
+max-height:			360px;
+max-width:			640px;
+margin:				20px auto;
+}
+
+.equatio {
+min-height:			240px;
+}
+
+.vid {
+display:			block;
+width:				640px;
+height:				360px;
+margin:				10px auto;
+}
+
+.desmos {
+display:			block;
+height:				300px;
+width:				300px;
+margin:				20px auto;
+}
+
+.googleDoc {
+display:			block;
+width:				640px;
+height:				389px;
+background-color:	#fff;
+border:				0px;
+frameborder:		0px;
+margin:				10px auto;
+}
+
+.answer {
+width: 				700px;
+margin:				30px 0px;
+font-family: 		varela round, arial rounded MT bold, arial, helvetica, san serif;
+color:				#666;
+font-size:			16px;
+font-size:			32px;
+text-align:			left;
+padding:			10px;
+}
+
+.key {
+cursor:				pointer;
+}
+
+#time {
+font-size:			18px;
+margin-top:			30px;
+font-weight:		bold;
+}
+
+#hintsUsed IMG {
+margin:				10px 3px;
+}
+
+#answersScreen {
+width:				728px;
+border:				1px solid #ccc;
+padding:			50px 30px; 
+}
+
+/*
+TABLE.answers {
+border-collapse:	collapse;
+border-style:		hidden;
+}
+*/
+
+TABLE.answers TD {
+vertical-align:		top;
+padding:			25px 10px;
+/*border:				0px solid #999;*/
+/*border-bottom-width: 1px;*/
+}
+
+.num {
+text-align:			left;
+font-family: 		varela round, arial rounded MT bold, arial, helvetica, san serif;
+font-size:			16px;
+color:				#090;
+font-weight:		bold;
+margin:				5px 0px;
+}
+
+.Q {
+font-family: 		varela round, arial rounded MT bold, arial, helvetica, san serif;
+color:				#999;
+font-size:			16px;
+margin:				5px 0px;
+}
+
+.Q .pic {
+max-height:			90px;
+max-width:			160px;
+}
+
+.Q .equatio {
+min-height:			60px;
+}
+
+.Q .vid {
+height:				90px;
+width:				160px;
+}
+
+.Q .desmos {
+height:				75px;
+width:				75px;
+}
+
+.Q .googleDoc {
+width:				160px;
+height:				98px;
+}
+
+.A {
+font-family: 		varela round, arial rounded MT bold, arial, helvetica, san serif;
+color:				#333;
+font-size:			16px;
+margin:				5px 0px;
+}
+
+.share {
+FONT-FAMILY:		Arial, Helvetica, sans-serif;
+FONT-SIZE:			14px;
+LINE-HEIGHT:		150%;
+margin:				15px;
+}
+
+
+A:link    	        {color: #09c;}
+A:visited    	    {color: #09c;}
+A:hover     	    {color: #09c;}
+
+.share:link         {color: #999;}
+.share:visited      {color: #999;}
+.share:hover        {color: #bbb;}
+
+.shareOptions {
+margin:				18px 0px 18px 50px;
+}
+
+.shareOptions TD {
+padding:			0px 10px;
+}
+
+.linkBox {
+width: 				450px;
+font-size: 			14px;
+background-color: 	#eee;
+border: 			1px solid #ccc;
+padding: 			4px;
+margin: 			0px;
+}
+
+.copyright {
+FONT-FAMILY:		Arial, Helvetica, sans-serif;
+FONT-SIZE:			11px;
+COLOR:				#fff;
+MARGIN:				10px;
+}
+
+#instructions {
+FONT-FAMILY:		Arial, Helvetica, sans-serif;
+FONT-SIZE:			14px;
+LINE-HEIGHT:		100%;
+HEIGHT: 			30px;
+background-color: 	#FFFDD4;
+}
+
+#instructions A:link 	{color: #3366FF;}
+#instructions A:visited {color: #3366FF;}
+#instructions A:hover 	{color: #6699FF;}
+
+.print {display: none;}
+
+@media print {
+.noPrint {display: none;}
+.print {display: table-row;}
+}

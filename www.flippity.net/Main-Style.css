@@ -1,0 +1,183 @@
+html, body {
+margin:				0px;
+padding:			0px;
+height:				100%;
+border:				none
+}
+
+A:link          	{color: #3366FF;}
+A:visited       	{color: #3366FF;}
+A:hover         	{color: #6699FF;}
+
+.logo {
+display: 			inline-block;
+float: 				left;
+margin:				4px 20px 4px 0px;
+}
+
+.tagline {
+display: 			inline-block;
+float: 				right;
+margin:				11px 0px 0px 0px;
+}
+
+.ad {
+margin: 			10px;
+}
+
+H1.title {
+display: 			inline-block;
+float: 				left;
+FONT-FAMILY:		varela round, arial rounded MT bold, arial, helvetica, san serif;
+FONT-SIZE:			20px;
+FONT-WEIGHT:		normal;
+margin:				14px 0px 0px 20px;
+COLOR:				#ffffff;
+}
+
+.subnav {
+FONT-FAMILY:		varela round, arial rounded MT bold, arial, helvetica, san serif;
+MARGIN:				0px;
+FONT-WEIGHT:		bold;
+COLOR:				#666666;
+cursor: 			pointer;
+}
+
+H1 {
+FONT-FAMILY:		varela round, arial rounded MT bold, arial, helvetica, san serif;
+FONT-SIZE:			22px;
+FONT-WEIGHT:		normal;
+LINE-HEIGHT:		150%;
+MARGIN:				20px 0px;
+COLOR:				#3399FF;
+}
+
+H2 {
+FONT-FAMILY:		varela round, arial rounded MT bold, arial, helvetica, san serif;
+FONT-SIZE:			18px;
+FONT-WEIGHT:		normal;
+MARGIN:				20px 0px;
+color:				#666666;
+}
+
+P, LI {
+FONT-FAMILY:		Arial, Helvetica, sans-serif;
+FONT-SIZE:			14px;
+LINE-HEIGHT:		150%;
+}
+
+LI {
+margin:				5px 0px;
+}
+
+.blurb {
+LINE-HEIGHT:		130%;
+MARGIN:				6px 0px 18px 0px;
+}
+
+A.button {
+font-family:		Arial, Helvetica, sans-serif;
+padding:			2px 5px;
+font-size:			12px;
+text-decoration:	none;
+color:				#666;
+background-color:	#efefef;
+border-radius:		2px;
+margin:				0px 2px;
+}
+
+A.button:hover {
+background-color:	#d9e5ff;
+}
+
+.featureBox {
+display:			inline-block;
+margin:				15px;
+padding:			12px 10px 0px 10px;
+height:				280px;
+width:				200px;
+box-shadow:			5px 5px 10px #cccccc;
+vertical-align: 	top;
+border:				1px solid #999;
+}
+
+.featureBox H2 {
+FONT-FAMILY:		varela round, arial rounded MT bold, arial, helvetica, san serif;
+FONT-SIZE:			14px;
+FONT-WEIGHT:		bold;
+MARGIN:				20px 0px 15px 0px;
+}
+
+.wideBox {
+display:			inline-block;
+margin:				15px;
+padding:			10px;
+width:				500px;
+box-shadow:			5px 5px 10px #cccccc;
+vertical-align: 	top;
+border:				1px solid #999;
+border-radius:		100px;
+}
+
+.wideBox H2 {
+FONT-FAMILY:		varela round, arial rounded MT bold, arial, helvetica, san serif;
+FONT-SIZE:			14px;
+FONT-WEIGHT:		bold;
+MARGIN:				4px;
+}
+
+#content {
+height:				400px;
+width:				250px;
+FONT-FAMILY:		varela round, arial rounded MT bold, arial, helvetica, san serif;
+FONT-SIZE:			15px;
+LINE-HEIGHT:		140%;
+padding:			8px;
+}
+
+.NoSSbutton {
+width:				200px;
+FONT-FAMILY:		varela round, arial rounded MT bold, arial, helvetica, san serif;
+FONT-SIZE:			15px;
+line-height:		16px;
+font-weight:		bold;
+color:				#fff;
+padding:			5px 5px 5px 10px;
+cursor:				pointer;
+margin:				10px;
+border-radius:		100px;
+}
+
+.NoSSbutton:hover {
+opacity:			0.75;
+}
+
+.shareOptions {
+margin:				18px 0px 18px 50px;
+}
+
+.shareOptions TD {
+padding:			0px 10px;
+}
+
+HR {
+background-color: 	#D4E2EE;
+border:				0px;
+height:				2px;
+}
+
+.red {	
+color:				#F00;
+}
+
+.copyright {
+FONT-FAMILY:		Arial, Helvetica, sans-serif;
+FONT-SIZE:			11px;
+COLOR:				#ffffff;
+MARGIN:				10px;
+}
+
+.resources IMG {
+margin:				10px;
+border:				0px;
+}

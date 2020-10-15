@@ -1,0 +1,65 @@
+html, body {
+	margin: 0px;
+	padding: 0px;
+	height: 100%;
+	border: none
+	}
+
+body {
+	-webkit-text-size-adjust:100%;
+	}
+
+A:link          {color: #3366FF;}
+A:visited       {color: #3366FF;}
+A:hover         {color: #6699FF;}
+
+table.print {
+border-collapse:collapse;
+}
+
+table.print th {
+FONT-FAMILY:	varela round, arial rounded MT bold, arial, helvetica, san serif;
+FONT-SIZE:		11px;
+padding:		4px 0px 4px 6px;
+border-top:		0px;
+border-right:	0px;
+border-left:	0px;
+border-bottom:	2px solid #000000;
+}
+
+table.print td {
+FONT-FAMILY:	varela round, arial rounded MT bold, arial, helvetica, san serif;
+FONT-SIZE:		11px;
+padding:		4px 0px 4px 6px;
+border-top:		0px;
+border-right:	0px;
+border-left:	0px;
+border-bottom:	1px solid #cccccc;
+vertical-align:	top;
+}
+
+table.print td.num {
+text-align:		right;
+FONT-SIZE:		9px;
+padding:		6px 2px 0px 0px;
+COLOR:			#999999;
+}
+
+.pic {
+height:			50px;
+max-width:		250px;
+margin:			4px;
+}
+
+.desmos {
+height:			100px;
+width:			100px;
+margin:			0px;
+}
+
+H2 {
+FONT-FAMILY:	varela round, arial rounded MT bold, arial, helvetica, san serif;
+FONT-SIZE:		20px;
+FONT-WEIGHT:	normal;
+MARGIN:			20px 0px 0px 0px;
+}

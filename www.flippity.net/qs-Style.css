@@ -1,0 +1,313 @@
+html, body {
+margin: 			0px;
+padding: 			0px;
+height: 			100%;
+border: 			none
+}
+
+body {
+-webkit-text-size-adjust:100%;
+background-color: #fff;
+}
+
+A:link          	{color: #36f;}
+A:visited       	{color: #36f;}
+A:hover         	{color: #69f;}
+
+.logo {
+display: 			inline-block;
+float: 				left;
+margin:				0px 15px;
+}
+
+H1.title {
+display: 			inline-block;
+float: 				left;
+FONT-FAMILY:		varela round, arial rounded MT bold, arial, helvetica, san serif;
+FONT-SIZE:			15px;
+FONT-WEIGHT:		normal;
+MARGIN:				5px 0px;
+COLOR:				#90F;
+}
+
+.sidebar {
+padding-right:		10px;
+}
+
+.container {
+border-spacing:		0px;
+margin:				0px;
+}
+
+.container TD {
+padding:			3px;
+}
+
+.scores {
+border:         	3px solid #999;
+border-radius:  	10px;
+box-sizing: 		border-box;
+width:          	144px;
+height:         	82px;
+display: 			table-cell;
+text-align:     	center;
+vertical-align: 	top;
+}
+
+#T1wagerBox, #T2wagerBox, #T3wagerBox, #T4wagerBox, #T5wagerBox, #T6wagerBox, #T7wagerBox, #T8wagerBox {
+display: 			none;
+padding:			0px 0px 0px 8px;
+}
+
+#T1wager, #T2wager, #T3wager, #T4wager, #T5wager, #T6wager, #T7wager, #T8wager {
+display: 			inline;
+float:				left;
+width:          	105px;
+height:         	30px;
+padding-top:		2px;
+FONT-FAMILY:		varela round, helvetica, arial, san serif;
+FONT-SIZE:			28px;
+text-align:     	right;
+color:				#ccc;
+margin:				0px;
+}
+
+.wagerButton { 
+display:			inline;
+cursor:				pointer;
+margin-top:			1px;
+}
+
+.boardCellHead {
+border:    			3px solid #999;
+border-radius:  	10px;
+box-sizing: 		border-box;
+width:          	144px;
+height:         	111px;
+display: 			table-cell;
+background:			linear-gradient(#bbb, #ddd);
+text-align:     	center;
+vertical-align: 	middle;
+margin: 			3px;
+padding:        	0px 10px;
+word-break: 		break-word;
+}
+
+.boardCellHead IMG {
+padding-top:        8px; */for the shuffleAll category images
+}
+
+.boardCellHead .pic {
+padding-top:        0px;
+max-height:			85px;
+max-width:  		110px;
+margin: 			0px auto;
+}
+
+.boardCellHead .vid {
+display:			block;
+width:				112px;
+height:				63px;
+margin:				10px auto;
+}
+
+.boardCellHead .desmos {
+display:			block;
+max-height:			85px;
+max-width:  		110px;
+margin:				10px auto;
+}
+
+.boardCell {
+border:				3px solid #999;
+border-radius:  	10px;
+box-sizing: 		border-box;
+width:          	144px;
+height:         	111px;
+display: 			table-cell;
+background-color: 	#eee;
+background:			linear-gradient(#eee, #fff);
+text-align:     	center;
+vertical-align: 	middle;
+margin: 			3px;
+padding:        	0px 10px;
+cursor:         	pointer;
+}
+
+.cellHover:hover {
+border-color:		#ccc;
+}
+
+.cellHover:hover P.pts {
+FONT-SIZE:			50px;
+}
+
+P {
+FONT-FAMILY:		varela round, helvetica, arial, san serif;
+MARGIN:				0px;
+}
+
+P.team {
+FONT-SIZE:			22px;
+margin-top:			8px;
+width:          	144px;
+white-space:		nowrap; 
+overflow:			hidden;
+}
+
+P.score {
+FONT-SIZE:			28px;
+MARGIN:				0px 0px 0px 0px;
+width:				144px;
+white-space:		nowrap; 
+overflow:			hidden;
+}
+
+.dot {
+display:			none;
+position:			absolute;
+margin:				2px;
+}
+
+P.pts {
+FONT-SIZE:			44px;
+COLOR:				#666;
+}
+
+P.cats {
+FONT-WEIGHT: 		bold;
+FONT-SIZE:			20px;
+COLOR:				#666;
+}
+
+TABLE.QAbox TD {
+border:         	6px solid #999;
+border-radius:  	50px;
+box-sizing: 		border-box;
+width:          	906px;
+width:          	900px;
+height:         	698px;
+background-color: 	#fff;
+padding:        	0px 20px;
+}
+
+.zoom {	animation: zoom 0.5s }
+
+@keyframes zoom {
+	from { transform: scale(.25) }
+	to { transform: scale(1) }
+	}
+
+P.QA {
+FONT-WEIGHT:		bold;
+FONT-SIZE:			92px;
+COLOR:				#666;
+MARGIN:				0px 35px;
+MARGIN:				0px;
+width:          	800px;
+word-break: 		break-word;
+}
+
+.pic {
+display:			block;
+height:				400px;
+max-width:			800px;
+margin:				10px auto;
+}
+
+.vid {
+display:			block;
+width:				640px;
+height:				360px;
+margin:				10px auto;
+}
+
+.desmos {
+display:			block;
+height:				400px;
+max-width:			400px;
+margin:				10px auto;
+}
+
+.right {
+cursor:				pointer;
+margin:				4px 0px 0px 6px;
+}
+
+.wrong {
+cursor:				pointer;
+margin:				4px 6px 0px 0px;
+}
+
+#backButton {
+display: 			none;
+font-weight: 		bold;
+font-size:			14px;
+color:				#999;
+vertical-align: 	middle;
+cursor:         	pointer;
+}
+
+#finalButton {
+display: 			none;
+height:				22px;
+font-weight: 		bold;
+font-size:			16px;
+line-height:		24px;
+color:				#666;
+background-color: 	#eee;
+background:			linear-gradient(#ccc, #eee);
+vertical-align: 	middle;
+border:    			1px solid #999;
+border-radius:  	3px;
+cursor:         	pointer;
+margin:				-3px 0px 0px 0px;
+padding:        	0px 10px;
+}
+
+.share {
+FONT-FAMILY:		Arial, Helvetica, sans-serif;
+FONT-SIZE:			14px;
+LINE-HEIGHT:		150%;
+margin:				10px;
+}
+
+.share:link         {color: #999;}
+.share:visited      {color: #999;}
+.share:hover        {color: #bbb;}
+
+.shareOptions {
+margin:				18px 0px 18px 50px;
+}
+
+.shareOptions TD {
+padding:			0px 10px;
+}
+
+.linkBox {
+width: 				450px;
+font-size: 			14px;
+background-color: 	#eee;
+border: 			1px solid #ccc;
+padding: 			4px;
+margin: 			8px 0px 0px 0px;
+}
+
+.copyright {		
+FONT-FAMILY:		Arial, Helvetica, sans-serif;
+FONT-SIZE:			11px;
+COLOR:				#999;
+MARGIN:				10px;
+}
+
+#instructions {
+FONT-FAMILY:		Arial, Helvetica, sans-serif;
+FONT-SIZE:			14px;
+LINE-HEIGHT:		100%;
+HEIGHT: 			30px;
+background-color: 	#FFFDD4;
+}
+
+#instructions A:link 	{color: #3366FF;}
+#instructions A:visited {color: #3366FF;}
+#instructions A:hover 	{color: #6699FF;}

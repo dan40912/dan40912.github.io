@@ -1,0 +1,294 @@
+html, body {
+margin: 			0px;
+padding: 			0px;
+height: 			100%;
+border: 			none
+}
+
+body {
+background-color: #ffffff;
+-webkit-text-size-adjust:100%;
+}
+
+A:link         		{color: #000;}
+A:visited      		{color: #000;}
+A:hover        		{color: #000;}
+
+.logo {
+display: 			inline-block;
+float: 				left;
+margin:				4px 20px 4px 0px;
+}
+
+.ad {
+margin: 			10px 0px;
+}
+
+H1.title {
+display: 			inline-block;
+width:				580px;
+white-space:		nowrap;
+overflow:			hidden;
+float: 				left;
+FONT-FAMILY:		"varela round", "arial rounded MT bold", arial, helvetica, "san serif";
+FONT-SIZE:			20px;
+FONT-WEIGHT:		normal;
+MARGIN:				14px 0px 0px 20px;
+COLOR:				#fff;
+}
+
+#heading {
+font-family: 		'Noto Serif', serif;
+FONT-SIZE:			44px;
+FONT-WEIGHT:		bold;
+MARGIN:				20px 0px;
+COLOR:				#666;
+WIDTH:				728px;
+text-align:			left;
+}
+
+.button {
+margin:				0px 5px;
+cursor:				pointer;
+}
+
+table.timeline {
+border-collapse: 	collapse;
+margin-top: 		50px;
+margin-bottom: 		30px;
+}
+
+.centCell {
+display:			table-cell;
+vertical-align: 	top;
+width:				350px;
+}
+
+.cent {
+position:			absolute;
+font-family: 		'Noto Serif', serif;
+font-size:			72px;
+color:				#999;
+margin-top:			-20px;
+width:				350px;
+text-align:			right;
+white-space:		nowrap;
+}
+
+.centCondCell {
+display:			none;
+width:				initial;
+vertical-align: 	top;
+text-align:			right;
+padding:			2px 0px;
+}
+
+.centCond {
+position:			static;
+font-family: 		'Noto Serif', serif;
+font-size:			14px;
+color:				#999;
+font-weight:		bold;
+margin:				0px;
+}
+
+.small {
+font-size:			75%;
+}
+
+.yearCell {
+display:			table-cell;
+Xmargin:				0px;
+padding:			2px 30px;
+border:				solid 0px #000;
+border-right-width:	4px;
+vertical-align: 	top;
+}
+
+.year {
+font-family: 		'Noto Serif', serif;
+font-size:			14px;
+margin:				0px;
+color:				#666;
+text-align:			right;
+}
+
+.eventDot {
+position:			absolute;
+margin:				0px 0px 0px -11px;
+z-index:			100;
+border-radius: 		50%;
+width:				10px;
+height:				10px; 
+border:				solid 4px #000;
+background-color:	#fff;
+}
+
+.eventCell {
+display:			table-cell;
+width:				415px;
+padding:			0px;
+vertical-align: 	top;
+text-align:			left;
+}
+
+.eventHead {
+font-family: 		'Noto Serif', serif;
+font-size:			13px;
+font-weight:		bold;
+margin:				0px 0px 0px 15px;
+}
+
+.showButton {
+margin-left:		5px;
+vertical-align:		middle;
+}
+
+.eventBox {
+display:			none;
+width:				400px;
+background-color:	#f0f0f0;
+padding:			0px;
+margin:				0px 0px 30px 15px;
+font-family: 		'Noto Serif', serif;
+box-shadow:			2px 2px 12px #999;
+}
+
+.eventBox .date {
+font-size:			13px;
+margin:				2px 0px;
+color:				#fff;
+background-color:	#000;
+padding:			5px 8px 5px 10px;
+}
+
+.hideButton {
+width:				11px;
+height:				15px;
+margin:				1px 0px 0px 0px;
+cursor:				pointer;
+}
+
+.eventContent {
+width:				380px;
+max-height:			500px;
+overflow:			auto;
+padding:			10px;
+margin:				0px;
+}
+
+.eventBox .title {
+font-size:			18px;
+margin:				6px 0px 8px 0px;
+}
+
+.eventBox .image {
+display:			block;
+max-width:			380px;
+max-height:			300px;
+margin:				8px auto;
+}
+
+.eventBox .video {
+display:			block;
+width:				380px;
+height:				214px;
+border:				0px;
+frameborder:		0px;
+margin:				8px auto;
+}
+
+.eventBox .googleDoc {
+display:			block;
+width:				100%;
+height:				225px;
+background-color:	#fff;
+border:				0px;
+frameborder:		0px;
+margin:				8px auto;
+}
+
+.eventBox .credit {
+width:				100%;
+margin:				-7px auto -2px auto;
+font-size:			9px;
+text-align:			right;
+}
+
+.eventBox .desc {
+font-size:			14px;
+margin:				8px 0px;
+}
+
+.eventBox .link {
+display:			inline-block;
+margin:				0px;
+}
+
+.eventBox .nav {
+background-color:	#cccccc;
+margin:				0px;
+padding:			1px;
+text-align:			center;
+height:				16px;
+}
+
+.eventBox .nav IMG {
+cursor:				pointer;
+margin:				0px 1px;
+}
+
+.share {
+FONT-FAMILY:		Arial, Helvetica, sans-serif;
+FONT-SIZE:			14px;
+LINE-HEIGHT:		150%;
+margin:				15px;
+}
+
+.share:link         {color: #999;}
+.share:visited      {color: #999;}
+.share:hover        {color: #bbb;}
+
+.shareOptions {
+margin:				18px 0px 18px 50px;
+}
+
+.shareOptions TD {
+padding:			0px 10px;
+}
+
+.linkBox {
+width: 				450px;
+font-size: 			14px;
+background-color: 	#eee;
+border: 			1px solid #ccc;
+padding: 			4px;
+margin: 			0px;
+}
+
+.copyright {
+FONT-FAMILY:		Arial, Helvetica, sans-serif;
+FONT-SIZE:			11px;
+COLOR:				#fff;
+MARGIN:				10px;
+}
+
+#instructions {
+FONT-FAMILY:		Arial, Helvetica, sans-serif;
+FONT-SIZE:			14px;
+LINE-HEIGHT:		100%;
+HEIGHT: 			30px;
+background-color: 	#FFFDD4;
+}
+
+#instructions A:link 	{color: #3366FF;}
+#instructions A:visited {color: #3366FF;}
+#instructions A:hover 	{color: #6699FF;}
+
+.print {display: none;}
+
+@media print {
+.noPrint {display: none;}
+.print {display: table-row;}
+A {text-decoration: none;}
+}

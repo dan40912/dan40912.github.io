@@ -1,0 +1,414 @@
+html, body {
+margin:				0px;
+padding:			0px;
+height:				100%;
+border:				none
+}
+
+body {
+background-color: 	#ffffff;
+text-align: 		left;
+}
+
+A:link          	{color: #3366ff;}
+A:visited       	{color: #3366FF;}
+A:hover         	{color: #6699FF;}
+
+A.red:link          {color: #cc0000;}
+A.red:visited       {color: #cc0000;}
+A.red:hover         {color: #ff0000;}
+
+TD.subnav {
+cursor: 			pointer;
+}
+
+.subnav {
+font-family:		varela round, arial rounded MT bold, arial, helvetica, san serif;
+MARGIN:				0px;
+FONT-WEIGHT:		bold;
+COLOR:				#666666;
+}
+
+.logo {
+display: 			inline-block;
+float: 				left;
+margin:				4px 20px 4px 0px;
+}
+
+H1 {
+font-family:		varela round, arial rounded MT bold, arial, helvetica, san serif;
+FONT-SIZE:			20px;
+FONT-WEIGHT:		normal;
+MARGIN:				20px 0px;
+COLOR:				#3399FF;
+}
+
+.ad {
+margin: 			10px 0px;
+}
+
+H1.title {
+display: 			inline-block;
+width:				580px;
+white-space:		nowrap;
+overflow:			hidden;
+float: 				left;
+font-family:		varela round, arial rounded MT bold, arial, helvetica, san serif;
+FONT-SIZE:			20px;
+FONT-WEIGHT:		normal;
+MARGIN:				14px 0px 0px 20px;
+COLOR:				#3399FF;
+}
+
+H2 {
+font-family:		varela round, arial rounded MT bold, arial, helvetica, san serif;
+FONT-SIZE:			22px;
+FONT-WEIGHT:		normal;
+color:				#3366CC;
+MARGIN:				10px 0px;
+}
+
+@font-face {
+font-family: varelaround-at;
+src: url('VarelaRound-AT.ttf');
+}
+
+.text {
+font-family:		varelaround-at, arial rounded MT bold, arial, helvetica, san serif;
+display:			block;
+max-width:			438px;
+max-height:			275px;
+overflow:			hidden;
+}
+
+.pic {
+height:				240px;
+max-width:			430px;
+overflow:			hidden;
+}
+
+.list-pic {
+max-width:			178px;
+max-height:			100px;
+height:				auto;
+width:				auto;
+margin:				0px;
+}
+
+.prac-pic {
+height:				150px;
+max-width:			350px;
+margin:				0px;
+}
+
+.match-pic {
+max-height:			60px;
+max-width:      	200px;
+margin:				0px;
+}
+
+.vid {
+width:				400px;
+height:				225px; 
+border:				0px;
+frameborder:		0px;
+margin:				0px;
+}
+
+.list-vid {
+width:				178px;
+height:				100px; 
+border:				0px;
+frameborder:		0px;
+margin:				0px;
+}
+
+.prac-vid {
+width:				267px;
+height:				150px; 
+border:				0px;
+frameborder:		0px;
+margin:				0px;
+}
+
+.match-vid {
+width:				107px;
+height:				60px; 
+border:				0px;
+frameborder:		0px;
+margin:				0px 20px;
+}
+
+.desmos {
+width:				225px;
+height:				225px; 
+border:				0px;
+frameborder:		0px;
+margin:				0px;
+}
+
+.list-desmos {
+height:				100px;
+width:				100px;
+margin:				0px;
+}
+
+.prac-desmos {
+height:				150px;
+width:				150px;
+margin:				0px;
+}
+
+.match-desmos {
+height:				60px;
+width:				60px;
+margin:				0px;
+}
+
+.button {
+margin:				15px 15px;
+}
+
+#cardCell {
+padding-top:		30px;
+vertical-align:		top;
+}
+
+#mobileTitle {
+display: 			none;
+font-family:		varela round, arial rounded MT bold, arial, helvetica, san serif;
+FONT-SIZE:			16px;
+COLOR:				#666;
+}
+
+#mobileMenu {
+display: 			none;
+background-color:	#eee;
+}
+
+#mobileMenu P {
+font-size:			20px;
+}
+
+#cardCount {
+font-family:		varela round, arial rounded MT bold, arial, helvetica, san serif;
+FONT-SIZE:			14px;
+COLOR:				#999;
+MARGIN:				0px 10px;
+}
+
+.card {
+padding:			0px 40px;
+width:				438px;
+height:				318px;
+cursor: 			pointer;
+}
+
+table.list {
+border-collapse:	collapse;
+}
+
+table.list td {
+FONT-FAMILY:		varelaround-at, arial rounded MT bold, arial, helvetica, san serif;
+FONT-SIZE:			15px;
+padding:			8px 0px 8px 12px;
+border:				0px;
+border-bottom:		1px solid #d5e3ee;
+vertical-align:		top;
+}
+
+table.list td.num {
+padding:			10px 4px 6px 4px;
+COLOR:				#666666;
+}
+
+table.inner td {
+padding:			0px;
+border-bottom:		none;
+}
+
+.click {
+cursor:				pointer;
+}
+
+.pracPrompt {
+FONT-FAMILY:		varelaround-at, arial rounded MT bold, arial, helvetica, san serif;
+FONT-SIZE:			22px;
+COLOR:				#666666;
+MARGIN:				30px 0px 20px 0px;
+}
+
+.pracNote {
+FONT-FAMILY:		varelaround-at, arial rounded MT bold, arial, helvetica, san serif;
+FONT-SIZE:			14px;
+COLOR:				#333333;
+MARGIN:				0px;
+}
+
+.pracBox {
+width: 				400px;
+border: 			1px solid #3366ff;
+box-shadow: 		0px 2px 10px #999999;
+padding: 			10px;
+FONT-FAMILY:		varelaround-at, arial rounded MT bold, arial, helvetica, san serif;
+FONT-SIZE:			22px;
+text-align: 		center;
+COLOR:				#666666;
+MARGIN:				0px;
+}
+
+.pracAnswer {
+FONT-FAMILY:		varelaround-at, arial rounded MT bold, arial, helvetica, san serif;
+FONT-SIZE:			20px;
+COLOR:				#666666;
+MARGIN:				20px 0px 0px 0px;
+}
+
+.pracResults {
+font-family:		varela round, arial rounded MT bold, arial, helvetica, san serif;
+FONT-SIZE:			16px;
+COLOR:				#666666;
+MARGIN:				10px 0px 0px 0xp;
+}
+
+.matchBox {
+display: 			inline-block;
+vertical-align:		middle;
+FONT-FAMILY:		varelaround-at, arial rounded MT bold, arial, helvetica, san serif;
+FONT-SIZE:			15px;
+max-width:      	200px;
+border:         	0px solid #ccc;
+box-shadow: 		0px 1px 6px #aaa;
+border-radius:  	8px;
+margin:				6px;
+padding:			10px;
+cursor:				pointer;
+animation-duration:	1.5s;
+}
+
+.matchBoxBlue {
+box-shadow: 		0px 0px 17px #36c;
+}
+
+@keyframes redFade {
+from {box-shadow: 0px 0px 17px #f33;}
+to {box-shadow: 0px 2px 5px #cc;}
+}
+
+@keyframes greenFade {
+from {box-shadow: 0px 0px 17px #090; opacity: 1;}
+to {box-shadow: 0px 0px 15px #090; opacity: 0;}
+}
+
+.clock {
+FONT-FAMILY:		varela round, arial rounded MT bold, arial, helvetica, san serif;
+FONT-SIZE:			26px;
+color:				#36c;
+}
+
+.cloudWord {
+display: 			inline-block;
+margin: 			5px 10px;	
+font-family: 		'Martel', serif;
+line-height:		100%;
+font-weight: 		bold;
+cursor:				default;
+}
+
+table.quiz {
+border-collapse:	collapse;
+border-style:		hidden;
+margin:				20px 0px 0px 40px;
+}
+
+table.quiz td {
+padding:			10px 0px;
+border-top:			1px solid #d5e3ee;
+border-bottom:		1px solid #d5e3ee;
+}
+
+table.quiz td p {
+FONT-FAMILY:		Arial, Helvetica, sans-serif;
+FONT-SIZE:			14px;
+LINE-HEIGHT:		100%;
+color:				#666;
+margin:				0px;
+}
+
+P, LI {
+FONT-FAMILY:		Arial, Helvetica, sans-serif;
+FONT-SIZE:			14px;
+LINE-HEIGHT:		150%;
+}
+
+UL {
+MARGIN:				0px;
+}
+
+.small {
+FONT-SIZE:			10px;
+}
+
+.indent {
+margin-left:		40px;
+}
+
+.share {
+FONT-FAMILY:		Arial, Helvetica, sans-serif;
+FONT-SIZE:			14px;
+LINE-HEIGHT:		150%;
+margin:				15px;
+}
+
+.share:link         {color: #999;}
+.share:visited      {color: #999;}
+.share:hover        {color: #bbb;}
+
+.shareOptions {
+margin:				18px 0px 18px 50px;
+}
+
+.shareOptions TD {
+padding:			0px 10px;
+}
+
+.linkBox {
+width: 				450px;
+font-size: 			14px;
+background-color: 	#eee;
+border: 			1px solid #ccc;
+padding: 			4px;
+margin: 			0px;
+}
+
+.copyright {
+FONT-FAMILY:		Arial, Helvetica, sans-serif;
+FONT-SIZE:			11px;
+LINE-HEIGHT:		normal;
+COLOR:				#3366ff;
+MARGIN:				10px;
+}
+
+#instructions {
+FONT-FAMILY:		Arial, Helvetica, sans-serif;
+FONT-SIZE:			14px;
+LINE-HEIGHT:		100%;
+HEIGHT: 			30px;
+background-color: 	#FFFDD4;
+}
+
+#instructions A:link 	{color: #3366FF;}
+#instructions A:visited {color: #3366FF;}
+#instructions A:hover 	{color: #6699FF;}
+
+@media print {
+	.noPrint { display: none; }
+	}
+	
+@media screen and (max-device-width: 700px) { 
+	.noMobile { display: none; }
+	.ad { margin: 0px; }
+	#cardCell { vertical-align: middle; }
+	#mobileMenu { display: table-row; }
+	#mobileTitle { display: inline; }
+	}

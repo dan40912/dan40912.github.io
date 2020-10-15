@@ -1,0 +1,240 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--This DOCTYPE necessary for progress bars-->
+<html>
+
+<!-- Mirrored from www.flippity.net/bt-in.php?k=1qwdE2lVGZxFaRR4k4XecaE2BQACkjP8NEE9ubPZ8BDY&n= by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 15 Oct 2020 10:16:44 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=500">
+<title>Badges Earned on Flippity.net</title>
+<LINK href='https://fonts.googleapis.com/css?family=Varela+Round' rel='stylesheet' type='text/css'>
+<link href="https://fonts.googleapis.com/css?family=Contrail+One" rel="stylesheet">
+<LINK rel=stylesheet href="bt-Style.css">
+<LINK rel="icon" type="image/png" href="favicon.png">
+
+<SCRIPT>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','../www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-23823535-6', 'flippity.net');
+  ga('send', 'pageview');
+</SCRIPT>
+
+
+</head>
+
+<BODY bgcolor="#999999" text="#000000">
+
+<TABLE cellpadding="0" cellspacing="0" border="0" align="center">
+  <TR valign="middle">
+    <TD align="center" valign="top">
+
+<SCRIPT type="text/javascript">
+
+	var pageURL = window.location.href
+	var encodedURL = encodeURIComponent(pageURL)
+
+	var protected = false
+	var numBadges = ""
+	
+	var loadError = true
+	
+	function loadContent(json) {
+		sheetTitle = json.feed.title.$t
+		if (sheetTitle == "Demo" || sheetTitle == "Badges") {
+			docTitle = "Badges Earned on Flippity.net"
+			pageTitle = "Badges Earned"
+			}
+		else {
+			docTitle = sheetTitle + " Badges Earned on Flippity.net"
+			pageTitle = sheetTitle + " Badges Earned"
+			}
+		encodedDocTitle = encodeURIComponent(docTitle)
+		
+		rosterLength = json.feed.entry.length
+		
+		if (numBadges == "") {
+			numBadges = 50
+			}
+
+		badges = new Array()
+		passcodes = new Array()		
+		
+		for (var i=0; i<rosterLength; i++) {
+			badges[i] = new Array()
+			badges[i][0] = json.feed.entry[i].gsx$names.$t
+			passcodes[i] = ""
+			for (var b=1; b<=numBadges; b++) {
+				badges[i][b] = json.feed.entry[i]['gsx$badge' + b]['$t']
+				}
+			}
+
+        if (badges[3][0] == "Badge Information") { //determine which Badge Tracker template is being used
+            startAt = 5 //new template, skip first 5 rows in names section, show additional links
+            showLinks = true
+            }
+        else {
+            startAt = 3 //old template, skip first 3 rows in names section, no additional links
+            showLinks = false
+            }
+
+		// Prep Stars and Percentages
+
+		stars = new Array()
+		progress = new Array()		
+		totalBadges = new Array()
+			for (var b=1; b<=numBadges; b++) {
+				totalBadges[b] = 0
+				}
+
+		for (var i=startAt; i<rosterLength; i++) {
+			stars[i] = new Array()
+			progress[i] = new Array()	
+			for (var b=1; b<=numBadges; b++) {
+				stars[i][b] = 0 
+				if (badges[i][b] != "") {
+					totalBadges[b]++
+					}
+				var badgeInfo = badges[i][b]
+				if (badgeInfo.indexOf("*") > -1) { stars[i][b] = 1}
+				if (badgeInfo.indexOf("**") > -1) { stars[i][b] = 2 }
+				if (badgeInfo.indexOf("***") > -1) { stars[i][b] = 3 }
+				var progressInfo = badgeInfo.replace(/[^\d.//]/g, "") // remove all non-digits with the exception of . and /			
+				if (progressInfo != "") { // there is something remaining
+					if(!isNaN(progressInfo) || progressInfo.indexOf('index.html') > -1 ) { // there is either a number or fraction remaining
+						progressInfo = Math.round(eval(progressInfo) * 100)
+						}
+					}
+				if (progressInfo < 100 && progressInfo > 0) { // percentage is between 0 and 100
+					progress[i][b] = progressInfo
+					totalBadges[b]-- // don't add partially earned badges to the total count
+					}
+				else {
+					progress[i][b] = ""
+					}
+				}
+			}
+		
+		loadError = false
+		
+		}
+
+	function loadPasscodes(json) {
+		for (var i=0; i<rosterLength; i++) {
+			passcodes[i] = json.feed.entry[i].gsx$passcodes.$t
+			if (passcodes[i] != "") {
+				protected = true
+				}
+			}
+		}
+	
+	function unscramble(txt) {
+		var shift = -5
+		var alpha = "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz"
+		var cipher = ""
+		var char1 = ""
+		var char2 = ""
+		for (var i=0; i<txt.length; i++) {
+			char1 = txt.charAt(i)
+			var loc = alpha.indexOf(char1)
+			if (loc >= 0) { // there is a match
+				loc += shift
+				if (loc < 0) { loc += alpha.length }
+				char2 = alpha.charAt(loc)
+				}
+			else {
+				char2 = char1
+				}
+			cipher += char2
+			}
+		return cipher
+		}
+
+	function checkStudent(n) {
+		if (passcodes[n] != "") {
+			var pcode = prompt("Please enter your passcode.")
+			if (pcode) { //not canceled
+				if (pcode != passcodes[n]) {
+					alert("Passcode is incorrect.")
+					}
+				else {
+					return true
+					}
+				}
+			}
+		else {
+			return true
+			}
+		}	
+	
+	function showStudent(n) {
+		if (checkStudent(n)) { // passcode check
+			var content = ""
+			content += "<H2>" + badges[n][0] + "</H2>" // student name
+			//content += "<H3>Badges Earned</H3>"
+			for (j=1; j <= numBadges; j++) {
+				var badge = badges[n][j]
+				if (badge != "") {
+					var style = ""
+					var progBar = ""
+					if (progress[n][j] != "") {
+						var barWidth = (progress[n][j]/100*58)-8
+						progBar = "<TABLE class='progress'><TR><TD><DIV class='indicatorBox'><IMG SRC='images/ProgressBar-Lt.png' class='indicatorBar'><IMG SRC='images/ProgressBar.png' class='indicatorBar' STYLE='width: " + barWidth + "px;'><IMG SRC='images/ProgressBar-Rt.png' class='indicatorBar'></DIV></TD><TD><P class='percentage'>" + progress[n][j] + "%</P></TR></TABLE>"
+						style = " STYLE='opacity: .25;'"
+						}
+					content += "<DIV class='badge'><DIV" + style + ">"
+					var starImgs = ["0-Star.png","1-Star.html","2-Star.html","3-Star.png"]
+					content += "<IMG class='star' SRC='images/badges/" + starImgs[stars[n][j]] + "' TITLE='" + badges[1][j] + "'><IMG class='imgBadge' SRC='" + badges[0][j] + "'></DIV>" + progBar + "</DIV>"
+					}
+				}
+			document.getElementById('mainScreen').innerHTML = content
+			document.getElementById('mainScreen').style.display = "block"
+			}
+		}
+	
+	</SCRIPT>
+
+	<SCRIPT type="text/javascript" src="https://spreadsheets.google.com/feeds/list/1qwdE2lVGZxFaRR4k4XecaE2BQACkjP8NEE9ubPZ8BDY/1/public/values?alt=json-in-script&amp;callback=loadContent"></SCRIPT>
+	<SCRIPT type="text/javascript" src="https://spreadsheets.google.com/feeds/list/1qwdE2lVGZxFaRR4k4XecaE2BQACkjP8NEE9ubPZ8BDY/1/public/values?alt=json-in-script&amp;callback=loadPasscodes"></SCRIPT>
+	<!--second function is strictly for compatibility with templates that don't have a "Passcodes" column.-->
+
+	<SCRIPT type="text/javascript">
+		if (loadError) {
+			window.location.replace("errord080.html?k=1qwdE2lVGZxFaRR4k4XecaE2BQACkjP8NEE9ubPZ8BDY")
+			}
+	</SCRIPT>
+
+<DIV id='mainScreen' STYLE='display: none;'></DIV>
+<A HREF="index-2.html" TARGET="_blank"><IMG SRC="images/Flippity-Logo-Small-Gray.png" STYLE="margin-top: 30px;"></A>
+    </TD>
+  </TR>
+ </TABLE>
+
+	<SCRIPT type="text/javascript">
+		document.title = docTitle
+		var stuIndex = 0
+		var stuName = unscramble("")
+		if (stuName != "") {
+			for (var i=5; i<badges.length; i++) { //names start at row 6
+				if (badges[i][0] == stuName) {
+					stuIndex = i
+					break
+					}
+				}
+			}
+		else {
+			// Error message
+			}
+		
+		if (stuIndex > 0) {
+			showStudent(stuIndex)
+			}
+	</SCRIPT>
+
+</BODY>
+
+<!-- Mirrored from www.flippity.net/bt-in.php?k=1qwdE2lVGZxFaRR4k4XecaE2BQACkjP8NEE9ubPZ8BDY&n= by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 15 Oct 2020 10:16:44 GMT -->
+</HTML>

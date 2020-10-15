@@ -1,0 +1,172 @@
+html, body {
+margin: 			0px;
+padding: 			0px;
+height: 			100%;
+border: 			none;
+}
+
+body {
+background-color: #ffffff;
+-webkit-text-size-adjust:100%;
+}
+
+A:link    {color: #66cc00;}
+A:visited {color: #66cc00;}
+A:hover   {color: #77ee11;}
+
+.logo {
+display: 			inline-block;
+float: 				left;
+margin:				4px 20px 4px 0px;
+}
+
+.ad {
+margin: 			10px 0px;
+}
+
+H1.title {
+display: 			inline-block;
+width:				580px;
+white-space:		nowrap;
+overflow:			hidden;
+float: 				left;
+FONT-FAMILY:		varela round, arial rounded MT bold, arial, helvetica, san serif;
+FONT-SIZE:			20px;
+FONT-WEIGHT:		normal;
+MARGIN:				14px 0px 0px 20px;
+COLOR:				#FFF;
+}
+
+P {
+font-family: 		Helvetica, Arial, sans-serif;
+font-weight: 		normal;
+font-size: 			16px;
+color: 				#333333;
+line-height:		30px;
+}
+
+.used {
+font-family:		'Roboto', sans-serif;
+font-size:			24px;
+color:				#999999;
+letter-spacing:		10px;
+border-radius:		20px;
+margin:				30px 0px 0px 0px;
+display:			inline-block;
+padding:			5px 10px 5px 20px;
+animation-duration:	2s;
+}
+
+@keyframes redGlow {
+from {box-shadow: 0px 0px 25px #ff0000;}
+to {box-shadow: 0px 0px 0px #ff0000;}
+}
+
+.letter {
+font-family:		'Roboto', sans-serif;
+font-size:			40px;
+width:				60px;
+height:				60px;
+text-align:			center;
+padding:			10px 0px 0px 0px;
+border-bottom:		3px solid #000000;
+margin:				10px 4px;
+box-shadow:			1px 1px 10px #cccccc;
+display:			inline-block;
+}
+
+.space {
+width:				45px;
+display:			inline-block;
+}
+
+.divider {
+display: 			inline-block;
+white-space:		nowrap;
+}
+
+.letterGuess {
+font-family:		'Roboto', sans-serif;
+font-size:			36px;
+width:				50px;
+height:				50px;
+text-align:			center;
+border:				3px solid #66cc00;
+margin:				0px;
+}
+
+.results {
+FONT-FAMILY:		Arial, Helvetica, sans-serif;
+font-size:			14px;
+color:				#999999;
+}
+
+.pic {
+max-width:			178px;
+max-height:			100px;
+height:				auto;
+width:				auto;
+margin:				0px;
+}
+
+.vid {
+width:				178px;
+height:				100px; 
+border:				0px;
+frameborder:		0px;
+margin:				0px;
+}
+
+.desmos {
+height:				100px;
+width:				100px;
+margin:				0px;
+}
+
+.share {
+FONT-FAMILY:		Arial, Helvetica, sans-serif;
+FONT-SIZE:			14px;
+LINE-HEIGHT:		150%;
+margin:				15px;
+}
+
+.share:link         {color: #999;}
+.share:visited      {color: #999;}
+.share:hover        {color: #bbb;}
+
+.shareOptions {
+margin:				18px 0px 18px 50px;
+}
+
+.shareOptions TD {
+padding:			0px 10px;
+}
+
+.linkBox {
+width: 				450px;
+font-size: 			14px;
+background-color: 	#eee;
+border: 			1px solid #ccc;
+padding: 			4px;
+margin: 			0px;
+}
+
+.copyright {
+FONT-FAMILY:		Arial, Helvetica, sans-serif;
+FONT-SIZE:			11px;
+line-height:		100%;
+COLOR:				#fff;
+MARGIN:				10px;
+}
+
+#instructions {
+FONT-FAMILY:		Arial, Helvetica, sans-serif;
+FONT-SIZE:			14px;
+LINE-HEIGHT:		100%;
+HEIGHT: 			30px;
+background-color: 	#FFFDD4;
+}
+
+#instructions A:link 	{color: #3366FF;}
+#instructions A:visited {color: #3366FF;}
+#instructions A:hover 	{color: #6699FF;}

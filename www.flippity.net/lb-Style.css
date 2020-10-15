@@ -1,0 +1,242 @@
+html, body {
+margin:			0px;
+padding:		0px;
+height:			100%;
+border:			none
+}
+
+body {
+background-color:	#324559;
+-webkit-text-size-adjust:100%;
+font-size:			18px;
+}
+
+A:link		{color: #aaa;}
+A:visited	{color: #aaa;}
+A:hover		{color: #ccc;}
+
+.logo {
+display: 			inline-block;
+float: 				left;
+margin:				4px 20px 4px 0px;
+}
+
+H1 {
+display: 			inline-block;
+float: 				left;
+FONT-FAMILY:		varela round, arial rounded MT bold, arial, helvetica, san serif;
+FONT-SIZE:			20px;
+FONT-WEIGHT:		normal;
+MARGIN:				14px 0px 0px 20px;
+COLOR:				#ccc;
+}
+
+.ad {
+margin: 			10px 0px;
+}
+
+H2 {
+FONT-FAMILY:		'Open Sans', arial rounded MT bold, arial, helvetica, san serif;
+FONT-SIZE:			36px;
+MARGIN:				30px 0px;
+COLOR:				#fff;
+}
+
+P {
+FONT-FAMILY:		'Open Sans', arial rounded MT bold, arial, helvetica, san serif;
+FONT-SIZE:			20px;
+COLOR:				#aaa;
+margin:				10px 10px 20px 10px;
+}
+
+IMG.description {
+display:			block;
+margin:				10px auto;
+max-width:			728px;
+max-height:			225px;
+}
+
+.vid {
+display:			block;
+margin:				10px auto;
+width:				400px;
+height:				225px; 
+border:				0px;
+frameborder:		0px;
+}
+
+.menu {
+margin-left:		59px;
+}
+
+.indent {
+font-size:			20px;
+text-indent:		50px;
+}
+
+.menuButton {
+float:				left;
+margin:				15px 25px 0px 10px;
+}
+
+.results {
+width:				100%;
+border-collapse:	separate;
+border-spacing:		0px 6px;
+font-family:		'Open Sans', arial rounded MT bold, arial, helvetica, san serif;
+color:				#fff;
+}
+
+.results TR {
+background-color:	#19222c;
+}
+
+.results TD {
+padding:			10px 20px;
+}
+
+.rank {
+width:				1px;
+border-radius:		10px 0px 0px 10px;
+font-size:			36px;
+text-align:			right;
+}
+
+.avatarCell {
+width:				1px;
+}
+
+.avatar {
+font-size:			28px;
+line-height			40px;
+color:				#000;
+border-radius:		100px;
+background-color:	#999;
+width:				40px;
+height:				40px;
+text-align:			center;
+}
+
+.avatar IMG {
+border-radius:		100px;
+width:				40px;
+height:				40px;
+object-fit:			cover;
+}
+
+.ribbonCell {
+align:				left;
+vertical-align:		top;
+padding:			0px !important;
+width:				24px;
+}
+
+.ribbon {
+position:			absolute;
+margin-top:			-1px;
+}
+
+.name {
+font-size:			24px;
+}
+
+.points {
+font-size:			20px;
+border-radius:		0px 10px 10px 0px;
+width:				1px;
+text-align:			right;
+}
+
+.sub {
+font-size:			20px;
+background-color:	transparent !important;
+}
+
+.sub TD {
+padding:			6px 0px;
+}
+
+.event {
+padding-left:		50px !important;
+}
+
+.eventPoints {
+text-align:			right;
+padding-right:		20px !important;
+}
+
+.extra {
+display:			none;
+}
+
+.clickable {
+cursor:				pointer;
+}
+
+.clickable:hover {
+text-decoration:	underline;
+}
+
+.moreLess TD {
+text-align:			center;
+border-radius:		10px;
+Xbackground-color:	transparent !important;
+}
+
+.moreLess TD SPAN {
+font-size:			24px;
+cursor:				pointer;
+}
+
+.share {
+FONT-FAMILY:		Arial, Helvetica, sans-serif;
+FONT-SIZE:			14px;
+LINE-HEIGHT:		150%;
+margin:				15px;
+}
+
+.share:link         {color: #999;}
+.share:visited      {color: #999;}
+.share:hover        {color: #bbb;}
+
+.shareOptions {
+margin:				18px 0px 18px 50px;
+}
+
+.shareOptions TD {
+padding:			0px 10px;
+}
+
+.linkBox {
+width: 				450px;
+font-size: 			14px;
+background-color: 	#eee;
+border: 			1px solid #ccc;
+padding: 			4px;
+margin: 			0px;
+}
+
+.copyright {
+FONT-FAMILY:		Arial, Helvetica, sans-serif;
+FONT-SIZE:			11px;
+line-height:		100%;
+COLOR:				#ccc;
+MARGIN:				10px;
+}
+
+#instructions {
+FONT-FAMILY:		Arial, Helvetica, sans-serif;
+FONT-SIZE:			14px;
+LINE-HEIGHT:		100%;
+HEIGHT: 			30px;
+background-color: 	#FFFDD4;
+}
+
+#instructions A:link 	{color: #3366FF;}
+#instructions A:visited {color: #3366FF;}
+#instructions A:hover 	{color: #6699FF;}
+
+@media screen and (max-device-width: 700px) { 
+	.noMobile { display: none; }
+	.ad { margin: 0px; }
+	}

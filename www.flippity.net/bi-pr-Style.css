@@ -1,0 +1,67 @@
+html, body {
+margin: 			0px;
+padding: 			0px;
+height: 			100%;
+border: 			none;
+}
+
+body {
+background-color: #ffffff;
+-webkit-text-size-adjust:100%;
+}
+
+.page-break {
+display:			block;
+page-break-before:	always;
+page-break-inside:	avoid;
+padding-top:		1px;
+}
+
+.board {
+border-collapse:	collapse;	
+margin:				100px 0px 0px 0px;
+}
+
+.header {
+height:				120px;
+width:				608px;
+}
+
+.board TD {
+border:				2px solid;
+width:				120px;
+height:				120px;
+vertical-align:		middle;
+padding:			0px;
+}
+
+.board TD DIV {
+display:			block;
+max-width:			110px;
+max-height:			110px;
+font-family:		Archivo Narrow, arial, helvetica, san serif;
+font-size:			19px;
+color:				#000;
+word-wrap:			break-word;
+text-align:			center;
+overflow:			hidden;
+margin:				5px;
+}
+
+.board TD DIV.free {
+font-size:			24px;
+font-weight:		bold;
+}
+
+.pic {
+max-width:			110px;
+max-height:			110px;
+width:				auto;
+height:				auto;
+}
+
+.desmos {
+height:				110px;
+width:				110px;
+margin:				0px;
+}

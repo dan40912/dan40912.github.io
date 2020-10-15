@@ -1,0 +1,197 @@
+html, body {
+margin:			0px;
+padding:		0px;
+height:			100%;
+border:			none
+}
+
+body {
+background-color: #ffffff;
+-webkit-text-size-adjust:100%;
+}
+
+A:link		{color: #009900;}
+A:visited	{color: #009900;}
+A:hover		{color: #33cc33;}
+
+.logo {
+display: 			inline-block;
+float: 				left;
+margin:				4px 20px 4px 0px;
+}
+
+H1 {
+display: 			inline-block;
+float: 				left;
+FONT-FAMILY:		varela round, arial rounded MT bold, arial, helvetica, san serif;
+FONT-SIZE:			20px;
+FONT-WEIGHT:		normal;
+MARGIN:				14px 0px 0px 20px;
+COLOR:				#fff;
+}
+
+.ad {
+margin: 			10px 0px;
+}
+
+H2 {
+FONT-FAMILY:		'Contrail One', varela round, arial rounded MT bold, arial, helvetica, san serif;
+FONT-SIZE:			30px;
+FONT-WEIGHT:		normal;
+MARGIN:				40px;
+COLOR:				#333;
+}
+
+H3 {
+FONT-FAMILY:		'Contrail One', varela round, arial rounded MT bold, arial, helvetica, san serif;
+FONT-SIZE:			24px;
+FONT-WEIGHT:		normal;
+MARGIN:				30px;
+COLOR:				#666;
+}
+
+P {
+font-family: 		Helvetica, Arial, sans-serif;
+font-weight: 		normal;
+font-size: 			15px;
+line-height:		140%;
+color: 				#333333;
+}
+
+.name {
+display: 			inline-block;
+FONT-FAMILY:		'Contrail One', varela round, arial rounded MT bold, arial, helvetica, san serif;
+MARGIN:				5px 30px;
+COLOR:				#666;
+font-size:			18px;
+font-weight: 		normal;
+cursor: 			pointer;
+}
+
+.textLink {
+FONT-FAMILY:		'Contrail One', varela round, arial rounded MT bold, arial, helvetica, san serif;
+MARGIN:				50px 0px;
+COLOR:				#999;
+font-size:			16px;
+font-weight: 		normal;
+cursor: 			pointer;
+display: 			table;
+}
+
+.badge {
+position:			relative;	
+display: 			inline-block;
+vertical-align: 	top;
+margin: 			15px;
+}
+
+.star {
+position:			absolute;
+}
+
+.imgBadge {
+height:				100px;
+}
+
+.progress {
+border-collapse:	collapse;
+border:				0px;
+padding:			0px;
+margin:				5px 0px;
+}
+
+.indicatorBox {
+width:				60px; 
+height:				8px; 
+border:				solid 1px #666;  
+padding:			1px;
+border-radius:		10px;
+text-align:			left;
+}
+
+.indicatorBar {
+display:			inline-block;
+height:				8px;
+margin:				0px;
+}
+
+.percentage {
+FONT-FAMILY:		'Contrail One', varela round, arial rounded MT bold, arial, helvetica, san serif;
+COLOR:				#666;
+font-size:			13px;
+font-weight: 		normal;
+margin:				1px 0px 0px 3px;
+}
+
+.button {
+display: 			table;
+margin-top: 		0px;
+margin-bottom: 		30px;
+background-color: 	#666;
+padding: 			4px 15px;
+border-radius: 		8px;
+text-transform: 	uppercase;
+FONT-FAMILY:		'Contrail One', arial rounded MT bold, arial, helvetica, san serif;
+font-size: 			16px;
+color: 				#fff;
+cursor: 			pointer;
+}
+
+.button:hover {
+background-color: 	#999;
+}
+
+.earners {
+display:			inline-block;
+text-align:			left;
+column-count:		1;
+column-gap:			30px;
+}
+
+.share {
+FONT-FAMILY:		Arial, Helvetica, sans-serif;
+FONT-SIZE:			14px;
+LINE-HEIGHT:		150%;
+margin:				15px;
+}
+
+.share:link         {color: #999;}
+.share:visited      {color: #999;}
+.share:hover        {color: #bbb;}
+
+.shareOptions {
+margin:				18px 0px 18px 50px;
+}
+
+.shareOptions TD {
+padding:			0px 10px;
+}
+
+.linkBox {
+width: 				450px;
+font-size: 			14px;
+background-color: 	#eee;
+border: 			1px solid #ccc;
+padding: 			4px;
+margin: 			0px;
+}
+
+.copyright {
+FONT-FAMILY:		Arial, Helvetica, sans-serif;
+FONT-SIZE:			11px;
+line-height:		100%;
+COLOR:				#FF0;
+MARGIN:				10px;
+}
+
+#instructions {
+FONT-FAMILY:		Arial, Helvetica, sans-serif;
+FONT-SIZE:			14px;
+LINE-HEIGHT:		100%;
+HEIGHT: 			30px;
+background-color: 	#FFFDD4;
+}
+
+#instructions A:link 	{color: #3366FF;}
+#instructions A:visited {color: #3366FF;}
+#instructions A:hover 	{color: #6699FF;}

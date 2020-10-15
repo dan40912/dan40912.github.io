@@ -1,0 +1,571 @@
+html, body {
+margin:				0px;
+padding:			0px;
+height:				100%;
+border:				none
+}
+
+body {
+background-color: #ffffff;
+-webkit-text-size-adjust:100%;
+}
+
+A:link				{color: #666666;}
+A:visited			{color: #666666;}
+A:hover				{color: #999999;}
+
+.logo {
+display: 			inline-block;
+float: 				left;
+margin:				4px 20px 4px 0px;
+}
+
+#timer {
+display:			none;
+text-align:			center;
+margin:				0px auto 30px auto;
+width:				200px;
+border:         	1px solid #ddd;
+border-radius: 		24px;
+box-shadow: 		0px 2px 5px #ccc;
+padding:			8px 0px 6px 0px;
+background-color: 	#fff;
+}
+
+#timer IMG {
+margin:				0px 12px;
+cursor:				pointer;
+}
+
+#time {
+font-family:		varela round, arial rounded MT bold, arial, helvetica, san serif;
+font-size:			26px;
+}
+
+H1 {
+display: 			inline-block;
+float: 				left;
+FONT-FAMILY:		varela round, arial rounded MT bold, arial, helvetica, san serif;
+FONT-SIZE:			20px;
+FONT-WEIGHT:		normal;
+MARGIN:				14px 0px 0px 20px;
+COLOR:				#999999;
+}
+
+TD.subnav {
+cursor: 			pointer;
+}
+
+.subnav {
+FONT-FAMILY:		varela round, arial rounded MT bold, arial, helvetica, san serif;
+MARGIN:				0px;
+COLOR:				#777777;
+font-size:			11px;
+line-height:		120%;
+font-weight: 		bold;
+}
+
+.moreNav {
+FONT-FAMILY:		varela round, arial rounded MT bold, arial, helvetica, san serif;
+MARGIN:				12px 0px;
+COLOR:				#777777;
+font-size:			15px;
+font-weight: 		bold;
+cursor: 			pointer;
+}
+
+td.wheel
+{
+background-image:		url(images/RP-Wheel-BG.png);
+background-position:	center;
+background-repeat:		no-repeat;
+}
+
+H2 {
+FONT-FAMILY:		varela round, arial rounded MT bold, arial, helvetica, san serif;
+FONT-SIZE:			20px;
+FONT-WEIGHT:		normal;
+MARGIN:				30px 0px;
+COLOR:				#3399FF;
+}
+
+P {
+font-family: 		Helvetica, Arial, sans-serif;
+font-weight: 		normal;
+font-size: 			16px;
+color: 				#333333;
+}
+
+.option {
+margin:				0px 10px;
+}
+
+.button {
+cursor:				pointer;
+}
+
+P.menu {
+font-family: 		varela round, arial rounded MT bold, arial, helvetica, san serif;
+color:				#666666;
+font-size:			24px;
+margin:				10px 0px 30px 0px;
+}
+
+P.menu-item {
+font-family: 		varela round, arial rounded MT bold, arial, helvetica, san serif;
+margin:				10px 25px;
+color:				#9900ff;
+font-size:			20px;
+font-weight: 		bold;
+cursor: 			pointer;
+}
+
+#spinnerName {
+font-family: 		Helvetica, Arial, sans-serif;
+font-weight: 		bold;
+font-size: 			32px;
+color: 				#666;
+}
+
+.singleName {
+display: 			table;
+margin: 			30px;
+border: 			5px solid hsl(200, 100%, 33%);
+background-color: 	hsl(200, 100%, 50%);
+padding: 			45px;
+border-radius: 		1000px;
+box-shadow:			3px 3px 10px gray;
+font-family: 		Helvetica, Arial, sans-serif;
+font-weight: 		bold;
+font-size: 			80px;
+color: 				#ffffff;
+text-shadow:		1px 1px 5px black;
+text-align:			center;
+}
+
+.singleName .photo {
+display: 			inline-block;
+vertical-align:		middle;
+width:				120px;
+height:				120px;
+overflow:			hidden;
+border: 			4px solid #fff;
+border-radius:		100%;
+margin:				0px;
+margin-right:		16px;
+}
+
+.lineup {
+display: 			table;
+margin: 			10px;
+border: 			3px solid;
+padding: 			15px;
+border-radius: 		1000px;
+box-shadow:			3px 3px 10px gray;
+font-family: 		Helvetica, Arial, sans-serif;
+font-weight: 		bold;
+font-size: 			30px;
+color: 				#ffffff;
+text-shadow:		1px 1px 5px black;
+white-space:		nowrap;
+}
+
+/* Remove after photos roll out */
+.lineup1 {
+margin: 			20px;
+border: 			4px solid;
+padding: 			30px 45px;
+font-size: 			60px;
+text-shadow:		1px 1px 5px black;
+}
+
+.lineup .photo {
+display: 			inline-block;
+vertical-align:		middle;
+width:				60px;
+height:				60px;
+overflow:			hidden;
+border: 			2px solid #fff;
+border-radius:		100%;
+margin:				0px;
+margin-right:		10px;
+}
+
+.signin {
+display: 			inline-block;
+margin: 			10px;
+border: 			3px solid;
+padding: 			15px;
+border-radius: 		1000px;
+box-shadow:			3px 3px 10px gray;
+font-family: 		Helvetica, Arial, sans-serif;
+font-weight: 		bold;
+font-size: 			20px;
+color: 				#ffffff;
+text-shadow:		1px 1px 5px black;
+white-space:		nowrap;
+cursor:				pointer;
+}
+
+.hidden {
+display: 			none;
+}
+
+.nameNum {
+display: 			inline-block;
+vertical-align:		middle;
+height:				24px;
+width:				24px;
+margin: 			0px;
+margin-right:		8px;
+font-family: 		Helvetica, Arial, sans-serif;
+font-weight: 		bold;
+font-size: 			15px;
+line-height:		25px;
+text-align:			center;
+background-color:	rgba(255,255,255,0.5);
+border-radius: 		100%;
+text-shadow:		none;
+}
+
+.nameNum1 {
+height:				48px;
+width:				48px;
+margin-right:		16px;
+font-size: 			30px;
+line-height:		50px;
+}
+
+.group {
+display: 			inline-block;
+margin: 			15px;
+padding: 			8px 15px 10px 15px;
+border-radius: 		32px;
+box-shadow:			3px 3px 10px gray;
+}
+
+	.print-group {
+	background-color:	#fff !important;
+	border-color:		#000 !important;
+	box-shadow:			none;
+	}
+
+.groupNum {
+display: 			block;
+margin: 			0px 0px 10px 0px;
+padding:			2px;
+font-family: 		Helvetica, Arial, sans-serif;
+font-weight: 		bold;
+font-size: 			18px;
+background-color:	rgba(255,255,255,0.5);
+border:				1px solid transparent;
+border-radius: 		20px;
+}
+
+	.print-groupNum {
+	color:				#000 !important;
+	background-color:	#fff !important;
+	border:				1px solid #000;
+	}
+
+.groupNames {
+display: 			block;
+white-space:		nowrap;
+margin: 			3px;
+padding:			3px;
+font-family: 		Helvetica, Arial, sans-serif;
+font-weight: 		bold;
+font-size: 			24px;
+color: 				#ffffff;
+text-shadow:		1px 1px 5px black;
+border-radius: 		50px;
+}
+
+	.print-groupNames {
+	color: 				#000;
+	text-shadow:		none;
+	}
+
+.groupNames .photo, .pairs .photo {
+display: 			inline-block;
+vertical-align:		middle;
+width:				60px;
+height:				60px;
+overflow:			hidden;
+border: 			2px solid #fff;
+border-radius:		100%;
+margin:				0px;
+margin-right:		8px;
+}
+
+.photoBlank {
+display: 			inline-block;
+height:				67px; /* height + margin + border */
+}
+
+.pairs {
+display: 			inline-block;
+margin: 			15px;
+background-color:	#999;
+padding: 			8px 15px 10px 15px;
+border: 			3px solid #666;
+box-shadow:			3px 3px 10px gray;
+}
+
+	.print-pairs {
+	color:				#000 !important;
+	background-color:	#fff !important;
+	border:				3px solid #000;
+	box-shadow:			none;
+	}
+
+.seat {
+display: 			inline-block;
+margin: 			15px;
+border: 			3px solid hsl(200, 100%, 33%);
+background-color: 	hsl(200, 100%, 50%);
+padding: 			15px;
+margin: 			4px;
+font-family: 		Helvetica, Arial, sans-serif;
+font-weight: 		bold;
+font-size: 			24px;
+color: 				#ffffff;
+text-align:			center;
+text-shadow:		1px 1px 5px black;
+cursor:				pointer;
+}
+
+	.print-seat {
+	color: 				#000;
+	background-color: 	#fff !important;
+	text-shadow:		none;
+	border-color:		#000;
+	}
+
+.seat .photo {
+width:				60px;
+height:				60px;
+overflow:			hidden;
+border: 			2px solid #fff;
+border-radius:		100%;
+margin:				3px auto 0px auto;
+}
+
+.seat .photoBlank {
+height:				67px; /* height + margin + border */
+}
+
+#roster {
+width:				728px;
+border-collapse:	collapse;
+box-shadow:			0px 3px 10px #ccc;
+margin-bottom:		30px;
+}
+
+#roster TD {
+font-family: 		Helvetica, Arial, sans-serif;
+font-size: 			14px;
+color: 				#333333;
+margin:				0px;
+padding:			5px 8px;
+border:				1px solid #ddd;
+min-width:			20px;
+}
+
+#roster TR.head {
+background-color:	#eee;
+}
+
+#roster .photo {
+display: 			inline-block;
+vertical-align:		middle;
+width:				30px;
+height:				30px;
+overflow:			hidden;
+border-radius:		100%;
+margin:				0px;
+margin-right:		6px;
+}
+
+.photo img {
+width:				100%;
+height:				auto;
+}
+
+#giftList {
+margin:				20px 0px 70px 0px;
+}
+
+#giftList TD {
+font-family: 		Helvetica, Arial, sans-serif;
+font-size: 			18px;
+font-weight:		bold;
+padding:			2px 6px;
+}
+
+#giftList .giftNum {
+font-size: 			14px;
+font-weight:		normal;
+text-align:			right;
+}
+
+.giftTag {
+display: 			inline-block;
+margin: 			15px;
+padding: 			20px;
+border:				2px solid #000;
+font-family:		'Shadows Into Light Two', cursive;
+font-size: 			28px;
+}
+
+.toFrom {
+font-family: 		Helvetica, Arial, sans-serif;
+font-size: 			14px;
+}
+
+.fromNum, .fromQues {
+display:			none;
+}
+
+#grid {
+border-collapse:	collapse;
+margin:				50px 0px;
+}
+
+#grid TD {
+font-family: 		Helvetica, Arial, sans-serif;
+font-weight: 		bold;
+font-size: 			24px;
+padding:			10px;
+}
+
+.dName {
+display:			block;
+margin:				12px;
+cursor:				pointer;
+font-weight:		bold;
+font-size:			18px;
+line-height:		100%;
+}
+
+.iName {
+display:			block;
+width:				200px;
+height:				22px;
+margin:				6px;
+font-family: 		Helvetica, Arial, sans-serif;
+font-weight:		bold;
+font-size:			18px;
+line-height:		100%;
+}
+
+#content {
+height:				200px;
+width:				315px;
+FONT-FAMILY:		varela round, arial rounded MT bold, arial, helvetica, san serif;
+FONT-SIZE:			15px;
+LINE-HEIGHT:		140%;
+padding:			8px;
+}
+
+.textButton {
+display: 			inline-block;
+margin: 			20px 5px;
+background-color: 	#379bfc;
+padding: 			5px 15px;
+border-radius: 		100px;
+text-transform: 	uppercase;
+FONT-FAMILY:		varela round, arial rounded MT bold, arial, helvetica, san serif;
+font-weight: 		bold;
+font-size: 			13px;
+color:				#fff;
+cursor: 			pointer;
+}
+
+.legalBox {
+width:				500px;
+margin:				0px auto 30px auto;
+}
+
+.legalBox P {
+color:				#999;
+FONT-FAMILY:		Arial, Helvetica, sans-serif;
+FONT-SIZE:			11px;
+MARGIN:				10px;
+TEXT-ALIGN:			left;
+}
+
+.legal:link         {color: #999;}
+.legal:visited      {color: #999;}
+.legal:hover        {color: #bbb;}
+
+.share {
+FONT-FAMILY:		Arial, Helvetica, sans-serif;
+FONT-SIZE:			14px;
+LINE-HEIGHT:		150%;
+margin:				15px;
+}
+
+.share:link         {color: #999;}
+.share:visited      {color: #999;}
+.share:hover        {color: #bbb;}
+
+.shareOptions {
+margin:				18px 0px 18px 50px;
+}
+
+.shareOptions TD {
+padding:			0px 10px;
+}
+
+.linkBox {
+width: 				450px;
+font-size: 			14px;
+background-color: 	#eee;
+border: 			1px solid #ccc;
+padding: 			4px;
+margin: 			0px;
+}
+
+.copyright {
+FONT-FAMILY:		Arial, Helvetica, sans-serif;
+FONT-SIZE:			11px;
+COLOR:				#333333;
+MARGIN:				10px;
+}
+
+#MobileMenu {
+margin-top:			30px;
+font-family:		varela round, arial rounded MT bold, arial, helvetica, san serif;
+font-size:			24px;
+}
+
+#title { max-width: 580px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}
+.header { width: 728px; margin: 0px auto; }
+.mobile { display: none; }
+
+#instructions {
+FONT-FAMILY:		Arial, Helvetica, sans-serif;
+FONT-SIZE:			14px;
+LINE-HEIGHT:		100%;
+HEIGHT: 			30px;
+background-color: 	#FFFDD4;
+display: 			none;
+}
+
+#instructions A:link 	{color: #3366FF;}
+#instructions A:visited {color: #3366FF;}
+#instructions A:hover 	{color: #6699FF;}
+
+@media print {
+	.noPrint { display: none; }
+	}
+
+@media screen and (max-width:962px) {
+  /* CSS for screens that are 962 pixels or less */
+ 	#title {max-width: 300px;} 
+	.header { width: 450px; margin: 0px 20px; }
+	.noMobile { display: none !important; }
+	.mobile { display: table-row; }
+	.singleName { zoom: 0.75; }
+	}

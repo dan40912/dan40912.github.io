@@ -1,0 +1,198 @@
+html, body {
+margin: 			0px;
+padding: 			0px;
+height: 			100%;
+border: 			none;
+}
+
+body {
+background-color: #ffffff;
+-webkit-text-size-adjust:100%;
+}
+
+A:link          	{color: #3366FF;}
+A:visited       	{color: #3366FF;}
+A:hover         	{color: #6699FF;}
+
+.logo {
+display: 			inline-block;
+float: 				left;
+margin:				6px 15px;
+}
+
+H1.title {
+display: 			inline-block;
+float: 				left;
+FONT-FAMILY:		varela round, arial rounded MT bold, arial, helvetica, san serif;
+FONT-SIZE:			15px;
+FONT-WEIGHT:		normal;
+MARGIN:				13px 0px;
+COLOR:				#000;
+}
+
+H2 {
+FONT-FAMILY:		varela round, arial rounded MT bold, arial, helvetica, san serif;
+FONT-SIZE:			22px;
+FONT-WEIGHT:		normal;
+color:				#3366CC;
+MARGIN:				10px 0px 30px 0px;
+}
+
+.clock {
+display:            inline-block;
+FONT-FAMILY:		varela round, arial rounded MT bold, arial, helvetica, san serif;
+FONT-SIZE:			26px;
+}
+
+.table {
+background-color:	#ddd;
+background-image:	url('images/BG-Gray-Felt.jpg');
+background-repeat:	no-repeat;
+background-size:	100% 100%;
+}
+
+#screen {
+background-color:	#ddd;
+background-repeat:	no-repeat;
+background-size:	100% 100%;
+}
+
+.card-OLD {
+display: 			inline-block;
+vertical-align:		middle;
+font-family:		varela round, arial rounded MT bold, arial, helvetica, san serif;
+font-size:			14px;
+overflow:			hidden;
+color:				#000;
+height:				100px;
+width:      		100px;
+border:         	0px solid #ccc;
+box-shadow: 		0px 2px 5px #ccc;
+border-radius:  	12px;
+margin:				6px;
+padding:			10px;
+cursor:				pointer;
+background-color: 	#fff;
+animation-duration:	1.5s;
+}
+
+@font-face {
+font-family: questrial-j;
+src: url('Questrial-J.ttf');
+}
+
+.card {
+display: 			inline-block;
+vertical-align:		middle;
+font-family: 		'Questrial', sans-serif;
+font-family: 		questrial-j, sans-serif;
+overflow:			hidden;
+color:				#000;
+height:				100px;
+width:      		100px;
+border:         	0px solid #ccc;
+box-shadow: 		0px 2px 5px #ccc;
+border-radius:  	12px;
+margin:				6px;
+padding:			10px;
+cursor:				pointer;
+background-color: 	#fff;
+animation-duration:	1.5s;
+}
+
+.num {
+position:			absolute;
+background-color:	#fff;
+padding:			6px 10px;
+font-size:			18px;
+font-weight:		bold;
+border-bottom-right-radius: 10px;
+margin:				-5px;
+}
+
+.card IMG {
+max-width:			100%;
+max-height:			100%;
+width:				auto;
+height:				auto;
+}
+
+.cardBack {
+width: 100px !important;
+height: 100px !important;
+object-fit: cover !important;
+}
+
+.vid {
+width:				100px;
+height:				57px; 
+border:				0px;
+frameborder:		0px;
+margin:				0px;
+}
+
+.voc {
+width:				100px;
+height:				60px;
+border-radius:		6px;
+overflow:			hidden;
+}
+
+.desmos {
+width:				90px;
+height:				90px;
+margin:				0px;
+}
+
+.text {
+FONT-FAMILY:		varela round, arial rounded MT bold, arial, helvetica, san serif;
+FONT-SIZE:			14px;
+LINE-HEIGHT:		150%;
+}
+
+.share {
+FONT-FAMILY:		Arial, Helvetica, sans-serif;
+FONT-SIZE:			14px;
+LINE-HEIGHT:		150%;
+margin:				10px;
+}
+
+.share:link         {color: #999;}
+.share:visited      {color: #999;}
+.share:hover        {color: #bbb;}
+
+.shareOptions {
+margin:				18px 0px 18px 50px;
+}
+
+.shareOptions TD {
+padding:			0px 10px;
+}
+
+.linkBox {
+width: 				450px;
+font-size: 			14px;
+background-color: 	#eee;
+border: 			1px solid #ccc;
+padding: 			4px;
+margin: 			8px 0px 0px 0px;
+}
+
+.copyright {
+FONT-FAMILY:		Arial, Helvetica, sans-serif;
+FONT-SIZE:			11px;
+COLOR:				#999;
+MARGIN:				10px;
+}
+
+#instructions {
+FONT-FAMILY:		Arial, Helvetica, sans-serif;
+FONT-SIZE:			14px;
+LINE-HEIGHT:		100%;
+HEIGHT: 			30px;
+background-color: 	#FFFDD4;
+}
+
+#instructions A:link 	{color: #3366FF;}
+#instructions A:visited {color: #3366FF;}
+#instructions A:hover 	{color: #6699FF;}

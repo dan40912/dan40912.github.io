@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html>
+
+<!-- Mirrored from www.flippity.net/sh.php?k=1f-l1iuW2jC_ZUfV9SYbs2L1Zdc07SknjvuLH1GP8Nkg&s=1 by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 15 Oct 2020 10:16:43 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Flippity.net: Scavenger Hunt</title>
+<LINK href='https://fonts.googleapis.com/css?family=Varela+Round' rel='stylesheet' type='text/css'>
+<link href="https://fonts.googleapis.com/css?family=Roboto+Mono:300,500" rel="stylesheet">
+<LINK rel=stylesheet href="sh-Style.css">
+<LINK rel="icon" type="image/png" href="favicon.png">
+
+<SCRIPT>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','../www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-23823535-6', 'flippity.net');
+  ga('send', 'pageview');
+</SCRIPT>
+
+
+</head>
+
+<BODY bgcolor="#999999" text="#000000">
+
+<audio src="Locked.mp3"></audio>
+<audio src="Unlock.mp3"></audio>
+
+<TABLE width="100%" height="100%" cellpadding="0" cellspacing="0" border="0" align="center">
+	<TR ID="instructions" STYLE="display: none;"><TD align="center"><A HREF="ScavengerHunt.html" TARGET="_blank">Want to Make Your Own Scavenger Hunt?</A></TD></TR>
+	<TR height="1" class="noPrint">
+    <TD bgcolor="#09c">
+    <DIV STYLE="width: 728px; margin: 0px auto;">  
+		<DIV Class="logo"><A href="index.html"><IMG src="images/Flippity-Logo-White.png" alt="Flippity.net" width="100" height="43" border="0" align="left"></A></DIV>
+		<H1 id="title">Scavenger Hunt</H1>
+     </DIV>
+      </TD>
+  </TR>
+  <TR height="1" class="print">
+    <TD><img src="images/Flippitynet-Small-Gray.png" width="80" height="21" align="right" /><P id="printTitle" class="printTitle">Scavenger Hunt</P></TD>
+  </TR>
+  <TR valign="middle">
+    <TD align="center" valign="top">
+
+<SCRIPT type="text/javascript">
+
+	pageURL = window.location.href
+	encodedURL = encodeURIComponent(pageURL)
+
+	var data = new Array()
+	var givens = new Array() // to records answers
+	var corrects = new Array() // to records correct answers
+	var hints = new Array() // to records hints used
+	var hintImage = "<img src='images/Lightbulb.png'>"
+	var docTitle = "Scavenger Hunt on Flippity.net"
+	var pageTitle = "Scavenger Hunt"
+	var cardSide = "1"
+	var loadError = true
+
+	function loadOptions(json) {
+
+		// For backwards compatibility & if coming from Flashcards
+		cse = "no"
+		seq = "no"
+		ran = "no"
+		startText = "Click a lock to get started."
+		hintText = "Are you sure you want to show the hint for this clue?"
+		doneText = "Done!"
+		email = ""
+		namePrompt = ""
+		emailText = ""
+		emailSubj = ""
+		
+		if (cardSide == "") { // not coming from Flashcards
+			cse = json.feed.entry[0].gsx$setting.$t
+			seq = json.feed.entry[1].gsx$setting.$t
+			ran = json.feed.entry[2].gsx$setting.$t
+			startText = prepMedia(json.feed.entry[3].gsx$setting.$t)
+			hintText = json.feed.entry[4].gsx$setting.$t
+			doneText = json.feed.entry[5].gsx$setting.$t
+			email = json.feed.entry[6].gsx$setting.$t
+			namePrompt = json.feed.entry[7].gsx$setting.$t
+			emailText = json.feed.entry[8].gsx$setting.$t
+			emailSubj = json.feed.entry[9].gsx$setting.$t
+			}
+		}
+	
+	function loadContent(json) {
+
+		sheetTitle = json.feed.title.$t
+		if (sheetTitle != "Demo") {
+			docTitle = sheetTitle + " Scavenger Hunt on Flippity.net"
+			pageTitle = sheetTitle + " Scavenger Hunt"
+			}
+		encodedDocTitle = encodeURIComponent(docTitle)
+		
+		if (cardSide != "") { // coming from Flashcards
+			preppedDoneText = doneText
+			if (cardSide == 1) {
+				for (i=1;i<json.feed.entry.length;i++) {			
+					var clue = json.feed.entry[i].gsx$side1.$t
+					var answer = json.feed.entry[i].gsx$side2.$t
+					data[i-1] = new Array()
+					data[i-1][0] = prepFlashcards(clue)
+					data[i-1][1] = ""
+					data[i-1][2] = answer.trim()
+					}
+				}
+			else {
+				for (i=1;i<json.feed.entry.length;i++) {			
+					var clue = json.feed.entry[i].gsx$side2.$t
+					var answer = json.feed.entry[i].gsx$side1.$t
+					data[i-1] = new Array()
+					data[i-1][0] = prepFlashcards(clue)
+					data[i-1][1] = ""
+					data[i-1][2] = answer.trim()
+					}
+				}
+
+			//Remove multimedia answers
+			for (i=0;i<data.length;i++) {
+				if (data[i][2].toLowerCase().indexOf("http") > -1 || data[i][2].toLowerCase().indexOf("youtu.be") > -1 || data[i][2].toLowerCase().indexOf("vocaroo.com/i/index.html") > -1) {
+					data.splice(i,1)
+					i--
+					}
+				}
+			}
+		else {
+			for (i=0; i<json.feed.entry.length; i++) {
+				var clue = json.feed.entry[i].gsx$clue.$t
+				var hint = json.feed.entry[i].gsx$hint.$t
+				var answer = json.feed.entry[i].gsx$answer.$t
+				preppedClue = prepMedia(clue)
+				preppedHint = prepMedia(hint)
+				preppedDoneText = prepMedia(doneText) // to be able to put multimedia in the done screen
+				data[i] = new Array()
+				data[i][0] = preppedClue
+				data[i][1] = preppedHint
+				data[i][2] = answer.trim()
+				}
+			}
+			
+		if (ran == "yes") {
+			randomize()
+			}
+			
+		penUlt = data.length-1
+		loadError = false
+
+		}
+
+	function prepMedia(txt) {
+		if (txt.toLowerCase().indexOf("[[image:") > -1) {
+			txt = txt.replace(/\[\[Image:/i,"<IMG class='pic' align='center' SRC='")
+			txt = txt.replace("]]","'>")
+			if (txt.indexOf("https://equatio-api/") > -1) {
+				txt = txt.replace("'pic'","'equatio pic'")
+				}
+			}
+        else if (txt.indexOf("docs.google.com/index.html") > -1) {
+			txt = txt.replace("[[","<iframe class='googleDoc' src='")
+			txt = txt.replace("pub?","embed?")
+			txt = txt.replace("]]","' allowfullscreen='true' mozallowfullscreen='true' webkitallowfullscreen='true'></iframe>")
+			}
+
+		if (txt.toLowerCase().indexOf("[[link:") > -1) {
+            var url = txt.match(/\[\[Link:(.*?)\]\]/i)[1]
+			txt = txt.replace(/\[\[Link:/i,"")
+			txt = txt.replace("]]","")
+			txt = txt.replace(url,"<A HREF='" + url + "' TARGET='_blank'>" + url + "</A>")
+			}
+		if (txt.indexOf("youtu.be") > -1) {
+			txt = txt.replace("shdff8.html","shdff8.html")
+			txt = txt.replace("%5b%5bhttps_/youtu.be/index.html","<iframe class='vid' src='//www.youtube.com/embed/")
+			txt = txt.replace("]]","?rel=0&amp;showinfo=0' frameborder='0' allow='autoplay; encrypted-media' allowfullscreen></iframe>")			
+			}
+		if (txt.indexOf("vocaroo.com/i/index.html") > -1) {
+			txt = txt.replace("shdff8.html","shdff8.html")
+			txt = txt.replace("%5b%5bhttps_/vocaroo.com/i/index.html","<object width='296' height='88' STYLE='display: block; margin: auto;'><DIV>(This feature requires Flash.)</DIV><param name='movie' value='https://vocaroo.com/player.swf?playMediaID=")
+			txt = txt.replace("]]","&autoplay=1' width='296' height='88' wmode='transparent' type='application/x-shockwave-flash'></embed></object>")
+			}
+		if (txt.indexOf("desmos.com/calculator/index.html") > -1) {
+			txt = txt.replace("[[","<iframe class='desmos' src='")
+			txt = txt.replace("]]","?embed' frameborder=0></iframe>")
+			}
+		return txt
+		}
+
+	function prepFlashcards(txt) {
+		var picFormats = new Array(".gif",".png",".jpg",".jpeg",".webp")
+		var	otherFormats = new Array("https://equatio-/","https://docs.google.com/drawings")
+		
+		for (j=0;j<picFormats.length;j++) {
+			if (txt.slice(0,4) == "http" && txt.toLowerCase().slice(-1*picFormats[j].length) == picFormats[j]) {
+				txt = "<IMG class='pic' align='center' SRC='" + txt + "'>"
+				}
+			}
+
+		for (j=0;j<otherFormats.length;j++) {
+			if (txt.slice(0,otherFormats[j].length) == otherFormats[j]) {
+				txt = "<IMG class='pic' align='center' SRC='" + txt + "'>"
+				if (txt.indexOf("https://equatio-api/") > -1) {
+					txt = txt.replace("'pic'","'equatio pic'")
+					}
+				}
+			}
+
+		if (txt.indexOf("youtu.be") > -1) {
+			txt = txt.replace("shdff8.html","shdff8.html")
+			txt = "<iframe class='vid' src='//www.youtube.com/embed/" + txt.slice(16) + "?rel=0&amp;showinfo=0' frameborder='0' allow='autoplay; encrypted-media' allowfullscreen></iframe>"
+			}
+
+		if (txt.indexOf("vocaroo.com/i/index.html") > -1) {
+			txt = txt.replace("shdff8.html","shdff8.html")
+			txt = txt.replace("https://vocaroo.com/i/","")
+			txt = "<object width='296' height='88' STYLE='display: block; margin: auto;'><DIV>(This feature requires Flash.)</DIV><param name='movie' value='https://vocaroo.com/player.swf?playMediaID=" + txt + "&autoplay=1'></param><embed src='https://vocaroo.com/player.swf?playMediaID=" + txt + "&autoplay=1' width='148' height='44' wmode='transparent' type='application/x-shockwave-flash'></embed></object>"
+			}
+
+		if (txt.indexOf("desmos.com/calculator/index.html") > -1) {
+			txt = "<iframe class='desmos' src='" + txt + "?embed' frameborder=0></iframe>"
+			}
+
+		return txt			
+		}
+		
+	function randomize() {
+		var i = data.length
+		if (seq == "final") {
+			i = data.length-1
+			}
+		if ( i == 0 ) return false
+		while ( --i ) {
+			var j = Math.floor( Math.random() * ( i + 1 ) )
+			var tempDatai = data[i]
+			var tempDataj = data[j]
+			data[i] = tempDataj
+			data[j] = tempDatai
+			}
+		}
+
+	function continueHunt() {
+		var enteredName = document.getElementById('nameField').value
+		if (enteredName != "") {
+			document.getElementById('formStudentName').value = enteredName
+			document.getElementById('nameScreen').style.display = "none"
+			document.getElementById('lockScreen').style.display = "block"
+			}
+		else {
+			document.getElementById('nameField').style.borderColor = 'red'
+			document.getElementById('nameField').focus()
+			}
+		}
+
+	var clockStarted = false
+	var secs = 0
+
+	function runClock() {
+		clock = setTimeout(runClock, 1000)
+		secs++
+		}
+
+	function startClock() {
+		if (!clockStarted) {
+			document.getElementById('startScreen').style.display = "none"
+			clockStarted = true
+			runClock()
+			}
+		}
+
+	function stopClock() {
+		clearTimeout(clock)
+		}
+
+	function formatTime() {
+		m = Math.floor(secs / 60)
+		s = secs % 60
+		h = Math.floor(m / 60)
+		m = m % 60
+		if (s < 10) { s = "0" + s }
+		if (h == 0) {
+			return m + ":" + s
+			}
+		else {
+			if (m < 10) { m = "0" + m }
+			return h + ":" + m + ":" + s
+			}
+		}
+
+	function revealClue(nm) {
+		startClock()
+		document.getElementById('answersButton').style.display = "none"
+		document.getElementById('answersScreen').style.display = "none"
+			answers = false
+		hideLocks()
+		document.getElementById('lock' + nm).style.display = "inline-block"
+		document.getElementById('back').style.display = "block"
+		document.getElementById('s' + nm).style.display = "block"
+		document.getElementById('a' + nm).focus()
+		}
+
+	function showHint(nm) {
+		var c = confirm(hintText)
+		if (c == true) {
+			hints[nm] = true
+			document.getElementById('h' + nm).innerHTML = data[nm][1]
+			document.getElementById('a' + nm).focus()
+			}
+		}
+
+	function handleCheck(e,nm) {
+		if (e.keyCode === 13){
+			checkAnswer(nm)
+			}
+		}
+
+	var numCorrect = 0
+
+	function checkAnswer(nm) {
+		var correct = false
+		var corAnswer = data[nm][2]
+		var answer = document.getElementById('a' + nm).value.trim()
+		if (cse == "no") {
+			corAnswer = corAnswer.toLowerCase()
+			answer = answer.toLowerCase()
+			}
+		if (answer != "") {
+			if (answer == corAnswer || corAnswer == "*") {
+				correct = true
+				}
+			else if (corAnswer.indexOf('|') > -1 ) {
+					var answerArray = corAnswer.split("|")
+					for (var i=0; i<answerArray.length; i++) {
+						if (answer == answerArray[i]) {
+							correct = true
+							break
+							}
+						}
+					}
+			else if (corAnswer.indexOf('*') == 0) { // wildcard at start
+				var partial = corAnswer.substr(1,corAnswer.length)
+				var answerEnd = answer.substr(answer.length - partial.length)
+				if (answerEnd == partial) {
+					correct = true
+					}
+				}
+			else if (corAnswer.indexOf('*') == corAnswer.length-1) { // wildcard at end
+				var partial = corAnswer.substr(0,corAnswer.length-1)
+				var answerBeg = answer.substr(0,partial.length)
+				if (answerBeg == partial) {
+					correct = true
+					}
+				}
+			}
+
+
+		if (correct) {
+			corrects[nm] = true
+			givens[nm] = answer
+			unlock.play()
+			document.getElementById('al' + nm).style.display = "none"
+			document.getElementById('ul' + nm).style.display = "inline-block"
+			var next = 1 + nm
+			numCorrect++
+			if (seq == "yes" && next < data.length) {
+				document.getElementById('dl' + next).style.display = "none"
+				document.getElementById('al' + next).style.display = "inline-block"
+				}
+			else if (seq == "final" && numCorrect == penUlt) {
+				document.getElementById('dl' + penUlt).style.display = "none"
+				document.getElementById('al' + penUlt).style.display = "inline-block"
+				}
+			document.getElementById('a' + nm).disabled = true
+			document.getElementById('k' + nm).style.display = "none"
+			}
+		else {
+			locked.pause()
+			locked.currentTime = 0
+			locked.play()
+			document.getElementById('a' + nm).focus()
+			}
+		if (numCorrect == data.length) { // finished
+			stopClock()
+			showLocks()
+			document.getElementById('time').innerHTML = formatTime()
+			document.getElementById('doneScreen').style.display = "block"
+			if (email != "") {
+				sendResults()
+				}
+			}
+		}
+
+	function sendResults() {
+		document.getElementById("formSubmitEmail").value = email
+		document.getElementById("formEmailText").value = emailText
+		document.getElementById("formHuntResults").value = generateResults()
+		document.getElementById("formEmailSubj").value = emailSubj
+		document.getElementById("emailForm").submit()
+		document.getElementById('huntEmail').style.display = "inline"
+		}
+
+	function showLocks() {
+		document.getElementById('back').style.display = "none"
+		for (i=0; i<data.length; i++) {
+			document.getElementById('s' + i).style.display = "none"
+			document.getElementById('lock' + i).style.display = "inline-block"
+			}
+		if (corrects.length > 0) {
+			document.getElementById('answersButton').style.display = "block"
+			}
+		}
+
+	function hideLocks() {
+		for (i=0; i<data.length; i++) {
+			document.getElementById('lock' + i).style.display = "none"
+			}
+		}
+
+	var answers = false
+	function showHideAnswers() {
+		if (answers) {
+			document.getElementById('answersScreen').style.display = "none"
+			}
+		else {
+			document.getElementById('answersScreen').innerHTML = generateTable()
+			document.getElementById('answersScreen').style.display = "inline-block"
+			}
+		answers = !answers
+		}
+
+	function generateTable() {
+		var answersTable = "<TABLE class='answers'>"
+		for (i=0; i<data.length; i++) {
+			var hintCell = ""
+			var nm = i + 1
+			if (hints[i]) {
+				hintCell = "<IMG SRC='images/Lightbulb-sm.png' STYLE='margin-top: 4px;'>"
+				}
+			if (corrects[i]) {
+				answersTable += "<tr><td><p class='num'>" + nm + "</p></td><td><p class='Q'>" + data[i][0] + "</p><p class='A'>" + givens[i] + "</td><td>" + hintCell + "</td></tr>"
+				}
+			}
+		answersTable += "</table>"
+		return answersTable
+		}
+
+	function generateResults() {
+		var results = "<P STYLE='font-family: arial, helvetica, san serif; font-size: 20px;'>"
+		for (i=0; i<data.length; i++) {
+			hint = ""
+			if (hints[i]) {
+				hint = "<IMG SRC='images/Lightbulb-sm.png'>"
+				}
+			var nm = i + 1
+			results += "<IMG SRC='images/Lock-Green-sm.png'> <B>" + nm + ".</B> " + givens[i] + " " + hint + "<BR>"
+			}
+		results += "<BR><IMG SRC='images/Button-Timer-Black.png'> " + formatTime() + "</P>"
+		return results
+		}
+
+	var locked = new Audio("Locked.mp3")
+	var unlock = new Audio("Unlock.mp3")
+
+</SCRIPT>
+
+<SCRIPT type="text/javascript" src="https://spreadsheets.google.com/feeds/list/1f-l1iuW2jC_ZUfV9SYbs2L1Zdc07SknjvuLH1GP8Nkg/2/public/values?alt=json-in-script&amp;callback=loadOptions"></SCRIPT>
+<SCRIPT type="text/javascript" src="https://spreadsheets.google.com/feeds/list/1f-l1iuW2jC_ZUfV9SYbs2L1Zdc07SknjvuLH1GP8Nkg/1/public/values?alt=json-in-script&amp;callback=loadContent"></SCRIPT>
+
+<SCRIPT type="text/javascript">
+	if (loadError) {
+		window.location.replace("error9f72.html?k=1f-l1iuW2jC_ZUfV9SYbs2L1Zdc07SknjvuLH1GP8Nkg")
+		}
+</SCRIPT>
+
+        <DIV id="nameScreen" STYLE="display: none;">
+            <P STYLE="margin-top: 100px;" id="namePrompt"></P>
+            <input ID="nameField" type="text"><BR>
+            <img src="images/Button-Next-Blue2.png" width="45" height="45" title="Continue" onClick="continueHunt()" STYLE="cursor: pointer; margin: 20px;">
+        </DIV>
+
+        <DIV id="lockScreen" STYLE="width: 728px; margin: 75px auto; display: none;" class="noPrint">
+
+		<IMG ID='back' SRC='images/Back-Blue.png' TITLE='Back' onClick='showLocks()' align='left'>
+
+		<SCRIPT type="text/javascript">
+			for (i=0; i < data.length; i++) {
+				var num = i + 1	
+				document.write("<DIV class='locks' ID='lock" + i + "'>")
+				document.write("<DIV class='aLock' ID='al" + i + "' onclick='revealClue(" + i + ")'><DIV class='lockNum'>" + num + "</DIV></DIV>")
+				document.write("<DIV class='dLock' ID='dl" + i + "'><DIV class='lockNum'>" + num + "</DIV></DIV>")
+				document.write("<DIV class='uLock' ID='ul" + i + "' onclick='revealClue(" + i + ")'><DIV class='lockNum'>" + num + "</DIV></DIV>")
+				document.write("</DIV>")
+				}
+
+			for (i=0; i < data.length; i++) {			
+				document.write("<DIV id='s" + i + "' STYLE='display: none;'><P class='clue' ID='c" + i + "'>" + data[i][0] + "</P>")
+				if (data[i][1] != "") {
+					document.write("<P class='hint' ID='h" + i + "'><IMG class='img' SRC='images/Lightbulb.png' TITLE='Show hint' onClick='showHint(" + i + ")'></P>")
+					}
+				document.write("<input class='answer' ID='a" + i + "' type='text' onKeyPress='handleCheck(event," + i + ")'>")
+				document.write("<IMG class='key' ID='k" + i + "' SRC='images/Lock-Key.png' TITLE='Check answer' onClick='checkAnswer(" + i + ")'></DIV>")
+				}
+
+		if (seq == "yes") {
+			for (i=1; i < data.length; i++) {
+				document.getElementById('al' + i).style.display = "none"
+				document.getElementById('dl' + i).style.display = "inline-block"
+				}
+			}
+		else if (seq == "final") {
+			var fin = data.length-1
+			document.getElementById('al' + fin).style.display = "none"
+			document.getElementById('dl' + fin).style.display = "inline-block"
+			}
+        </SCRIPT>
+
+            <DIV id="startScreen" STYLE="display: block;">
+                <P ID="start"></P>
+            </DIV>
+
+        </DIV>
+
+        <DIV id="doneScreen" STYLE="display: none;">
+            <P ID="done"></P>
+            <P ID="time"></P>
+
+            <DIV ID="huntEmail" STYLE="display: block;">
+                <center>
+                <iframe src="blank.html" height="80" width="600" frameborder="0" name="emailFrame" scrolling="no" seamless></iframe>
+                </center>
+             </DIV>
+            
+            <FORM method="post" id="emailForm" action="https://www.flippity.net/sh-email.php" target="emailFrame">
+            <INPUT type="hidden" id="formStudentName" name="formStudentName" value=""> 
+            <INPUT type="hidden" id="formSubmitEmail" name="formSubmitEmail" value="">
+            <INPUT type="hidden" id="formEmailText" name="formEmailText" value="">
+            <INPUT type="hidden" id="formHuntResults" name="formHuntResults" value="">
+            <INPUT type="hidden" id="formEmailSubj" name="formEmailSubj" value="">
+            </FORM>
+
+        </DIV>
+
+        <IMG SRC="images/Button-Report.png" ID="answersButton" onClick="showHideAnswers()" TITLE="Show/Hide Answers" STYLE="margin: 30px 0px; cursor: pointer; display: none;" class="noPrint">
+
+        <DIV id="answersScreen" STYLE="display: none;"></DIV>
+
+    </TD>
+  </TR>
+  <TR height="1" align="CENTER" class="noPrint">
+    <TD>
+	<SCRIPT type="text/javascript">
+		function showHideShare() {
+            if (document.getElementById('share').style.display == 'none') {
+                document.getElementById('share').style.display = 'inline'
+                }
+            else {
+                document.getElementById('share').style.display = 'none'
+                }
+            }
+    </SCRIPT>
+      <BR>
+      <P class="share"><A class="share" href="javascript:showHideShare()" title="Show/Hide Sharing Options"><IMG SRC="images/Share-Icon-Gray.png" width="15" height="16" border="0" align="absmiddle" style="margin-right: 6px;">share</A></P>
+     
+      <DIV ID="share" style="display: none;">
+      
+      <IMG src="images/Link-Icon.png" width="16" height="16" hspace="10" align="absmiddle">
+        <INPUT id="linkURL" type="text" class="linkBox" onClick="this.select()" value="">
+         
+        <TABLE align="center" class="shareOptions">
+          <TR>
+            <TD>
+				<script src="../apis.google.com/js/platform.js" async defer></script>
+                <g:sharetoclassroom url="shdff8.html?k=1f-l1iuW2jC_ZUfV9SYbs2L1Zdc07SknjvuLH1GP8Nkg&amp;s=1" size="20"></g:sharetoclassroom>
+            </TD>
+            <TD>
+	            <SCRIPT type="text/javascript">document.write("<a href='mailto:?subject=" + encodedDocTitle + "&body=Check out this " + encodedDocTitle + ": " + encodedURL + "' TARGET='_blank'><img src='images/Icon-Email.png' width='22' height='20' border='0' title='Email'></a>")</SCRIPT>            
+            </TD>
+            <TD>
+	            <SCRIPT type="text/javascript">
+					encodedQRurl = "QR076c.html?u=" + encodedURL + "&p=" + encodeURIComponent(pageTitle)
+					document.write("<a href='" + encodedQRurl + "' target='_blank'><img src='images/Flippity-QR-Code.gif' width='20' height='20' border='0' title='Get QR Code'></a>")
+                </SCRIPT>
+            <TD>
+                <a href="#" class="twitter-share"><IMG SRC="images/Twitter-Button.gif" width="60" height="20" ALT="Tweet"></a>
+                <SCRIPT type="text/javascript">
+                
+                    var getWindowOptions = function() {
+                    var width = 500;
+                    var height = 350;
+                    var left = (window.innerWidth / 2) - (width / 2);
+                    var top = (window.innerHeight / 2) - (height / 2);
+                    
+                    return [
+                        'resizable,scrollbars,status',
+                        'height=' + height,
+                        'width=' + width,
+                        'left=' + left,
+                        'top=' + top,
+                        ].join();
+                        };
+                    
+                    var twitterBtn = document.querySelector('.twitter-share');
+                    var shareUrl = 'https://twitter.com/intent/tweet?url=' + encodedURL + '&text=' + encodedDocTitle
+                    twitterBtn.href = shareUrl; // 1
+                    
+                    twitterBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    var win = window.open(shareUrl, 'ShareOnTwitter', getWindowOptions());
+                    win.opener = null; // 2
+                    });
+                    
+                </SCRIPT>
+            </TD>
+            <TD>
+                <a href="https://docs.google.com/spreadsheets/d/1f-l1iuW2jC_ZUfV9SYbs2L1Zdc07SknjvuLH1GP8Nkg/edit" target="_blank"><img src="images/Google-Sheets-Icon.gif" width="16" height="20" border="0" title="Original Spreadsheet"></a>
+            </TD>
+          </TR>
+        </TABLE>
+       </DIV> 
+    </TD>
+  </TR>
+  <TR height="1" align="CENTER" class="noPrint">
+    <TD bgcolor="#09c">
+        <P class="copyright">Copyright&copy; 2019-2020 Flippity.net. All Rights Reserved.</P>
+    </TD>
+  </TR>
+ </TABLE>
+
+<SCRIPT type="text/javascript">
+	document.getElementById('start').innerHTML = startText
+	document.getElementById('done').innerHTML = preppedDoneText
+	document.getElementById('linkURL').value = pageURL
+	document.title = docTitle
+	document.getElementById('title').innerHTML = pageTitle
+	document.getElementById('printTitle').innerHTML = pageTitle
+	
+	if (email != "") {
+		document.getElementById('nameScreen').style.display = "block"
+		document.getElementById('namePrompt').innerHTML = namePrompt
+		}
+	else {
+		document.getElementById('lockScreen').style.display = "block"
+		}
+	if ("1f-l1iuW2jC_ZUfV9SYbs2L1Zdc07SknjvuLH1GP8Nkg" == "1ubDVulJpW7B2NDDuHMA1CtBwRxGiehQQZzeJpExdcwQ") { document.getElementById('instructions').style.display = "table-row" }
+</SCRIPT>
+
+</BODY>
+
+<!-- Mirrored from www.flippity.net/sh.php?k=1f-l1iuW2jC_ZUfV9SYbs2L1Zdc07SknjvuLH1GP8Nkg&s=1 by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 15 Oct 2020 10:16:43 GMT -->
+</HTML>
