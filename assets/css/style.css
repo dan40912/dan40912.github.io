@@ -8,6 +8,29 @@
 /*--------------------------------------------------------------
 # General
 --------------------------------------------------------------*/
+  .skill-card {
+    position: relative;
+    color: white;
+    height: 200px;
+    background-size: cover;
+    background-position: center;
+    border-radius: 12px;
+    overflow: hidden;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  }
+  .skill-card h3 {
+    margin: 0;
+    font-size: 1.25rem;
+  }
+  .skill-card p {
+    font-size: 0.9rem;
+    margin-bottom: 0;
+  }
+
 body {
   font-family: "Open Sans", sans-serif;
   color: #272829;
