@@ -160,9 +160,9 @@ if (typed) {
   new Typed('.typed', {
     strings: typed_strings,
     loop: true,
-    typeSpeed: 100,
+    typeSpeed: 130,
     backSpeed: 50,
-    backDelay: 2000,
+    backDelay: 1500,
     contentType: 'html' // 讓 typed.js 支援 HTML
   });
 }
@@ -281,13 +281,25 @@ if (typed) {
 document.addEventListener("DOMContentLoaded", function() {
     const hero = document.getElementById("hero");
     
+    const focusImage = "./assets/img/background.jpg";
     const images = [
-        "./assets/img/background02.jpg",
+        focusImage,
         "./assets/img/background2.jpg",
         "./assets/img/background3.jpg"
     ];
 
     let index = 0;
+
+    const updateHeroFocus = (imagePath) => {
+        if (imagePath && imagePath.includes("background.jpg")) {
+            hero.classList.add("hero-focus-right");
+        } else {
+            hero.classList.remove("hero-focus-right");
+        }
+    };
+
+    hero.style.backgroundImage = `url(${images[index]})`;
+    updateHeroFocus(images[index]);
 
     setInterval(() => {
         // 淡出
@@ -297,11 +309,13 @@ document.addEventListener("DOMContentLoaded", function() {
         setTimeout(() => {
             // 換圖
             index = (index + 1) % images.length;
-            hero.style.backgroundImage = `url(${images[index]})`;
+            const nextImage = images[index];
+            hero.style.backgroundImage = `url(${nextImage})`;
+            updateHeroFocus(nextImage);
 
             // 淡入
             hero.classList.remove("fade-out");
             hero.classList.add("fade-in");
         }, 1500); // 1 秒淡出後換圖
-    }, 8000); // 每 8 秒切換一次
+    }, 6000); // 每 6 秒切換一次
 });

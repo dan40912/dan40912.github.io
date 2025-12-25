@@ -8,10 +8,6 @@
 /*--------------------------------------------------------------
 # General
 --------------------------------------------------------------*/
-  .adjective {
-      color: #000000 !important; /* 亮橘色 */
-      font-weight: bold; /* 粗體 */
-  }
   .skill-card {
     position: relative;
     color: white;
@@ -301,6 +297,13 @@ h1, h2, h3, h4, h5, h6 {
     background-size: cover;
     position: relative;
     transition: background-image 1s ease-in-out, opacity 1s ease-in-out;
+}
+
+@media (max-width: 768px) {
+    #hero.hero-focus-right {
+        /* keep face framed on smaller screens by shifting focus right */
+        background-position: 66% center;
+    }
 }
 
 .fade-out {
