@@ -138,19 +138,34 @@
   /**
    * Hero type effect
    */
-  const typed = select('.typed')
-  if (typed) {
-    let typed_strings = typed.getAttribute('data-typed-items')
-    typed_strings = typed_strings.split(',')
-    new Typed('.typed', {
-      strings: typed_strings,
-      loop: true,
-      typeSpeed: 100,
-      backSpeed: 50,
-      backDelay: 2000
-    });
-  }
+  // const typed = select('.typed')
+  // if (typed) {
+  //   let typed_strings = typed.getAttribute('data-typed-items')
+  //   typed_strings = typed_strings.split(',')
+  //   new Typed('.typed', {
+  //     strings: typed_strings,
+  //     loop: true,
+  //     typeSpeed: 100,
+  //     backSpeed: 50,
+  //     backDelay: 2000
+  //   });
+  // }
 
+  const typed = select('.typed');
+if (typed) {
+  let typed_strings = typed.getAttribute('data-typed-items');
+  // 用逗號分隔每一組
+  typed_strings = typed_strings.split(',').map(item => item.trim());
+
+  new Typed('.typed', {
+    strings: typed_strings,
+    loop: true,
+    typeSpeed: 100,
+    backSpeed: 50,
+    backDelay: 2000,
+    contentType: 'html' // 讓 typed.js 支援 HTML
+  });
+}
   /**
    * Skills animation
    */
@@ -262,3 +277,31 @@
   });
 
 })()
+
+document.addEventListener("DOMContentLoaded", function() {
+    const hero = document.getElementById("hero");
+    
+    const images = [
+        "./assets/img/background02.jpg",
+        "./assets/img/background2.jpg",
+        "./assets/img/background3.jpg"
+    ];
+
+    let index = 0;
+
+    setInterval(() => {
+        // 淡出
+        hero.classList.remove("fade-in");
+        hero.classList.add("fade-out");
+
+        setTimeout(() => {
+            // 換圖
+            index = (index + 1) % images.length;
+            hero.style.backgroundImage = `url(${images[index]})`;
+
+            // 淡入
+            hero.classList.remove("fade-out");
+            hero.classList.add("fade-in");
+        }, 1500); // 1 秒淡出後換圖
+    }, 8000); // 每 8 秒切換一次
+});

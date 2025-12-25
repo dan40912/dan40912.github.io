@@ -8,10 +8,14 @@
 /*--------------------------------------------------------------
 # General
 --------------------------------------------------------------*/
+  .adjective {
+      color: #000000 !important; /* 亮橘色 */
+      font-weight: bold; /* 粗體 */
+  }
   .skill-card {
     position: relative;
     color: white;
-    height: 200px;
+    height: 20rem;
     background-size: cover;
     background-position: center;
     border-radius: 12px;
@@ -282,13 +286,32 @@ h1, h2, h3, h4, h5, h6 {
 /*--------------------------------------------------------------
 # Hero Section
 --------------------------------------------------------------*/
-#hero {
+/* #hero {
   width: 100%;
   height: 100vh;
   background: url("../img/background.jpg") center no-repeat;
   background-size: cover;
   position: relative;
+} */
+
+#hero {
+    width: 100%;
+    height: 100vh;
+    background: url(../img/background.jpg) center no-repeat;
+    background-size: cover;
+    position: relative;
+    transition: background-image 1s ease-in-out, opacity 1s ease-in-out;
 }
+
+.fade-out {
+    opacity: 0;
+}
+
+.fade-in {
+    opacity: 1;
+}
+
+/* Slider */
 
 @media (min-width: 992px) {
   #hero {
@@ -1212,4 +1235,7 @@ section {
 
 #footer .credits {
   font-size: 13px;
+}
+.skill-card{
+  color: black;
 }
