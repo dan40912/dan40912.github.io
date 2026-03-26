@@ -1350,6 +1350,54 @@ section {
   padding: 28px;
 }
 
+.about-section .row {
+  justify-content: center;
+}
+
+.about-section .info-card {
+  position: relative;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 34px 30px;
+  border-radius: 18px;
+  border-color: #cedbe8;
+  background: linear-gradient(145deg, #ffffff 0%, #f7fbff 100%);
+  box-shadow: 0 16px 34px rgba(12, 38, 63, 0.1);
+}
+
+.about-section .info-card::before {
+  content: "";
+  position: absolute;
+  left: 28px;
+  right: 28px;
+  top: 0;
+  height: 4px;
+  border-radius: 99px;
+  background: linear-gradient(90deg, #0f4c81 0%, #5ea3de 100%);
+}
+
+.about-section .info-card p {
+  margin-bottom: 14px;
+  font-size: 1.02rem;
+  line-height: 1.82;
+  color: #2f3f4d;
+}
+
+.about-section .info-card p:last-child {
+  margin-bottom: 0;
+}
+
+.about-section .info-card .lead-text {
+  margin-bottom: 12px;
+  font-size: 1.45rem;
+  line-height: 1.55;
+  letter-spacing: 0.01em;
+}
+
+.about-section .info-card .text-muted {
+  color: #55697b !important;
+}
+
 .about-content-wrap {
   max-width: 80rem;
   margin: 0 auto;
@@ -1441,6 +1489,33 @@ section {
   font-size: 1.25rem;
   margin-bottom: 14px;
   background: linear-gradient(135deg, var(--pm-primary), #2f7bc0);
+}
+
+.fintech-icon {
+  position: relative;
+  overflow: visible;
+}
+
+.fintech-icon .icon-main {
+  font-size: 1.18rem;
+  line-height: 1;
+}
+
+.fintech-icon .icon-badge {
+  position: absolute;
+  right: -5px;
+  bottom: -5px;
+  width: 20px;
+  height: 20px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  color: #0f4c81;
+  border: 1px solid #d3e3f3;
+  box-shadow: 0 4px 10px rgba(12, 38, 63, 0.16);
+  font-size: 0.72rem;
 }
 
 .expertise-card h3 {
@@ -1733,6 +1808,54 @@ section {
   gap: 12px;
 }
 
+.contact-section .contact-card {
+  border-radius: 18px;
+  border-color: #cedbe8;
+  background: linear-gradient(145deg, #ffffff 0%, #f7fbff 100%);
+  box-shadow: 0 16px 34px rgba(12, 38, 63, 0.1);
+}
+
+.contact-section .contact-links {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  column-gap: 16px;
+  row-gap: 10px;
+}
+
+.contact-section .contact-email {
+  justify-self: start;
+  padding: 12px 16px;
+  border-radius: 12px;
+  border: 1px solid #d3e4f5;
+  background: #e8f2ff;
+  color: #0f4c81;
+  font-weight: 700;
+  font-size: 1.02rem;
+}
+
+.contact-section .contact-email i {
+  font-size: 1.08rem;
+}
+
+.contact-section .contact-meta {
+  display: grid;
+  row-gap: 8px;
+}
+
+.contact-section .contact-meta p {
+  margin: 0;
+  color: #304253;
+  font-size: 1.05rem;
+  line-height: 1.55;
+}
+
+.contact-section .contact-label {
+  font-weight: 700;
+  color: #0f4c81;
+  margin-right: 4px;
+}
+
 .contact-links a {
   display: inline-flex;
   align-items: center;
@@ -1783,6 +1906,33 @@ section {
   .contact-links a {
     width: 100%;
     justify-content: center;
+  }
+
+  .about-section .info-card {
+    padding: 24px 20px;
+  }
+
+  .about-section .info-card::before {
+    left: 20px;
+    right: 20px;
+  }
+
+  .about-section .info-card .lead-text {
+    font-size: 1.22rem;
+  }
+
+  .contact-section .contact-links {
+    grid-template-columns: 1fr;
+    align-items: stretch;
+  }
+
+  .contact-section .contact-email {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .contact-section .contact-meta p {
+    font-size: 0.98rem;
   }
 
   .experience-timeline {
