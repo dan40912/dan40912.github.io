@@ -284,6 +284,10 @@ if (typed) {
 
 document.addEventListener("DOMContentLoaded", function() {
     const hero = document.getElementById("hero");
+
+    if (!hero || hero.dataset.heroBackground === "static") {
+        return;
+    }
     
     const focusImage = "./assets/img/background.jpg";
     const images = [
