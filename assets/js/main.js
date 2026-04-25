@@ -230,6 +230,44 @@ if (typed) {
   });
 
   /**
+   * Project category tabs
+   */
+  const projectTabs = select('[data-project-filter]', true);
+  const projectItems = select('[data-project-category]', true);
+  if (projectTabs.length && projectItems.length) {
+    const projectGrid = select('.featured-project-grid');
+    const applyProjectFilter = (filter) => {
+      projectItems.forEach((item) => {
+        const category = item.getAttribute('data-project-category');
+        const isFeatured = item.getAttribute('data-project-featured') === 'true';
+        const shouldShow = filter === 'all' ? isFeatured : category === filter;
+        item.classList.toggle('is-hidden', !shouldShow);
+      });
+      if (projectGrid) {
+        projectGrid.classList.toggle('category-mode', filter !== 'all');
+      }
+      if (typeof AOS !== 'undefined') {
+        AOS.refresh();
+      }
+    };
+
+    projectTabs.forEach((tab) => {
+      tab.addEventListener('click', () => {
+        const filter = tab.getAttribute('data-project-filter');
+        projectTabs.forEach((item) => {
+          item.classList.remove('active');
+          item.setAttribute('aria-pressed', 'false');
+        });
+        tab.classList.add('active');
+        tab.setAttribute('aria-pressed', 'true');
+        applyProjectFilter(filter);
+      });
+    });
+
+    applyProjectFilter('all');
+  }
+
+  /**
    * Portfolio details slider
    */
   if (select('.portfolio-details-slider')) {

@@ -1809,6 +1809,52 @@ section {
   align-items: stretch;
 }
 
+.project-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin: 0 0 28px;
+}
+
+.project-tab {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  padding: 9px 16px;
+  border: 1px solid #cbdbea;
+  border-radius: 999px;
+  background: #fff;
+  color: #304253;
+  font-weight: 700;
+  line-height: 1;
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.project-tab:hover,
+.project-tab:focus,
+.project-tab.active {
+  background: var(--pm-primary);
+  border-color: var(--pm-primary);
+  color: #fff;
+  box-shadow: 0 10px 22px rgba(15, 76, 129, 0.16);
+}
+
+.featured-project-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.featured-project-grid.category-mode {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.project-filter-item.is-hidden {
+  display: none;
+}
+
 .project-card {
   overflow: hidden;
   display: flex;
@@ -2146,6 +2192,10 @@ section {
   .project-image {
     height: 200px;
   }
+
+  .featured-project-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 @media (max-width: 767px) {
@@ -2216,6 +2266,14 @@ section {
 
   .contact-section .contact-meta p {
     font-size: 0.98rem;
+  }
+
+  .featured-project-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .project-tabs {
+    justify-content: flex-start;
   }
 
   .experience-timeline {

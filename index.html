@@ -340,97 +340,214 @@
             </div>
         </section>
 
-        <section id="projects" class="portfolio-section projects-section">
+        <section id="projects" class="portfolio-section projects-section featured-projects-section">
             <div class="container" data-aos="fade-up">
                 <div class="section-title">
                     <h2>精選專案</h2>
+                    <p class="section-subtitle">整理金融、零售、行銷成長三個產業範例；可切換分類查看對應案例。</p>
+                </div>
+                <div class="project-tabs" role="tablist" aria-label="Project category filters">
+                    <button type="button" class="project-tab active" data-project-filter="all" aria-pressed="true">全部</button>
+                    <button type="button" class="project-tab" data-project-filter="finance" aria-pressed="false">金融</button>
+                    <button type="button" class="project-tab" data-project-filter="retail" aria-pressed="false">零售</button>
+                    <button type="button" class="project-tab" data-project-filter="growth" aria-pressed="false">行銷成長</button>
                 </div>
 
-                <div class="row g-4">
-                    <div class="col-lg-6">
+                <div class="featured-project-grid">
+                    <div class="project-filter-item" data-project-category="finance" data-project-featured="true">
                         <article class="project-card h-100">
                             <img src="assets/img/acy.com.png" class="project-image" alt="Trading platform operations">
                             <div class="project-content">
                                 <h3>交易平台營運優化</h3>
-                                <span class="project-meta">2024 - 至今 | 金融基礎建設</span>
-                                <div class="case-block"><h4>背景</h4><p>公司同時維運 MT4/MT5 與自有平台，需兼顧金融營運穩定與效率。</p></div>
-                                <div class="case-block"><h4>問題</h4><p>手續費偏高、流程分散，客服與營運資訊不一致。</p></div>
-                                <div class="case-block"><h4>角色</h4><p>擔任 PM 與技術協調窗口，整合工程、財務、營運、法遵。</p></div>
-                                <!-- <div class="case-block"><h4>解法</h4><p>重整出入金路由、導入 Dify AI 流程，並建立 KPI 導向的產品路線圖治理。</p></div> -->
-                                <div class="case-block"><h4>成果</h4><p>優化虛擬貨幣結算，每月節省超過 USD 10K 手續費，節省公司金流成本費用。</p></div>
+                                <span class="project-meta">金融基礎建設</span>
+                                <div class="case-block"><h4>成效</h4><p>流量成長 3 倍，金流效率提升，並讓跨部門營運資訊更一致。</p></div>
                                 <ul class="impact-list">
-                                    <li>完成澳洲金融監管需求</li>
-                                    <li>跨團隊事件處理速度顯著提升</li>
-                                    <li>網站自然流量提升3倍</li>
+                                    <li>串接 MT4 / MT5、自有平台與多家金流供應商</li>
+                                    <li>Trustpilot 顧客滿意度 <a href="https://www.trustpilot.com/review/www.acy.com">4.5 顆星</a></li>
+                                    <li>支援工程、財務、營運、客服與支付供應商協作</li>
                                 </ul>
                             </div>
                         </article>
                     </div>
 
-                    <div class="col-lg-6">
+                    <div class="project-filter-item" data-project-category="finance" data-project-featured="true">
                         <article class="project-card h-100">
-                            <img src="assets/img/kakao2.jpg" class="project-image" alt="POS and OMO integration">
+                            <img src="assets/img/tradingcup.com.png" class="project-image" alt="Copy trading platform operations">
                             <div class="project-content">
-                                <h3>商場 POS 整合專案</h3>
-                                <span class="project-meta">2019 - 2021 | 零售科技整合</span>
-                                <div class="case-block"><h4>背景</h4><p>連鎖零售需在短時間完成 POS、電商、CRM、會員與發票的 OMO 串接。</p></div>
-                                <div class="case-block"><h4>問題</h4><p>舊 ERP/CRM 移轉複雜，且上線時程壓力高。</p></div>
-                                <div class="case-block"><h4>角色</h4><p>擔任技術與商務橋樑，管理開發團隊與第三方 API 夥伴，並主導會員 / POS 先行移轉、EC / API 次階段上線的整合策略。</p></div>
-                                <div class="case-block"><h4>解法</h4><p>首月完成 POS 與會員移轉，次月完成電商與 API 串接，並同步推進 SEO。</p></div>
-                                <div class="case-block"><h4>成果</h4><p>快速完成 OMO 上線與資料移轉，核心關鍵字排名維持領先。</p></div>
+                                <h3>自動跟單平台</h3>
+                                <span class="project-meta">運營跟單平台</span>
+                                <div class="case-block"><h4>成效</h4><p>活躍跟單者達到歷史最高，顯著高於前年同期。</p></div>
                                 <ul class="impact-list">
-                                    <li>1 個月內完成 POS 與網站上線</li>
-                                    <li>關鍵字排名穩定維持前三</li>
+                                    <li>服務 VIP 帶單者並推廣新功能</li>
+                                    <li>清理歷史問題與客服技術瓶頸</li>
+                                    <li>支援對外行銷推廣與用戶增長</li>
                                 </ul>
-                               
                             </div>
                         </article>
                     </div>
 
-                    <div class="col-lg-6">
+                    <div class="project-filter-item" data-project-category="finance" data-project-featured="false">
                         <article class="project-card h-100">
-                            <img src="assets/img/wagas.png" class="project-image" alt="SEO growth projects">
+                            <img src="assets/img/ASIC.png" class="project-image" alt="Compliance reporting workflow">
                             <div class="project-content">
-                                <h3>IT運營、數位行銷</h3>
-                                <span class="project-meta">2022 - 2024 </span>
-                                <div class="case-block"><h4>背景</h4><p>傳統品牌需要強化數位獲客能力。</p></div>
-                                <div class="case-block"><h4>問題</h4><p>多品牌、多語系 SEO 缺乏整合式成長系統。</p></div>
-                                <div class="case-block"><h4>角色</h4><p>擔任 IT運營、SEO 專案經理，整合內容、技術 SEO、CRM 與利害關係人需求</p></div>
-                                <div class="case-block"><h4>解法</h4><p>建立 SEO 治理機制、Zoho CRM 線索管理整合。</p></div>
-                                <div class="case-block"><h4>成果</h4><p>穩定維運 20+ 專案排名，並提升詢盤品質與轉換效率。</p></div>
+                                <h3>法遵監管報告</h3>
+                                <span class="project-meta">2025 年達成監管報告更新需求</span>
+                                <div class="case-block"><h4>成效</h4><p>依照法遵需求提交指定格式報告，完成錯誤排除並滿足監管要求。</p></div>
                                 <ul class="impact-list">
-                                    <li>透過系統工具和線上訂單流程，每年減少客服一萬通電話</li>
-                                    <li>每年銷售量提升40%</li>
-                                    </ul>
+                                    <li>自有交易平台和 MT4 / MT5 報告資料預備與對外會議</li>
+                                    <li>交易報告監管：澳洲 ASIC、約旦</li>
+                                    <li>離岸非主動傾銷監管：西班牙、法國</li>
+                                </ul>
                             </div>
                         </article>
                     </div>
 
-                    <div class="col-lg-6">
+                    <div class="project-filter-item" data-project-category="finance" data-project-featured="false">
                         <article class="project-card h-100">
-                            <img src="assets/img/kingjih1.png" class="project-image" alt="IoT air purifier development">
+                            <img src="assets/img/tradeify.png" class="project-image" alt="Trading ecosystem research">
                             <div class="project-content">
-                                <h3>IoT 裝置開發專案</h3>
-                                <span class="project-meta">2016 - 2017 | IoT 產品上市</span>
-                                <div class="case-block"><h4>背景</h4><p>傳統製造商希望推出智慧空氣清淨機，並拓展數位銷售通路。</p></div>
-                                <div class="case-block"><h4>問題</h4><p>從 MCU 通訊到 App 上架，跨地軟硬體協作複雜度高。</p></div>
-                                <div class="case-block"><h4>角色</h4><p>擔任 PM，負責時程、規格與高雄硬體及深圳軟體團隊溝通，並決定產品上架、認證與上市推廣的優先順序。</p></div>
-                                <div class="case-block"><h4>解法</h4><p>完成原型定義、Android/iOS 上架、NCC 認證與上市推廣。</p></div>
-                                <div class="case-block"><h4>成果</h4><p>產品成功商業化，帶動銷售成長並拓展通路。</p></div>
+                                <h3>交易生態熟悉</h3>
+                                <span class="project-meta">完成多家自營交易和 CFD 券商平台交易</span>
+                                <div class="case-block"><h4>成效</h4><p>透過實際交易與出金流程理解業界生態、工具設計與交易平台體驗。</p></div>
                                 <ul class="impact-list">
-                                    <li>完成 NCC 認證並順利上架</li>
-                                    <li>產品與行銷整合交付</li>
+                                    <li>10+ 自營交易與券商平台交易經驗</li>
+                                    <li>累積多個出金認證</li>
+                                    <li>自行學習期貨與黃金交易流程</li>
                                 </ul>
-                                <p><a href="https://www.youtube.com/watch?v=FO5bd7LApqE&t=21s">產品介紹影片</a></p>
+                            </div>
+                        </article>
+                    </div>
+
+                    <div class="project-filter-item" data-project-category="retail" data-project-featured="true">
+                        <article class="project-card h-100">
+                            <img src="assets/img/kakao2.jpg" class="project-image" alt="POS integration">
+                            <div class="project-content">
+                                <h3>韓國知名公仔品牌網站和 POS 系統導入</h3>
+                                <span class="project-meta">3+ 連鎖門市 + 2 倉庫</span>
+                                <div class="case-block"><h4>成效</h4><p>1 個月內迅速導入上線，完成網站、POS、會員與庫存流程整合。</p></div>
+                                <ul class="impact-list">
+                                    <li>原合作廠商搬遷全部顧客資訊和產品資料，一個月內迅速上線</li>
+                                    <li>系統點數、線上購物線下取貨流程重新建立</li>
+                                    <li>綠界金流物流新流程規劃</li>
+                                </ul>
+                            </div>
+                        </article>
+                    </div>
+
+                    <div class="project-filter-item" data-project-category="retail" data-project-featured="true">
+                        <article class="project-card h-100">
+                            <img src="assets/img/nokemall.jpg" class="project-image" alt="Shopping mall POS operations">
+                            <div class="project-content">
+                                <h3>商場 POS 系統規劃和運營</h3>
+                                <span class="project-meta">多系統串接，並參與 500 教育訓練人次</span>
+                                <div class="case-block"><h4>成效</h4><p>輔助專案技術前期串接和問題排除，支援大型商場多業態營運。</p></div>
+                                <ul class="impact-list">
+                                    <li>多型態消費方式：餐飲、書店、溜冰場、票券</li>
+                                    <li>協作外部廠商大量 API 測試和規格制定</li>
+                                    <li>參與系統運營和教育訓練</li>
+                                </ul>
+                            </div>
+                        </article>
+                    </div>
+
+                    <div class="project-filter-item" data-project-category="retail" data-project-featured="false">
+                        <article class="project-card h-100">
+                            <img src="assets/img/kingjih1.png" class="project-image" alt="IoT product channel expansion">
+                            <div class="project-content">
+                                <h3>傳統產業轉型 IoT</h3>
+                                <span class="project-meta">月活使用者 5K</span>
+                                <div class="case-block"><h4>成效</h4><p>高端電風扇品牌網站活化和渠道拓展，支援產品商業化與線上銷售。</p></div>
+                                <ul class="impact-list">
+                                    <li>與網站公司密切合作，優化既有網站架構、UIUX 和 SEO 架構</li>
+                                    <li>製作新產品並推廣到 COSTCO、MOMO 購物、淘寶、上海電視購物等平台</li>
+                                    <li>參與行銷專案影片製作剪輯，單年線上營業額提升 5 倍</li>
+                                </ul>
+                            </div>
+                        </article>
+                    </div>
+
+                    <div class="project-filter-item" data-project-category="retail" data-project-featured="false">
+                        <article class="project-card h-100">
+                            <img src="assets/img/wagas.png" class="project-image" alt="Gas POS and online ecommerce">
+                            <div class="project-content">
+                                <h3>可以退瓦斯的 POS 和線上 EC</h3>
+                                <span class="project-meta">月活使用者 10K</span>
+                                <div class="case-block"><h4>成效</h4><p>客製化市面上沒有的瓦斯行專用 POS 系統，並提供線上購物功能。</p></div>
+                                <ul class="impact-list">
+                                    <li>導入 ZOHO CRM 系統，顧客數據可以被有效管理，每年減少營運電話 1 萬通</li>
+                                    <li>新商業模式：退殘氣還可以獲得點數回饋</li>
+                                    <li>團購系統搭建，支援線上訂購與配送服務，超過 10K 訂單</li>
+                                </ul>
+                            </div>
+                        </article>
+                    </div>
+
+                    <div class="project-filter-item" data-project-category="growth" data-project-featured="true">
+                        <article class="project-card h-100">
+                            <img src="assets/img/kakao3.jpg" class="project-image" alt="SEO growth projects">
+                            <div class="project-content">
+                                <h3>SEO 成長專案</h3>
+                                <span class="project-meta">50+ SEO 專案簽訂與維護</span>
+                                <div class="case-block"><h4>成效</h4><p>橫跨電商、金融、工具機等領域，且有上市櫃公司網站執行經驗。</p></div>
+                                <ul class="impact-list">
+                                    <li>整合內容、技術 SEO、CRM 與利害關係人需求</li>
+                                    <li>支援多品牌、多語系海外數位獲客</li>
+                                    <li>建立長期內容維運與排名追蹤流程</li>
+                                </ul>
+                            </div>
+                        </article>
+                    </div>
+
+                    <div class="project-filter-item" data-project-category="growth" data-project-featured="true">
+                        <article class="project-card h-100">
+                            <img src="assets/img/acy.com.png" class="project-image" alt="Regulated product SEO and conversion">
+                            <div class="project-content">
+                                <h3>受監管產品 SEO 與轉化協作</h3>
+                                <span class="project-meta">月活數量 100K 用戶</span>
+                                <div class="case-block"><h4>成效</h4><p>15 年網站流量成長 3 倍。</p></div>
+                                <ul class="impact-list">
+                                    <li>金融文章撰寫，多站點 SEO 架構優化</li>
+                                    <li>支援受監管產品的獲客與內容節奏</li>
+                                    <li>讓流量價值能實際發揮在業績轉化為顧客上</li>
+                                </ul>
+                            </div>
+                        </article>
+                    </div>
+
+                    <div class="project-filter-item" data-project-category="growth" data-project-featured="false">
+                        <article class="project-card h-100">
+                            <img src="assets/img/kakao.png" class="project-image" alt="Commerce content and funnel support">
+                            <div class="project-content">
+                                <h3>EC / 企業官網形象打造</h3>
+                                <span class="project-meta">製作超過 50+ 企業網站</span>
+                                <div class="case-block"><h4>成效</h4><p>橫跨工具機、食品、零售、金融等多產業的網站建設與 SEO 優化。</p></div>
+                                <ul class="impact-list">
+                                    <li>參與 EC 建置、O2O 流程與網站內容展示協作</li>
+                                    <li>讓流量、頁面、通路與後端流程能串在一起</li>
+                                    <li>支援內容曝光與 GA 流量追蹤</li>
+                                </ul>
+                            </div>
+                        </article>
+                    </div>
+
+                    <div class="project-filter-item" data-project-category="growth" data-project-featured="false">
+                        <article class="project-card h-100">
+                            <img src="assets/img/wagas.png" class="project-image" alt="Gas website SEO growth">
+                            <div class="project-content">
+                                <h3>瓦斯網站成長拓客 SEO</h3>
+                                <span class="project-meta">台中瓦斯行</span>
+                                <div class="case-block"><h4>成效</h4><p>獲得台中各區流量，用戶數增長 60%，自然流量提升 300%。</p></div>
+                                <ul class="impact-list">
+                                    <li>品牌形象打造，官網優化重整架構重整</li>
+                                    <li>可以退殘氣、安全等核心訴求明確，提升用戶轉化意願</li>
+                                    <li>影片拍攝、自媒體打造社群黏性、EMAIL、自動回覆機器人</li>
+                                </ul>
                             </div>
                         </article>
                     </div>
                 </div>
             </div>
         </section>
-
-        
-
         <section id="contact" class="portfolio-section contact-section bg-soft">
             <div class="container" data-aos="fade-up">
                 <div class="section-title">
