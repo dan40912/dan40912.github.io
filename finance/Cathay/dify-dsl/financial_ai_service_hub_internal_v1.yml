@@ -1,0 +1,1348 @@
+{
+  "app": {
+    "description": "對內版｜金融集團內部 AI Assistant、知識庫管理、權限審批與案件協作 Demo",
+    "icon": "🤖",
+    "icon_background": "#FFEAD5",
+    "icon_type": "emoji",
+    "mode": "advanced-chat",
+    "name": "Financial AI Service Hub｜對內版",
+    "use_icon_as_answer_icon": false
+  },
+  "dependencies": [
+    {
+      "current_identifier": null,
+      "type": "marketplace",
+      "value": {
+        "marketplace_plugin_unique_identifier": "langgenius/openai_api_compatible:0.0.49@a9ba7656484e461b1f08a6fc76c9ed9db656ebf90e8b3651f488fd411a82152d",
+        "version": null
+      }
+    }
+  ],
+  "kind": "app",
+  "version": "0.6.0",
+  "workflow": {
+    "conversation_variables": [],
+    "environment_variables": [],
+    "features": {
+      "file_upload": {
+        "allowed_file_extensions": [
+          ".JPG",
+          ".JPEG",
+          ".PNG",
+          ".GIF",
+          ".WEBP",
+          ".SVG"
+        ],
+        "allowed_file_types": [
+          "image"
+        ],
+        "allowed_file_upload_methods": [
+          "local_file",
+          "remote_url"
+        ],
+        "enabled": false,
+        "fileUploadConfig": {
+          "attachment_image_file_size_limit": 2,
+          "audio_file_size_limit": 50,
+          "batch_count_limit": 5,
+          "file_size_limit": 15,
+          "file_upload_limit": 20,
+          "image_file_batch_limit": 10,
+          "image_file_size_limit": 10,
+          "single_chunk_attachment_limit": 10,
+          "video_file_size_limit": 100,
+          "workflow_file_upload_limit": 10
+        },
+        "image": {
+          "enabled": false,
+          "number_limits": 3,
+          "transfer_methods": [
+            "local_file",
+            "remote_url"
+          ]
+        },
+        "number_limits": 3
+      },
+      "opening_statement": "您好，我是 Financial AI Service Hub｜對內版，這裡協助內部同仁把客戶查詢、SOP、權限判斷與案件協作整理得更清楚。\n\n您可以把我當成內部 AI Assistant：我能協助業務、客服、理賠、法遵、IT 與主管快速整理問題脈絡，判斷是否符合查詢權限，產出可對客戶說明的安全版本，並建立 mock Case、Approval、Audit Log 與 Teams 通知內容。\n\n為了保護客戶資料，請先告訴我 4 件事：您的角色與部門、查詢目的、查詢對象、您與客戶的服務關係。若資料不足、可能越權、涉及敏感欄位或需要主管審批，我會先提醒風險，再協助整理審批摘要。\n\n這是個人面試 Demo，不串接真實 API，也不查詢真實客戶資料。",
+      "retriever_resource": {
+        "enabled": true
+      },
+      "sensitive_word_avoidance": {
+        "enabled": false
+      },
+      "speech_to_text": {
+        "enabled": false
+      },
+      "suggested_questions": [
+        "我是分行 RM，要查客戶保單權益與可對客戶說明版本",
+        "我要查理賠初判 SOP，請判斷是否需要主管審批",
+        "我要查某位客戶 90 日客訴紀錄，請檢查權限與遮罩規則",
+        "業務想查減額繳清與借款資訊，請建立權限審批摘要",
+        "請把這個內部工單整理成 Case Summary、SLA 與負責團隊",
+        "請判斷這次查詢是否有越權或法遵風險"
+      ],
+      "suggested_questions_after_answer": {
+        "enabled": true
+      },
+      "text_to_speech": {
+        "enabled": false,
+        "language": "",
+        "voice": ""
+      }
+    },
+    "graph": {
+      "edges": [
+        {
+          "data": {
+            "sourceType": "start",
+            "targetType": "llm"
+          },
+          "id": "1711528914102-source-2026051601-target",
+          "source": "1711528914102",
+          "sourceHandle": "source",
+          "target": "2026051601",
+          "targetHandle": "target",
+          "type": "custom"
+        },
+        {
+          "data": {
+            "sourceType": "llm",
+            "targetType": "llm"
+          },
+          "id": "2026051601-source-2026051602-target",
+          "source": "2026051601",
+          "sourceHandle": "source",
+          "target": "2026051602",
+          "targetHandle": "target",
+          "type": "custom"
+        },
+        {
+          "data": {
+            "sourceType": "llm",
+            "targetType": "question-classifier"
+          },
+          "id": "2026051602-source-2026051501-target",
+          "source": "2026051602",
+          "sourceHandle": "source",
+          "target": "2026051501",
+          "targetHandle": "target",
+          "type": "custom"
+        },
+        {
+          "data": {
+            "sourceType": "question-classifier",
+            "targetType": "knowledge-retrieval"
+          },
+          "id": "2026051501-cls_sop-1711528915811-target",
+          "source": "2026051501",
+          "sourceHandle": "cls_sop",
+          "target": "1711528915811",
+          "targetHandle": "target",
+          "type": "custom"
+        },
+        {
+          "data": {
+            "sourceType": "knowledge-retrieval",
+            "targetType": "llm"
+          },
+          "id": "1711528915811-source-1711528917469-target",
+          "source": "1711528915811",
+          "sourceHandle": "source",
+          "target": "1711528917469",
+          "targetHandle": "target",
+          "type": "custom"
+        },
+        {
+          "data": {
+            "sourceType": "llm",
+            "targetType": "llm"
+          },
+          "id": "1711528917469-source-2026051607-target",
+          "source": "1711528917469",
+          "sourceHandle": "source",
+          "target": "2026051607",
+          "targetHandle": "target",
+          "type": "custom"
+        },
+        {
+          "data": {
+            "sourceType": "llm",
+            "targetType": "answer"
+          },
+          "id": "2026051607-source-1711528919501-target",
+          "source": "2026051607",
+          "sourceHandle": "source",
+          "target": "1711528919501",
+          "targetHandle": "target",
+          "type": "custom"
+        },
+        {
+          "data": {
+            "sourceType": "question-classifier",
+            "targetType": "llm"
+          },
+          "id": "2026051501-cls_customer-2026051603-target",
+          "source": "2026051501",
+          "sourceHandle": "cls_customer",
+          "target": "2026051603",
+          "targetHandle": "target",
+          "type": "custom"
+        },
+        {
+          "data": {
+            "sourceType": "llm",
+            "targetType": "llm"
+          },
+          "id": "2026051603-source-2026051502-target",
+          "source": "2026051603",
+          "sourceHandle": "source",
+          "target": "2026051502",
+          "targetHandle": "target",
+          "type": "custom"
+        },
+        {
+          "data": {
+            "sourceType": "llm",
+            "targetType": "answer"
+          },
+          "id": "2026051502-source-2026051512-target",
+          "source": "2026051502",
+          "sourceHandle": "source",
+          "target": "2026051512",
+          "targetHandle": "target",
+          "type": "custom"
+        },
+        {
+          "data": {
+            "sourceType": "question-classifier",
+            "targetType": "llm"
+          },
+          "id": "2026051501-cls_ticket-2026051604-target",
+          "source": "2026051501",
+          "sourceHandle": "cls_ticket",
+          "target": "2026051604",
+          "targetHandle": "target",
+          "type": "custom"
+        },
+        {
+          "data": {
+            "sourceType": "llm",
+            "targetType": "llm"
+          },
+          "id": "2026051604-source-2026051503-target",
+          "source": "2026051604",
+          "sourceHandle": "source",
+          "target": "2026051503",
+          "targetHandle": "target",
+          "type": "custom"
+        },
+        {
+          "data": {
+            "sourceType": "llm",
+            "targetType": "answer"
+          },
+          "id": "2026051503-source-2026051513-target",
+          "source": "2026051503",
+          "sourceHandle": "source",
+          "target": "2026051513",
+          "targetHandle": "target",
+          "type": "custom"
+        },
+        {
+          "data": {
+            "sourceType": "question-classifier",
+            "targetType": "llm"
+          },
+          "id": "2026051501-cls_incident-2026051504-target",
+          "source": "2026051501",
+          "sourceHandle": "cls_incident",
+          "target": "2026051504",
+          "targetHandle": "target",
+          "type": "custom"
+        },
+        {
+          "data": {
+            "sourceType": "llm",
+            "targetType": "llm"
+          },
+          "id": "2026051504-source-2026051605-target",
+          "source": "2026051504",
+          "sourceHandle": "source",
+          "target": "2026051605",
+          "targetHandle": "target",
+          "type": "custom"
+        },
+        {
+          "data": {
+            "sourceType": "llm",
+            "targetType": "answer"
+          },
+          "id": "2026051605-source-2026051514-target",
+          "source": "2026051605",
+          "sourceHandle": "source",
+          "target": "2026051514",
+          "targetHandle": "target",
+          "type": "custom"
+        },
+        {
+          "data": {
+            "sourceType": "question-classifier",
+            "targetType": "llm"
+          },
+          "id": "2026051501-cls_compliance-2026051505-target",
+          "source": "2026051501",
+          "sourceHandle": "cls_compliance",
+          "target": "2026051505",
+          "targetHandle": "target",
+          "type": "custom"
+        },
+        {
+          "data": {
+            "sourceType": "llm",
+            "targetType": "llm"
+          },
+          "id": "2026051505-source-2026051606-target",
+          "source": "2026051505",
+          "sourceHandle": "source",
+          "target": "2026051606",
+          "targetHandle": "target",
+          "type": "custom"
+        },
+        {
+          "data": {
+            "sourceType": "llm",
+            "targetType": "answer"
+          },
+          "id": "2026051606-source-2026051515-target",
+          "source": "2026051606",
+          "sourceHandle": "source",
+          "target": "2026051515",
+          "targetHandle": "target",
+          "type": "custom"
+        },
+        {
+          "data": {
+            "sourceType": "question-classifier",
+            "targetType": "answer"
+          },
+          "id": "2026051501-cls_unknown-2026051516-target",
+          "source": "2026051501",
+          "sourceHandle": "cls_unknown",
+          "target": "2026051516",
+          "targetHandle": "target",
+          "type": "custom"
+        }
+      ],
+      "nodes": [
+        {
+          "data": {
+            "desc": "內部員工開啟對內版 Internal AI Assistant，輸入查詢或作業需求。",
+            "selected": false,
+            "title": "START",
+            "type": "start",
+            "variables": []
+          },
+          "height": 117,
+          "id": "1711528914102",
+          "position": {
+            "x": 80,
+            "y": 500
+          },
+          "positionAbsolute": {
+            "x": 80,
+            "y": 500
+          },
+          "selected": false,
+          "sourcePosition": "right",
+          "targetPosition": "left",
+          "type": "custom",
+          "width": 242
+        },
+        {
+          "data": {
+            "context": {
+              "enabled": false,
+              "variable_selector": []
+            },
+            "desc": "整理員工角色、部門、查詢目的與客戶服務關係，避免一開始就進入未授權查詢。",
+            "memory": {
+              "role_prefix": {
+                "assistant": "",
+                "user": ""
+              },
+              "window": {
+                "enabled": false,
+                "size": 50
+              }
+            },
+            "model": {
+              "completion_params": {
+                "frequency_penalty": 0,
+                "max_tokens": 1200,
+                "presence_penalty": 0,
+                "temperature": 0.25,
+                "top_p": 1
+              },
+              "mode": "chat",
+              "name": "meta/llama-3.1-8b-instruct",
+              "provider": "langgenius/openai_api_compatible/openai_api_compatible"
+            },
+            "prompt_template": [
+              {
+                "role": "system",
+                "text": "你是對內版 AI Assistant 的開場整理節點。請用溫暖但專業的語氣整理使用者需求，確認角色、部門、查詢目的、查詢對象、服務關係與是否已有主管授權。若資訊不足，標示待補欄位。\n\n輸出：需求摘要、必要欄位完整度、是否可進入下一步。"
+              }
+            ],
+            "selected": false,
+            "title": "開場 / 角色與目的整理",
+            "type": "llm",
+            "variables": [],
+            "vision": {
+              "enabled": false
+            }
+          },
+          "height": 132,
+          "id": "2026051601",
+          "position": {
+            "x": 360,
+            "y": 500
+          },
+          "positionAbsolute": {
+            "x": 360,
+            "y": 500
+          },
+          "selected": false,
+          "sourcePosition": "right",
+          "targetPosition": "left",
+          "type": "custom",
+          "width": 242
+        },
+        {
+          "data": {
+            "context": {
+              "enabled": false,
+              "variable_selector": []
+            },
+            "desc": "在需求分流前先判斷是否涉及個資、正式金額、敏感欄位、越權或法遵風險。",
+            "memory": {
+              "role_prefix": {
+                "assistant": "",
+                "user": ""
+              },
+              "window": {
+                "enabled": false,
+                "size": 50
+              }
+            },
+            "model": {
+              "completion_params": {
+                "frequency_penalty": 0,
+                "max_tokens": 1200,
+                "presence_penalty": 0,
+                "temperature": 0.25,
+                "top_p": 1
+              },
+              "mode": "chat",
+              "name": "meta/llama-3.1-8b-instruct",
+              "provider": "langgenius/openai_api_compatible/openai_api_compatible"
+            },
+            "prompt_template": [
+              {
+                "role": "system",
+                "text": "你是對內版權限與風險初判節點。請檢查是否涉及客戶個資、正式金額、保單價值、理賠結果、風險屬性、API key、密碼、token、非服務關係查詢、大量查詢或繞過審批。\n\n輸出：risk_level、permission_status、required_approval、data_minimization_rule、建議分流。"
+              }
+            ],
+            "selected": false,
+            "title": "權限 / 風險初判",
+            "type": "llm",
+            "variables": [],
+            "vision": {
+              "enabled": false
+            }
+          },
+          "height": 132,
+          "id": "2026051602",
+          "position": {
+            "x": 650,
+            "y": 500
+          },
+          "positionAbsolute": {
+            "x": 650,
+            "y": 500
+          },
+          "selected": false,
+          "sourcePosition": "right",
+          "targetPosition": "left",
+          "type": "custom",
+          "width": 242
+        },
+        {
+          "data": {
+            "classes": [
+              {
+                "id": "cls_sop",
+                "label": "內部知識庫",
+                "name": "內部 SOP、FAQ、Policy、權限矩陣、敏感資料遮罩規則、知識候選與文件審核"
+              },
+              {
+                "id": "cls_customer",
+                "label": "權限與客戶資料查詢",
+                "name": "員工查詢客戶資料、客戶 360 摘要、服務關係確認、欄位權限與資料遮罩"
+              },
+              {
+                "id": "cls_ticket",
+                "label": "業務 / 理賠 / 保單查詢",
+                "name": "保單權益、理賠初判、缺件清單、佣金或內部試算、可對客戶說明版本"
+              },
+              {
+                "id": "cls_incident",
+                "label": "內部案件與系統異常",
+                "name": "內部工單、系統異常、ITSM/Jira、Teams 通知、SLA 與負責團隊分派"
+              },
+              {
+                "id": "cls_compliance",
+                "label": "權限審批 / 高風險",
+                "name": "權限不足、需主管審批、需法遵審核、越權查詢、大量查詢、敏感資料未遮罩"
+              },
+              {
+                "id": "cls_unknown",
+                "label": "補充資訊 / 拒答",
+                "name": "角色不明、查詢目的不明、服務關係不足、要求未授權資料或與金融內部作業無關"
+              }
+            ],
+            "desc": null,
+            "instructions": "請依前置風險初判結果與使用者訊息判斷最適合的內部作業分類。優先辨識內部知識庫、客戶資料查詢、權限審批、保單/理賠/業務查詢、內部 Incident、越權或法遵風險。若缺少角色、部門、查詢目的或服務關係，分類到補充資訊 / 拒答。",
+            "model": {
+              "completion_params": {
+                "frequency_penalty": 0,
+                "max_tokens": 512,
+                "presence_penalty": 0,
+                "temperature": 0.7,
+                "top_p": 1
+              },
+              "mode": "chat",
+              "name": "meta/llama-3.1-8b-instruct",
+              "provider": "langgenius/openai_api_compatible/openai_api_compatible"
+            },
+            "query_variable_selector": [
+              "2026051602",
+              "text"
+            ],
+            "selected": false,
+            "title": "對內需求分流 / 權限控管",
+            "type": "question-classifier",
+            "vision": {
+              "enabled": false
+            }
+          },
+          "height": 406,
+          "id": "2026051501",
+          "position": {
+            "x": 940,
+            "y": 500
+          },
+          "positionAbsolute": {
+            "x": 940,
+            "y": 500
+          },
+          "selected": false,
+          "sourcePosition": "right",
+          "targetPosition": "left",
+          "type": "custom",
+          "width": 242
+        },
+        {
+          "data": {
+            "dataset_ids": [
+              "ZR+xZ5cK2YioRhzWHlnc3Ms+gmQhTNfBYgPefpY3r8FAqUgeUXf9KFmI5TVTkEKu"
+            ],
+            "desc": "查詢內部 SOP、權限矩陣、敏感資料遮罩規則與知識候選資料集。",
+            "query_variable_selector": [
+              "1711528914102",
+              "sys.query"
+            ],
+            "retrieval_mode": "single",
+            "selected": false,
+            "single_retrieval_config": {
+              "model": {
+                "completion_params": {
+                  "frequency_penalty": 0,
+                  "max_tokens": 512,
+                  "presence_penalty": 0,
+                  "temperature": 0,
+                  "top_p": 1
+                },
+                "mode": "chat",
+                "name": "gpt-3.5-turbo",
+                "provider": "openai"
+              }
+            },
+            "title": "內部知識庫檢索",
+            "type": "knowledge-retrieval"
+          },
+          "height": 150,
+          "id": "1711528915811",
+          "position": {
+            "x": 1230,
+            "y": 80
+          },
+          "positionAbsolute": {
+            "x": 1230,
+            "y": 80
+          },
+          "selected": false,
+          "sourcePosition": "right",
+          "targetPosition": "left",
+          "type": "custom",
+          "width": 242
+        },
+        {
+          "data": {
+            "context": {
+              "enabled": false,
+              "variable_selector": []
+            },
+            "desc": "用 RAG 回答內部 SOP、權限矩陣、敏感資料遮罩規則與知識候選。",
+            "memory": {
+              "role_prefix": {
+                "assistant": "",
+                "user": ""
+              },
+              "window": {
+                "enabled": false,
+                "size": 50
+              }
+            },
+            "model": {
+              "completion_params": {
+                "frequency_penalty": 0,
+                "max_tokens": 1200,
+                "presence_penalty": 0,
+                "temperature": 0.25,
+                "top_p": 1
+              },
+              "mode": "chat",
+              "name": "meta/llama-3.1-8b-instruct",
+              "provider": "langgenius/openai_api_compatible/openai_api_compatible"
+            },
+            "prompt_template": [
+              {
+                "role": "system",
+                "text": "你是金融集團「對內版」知識庫管理助理。請優先使用 <context></context> 內的內容回答；若知識庫沒有依據，請說「目前知識庫沒有足夠依據」，不得編造。\n\n<context>\n{{#context#}}\n</context>\n\n固定輸出：\n1. 【內部知識判斷】可回答 / 資訊不足 / 需審核 / 不可提供\n2. 【知識庫依據】引用 SOP / FAQ / Policy 名稱；若無依據請說明\n3. 【適用角色】PM / CS / Sales / Claims / Compliance / IT / Manager\n4. 【權限與資料限制】是否涉及客戶資料、正式金額、敏感欄位或遮罩\n5. 【建議處理步驟】\n6. 【是否需審核】主管 / 法遵 / 資安 / Reviewer / 不需要\n7. 【知識候選草稿】若可收錄，提供標準答案草稿與不可收錄原因\n8. 【Audit Log 欄位】員工 ID、角色、部門、查詢目的、客戶代號、文件版本、審核人、時間戳"
+              }
+            ],
+            "selected": false,
+            "title": "內部知識庫管理 / RAG",
+            "type": "llm",
+            "variables": [],
+            "vision": {
+              "enabled": false
+            }
+          },
+          "height": 132,
+          "id": "1711528917469",
+          "position": {
+            "x": 1520,
+            "y": 80
+          },
+          "positionAbsolute": {
+            "x": 1520,
+            "y": 80
+          },
+          "selected": false,
+          "sourcePosition": "right",
+          "targetPosition": "left",
+          "type": "custom",
+          "width": 242
+        },
+        {
+          "data": {
+            "context": {
+              "enabled": false,
+              "variable_selector": []
+            },
+            "desc": "RAG 回覆後判斷是否可沉澱為知識候選，並要求審核。",
+            "memory": {
+              "role_prefix": {
+                "assistant": "",
+                "user": ""
+              },
+              "window": {
+                "enabled": false,
+                "size": 50
+              }
+            },
+            "model": {
+              "completion_params": {
+                "frequency_penalty": 0,
+                "max_tokens": 1200,
+                "presence_penalty": 0,
+                "temperature": 0.25,
+                "top_p": 1
+              },
+              "mode": "chat",
+              "name": "meta/llama-3.1-8b-instruct",
+              "provider": "langgenius/openai_api_compatible/openai_api_compatible"
+            },
+            "prompt_template": [
+              {
+                "role": "system",
+                "text": "你是知識候選與 Reviewer 檢查節點。請根據上游 RAG 回覆判斷是否可成為 Knowledge Candidate。不可收錄個資、正式金額、未審核金融建議、內部風控細節。\n\n輸出：candidate_status、標準答案草稿、不可收錄原因、建議 reviewer。\n\n上游輸出：{{#1711528917469.text#}}"
+              }
+            ],
+            "selected": false,
+            "title": "知識候選 / Reviewer 檢查",
+            "type": "llm",
+            "variables": [],
+            "vision": {
+              "enabled": false
+            }
+          },
+          "height": 132,
+          "id": "2026051607",
+          "position": {
+            "x": 1810,
+            "y": 80
+          },
+          "positionAbsolute": {
+            "x": 1810,
+            "y": 80
+          },
+          "selected": false,
+          "sourcePosition": "right",
+          "targetPosition": "left",
+          "type": "custom",
+          "width": 242
+        },
+        {
+          "data": {
+            "answer": "{{#2026051607.text#}}",
+            "desc": "",
+            "selected": false,
+            "title": "內部知識庫回覆",
+            "type": "answer",
+            "variables": []
+          },
+          "height": 107,
+          "id": "1711528919501",
+          "position": {
+            "x": 2100,
+            "y": 80
+          },
+          "positionAbsolute": {
+            "x": 2100,
+            "y": 80
+          },
+          "selected": false,
+          "sourcePosition": "right",
+          "targetPosition": "left",
+          "type": "custom",
+          "width": 242
+        },
+        {
+          "data": {
+            "context": {
+              "enabled": false,
+              "variable_selector": []
+            },
+            "desc": "在客戶資料查詢前先確認可提供欄位與必須遮罩欄位。",
+            "memory": {
+              "role_prefix": {
+                "assistant": "",
+                "user": ""
+              },
+              "window": {
+                "enabled": false,
+                "size": 50
+              }
+            },
+            "model": {
+              "completion_params": {
+                "frequency_penalty": 0,
+                "max_tokens": 1200,
+                "presence_penalty": 0,
+                "temperature": 0.25,
+                "top_p": 1
+              },
+              "mode": "chat",
+              "name": "meta/llama-3.1-8b-instruct",
+              "provider": "langgenius/openai_api_compatible/openai_api_compatible"
+            },
+            "prompt_template": [
+              {
+                "role": "system",
+                "text": "你是資料最小化與欄位遮罩節點。請根據角色、目的與服務關係判斷可提供欄位、禁止提供欄位、需遮罩欄位與有效查詢期限。若缺少授權，輸出審批需求，不得提供明細。"
+              }
+            ],
+            "selected": false,
+            "title": "資料最小化 / 欄位遮罩",
+            "type": "llm",
+            "variables": [],
+            "vision": {
+              "enabled": false
+            }
+          },
+          "height": 132,
+          "id": "2026051603",
+          "position": {
+            "x": 1230,
+            "y": 260
+          },
+          "positionAbsolute": {
+            "x": 1230,
+            "y": 260
+          },
+          "selected": false,
+          "sourcePosition": "right",
+          "targetPosition": "left",
+          "type": "custom",
+          "width": 242
+        },
+        {
+          "data": {
+            "context": {
+              "enabled": false,
+              "variable_selector": []
+            },
+            "desc": "內部員工查詢客戶資料、服務關係、欄位權限與遮罩判斷。",
+            "memory": {
+              "role_prefix": {
+                "assistant": "",
+                "user": ""
+              },
+              "window": {
+                "enabled": false,
+                "size": 50
+              }
+            },
+            "model": {
+              "completion_params": {
+                "frequency_penalty": 0,
+                "max_tokens": 1200,
+                "presence_penalty": 0,
+                "temperature": 0.25,
+                "top_p": 1
+              },
+              "mode": "chat",
+              "name": "meta/llama-3.1-8b-instruct",
+              "provider": "langgenius/openai_api_compatible/openai_api_compatible"
+            },
+            "prompt_template": [
+              {
+                "role": "system",
+                "text": "你是金融集團對內版的「權限與客戶資料查詢助理」。回答前必須檢查查詢人角色/部門/職務、查詢目的、服務關係、欄位敏感度、是否需主管/法遵/資安/資料 Owner 審批。\n\n前置資料最小化與欄位遮罩檢查結果：{{#2026051603.text#}}\n\n固定輸出：\n1. 【Internal Use Only】\n2. 【查詢摘要】誰查詢誰、查什麼、為什麼查\n3. 【權限判斷】已授權 / 權限不足 / 需主管審批 / 需法遵審核 / 敏感資料遮罩\n4. 【可提供內容】摘要、欄位、需遮罩欄位\n5. 【不可提供內容】禁止揭露內容\n6. 【審批申請摘要】申請人、查詢對象、理由、資料範圍、風險等級、建議審批人\n7. 【可對客戶說明版本】安全、溫和、無內部資訊\n8. 【Audit Log】mock JSON，不含真實個資"
+              }
+            ],
+            "selected": false,
+            "title": "權限與客戶資料查詢",
+            "type": "llm",
+            "variables": [],
+            "vision": {
+              "enabled": false
+            }
+          },
+          "height": 132,
+          "id": "2026051502",
+          "position": {
+            "x": 1520,
+            "y": 260
+          },
+          "positionAbsolute": {
+            "x": 1520,
+            "y": 260
+          },
+          "selected": false,
+          "sourcePosition": "right",
+          "targetPosition": "left",
+          "type": "custom",
+          "width": 242
+        },
+        {
+          "data": {
+            "answer": "{{#2026051502.text#}}",
+            "desc": "",
+            "selected": false,
+            "title": "權限查詢回覆",
+            "type": "answer",
+            "variables": []
+          },
+          "height": 107,
+          "id": "2026051512",
+          "position": {
+            "x": 1810,
+            "y": 260
+          },
+          "positionAbsolute": {
+            "x": 1810,
+            "y": 260
+          },
+          "selected": false,
+          "sourcePosition": "right",
+          "targetPosition": "left",
+          "type": "custom",
+          "width": 242
+        },
+        {
+          "data": {
+            "context": {
+              "enabled": false,
+              "variable_selector": []
+            },
+            "desc": "在保單、理賠、借款、減額繳清與內部試算前檢查審批需求。",
+            "memory": {
+              "role_prefix": {
+                "assistant": "",
+                "user": ""
+              },
+              "window": {
+                "enabled": false,
+                "size": 50
+              }
+            },
+            "model": {
+              "completion_params": {
+                "frequency_penalty": 0,
+                "max_tokens": 1200,
+                "presence_penalty": 0,
+                "temperature": 0.25,
+                "top_p": 1
+              },
+              "mode": "chat",
+              "name": "meta/llama-3.1-8b-instruct",
+              "provider": "langgenius/openai_api_compatible/openai_api_compatible"
+            },
+            "prompt_template": [
+              {
+                "role": "system",
+                "text": "你是業務 / 理賠查詢審批檢查節點。請判斷是否涉及正式金額、理賠初判、保單價值準備金、借款、解約金、減額繳清、佣金或客戶可見版本。\n\n輸出：是否可回答、需審批人、可對客戶說明版本限制。"
+              }
+            ],
+            "selected": false,
+            "title": "業務查詢審批檢查",
+            "type": "llm",
+            "variables": [],
+            "vision": {
+              "enabled": false
+            }
+          },
+          "height": 132,
+          "id": "2026051604",
+          "position": {
+            "x": 1230,
+            "y": 440
+          },
+          "positionAbsolute": {
+            "x": 1230,
+            "y": 440
+          },
+          "selected": false,
+          "sourcePosition": "right",
+          "targetPosition": "left",
+          "type": "custom",
+          "width": 242
+        },
+        {
+          "data": {
+            "context": {
+              "enabled": false,
+              "variable_selector": []
+            },
+            "desc": "內部業務與理賠作業：保單、理賠、缺件、試算與客戶可說版本。",
+            "memory": {
+              "role_prefix": {
+                "assistant": "",
+                "user": ""
+              },
+              "window": {
+                "enabled": false,
+                "size": 50
+              }
+            },
+            "model": {
+              "completion_params": {
+                "frequency_penalty": 0,
+                "max_tokens": 1200,
+                "presence_penalty": 0,
+                "temperature": 0.25,
+                "top_p": 1
+              },
+              "mode": "chat",
+              "name": "meta/llama-3.1-8b-instruct",
+              "provider": "langgenius/openai_api_compatible/openai_api_compatible"
+            },
+            "prompt_template": [
+              {
+                "role": "system",
+                "text": "你是金融集團對內版的「業務 / 理賠 / 保單作業助理」。不得輸出未授權正式金額或最終承諾。\n\n前置業務查詢審批檢查結果：{{#2026051604.text#}}\n\n固定輸出：案件摘要、可回答內容、不可回答內容、待補資料、是否需主管/法遵/資安審批、客戶可見版本、mock Case / Approval。"
+              }
+            ],
+            "selected": false,
+            "title": "業務 / 理賠 / 保單查詢助理",
+            "type": "llm",
+            "variables": [],
+            "vision": {
+              "enabled": false
+            }
+          },
+          "height": 132,
+          "id": "2026051503",
+          "position": {
+            "x": 1520,
+            "y": 440
+          },
+          "positionAbsolute": {
+            "x": 1520,
+            "y": 440
+          },
+          "selected": false,
+          "sourcePosition": "right",
+          "targetPosition": "left",
+          "type": "custom",
+          "width": 242
+        },
+        {
+          "data": {
+            "answer": "{{#2026051503.text#}}",
+            "desc": "",
+            "selected": false,
+            "title": "業務 / 理賠查詢回覆",
+            "type": "answer",
+            "variables": []
+          },
+          "height": 107,
+          "id": "2026051513",
+          "position": {
+            "x": 1810,
+            "y": 440
+          },
+          "positionAbsolute": {
+            "x": 1810,
+            "y": 440
+          },
+          "selected": false,
+          "sourcePosition": "right",
+          "targetPosition": "left",
+          "type": "custom",
+          "width": 242
+        },
+        {
+          "data": {
+            "context": {
+              "enabled": false,
+              "variable_selector": []
+            },
+            "desc": "內部 Case、Incident、Jira、Teams、ITSM 與 SLA 追蹤 mock。",
+            "memory": {
+              "role_prefix": {
+                "assistant": "",
+                "user": ""
+              },
+              "window": {
+                "enabled": false,
+                "size": 50
+              }
+            },
+            "model": {
+              "completion_params": {
+                "frequency_penalty": 0,
+                "max_tokens": 1200,
+                "presence_penalty": 0,
+                "temperature": 0.25,
+                "top_p": 1
+              },
+              "mode": "chat",
+              "name": "meta/llama-3.1-8b-instruct",
+              "provider": "langgenius/openai_api_compatible/openai_api_compatible"
+            },
+            "prompt_template": [
+              {
+                "role": "system",
+                "text": "你是金融集團對內版的「內部案件與系統異常分流助理」。外部串接皆以 mock data 模擬，不要宣稱真的送出。\n\n前置權限 / 風險初判結果：{{#2026051602.text#}}\n\n固定輸出：案件摘要、類型、Priority、SLA、負責團隊、升級條件、Mock 外部系統 payload、Teams 通知摘要。"
+              }
+            ],
+            "selected": false,
+            "title": "內部案件 / 系統異常 / 審批工單",
+            "type": "llm",
+            "variables": [],
+            "vision": {
+              "enabled": false
+            }
+          },
+          "height": 132,
+          "id": "2026051504",
+          "position": {
+            "x": 1230,
+            "y": 620
+          },
+          "positionAbsolute": {
+            "x": 1230,
+            "y": 620
+          },
+          "selected": false,
+          "sourcePosition": "right",
+          "targetPosition": "left",
+          "type": "custom",
+          "width": 242
+        },
+        {
+          "data": {
+            "context": {
+              "enabled": false,
+              "variable_selector": []
+            },
+            "desc": "把內部案件、ITSM、Jira、Teams 與 Approval Request 包裝成可追蹤格式。",
+            "memory": {
+              "role_prefix": {
+                "assistant": "",
+                "user": ""
+              },
+              "window": {
+                "enabled": false,
+                "size": 50
+              }
+            },
+            "model": {
+              "completion_params": {
+                "frequency_penalty": 0,
+                "max_tokens": 1200,
+                "presence_penalty": 0,
+                "temperature": 0.25,
+                "top_p": 1
+              },
+              "mode": "chat",
+              "name": "meta/llama-3.1-8b-instruct",
+              "provider": "langgenius/openai_api_compatible/openai_api_compatible"
+            },
+            "prompt_template": [
+              {
+                "role": "system",
+                "text": "你是內部案件 SLA 與通知包裝節點。請根據上游輸出整理 mock Jira / ITSM / Teams / Approval payload、SLA、負責團隊、升級條件、下一次追蹤時間。\n\n上游輸出：{{#2026051504.text#}}"
+              }
+            ],
+            "selected": false,
+            "title": "SLA / 通知 Payload",
+            "type": "llm",
+            "variables": [],
+            "vision": {
+              "enabled": false
+            }
+          },
+          "height": 132,
+          "id": "2026051605",
+          "position": {
+            "x": 1520,
+            "y": 620
+          },
+          "positionAbsolute": {
+            "x": 1520,
+            "y": 620
+          },
+          "selected": false,
+          "sourcePosition": "right",
+          "targetPosition": "left",
+          "type": "custom",
+          "width": 242
+        },
+        {
+          "data": {
+            "answer": "{{#2026051605.text#}}",
+            "desc": "",
+            "selected": false,
+            "title": "內部案件 / 工單回覆",
+            "type": "answer",
+            "variables": []
+          },
+          "height": 107,
+          "id": "2026051514",
+          "position": {
+            "x": 1810,
+            "y": 620
+          },
+          "positionAbsolute": {
+            "x": 1810,
+            "y": 620
+          },
+          "selected": false,
+          "sourcePosition": "right",
+          "targetPosition": "left",
+          "type": "custom",
+          "width": 242
+        },
+        {
+          "data": {
+            "context": {
+              "enabled": false,
+              "variable_selector": []
+            },
+            "desc": "內部權限不足、敏感資料、越權查詢、大量查詢與法遵高風險處理。",
+            "memory": {
+              "role_prefix": {
+                "assistant": "",
+                "user": ""
+              },
+              "window": {
+                "enabled": false,
+                "size": 50
+              }
+            },
+            "model": {
+              "completion_params": {
+                "frequency_penalty": 0,
+                "max_tokens": 1200,
+                "presence_penalty": 0,
+                "temperature": 0.25,
+                "top_p": 1
+              },
+              "mode": "chat",
+              "name": "meta/llama-3.1-8b-instruct",
+              "provider": "langgenius/openai_api_compatible/openai_api_compatible"
+            },
+            "prompt_template": [
+              {
+                "role": "system",
+                "text": "你是金融集團對內版的「權限審批與高風險查詢守門員」。高風險情境包含非服務關係查詢、大量查詢、敏感資料未遮罩、試圖繞過 SSO/MFA/主管審批、涉及 AML/個資/稽核。\n\n前置權限 / 風險初判結果：{{#2026051602.text#}}\n\n固定輸出：風險判斷、拒答或可協助範圍、審批建議、資料最小化、mock Audit Event。"
+              }
+            ],
+            "selected": false,
+            "title": "權限審批 / 高風險守門員",
+            "type": "llm",
+            "variables": [],
+            "vision": {
+              "enabled": false
+            }
+          },
+          "height": 132,
+          "id": "2026051505",
+          "position": {
+            "x": 1230,
+            "y": 800
+          },
+          "positionAbsolute": {
+            "x": 1230,
+            "y": 800
+          },
+          "selected": false,
+          "sourcePosition": "right",
+          "targetPosition": "left",
+          "type": "custom",
+          "width": 242
+        },
+        {
+          "data": {
+            "context": {
+              "enabled": false,
+              "variable_selector": []
+            },
+            "desc": "把高風險查詢轉成審批摘要與稽核紀錄。",
+            "memory": {
+              "role_prefix": {
+                "assistant": "",
+                "user": ""
+              },
+              "window": {
+                "enabled": false,
+                "size": 50
+              }
+            },
+            "model": {
+              "completion_params": {
+                "frequency_penalty": 0,
+                "max_tokens": 1200,
+                "presence_penalty": 0,
+                "temperature": 0.25,
+                "top_p": 1
+              },
+              "mode": "chat",
+              "name": "meta/llama-3.1-8b-instruct",
+              "provider": "langgenius/openai_api_compatible/openai_api_compatible"
+            },
+            "prompt_template": [
+              {
+                "role": "system",
+                "text": "你是審批與 Audit Log 包裝節點。請根據上游輸出整理 mock Approval Request、審批人、資料範圍、有效期限、拒絕原因、Audit Event JSON。\n\n上游輸出：{{#2026051505.text#}}"
+              }
+            ],
+            "selected": false,
+            "title": "審批 / Audit Log 包裝",
+            "type": "llm",
+            "variables": [],
+            "vision": {
+              "enabled": false
+            }
+          },
+          "height": 132,
+          "id": "2026051606",
+          "position": {
+            "x": 1520,
+            "y": 800
+          },
+          "positionAbsolute": {
+            "x": 1520,
+            "y": 800
+          },
+          "selected": false,
+          "sourcePosition": "right",
+          "targetPosition": "left",
+          "type": "custom",
+          "width": 242
+        },
+        {
+          "data": {
+            "answer": "{{#2026051606.text#}}",
+            "desc": "",
+            "selected": false,
+            "title": "權限審批 / 高風險回覆",
+            "type": "answer",
+            "variables": []
+          },
+          "height": 107,
+          "id": "2026051515",
+          "position": {
+            "x": 1810,
+            "y": 800
+          },
+          "positionAbsolute": {
+            "x": 1810,
+            "y": 800
+          },
+          "selected": false,
+          "sourcePosition": "right",
+          "targetPosition": "left",
+          "type": "custom",
+          "width": 242
+        },
+        {
+          "data": {
+            "answer": "這個問題目前缺少內部查詢必要資訊，或超出您目前可使用的權限。\n\n請補充：角色 / 部門 / 查詢目的、是否與該客戶有服務關係、需要查詢的資料範圍、是否已有主管或資料 Owner 授權。若涉及客戶個資、正式金額、理賠結果、投資風險屬性、內部風控規則、API key、密碼或 token，我無法直接提供。若確有業務需要，我可以協助整理 mock 權限申請與 Audit Log。",
+            "desc": "",
+            "selected": false,
+            "title": "補充資訊 / 權限不足",
+            "type": "answer",
+            "variables": []
+          },
+          "height": 107,
+          "id": "2026051516",
+          "position": {
+            "x": 1230,
+            "y": 980
+          },
+          "positionAbsolute": {
+            "x": 1230,
+            "y": 980
+          },
+          "selected": false,
+          "sourcePosition": "right",
+          "targetPosition": "left",
+          "type": "custom",
+          "width": 242
+        }
+      ],
+      "viewport": {
+        "x": -11,
+        "y": -132,
+        "zoom": 0.7
+      }
+    },
+    "rag_pipeline_variables": []
+  }
+}

@@ -1,0 +1,1348 @@
+{
+  "app": {
+    "description": "對外版｜金融集團客戶 Chatbot、Call Center、知識庫、真人介入與特殊案件 Demo",
+    "icon": "🤖",
+    "icon_background": "#FFEAD5",
+    "icon_type": "emoji",
+    "mode": "advanced-chat",
+    "name": "Financial AI Service Hub｜對外版",
+    "use_icon_as_answer_icon": false
+  },
+  "dependencies": [
+    {
+      "current_identifier": null,
+      "type": "marketplace",
+      "value": {
+        "marketplace_plugin_unique_identifier": "langgenius/openai_api_compatible:0.0.49@a9ba7656484e461b1f08a6fc76c9ed9db656ebf90e8b3651f488fd411a82152d",
+        "version": null
+      }
+    }
+  ],
+  "kind": "app",
+  "version": "0.6.0",
+  "workflow": {
+    "conversation_variables": [],
+    "environment_variables": [],
+    "features": {
+      "file_upload": {
+        "allowed_file_extensions": [
+          ".JPG",
+          ".JPEG",
+          ".PNG",
+          ".GIF",
+          ".WEBP",
+          ".SVG"
+        ],
+        "allowed_file_types": [
+          "image"
+        ],
+        "allowed_file_upload_methods": [
+          "local_file",
+          "remote_url"
+        ],
+        "enabled": false,
+        "fileUploadConfig": {
+          "attachment_image_file_size_limit": 2,
+          "audio_file_size_limit": 50,
+          "batch_count_limit": 5,
+          "file_size_limit": 15,
+          "file_upload_limit": 20,
+          "image_file_batch_limit": 10,
+          "image_file_size_limit": 10,
+          "single_chunk_attachment_limit": 10,
+          "video_file_size_limit": 100,
+          "workflow_file_upload_limit": 10
+        },
+        "image": {
+          "enabled": false,
+          "number_limits": 3,
+          "transfer_methods": [
+            "local_file",
+            "remote_url"
+          ]
+        },
+        "number_limits": 3
+      },
+      "opening_statement": "您好，我是 Financial AI Service Hub｜對外版，很高興協助您處理金融服務相關問題。\n\n您可以詢問開戶流程、產品資訊、文件上傳、登入與身份驗證、疑似詐騙、不明資金、網站異常，或請我協助整理案件摘要並轉接真人客服。\n\n如果您遇到可疑連結、被要求提供驗證碼、收到不明款項，或系統一直無法完成操作，請直接告訴我發生了什麼事。我會先協助您降低風險，再整理需要補充的資料與下一步。\n\n為了保護您的權益，我不能提供個別投資建議、預測漲跌、承諾收益、揭露第三方個資，或取代正式審核結果。若問題涉及高風險、正式金額、理賠、借款或個人化判斷，我會協助整理案件並建議轉真人。\n\n這是個人面試 Demo，使用 mock data，不會送出正式案件。",
+      "retriever_resource": {
+        "enabled": true
+      },
+      "sensitive_word_avoidance": {
+        "enabled": false
+      },
+      "speech_to_text": {
+        "enabled": false
+      },
+      "suggested_questions": [
+        "我要怎麼開戶？需要準備什麼文件？",
+        "PDF 上傳失敗，系統說超過 5MB 但我的檔案只有 3MB",
+        "我收到可疑簡訊，像是有人假冒你們公司",
+        "我收到不認識的人匯款，可以直接退回嗎？",
+        "網站出現 500 error，請幫我整理回報資料",
+        "我要轉真人客服，請幫我整理案件摘要"
+      ],
+      "suggested_questions_after_answer": {
+        "enabled": true
+      },
+      "text_to_speech": {
+        "enabled": false,
+        "language": "",
+        "voice": ""
+      }
+    },
+    "graph": {
+      "edges": [
+        {
+          "data": {
+            "sourceType": "start",
+            "targetType": "llm"
+          },
+          "id": "1711528914102-source-2026051701-target",
+          "source": "1711528914102",
+          "sourceHandle": "source",
+          "target": "2026051701",
+          "targetHandle": "target",
+          "type": "custom"
+        },
+        {
+          "data": {
+            "sourceType": "llm",
+            "targetType": "llm"
+          },
+          "id": "2026051701-source-2026051702-target",
+          "source": "2026051701",
+          "sourceHandle": "source",
+          "target": "2026051702",
+          "targetHandle": "target",
+          "type": "custom"
+        },
+        {
+          "data": {
+            "sourceType": "llm",
+            "targetType": "question-classifier"
+          },
+          "id": "2026051702-source-2026051501-target",
+          "source": "2026051702",
+          "sourceHandle": "source",
+          "target": "2026051501",
+          "targetHandle": "target",
+          "type": "custom"
+        },
+        {
+          "data": {
+            "sourceType": "question-classifier",
+            "targetType": "knowledge-retrieval"
+          },
+          "id": "2026051501-cls_sop-1711528915811-target",
+          "source": "2026051501",
+          "sourceHandle": "cls_sop",
+          "target": "1711528915811",
+          "targetHandle": "target",
+          "type": "custom"
+        },
+        {
+          "data": {
+            "sourceType": "knowledge-retrieval",
+            "targetType": "llm"
+          },
+          "id": "1711528915811-source-1711528917469-target",
+          "source": "1711528915811",
+          "sourceHandle": "source",
+          "target": "1711528917469",
+          "targetHandle": "target",
+          "type": "custom"
+        },
+        {
+          "data": {
+            "sourceType": "llm",
+            "targetType": "llm"
+          },
+          "id": "1711528917469-source-2026051703-target",
+          "source": "1711528917469",
+          "sourceHandle": "source",
+          "target": "2026051703",
+          "targetHandle": "target",
+          "type": "custom"
+        },
+        {
+          "data": {
+            "sourceType": "llm",
+            "targetType": "answer"
+          },
+          "id": "2026051703-source-1711528919501-target",
+          "source": "2026051703",
+          "sourceHandle": "source",
+          "target": "1711528919501",
+          "targetHandle": "target",
+          "type": "custom"
+        },
+        {
+          "data": {
+            "sourceType": "question-classifier",
+            "targetType": "llm"
+          },
+          "id": "2026051501-cls_customer-2026051502-target",
+          "source": "2026051501",
+          "sourceHandle": "cls_customer",
+          "target": "2026051502",
+          "targetHandle": "target",
+          "type": "custom"
+        },
+        {
+          "data": {
+            "sourceType": "llm",
+            "targetType": "llm"
+          },
+          "id": "2026051502-source-2026051704-target",
+          "source": "2026051502",
+          "sourceHandle": "source",
+          "target": "2026051704",
+          "targetHandle": "target",
+          "type": "custom"
+        },
+        {
+          "data": {
+            "sourceType": "llm",
+            "targetType": "answer"
+          },
+          "id": "2026051704-source-2026051512-target",
+          "source": "2026051704",
+          "sourceHandle": "source",
+          "target": "2026051512",
+          "targetHandle": "target",
+          "type": "custom"
+        },
+        {
+          "data": {
+            "sourceType": "question-classifier",
+            "targetType": "llm"
+          },
+          "id": "2026051501-cls_ticket-2026051503-target",
+          "source": "2026051501",
+          "sourceHandle": "cls_ticket",
+          "target": "2026051503",
+          "targetHandle": "target",
+          "type": "custom"
+        },
+        {
+          "data": {
+            "sourceType": "llm",
+            "targetType": "llm"
+          },
+          "id": "2026051503-source-2026051705-target",
+          "source": "2026051503",
+          "sourceHandle": "source",
+          "target": "2026051705",
+          "targetHandle": "target",
+          "type": "custom"
+        },
+        {
+          "data": {
+            "sourceType": "llm",
+            "targetType": "answer"
+          },
+          "id": "2026051705-source-2026051513-target",
+          "source": "2026051705",
+          "sourceHandle": "source",
+          "target": "2026051513",
+          "targetHandle": "target",
+          "type": "custom"
+        },
+        {
+          "data": {
+            "sourceType": "question-classifier",
+            "targetType": "llm"
+          },
+          "id": "2026051501-cls_incident-2026051504-target",
+          "source": "2026051501",
+          "sourceHandle": "cls_incident",
+          "target": "2026051504",
+          "targetHandle": "target",
+          "type": "custom"
+        },
+        {
+          "data": {
+            "sourceType": "llm",
+            "targetType": "llm"
+          },
+          "id": "2026051504-source-2026051706-target",
+          "source": "2026051504",
+          "sourceHandle": "source",
+          "target": "2026051706",
+          "targetHandle": "target",
+          "type": "custom"
+        },
+        {
+          "data": {
+            "sourceType": "llm",
+            "targetType": "answer"
+          },
+          "id": "2026051706-source-2026051514-target",
+          "source": "2026051706",
+          "sourceHandle": "source",
+          "target": "2026051514",
+          "targetHandle": "target",
+          "type": "custom"
+        },
+        {
+          "data": {
+            "sourceType": "question-classifier",
+            "targetType": "llm"
+          },
+          "id": "2026051501-cls_compliance-2026051707-target",
+          "source": "2026051501",
+          "sourceHandle": "cls_compliance",
+          "target": "2026051707",
+          "targetHandle": "target",
+          "type": "custom"
+        },
+        {
+          "data": {
+            "sourceType": "llm",
+            "targetType": "llm"
+          },
+          "id": "2026051707-source-2026051505-target",
+          "source": "2026051707",
+          "sourceHandle": "source",
+          "target": "2026051505",
+          "targetHandle": "target",
+          "type": "custom"
+        },
+        {
+          "data": {
+            "sourceType": "llm",
+            "targetType": "answer"
+          },
+          "id": "2026051505-source-2026051515-target",
+          "source": "2026051505",
+          "sourceHandle": "source",
+          "target": "2026051515",
+          "targetHandle": "target",
+          "type": "custom"
+        },
+        {
+          "data": {
+            "sourceType": "question-classifier",
+            "targetType": "answer"
+          },
+          "id": "2026051501-cls_unknown-2026051516-target",
+          "source": "2026051501",
+          "sourceHandle": "cls_unknown",
+          "target": "2026051516",
+          "targetHandle": "target",
+          "type": "custom"
+        }
+      ],
+      "nodes": [
+        {
+          "data": {
+            "desc": "外部客戶開啟對外版 Customer Chatbot，輸入客服、開戶、安全或系統問題。",
+            "selected": false,
+            "title": "START",
+            "type": "start",
+            "variables": []
+          },
+          "height": 117,
+          "id": "1711528914102",
+          "position": {
+            "x": 80,
+            "y": 500
+          },
+          "positionAbsolute": {
+            "x": 80,
+            "y": 500
+          },
+          "selected": false,
+          "sourcePosition": "right",
+          "targetPosition": "left",
+          "type": "custom",
+          "width": 242
+        },
+        {
+          "data": {
+            "context": {
+              "enabled": false,
+              "variable_selector": []
+            },
+            "desc": "先安定客戶情緒，整理問題類型與下一步所需資訊。",
+            "memory": {
+              "role_prefix": {
+                "assistant": "",
+                "user": ""
+              },
+              "window": {
+                "enabled": false,
+                "size": 50
+              }
+            },
+            "model": {
+              "completion_params": {
+                "frequency_penalty": 0,
+                "max_tokens": 1200,
+                "presence_penalty": 0,
+                "temperature": 0.25,
+                "top_p": 1
+              },
+              "mode": "chat",
+              "name": "meta/llama-3.1-8b-instruct",
+              "provider": "langgenius/openai_api_compatible/openai_api_compatible"
+            },
+            "prompt_template": [
+              {
+                "role": "system",
+                "text": "你是對外版客戶服務開場整理節點。請用溫暖、專業、不推責的語氣整理客戶問題，辨識是否為開戶、產品、文件上傳、登入驗證、詐騙、不明資金、網站異常或轉真人。\n\n輸出：我理解的問題、可能類型、需要補充資訊、下一步。"
+              }
+            ],
+            "selected": false,
+            "title": "溫暖開場 / 問題整理",
+            "type": "llm",
+            "variables": [],
+            "vision": {
+              "enabled": false
+            }
+          },
+          "height": 132,
+          "id": "2026051701",
+          "position": {
+            "x": 360,
+            "y": 500
+          },
+          "positionAbsolute": {
+            "x": 360,
+            "y": 500
+          },
+          "selected": false,
+          "sourcePosition": "right",
+          "targetPosition": "left",
+          "type": "custom",
+          "width": 242
+        },
+        {
+          "data": {
+            "context": {
+              "enabled": false,
+              "variable_selector": []
+            },
+            "desc": "進入分類前先判斷 emotion_score、詐騙、不明資金、自傷與重大客訴風險。",
+            "memory": {
+              "role_prefix": {
+                "assistant": "",
+                "user": ""
+              },
+              "window": {
+                "enabled": false,
+                "size": 50
+              }
+            },
+            "model": {
+              "completion_params": {
+                "frequency_penalty": 0,
+                "max_tokens": 1200,
+                "presence_penalty": 0,
+                "temperature": 0.25,
+                "top_p": 1
+              },
+              "mode": "chat",
+              "name": "meta/llama-3.1-8b-instruct",
+              "provider": "langgenius/openai_api_compatible/openai_api_compatible"
+            },
+            "prompt_template": [
+              {
+                "role": "system",
+                "text": "你是對外版情緒與安全風險偵測節點。請判斷 emotion_score 0-5、risk_level Low / Medium / High / Critical、是否涉及詐騙、不明資金、自傷風險、重大客訴、正式金額或個資。若高風險，建議轉真人與建立 mock case。"
+              }
+            ],
+            "selected": false,
+            "title": "情緒 / 安全風險偵測",
+            "type": "llm",
+            "variables": [],
+            "vision": {
+              "enabled": false
+            }
+          },
+          "height": 132,
+          "id": "2026051702",
+          "position": {
+            "x": 650,
+            "y": 500
+          },
+          "positionAbsolute": {
+            "x": 650,
+            "y": 500
+          },
+          "selected": false,
+          "sourcePosition": "right",
+          "targetPosition": "left",
+          "type": "custom",
+          "width": 242
+        },
+        {
+          "data": {
+            "classes": [
+              {
+                "id": "cls_sop",
+                "label": "客戶知識庫 / FAQ",
+                "name": "開戶 FAQ、產品資訊、文件上傳、登入驗證、網站異常、標準回答格式與知識候選"
+              },
+              {
+                "id": "cls_customer",
+                "label": "客戶服務流程",
+                "name": "開戶引導、產品資訊、文件上傳、申請進度、一般客服、客戶下一步選項"
+              },
+              {
+                "id": "cls_ticket",
+                "label": "真人介入 / 案件摘要",
+                "name": "客戶要求真人、連續未解決、SLA、客服交接摘要、Call Center 佇列與案件分派"
+              },
+              {
+                "id": "cls_incident",
+                "label": "網站 / 系統異常",
+                "name": "500 error、網站打不開、開戶頁進不去、文件上傳服務異常、mock ITSM/Jira/Teams 通知"
+              },
+              {
+                "id": "cls_compliance",
+                "label": "安全 / 合規 / 高風險",
+                "name": "投資建議邊界、疑似詐騙、不明資金、AML、自傷風險、高情緒客訴、重大安全事件"
+              },
+              {
+                "id": "cls_unknown",
+                "label": "超出範圍 / 補充資訊",
+                "name": "無關問題、寫程式、數學題、閒聊、要求個資、資訊不足、需求不明"
+              }
+            ],
+            "desc": null,
+            "instructions": "請依前置情緒與安全風險偵測結果，將客戶訊息分類到最適合的對外服務流程。優先辨識高風險安全事件、詐騙、不明資金、自傷風險與正式金額要求；其次分類開戶、產品資訊、文件上傳、網站異常、轉真人與知識庫 FAQ。",
+            "model": {
+              "completion_params": {
+                "frequency_penalty": 0,
+                "max_tokens": 512,
+                "presence_penalty": 0,
+                "temperature": 0.7,
+                "top_p": 1
+              },
+              "mode": "chat",
+              "name": "meta/llama-3.1-8b-instruct",
+              "provider": "langgenius/openai_api_compatible/openai_api_compatible"
+            },
+            "query_variable_selector": [
+              "2026051702",
+              "text"
+            ],
+            "selected": false,
+            "title": "對外需求分流 / 客服風險控管",
+            "type": "question-classifier",
+            "vision": {
+              "enabled": false
+            }
+          },
+          "height": 406,
+          "id": "2026051501",
+          "position": {
+            "x": 940,
+            "y": 500
+          },
+          "positionAbsolute": {
+            "x": 940,
+            "y": 500
+          },
+          "selected": false,
+          "sourcePosition": "right",
+          "targetPosition": "left",
+          "type": "custom",
+          "width": 242
+        },
+        {
+          "data": {
+            "dataset_ids": [
+              "ZR+xZ5cK2YioRhzWHlnc3Ms+gmQhTNfBYgPefpY3r8FAqUgeUXf9KFmI5TVTkEKu"
+            ],
+            "desc": "查詢對外 FAQ、開戶、產品、文件上傳、安全通報與知識候選資料集。",
+            "query_variable_selector": [
+              "1711528914102",
+              "sys.query"
+            ],
+            "retrieval_mode": "single",
+            "selected": false,
+            "single_retrieval_config": {
+              "model": {
+                "completion_params": {
+                  "frequency_penalty": 0,
+                  "max_tokens": 512,
+                  "presence_penalty": 0,
+                  "temperature": 0,
+                  "top_p": 1
+                },
+                "mode": "chat",
+                "name": "gpt-3.5-turbo",
+                "provider": "openai"
+              }
+            },
+            "title": "對外知識庫檢索",
+            "type": "knowledge-retrieval"
+          },
+          "height": 150,
+          "id": "1711528915811",
+          "position": {
+            "x": 1230,
+            "y": 80
+          },
+          "positionAbsolute": {
+            "x": 1230,
+            "y": 80
+          },
+          "selected": false,
+          "sourcePosition": "right",
+          "targetPosition": "left",
+          "type": "custom",
+          "width": 242
+        },
+        {
+          "data": {
+            "context": {
+              "enabled": false,
+              "variable_selector": []
+            },
+            "desc": "查詢對外 FAQ、開戶、產品、文件上傳、安全通報與知識候選。",
+            "memory": {
+              "role_prefix": {
+                "assistant": "",
+                "user": ""
+              },
+              "window": {
+                "enabled": false,
+                "size": 50
+              }
+            },
+            "model": {
+              "completion_params": {
+                "frequency_penalty": 0,
+                "max_tokens": 1200,
+                "presence_penalty": 0,
+                "temperature": 0.25,
+                "top_p": 1
+              },
+              "mode": "chat",
+              "name": "meta/llama-3.1-8b-instruct",
+              "provider": "langgenius/openai_api_compatible/openai_api_compatible"
+            },
+            "prompt_template": [
+              {
+                "role": "system",
+                "text": "你是金融集團「對外版」知識庫助理。請優先使用 <context></context> 內的內容回答；若知識庫沒有依據，請說「目前知識庫沒有足夠依據」。不得推薦特定金融商品、預測漲跌或承諾收益。\n\n<context>\n{{#context#}}\n</context>\n\n固定輸出：\n【我理解您的問題】\n【建議處理方式】\n【需要補充的資訊】\n【下一步】\n【回饋】"
+              }
+            ],
+            "selected": false,
+            "title": "對外客戶知識庫 / RAG",
+            "type": "llm",
+            "variables": [],
+            "vision": {
+              "enabled": false
+            }
+          },
+          "height": 132,
+          "id": "1711528917469",
+          "position": {
+            "x": 1520,
+            "y": 80
+          },
+          "positionAbsolute": {
+            "x": 1520,
+            "y": 80
+          },
+          "selected": false,
+          "sourcePosition": "right",
+          "targetPosition": "left",
+          "type": "custom",
+          "width": 242
+        },
+        {
+          "data": {
+            "context": {
+              "enabled": false,
+              "variable_selector": []
+            },
+            "desc": "知識庫回答後收集 Like / Dislike，判斷是否可沉澱為知識候選。",
+            "memory": {
+              "role_prefix": {
+                "assistant": "",
+                "user": ""
+              },
+              "window": {
+                "enabled": false,
+                "size": 50
+              }
+            },
+            "model": {
+              "completion_params": {
+                "frequency_penalty": 0,
+                "max_tokens": 1200,
+                "presence_penalty": 0,
+                "temperature": 0.25,
+                "top_p": 1
+              },
+              "mode": "chat",
+              "name": "meta/llama-3.1-8b-instruct",
+              "provider": "langgenius/openai_api_compatible/openai_api_compatible"
+            },
+            "prompt_template": [
+              {
+                "role": "system",
+                "text": "你是對外版回饋與知識候選節點。請根據上游 RAG 回覆產生回饋選項，判斷是否可標記 Knowledge Candidate。不可收錄個資、正式金額、未審核投資建議或高客製化判斷。\n\n上游輸出：{{#1711528917469.text#}}"
+              }
+            ],
+            "selected": false,
+            "title": "回饋 / 知識候選判斷",
+            "type": "llm",
+            "variables": [],
+            "vision": {
+              "enabled": false
+            }
+          },
+          "height": 132,
+          "id": "2026051703",
+          "position": {
+            "x": 1810,
+            "y": 80
+          },
+          "positionAbsolute": {
+            "x": 1810,
+            "y": 80
+          },
+          "selected": false,
+          "sourcePosition": "right",
+          "targetPosition": "left",
+          "type": "custom",
+          "width": 242
+        },
+        {
+          "data": {
+            "answer": "{{#2026051703.text#}}",
+            "desc": "",
+            "selected": false,
+            "title": "對外知識庫回覆",
+            "type": "answer",
+            "variables": []
+          },
+          "height": 107,
+          "id": "1711528919501",
+          "position": {
+            "x": 2100,
+            "y": 80
+          },
+          "positionAbsolute": {
+            "x": 2100,
+            "y": 80
+          },
+          "selected": false,
+          "sourcePosition": "right",
+          "targetPosition": "left",
+          "type": "custom",
+          "width": 242
+        },
+        {
+          "data": {
+            "context": {
+              "enabled": false,
+              "variable_selector": []
+            },
+            "desc": "對外客戶服務：開戶、產品資訊、文件上傳、登入驗證、申請進度與一般 FAQ。",
+            "memory": {
+              "role_prefix": {
+                "assistant": "",
+                "user": ""
+              },
+              "window": {
+                "enabled": false,
+                "size": 50
+              }
+            },
+            "model": {
+              "completion_params": {
+                "frequency_penalty": 0,
+                "max_tokens": 1200,
+                "presence_penalty": 0,
+                "temperature": 0.25,
+                "top_p": 1
+              },
+              "mode": "chat",
+              "name": "meta/llama-3.1-8b-instruct",
+              "provider": "langgenius/openai_api_compatible/openai_api_compatible"
+            },
+            "prompt_template": [
+              {
+                "role": "system",
+                "text": "你是金融集團官網 / App 的對外客戶 Chatbot。請用繁體中文，語氣溫暖、專業、沒有距離感。不得推薦特定商品、預測漲跌或承諾收益。\n\n前置情緒與安全風險偵測結果：{{#2026051702.text#}}\n\n固定回答格式：\n【我理解您的問題】\n【建議處理方式】\n【需要補充的資訊】\n【下一步】\n【回饋】"
+              }
+            ],
+            "selected": false,
+            "title": "對外客戶服務助理",
+            "type": "llm",
+            "variables": [],
+            "vision": {
+              "enabled": false
+            }
+          },
+          "height": 132,
+          "id": "2026051502",
+          "position": {
+            "x": 1230,
+            "y": 260
+          },
+          "positionAbsolute": {
+            "x": 1230,
+            "y": 260
+          },
+          "selected": false,
+          "sourcePosition": "right",
+          "targetPosition": "left",
+          "type": "custom",
+          "width": 242
+        },
+        {
+          "data": {
+            "context": {
+              "enabled": false,
+              "variable_selector": []
+            },
+            "desc": "一般客服回答後補上下一步選項與回饋機制。",
+            "memory": {
+              "role_prefix": {
+                "assistant": "",
+                "user": ""
+              },
+              "window": {
+                "enabled": false,
+                "size": 50
+              }
+            },
+            "model": {
+              "completion_params": {
+                "frequency_penalty": 0,
+                "max_tokens": 1200,
+                "presence_penalty": 0,
+                "temperature": 0.25,
+                "top_p": 1
+              },
+              "mode": "chat",
+              "name": "meta/llama-3.1-8b-instruct",
+              "provider": "langgenius/openai_api_compatible/openai_api_compatible"
+            },
+            "prompt_template": [
+              {
+                "role": "system",
+                "text": "你是對外版下一步與回饋收集節點。請根據上游回答補上 2 到 4 個下一步、是否轉真人、是否建立 mock case、Like / Dislike / 轉真人選項。\n\n上游輸出：{{#2026051502.text#}}"
+              }
+            ],
+            "selected": false,
+            "title": "下一步 / 回饋收集",
+            "type": "llm",
+            "variables": [],
+            "vision": {
+              "enabled": false
+            }
+          },
+          "height": 132,
+          "id": "2026051704",
+          "position": {
+            "x": 1520,
+            "y": 260
+          },
+          "positionAbsolute": {
+            "x": 1520,
+            "y": 260
+          },
+          "selected": false,
+          "sourcePosition": "right",
+          "targetPosition": "left",
+          "type": "custom",
+          "width": 242
+        },
+        {
+          "data": {
+            "answer": "{{#2026051704.text#}}",
+            "desc": "",
+            "selected": false,
+            "title": "客戶服務回覆",
+            "type": "answer",
+            "variables": []
+          },
+          "height": 107,
+          "id": "2026051512",
+          "position": {
+            "x": 1810,
+            "y": 260
+          },
+          "positionAbsolute": {
+            "x": 1810,
+            "y": 260
+          },
+          "selected": false,
+          "sourcePosition": "right",
+          "targetPosition": "left",
+          "type": "custom",
+          "width": 242
+        },
+        {
+          "data": {
+            "context": {
+              "enabled": false,
+              "variable_selector": []
+            },
+            "desc": "對外 Call Center 轉真人、案件摘要、SLA 與客服交接。",
+            "memory": {
+              "role_prefix": {
+                "assistant": "",
+                "user": ""
+              },
+              "window": {
+                "enabled": false,
+                "size": 50
+              }
+            },
+            "model": {
+              "completion_params": {
+                "frequency_penalty": 0,
+                "max_tokens": 1200,
+                "presence_penalty": 0,
+                "temperature": 0.25,
+                "top_p": 1
+              },
+              "mode": "chat",
+              "name": "meta/llama-3.1-8b-instruct",
+              "provider": "langgenius/openai_api_compatible/openai_api_compatible"
+            },
+            "prompt_template": [
+              {
+                "role": "system",
+                "text": "你是對外版真人介入與案件摘要助理。請整理案件類型、優先級、問題摘要、已提供資訊、待補充資訊、建議分派團隊、SLA 建議、Mock Case ID、客服交接話術。請明確說這是 Demo mock case，不代表正式送出。\n\n前置情緒與安全風險偵測結果：{{#2026051702.text#}}"
+              }
+            ],
+            "selected": false,
+            "title": "真人介入 / 案件摘要助理",
+            "type": "llm",
+            "variables": [],
+            "vision": {
+              "enabled": false
+            }
+          },
+          "height": 132,
+          "id": "2026051503",
+          "position": {
+            "x": 1230,
+            "y": 440
+          },
+          "positionAbsolute": {
+            "x": 1230,
+            "y": 440
+          },
+          "selected": false,
+          "sourcePosition": "right",
+          "targetPosition": "left",
+          "type": "custom",
+          "width": 242
+        },
+        {
+          "data": {
+            "context": {
+              "enabled": false,
+              "variable_selector": []
+            },
+            "desc": "真人介入前產生客服交接摘要、SLA、優先級與分派團隊。",
+            "memory": {
+              "role_prefix": {
+                "assistant": "",
+                "user": ""
+              },
+              "window": {
+                "enabled": false,
+                "size": 50
+              }
+            },
+            "model": {
+              "completion_params": {
+                "frequency_penalty": 0,
+                "max_tokens": 1200,
+                "presence_penalty": 0,
+                "temperature": 0.25,
+                "top_p": 1
+              },
+              "mode": "chat",
+              "name": "meta/llama-3.1-8b-instruct",
+              "provider": "langgenius/openai_api_compatible/openai_api_compatible"
+            },
+            "prompt_template": [
+              {
+                "role": "system",
+                "text": "你是 Call Center 交接包節點。請根據上游輸出整理客服交接摘要、客戶情緒、觸發原因、優先級、SLA、建議分派團隊、待補資訊、mock Case ID。\n\n上游輸出：{{#2026051503.text#}}"
+              }
+            ],
+            "selected": false,
+            "title": "Call Center 交接包",
+            "type": "llm",
+            "variables": [],
+            "vision": {
+              "enabled": false
+            }
+          },
+          "height": 132,
+          "id": "2026051705",
+          "position": {
+            "x": 1520,
+            "y": 440
+          },
+          "positionAbsolute": {
+            "x": 1520,
+            "y": 440
+          },
+          "selected": false,
+          "sourcePosition": "right",
+          "targetPosition": "left",
+          "type": "custom",
+          "width": 242
+        },
+        {
+          "data": {
+            "answer": "{{#2026051705.text#}}",
+            "desc": "",
+            "selected": false,
+            "title": "真人介入 / 案件摘要回覆",
+            "type": "answer",
+            "variables": []
+          },
+          "height": 107,
+          "id": "2026051513",
+          "position": {
+            "x": 1810,
+            "y": 440
+          },
+          "positionAbsolute": {
+            "x": 1810,
+            "y": 440
+          },
+          "selected": false,
+          "sourcePosition": "right",
+          "targetPosition": "left",
+          "type": "custom",
+          "width": 242
+        },
+        {
+          "data": {
+            "context": {
+              "enabled": false,
+              "variable_selector": []
+            },
+            "desc": "對外網站、App、文件上傳與系統異常分流，外部串接以 mock data 模擬。",
+            "memory": {
+              "role_prefix": {
+                "assistant": "",
+                "user": ""
+              },
+              "window": {
+                "enabled": false,
+                "size": 50
+              }
+            },
+            "model": {
+              "completion_params": {
+                "frequency_penalty": 0,
+                "max_tokens": 1200,
+                "presence_penalty": 0,
+                "temperature": 0.25,
+                "top_p": 1
+              },
+              "mode": "chat",
+              "name": "meta/llama-3.1-8b-instruct",
+              "provider": "langgenius/openai_api_compatible/openai_api_compatible"
+            },
+            "prompt_template": [
+              {
+                "role": "system",
+                "text": "你是網站 / 系統異常回報助理。請收集 URL、發生時間、錯誤訊息、裝置、瀏覽器、截圖與是否重複發生。不要宣稱真的送出。\n\n前置情緒與安全風險偵測結果：{{#2026051702.text#}}"
+              }
+            ],
+            "selected": false,
+            "title": "網站 / 系統異常回報助理",
+            "type": "llm",
+            "variables": [],
+            "vision": {
+              "enabled": false
+            }
+          },
+          "height": 132,
+          "id": "2026051504",
+          "position": {
+            "x": 1230,
+            "y": 620
+          },
+          "positionAbsolute": {
+            "x": 1230,
+            "y": 620
+          },
+          "selected": false,
+          "sourcePosition": "right",
+          "targetPosition": "left",
+          "type": "custom",
+          "width": 242
+        },
+        {
+          "data": {
+            "context": {
+              "enabled": false,
+              "variable_selector": []
+            },
+            "desc": "系統異常回報後產生技術團隊可接手的 mock payload。",
+            "memory": {
+              "role_prefix": {
+                "assistant": "",
+                "user": ""
+              },
+              "window": {
+                "enabled": false,
+                "size": 50
+              }
+            },
+            "model": {
+              "completion_params": {
+                "frequency_penalty": 0,
+                "max_tokens": 1200,
+                "presence_penalty": 0,
+                "temperature": 0.25,
+                "top_p": 1
+              },
+              "mode": "chat",
+              "name": "meta/llama-3.1-8b-instruct",
+              "provider": "langgenius/openai_api_compatible/openai_api_compatible"
+            },
+            "prompt_template": [
+              {
+                "role": "system",
+                "text": "你是 ITSM / Jira mock payload 節點。請根據上游輸出整理異常摘要、影響範圍、重現步驟、裝置 / 瀏覽器、錯誤截圖需求、Priority、SLA、mock Jira / ITSM payload 與客戶可見回覆。\n\n上游輸出：{{#2026051504.text#}}"
+              }
+            ],
+            "selected": false,
+            "title": "ITSM / Jira Mock Payload",
+            "type": "llm",
+            "variables": [],
+            "vision": {
+              "enabled": false
+            }
+          },
+          "height": 132,
+          "id": "2026051706",
+          "position": {
+            "x": 1520,
+            "y": 620
+          },
+          "positionAbsolute": {
+            "x": 1520,
+            "y": 620
+          },
+          "selected": false,
+          "sourcePosition": "right",
+          "targetPosition": "left",
+          "type": "custom",
+          "width": 242
+        },
+        {
+          "data": {
+            "answer": "{{#2026051706.text#}}",
+            "desc": "",
+            "selected": false,
+            "title": "系統異常回報回覆",
+            "type": "answer",
+            "variables": []
+          },
+          "height": 107,
+          "id": "2026051514",
+          "position": {
+            "x": 1810,
+            "y": 620
+          },
+          "positionAbsolute": {
+            "x": 1810,
+            "y": 620
+          },
+          "selected": false,
+          "sourcePosition": "right",
+          "targetPosition": "left",
+          "type": "custom",
+          "width": 242
+        },
+        {
+          "data": {
+            "context": {
+              "enabled": false,
+              "variable_selector": []
+            },
+            "desc": "高風險安全、詐騙、不明資金、自傷風險先做安全分流。",
+            "memory": {
+              "role_prefix": {
+                "assistant": "",
+                "user": ""
+              },
+              "window": {
+                "enabled": false,
+                "size": 50
+              }
+            },
+            "model": {
+              "completion_params": {
+                "frequency_penalty": 0,
+                "max_tokens": 1200,
+                "presence_penalty": 0,
+                "temperature": 0.25,
+                "top_p": 1
+              },
+              "mode": "chat",
+              "name": "meta/llama-3.1-8b-instruct",
+              "provider": "langgenius/openai_api_compatible/openai_api_compatible"
+            },
+            "prompt_template": [
+              {
+                "role": "system",
+                "text": "你是 Critical Safety Triage 節點。請優先處理詐騙、不明資金、自傷風險、高情緒客訴、投資建議邊界與正式金額。\n\n輸出：立即安全建議、不可建議操作、需轉真人原因、優先級、通報團隊。"
+              }
+            ],
+            "selected": false,
+            "title": "Critical Safety Triage",
+            "type": "llm",
+            "variables": [],
+            "vision": {
+              "enabled": false
+            }
+          },
+          "height": 132,
+          "id": "2026051707",
+          "position": {
+            "x": 1230,
+            "y": 800
+          },
+          "positionAbsolute": {
+            "x": 1230,
+            "y": 800
+          },
+          "selected": false,
+          "sourcePosition": "right",
+          "targetPosition": "left",
+          "type": "custom",
+          "width": 242
+        },
+        {
+          "data": {
+            "context": {
+              "enabled": false,
+              "variable_selector": []
+            },
+            "desc": "對外投資建議邊界、詐騙、不明資金、自傷風險與高情緒客訴。",
+            "memory": {
+              "role_prefix": {
+                "assistant": "",
+                "user": ""
+              },
+              "window": {
+                "enabled": false,
+                "size": 50
+              }
+            },
+            "model": {
+              "completion_params": {
+                "frequency_penalty": 0,
+                "max_tokens": 1200,
+                "presence_penalty": 0,
+                "temperature": 0.25,
+                "top_p": 1
+              },
+              "mode": "chat",
+              "name": "meta/llama-3.1-8b-instruct",
+              "provider": "langgenius/openai_api_compatible/openai_api_compatible"
+            },
+            "prompt_template": [
+              {
+                "role": "system",
+                "text": "你是對外版安全 / 合規 / 高風險守門員。不得提供投資建議、預測漲跌、承諾收益、揭露第三方個資或協助繞過身份驗證。\n\nCritical Safety Triage 結果：{{#2026051707.text#}}\n\n固定輸出：我理解您的情況、立即安全建議、不可提供/不建議操作、案件類型與優先級、建議分派團隊、Mock Case Summary、轉真人。"
+              }
+            ],
+            "selected": false,
+            "title": "安全 / 合規 / 高風險守門員",
+            "type": "llm",
+            "variables": [],
+            "vision": {
+              "enabled": false
+            }
+          },
+          "height": 132,
+          "id": "2026051505",
+          "position": {
+            "x": 1520,
+            "y": 800
+          },
+          "positionAbsolute": {
+            "x": 1520,
+            "y": 800
+          },
+          "selected": false,
+          "sourcePosition": "right",
+          "targetPosition": "left",
+          "type": "custom",
+          "width": 242
+        },
+        {
+          "data": {
+            "answer": "{{#2026051505.text#}}",
+            "desc": "",
+            "selected": false,
+            "title": "安全 / 高風險回覆",
+            "type": "answer",
+            "variables": []
+          },
+          "height": 107,
+          "id": "2026051515",
+          "position": {
+            "x": 1810,
+            "y": 800
+          },
+          "positionAbsolute": {
+            "x": 1810,
+            "y": 800
+          },
+          "selected": false,
+          "sourcePosition": "right",
+          "targetPosition": "left",
+          "type": "custom",
+          "width": 242
+        },
+        {
+          "data": {
+            "answer": "這個問題超出我可以協助的金融服務範圍，或目前資訊不足。\n\n我可以協助您處理開戶、產品資訊、文件上傳、帳戶登入與身份驗證、疑似詐騙、不明資金、網站異常回報、客服案件整理與轉真人客服。我不能提供個別投資建議、預測漲跌、承諾收益、揭露第三方個資或協助繞過身份驗證。請補充您的金融服務需求。",
+            "desc": "",
+            "selected": false,
+            "title": "超出範圍 / 補充資訊",
+            "type": "answer",
+            "variables": []
+          },
+          "height": 107,
+          "id": "2026051516",
+          "position": {
+            "x": 1230,
+            "y": 980
+          },
+          "positionAbsolute": {
+            "x": 1230,
+            "y": 980
+          },
+          "selected": false,
+          "sourcePosition": "right",
+          "targetPosition": "left",
+          "type": "custom",
+          "width": 242
+        }
+      ],
+      "viewport": {
+        "x": -11,
+        "y": -132,
+        "zoom": 0.7
+      }
+    },
+    "rag_pipeline_variables": []
+  }
+}
