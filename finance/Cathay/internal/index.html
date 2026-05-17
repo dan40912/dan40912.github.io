@@ -326,6 +326,70 @@
     .panel-body { padding: 18px; }
     .panel-body h2 { font-size: 21px; line-height: 1.3; }
     .panel-body p { margin-top: 8px; color: var(--muted); line-height: 1.65; }
+    .chatbot-access {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 112px;
+      gap: 12px;
+      align-items: center;
+      margin-top: 14px;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #f8fcfa;
+    }
+    .chatbot-access .btn { width: 100%; }
+    .chatbot-access small {
+      display: block;
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.5;
+      word-break: break-all;
+    }
+    .chatbot-qr {
+      width: 112px;
+      height: 112px;
+      padding: 6px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fff;
+    }
+    .chatbot-panel-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .chatbot-close {
+      width: 34px;
+      height: 34px;
+      flex: 0 0 auto;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      color: #254739;
+      background: #fff;
+      font-size: 20px;
+      font-weight: 900;
+      line-height: 1;
+    }
+    .chatbot-dock {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      bottom: 20px;
+      width: min(430px, calc(100vw - 40px));
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr);
+      z-index: 60;
+      box-shadow: 0 28px 70px rgba(16,32,24,.24);
+    }
+    .chatbot-dock .chat-frame {
+      height: auto;
+      min-height: 0;
+    }
+    .chatbot-dock .chat-frame iframe {
+      min-height: 0 !important;
+    }
     textarea {
       width: 100%;
       min-height: 126px;
@@ -338,6 +402,13 @@
       resize: vertical;
       outline: none;
       line-height: 1.6;
+    }
+    .field-label {
+      display: block;
+      margin-top: 14px;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 900;
     }
     textarea:focus {
       border-color: var(--green);
@@ -401,6 +472,47 @@
       box-shadow: 0 8px 18px rgba(29,78,53,.10);
     }
     .actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
+    .decision-summary {
+      display: grid;
+      gap: 10px;
+      padding: 14px;
+      border-top: 1px solid var(--line);
+      background: #fbfefc;
+    }
+    .decision-summary h3 {
+      margin: 0;
+      font-size: 15px;
+      line-height: 1.3;
+    }
+    .decision-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+    }
+    .decision-item {
+      min-height: 66px;
+      padding: 10px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fff;
+    }
+    .decision-item span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 900;
+    }
+    .decision-item strong {
+      display: block;
+      margin-top: 5px;
+      font-size: 14px;
+      line-height: 1.35;
+    }
+    .decision-item.danger {
+      border-color: rgba(143,79,75,.35);
+      background: var(--danger-soft);
+      color: #6d3430;
+    }
     pre {
       max-height: 260px;
       overflow: auto;
@@ -425,6 +537,21 @@
       color: #6d3430;
     }
     .notice .panel-body p { color: inherit; }
+    .mock-profile-list {
+      display: grid;
+      gap: 8px;
+      margin-top: 12px;
+    }
+    .mock-profile-item {
+      padding: 10px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #f8fcfa;
+      font-size: 13px;
+      line-height: 1.55;
+    }
+    .mock-profile-item strong { display: block; color: var(--green-dark); }
+    .mock-profile-item span { display: block; margin-top: 3px; color: var(--muted); }
     .chat-frame {
       height: 520px;
       border-top: 1px solid var(--line);
@@ -435,6 +562,28 @@
       height: 100%;
       border: 0;
       display: block;
+    }
+    .floating-chatbot {
+      position: fixed;
+      right: 20px;
+      bottom: 88px;
+      min-height: 48px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 0 18px;
+      border: 1px solid var(--green);
+      border-radius: var(--radius);
+      color: #fff;
+      background: var(--green);
+      box-shadow: var(--shadow);
+      font-weight: 950;
+      z-index: 25;
+    }
+    .floating-chatbot:hover {
+      background: var(--green-dark);
+      transform: translateY(-1px);
     }
     .toast {
       position: fixed;
@@ -467,9 +616,15 @@
     @media (max-width: 980px) {
       .topbar { align-items: flex-start; flex-direction: column; padding: 14px; }
       .page { padding: 18px 14px 32px; }
-      .hero, .workspace, .industry-grid { grid-template-columns: 1fr; }
+      .hero, .workspace, .industry-grid, .decision-grid { grid-template-columns: 1fr; }
       .call-center-entry { grid-template-columns: 1fr; }
       .side { position: static; }
+      .chatbot-access { grid-template-columns: 1fr; }
+      .chatbot-dock {
+        inset: 12px;
+        width: auto;
+      }
+      .floating-chatbot { right: 14px; bottom: 76px; }
     }
   </style>
 </head>
@@ -479,7 +634,7 @@
       <div class="mark">同仁</div>
       <div>
         <strong>對內工作台</strong>
-        <span>先選產業，再帶入內部 Chatbot</span>
+        <span>選情境、看判斷、複製測試資料</span>
       </div>
     </a>
     <div class="top-actions user-area">
@@ -497,20 +652,20 @@
   <main class="page">
     <section class="hero">
       <div class="hero-copy">
-        <h1>選產業別，套用正確回覆界線。</h1>
+        <h1>選產業情境，檢查 AI 權限判斷。</h1>
       </div>
       <aside class="panel status-panel" aria-label="內部流程">
         <div class="status-item">
-          <strong>先選產業</strong>
+          <strong>選情境</strong>
           <span>每個產業有不同說法、禁止事項與交接條件。</span>
         </div>
         <div class="status-item">
-          <strong>再貼問題</strong>
-          <span>右側會同步更新 inputs，方便前台 API 使用。</span>
+          <strong>看判斷</strong>
+          <span>右側同步顯示風險、批准、回答格式與 FAQ 來源。</span>
         </div>
         <div class="status-item">
-          <strong>最後開啟 Chatbot</strong>
-          <span>帶著目前產業與問題內容進入內部版對話。</span>
+          <strong>測試 Chatbot</strong>
+          <span>複製同一份 payload，讓內部版機器人按契約回答。</span>
         </div>
       </aside>
     </section>
@@ -538,13 +693,35 @@
             <h2 id="selectedTitle">證券工作台</h2>
             <p id="selectedDesc">複委託、交割、庫存、融資融券與風險揭露。</p>
             <div class="preset-group" aria-label="預設問題">
-              <div class="preset-label">選擇一個常見提問</div>
+              <div class="preset-label">選一個 demo 情境</div>
               <div class="preset-options" id="presetOptions"></div>
             </div>
-            <textarea id="queryInput"></textarea>
+            <label class="field-label" for="queryInput">測試問題</label>
+            <textarea id="queryInput" aria-label="測試問題"></textarea>
             <div class="actions">
-              <button class="btn primary" id="launchBtn" type="button" title="以目前產業別與預設問題開啟內部 Chatbot">開啟 Chatbot</button>
-              <button class="btn" id="copyBtn" type="button" title="複製 Dify inputs，包含 business_line 與內部身份參數">複製 inputs</button>
+              <button class="btn primary" id="launchBtn" type="button" title="以目前產業別與測試問題準備內部 Chatbot">準備測試</button>
+              <button class="btn" id="copyBtn" type="button" title="複製完整 Dify 測試 payload">複製測試資料</button>
+            </div>
+          </div>
+          <div class="decision-summary" aria-label="AI 判斷摘要">
+            <h3>AI 判斷摘要</h3>
+            <div class="decision-grid">
+              <div class="decision-item">
+                <span>業別 / 角色</span>
+                <strong id="decisionLine">securities / securities_rm</strong>
+              </div>
+              <div class="decision-item" id="decisionRiskBox">
+                <span>風險</span>
+                <strong id="decisionRisk">normal</strong>
+              </div>
+              <div class="decision-item">
+                <span>批准</span>
+                <strong id="decisionApproval">不需主管批准</strong>
+              </div>
+              <div class="decision-item">
+                <span>回答格式</span>
+                <strong id="decisionContract">內部客戶可說版本</strong>
+              </div>
             </div>
           </div>
           <pre id="payloadPreview"></pre>
@@ -554,22 +731,56 @@
           <div class="panel-body">
             <h2>回覆界線</h2>
             <p id="riskText">不提供個股推薦或漲跌預測，不協助規避風險揭露或身份驗證。</p>
+            <p id="botExpectation">測試標準：先判斷風險，再輸出客戶可說版本、不可說與是否需轉人工。</p>
           </div>
         </section>
 
-        <section class="panel" id="chatbotPanel" hidden>
+        <section class="panel" id="mockProfilePanel" hidden>
           <div class="panel-body">
-            <h2>內部 Chatbot</h2>
-            <p id="chatbotHint">已依目前產業帶入 inputs。</p>
-          </div>
-          <div class="chat-frame">
-            <iframe src="https://dify.startpray.online/chatbot/uqFsjguYiDLCWjU1" allow="microphone"></iframe>
+            <h2>Mock 客戶資料</h2>
+            <p id="mockProfileSummary">依 demo mock data 顯示，不是正式核心系統資料。</p>
+            <div class="mock-profile-list" id="mockProfileList"></div>
           </div>
         </section>
+
+        <section class="panel" aria-label="Chatbot 入口">
+          <div class="panel-body">
+            <h2>Chatbot 入口</h2>
+            <p>可直接開啟獨立 Chatbot，或用手機掃描 QR code。</p>
+            <div class="chatbot-access" aria-label="Chatbot 連結與 QR code">
+              <div>
+                <a class="btn primary" href="https://dify.startpray.online/chat/T4GRIRNBR7NQKsca" target="_blank" rel="noopener">開啟獨立 Chatbot</a>
+                <small>https://dify.startpray.online/chat/T4GRIRNBR7NQKsca</small>
+              </div>
+              <img class="chatbot-qr" src="https://api.qrserver.com/v1/create-qr-code/?size=224x224&data=https%3A%2F%2Fdify.startpray.online%2Fchat%2FT4GRIRNBR7NQKsca" alt="內部 Chatbot QR code">
+            </div>
+          </div>
+        </section>
+
       </aside>
     </section>
   </main>
 
+  <section class="panel chatbot-dock" id="chatbotPanel" hidden>
+    <div class="panel-body">
+      <div class="chatbot-panel-head">
+        <div>
+          <h2>內部 Chatbot</h2>
+          <p id="chatbotHint">已依目前產業帶入 inputs。</p>
+        </div>
+        <button class="chatbot-close" id="chatbotCloseBtn" type="button" aria-label="收合 Chatbot">×</button>
+      </div>
+    </div>
+    <div class="chat-frame">
+      <iframe
+        src="https://dify.startpray.online/chatbot/T4GRIRNBR7NQKsca"
+        style="width: 100%; height: 100%; min-height: 700px"
+        frameborder="0"
+        allow="microphone">
+      </iframe>
+    </div>
+  </section>
+  <button class="floating-chatbot" id="floatingChatbotBtn" type="button" aria-controls="chatbotPanel" title="以目前測試問題開啟內部 Chatbot">開啟 Chatbot</button>
   <div class="toast" id="toast" role="status" aria-live="polite">已更新</div>
 
   <script>
@@ -584,126 +795,353 @@
 
     const industries = [
       {
-        business_line: "banking",
-        icon: "銀",
-        title: "銀行",
-        role: "bank_rm",
-        department: "banking_sales",
-        faq: "../faqs/banking.md",
-        desc: "帳戶、開戶、登入、轉帳、存款、貸款與不明資金。",
-        risk: "不協助繞過身份驗證；遇到不明資金或詐騙，先轉安全流程。",
-        presets: [
-          { label: "一般：登入卡住", query: "客戶說 CUBE App 今天一直登入失敗，已經重設密碼但還是不行。請幫我整理一段客服可直接說的版本，包含不索取密碼或 OTP 的安全提醒。" },
-          { label: "尖銳：不明入帳", query: "客戶很緊張地說帳戶突然收到一筆不認識的款項，懷疑是不是詐騙或帳戶被盜用。請幫我整理第一線回覆，包含先不要動用款項、不要依陌生指示操作、需要轉安全流程。" },
-          { label: "流程：非約定轉帳", query: "客戶說已經去分行辦過交易認證碼，但 CUBE App 還是不能做非約定轉帳。請幫我整理可以追問的重點與客戶可聽懂的處理方向。" }
-        ]
+            business_line: "banking",
+            icon: "銀",
+            title: "銀行",
+            role: "bank_rm",
+            department: "banking_sales",
+            faq: "../faqs/banking.md",
+            desc: "帳戶、開戶、登入、轉帳、存款、貸款與不明資金。",
+            risk: "不協助繞過身份驗證；遇到不明資金或詐騙，先轉安全流程。",
+            mockCustomer: {
+                  customer_id: "CUST-BANK-001",
+                  display_name: "林先生",
+                  age_range: "40-45",
+                  service_relationship: "assigned_rm",
+                  snapshot_date: "2026-05-17",
+                  holdings: [
+                        "台幣活存帳戶",
+                        "薪轉戶",
+                        "網銀/行動銀行已啟用"
+                  ],
+                  gap_or_next_step: [
+                        "未開啟高風險交易通知",
+                        "非約定轉帳限額需確認",
+                        "近期有不明入帳需安全流程"
+                  ],
+                  recommendation_boundary: "只能提醒安全設定與流程確認，不可要求密碼、OTP 或完整帳號。"
+            },
+            presets: [
+                  {
+                        label: "路線1：查帳戶現況",
+                        query: "這位客戶目前有哪些銀行服務？請依 mock 資料整理帳戶、網銀與需確認事項。"
+                  },
+                  {
+                        label: "路線2：安全設定建議",
+                        query: "根據剛剛帳戶現況，請建議同仁下一步可提醒客戶的安全設定與分流問題。"
+                  },
+                  {
+                        label: "路線3：不明入帳風險",
+                        query: "客戶收到不明款項並有人要求轉出。請整理第一線回覆：先不要動用，不依陌生指示操作，必要時轉安全流程。"
+                  }
+            ]
       },
       {
-        business_line: "life_insurance",
-        icon: "壽",
-        title: "人壽",
-        role: "life_agent",
-        department: "life_insurance_sales",
-        faq: "../faqs/life_insurance.md",
-        desc: "保單、保障、理賠、保單價值、借款與減額繳清。",
-        risk: "不承諾理賠結果；醫療與文件判定需回到正式流程。",
-        presets: [
-          { label: "一般：理賠文件", query: "客戶剛住院出院，想知道醫療理賠要準備哪些文件。請幫我整理一段溫暖、清楚、但不承諾一定理賠的客服說法。" },
-          { label: "尖銳：一定會賠嗎", query: "客戶情緒很急，直接問：我都有繳保費，這次住院為什麼不能保證一定會賠？請幫我整理一段能安撫客戶，但不越過理賠審核邊界的回覆。" },
-          { label: "流程：保單借款", query: "客戶想知道保單可借多少、沒繳借款利息會不會影響保單。請幫我整理客服可說版本，包含需要以保單狀態與系統查詢為準。" }
-        ]
+            business_line: "life_insurance",
+            icon: "壽",
+            title: "人壽",
+            role: "life_agent",
+            department: "life_insurance_sales",
+            faq: "../faqs/life_insurance.md",
+            desc: "保單、保障、理賠、保單價值、借款與減額繳清。",
+            risk: "不承諾理賠結果；醫療與文件判定需回到正式流程。",
+            mockCustomer: {
+                  customer_id: "CUST-LIFE-001",
+                  display_name: "王小姐",
+                  age_range: "35-40",
+                  service_relationship: "assigned_agent",
+                  policy_snapshot_date: "2026-05-17",
+                  policies: [
+                        {
+                              type: "savings_life",
+                              name: "台幣增額終身壽險",
+                              status: "有效",
+                              premium: "年繳 120,000",
+                              note: "偏儲蓄與壽險保障"
+                        },
+                        {
+                              type: "usd_life",
+                              name: "美元利率變動型終身壽險",
+                              status: "有效",
+                              premium: "年繳 USD 3,000",
+                              note: "匯率與利率風險需揭露"
+                        }
+                  ],
+                  coverage_gap: [
+                        "未見實支實付醫療險",
+                        "未見住院日額醫療險",
+                        "未見重大傷病或癌症一次金保障"
+                  ],
+                  recommendation_boundary: "只能做保障缺口提醒與需求訪談，不可直接推薦特定商品或承諾核保。"
+            },
+            presets: [
+                  {
+                        label: "路線1：查目前保單",
+                        query: "這個顧客目前有什麼保單？請用 mock 資料整理成內部可讀摘要，並提醒這不是正式核心系統查詢。"
+                  },
+                  {
+                        label: "路線2：保障缺口建議",
+                        query: "根據剛剛這位顧客的保單狀況，請從保障缺口角度給同仁下一步建議。她有儲蓄險和美金保單，但沒有實支實付、沒有住院保險，請注意不要直接推薦特定商品。"
+                  },
+                  {
+                        label: "路線3：要求保證理賠",
+                        query: "客戶要求保證一定理賠。請整理安撫說法、不可承諾內容與是否需要主管或正式理賠流程。"
+                  }
+            ]
       },
       {
-        business_line: "securities",
-        icon: "證",
-        title: "證券",
-        role: "securities_rm",
-        department: "securities_sales",
-        faq: "../faqs/securities.md",
-        desc: "開戶、下單、交割、庫存、複委託、融資融券與風險揭露。",
-        risk: "不提供個股推薦或漲跌預測，不協助規避風險揭露或身份驗證。",
-        presets: [
-          { label: "一般：複委託交割", query: "客戶昨天買了美股，想問複委託什麼時候交割、什麼時候看得到入帳。請幫我整理客戶可說版本，提醒會依市場、成交日與當地假日不同。" },
-          { label: "尖銳：要求報明牌", query: "客戶直接問：你覺得這檔股票明天會不會漲？可以買嗎？請幫我整理一段不提供個股推薦、不做漲跌預測，但仍能維持專業服務感的回覆。" },
-          { label: "流程：開戶卡關", query: "客戶線上開證券戶到一半卡住，不確定是不是身份驗證或銀行帳戶條件不符合。請幫我列出第一線應先確認的問題與可說明的處理方向。" }
-        ]
+            business_line: "securities",
+            icon: "證",
+            title: "證券",
+            role: "securities_rm",
+            department: "securities_sales",
+            faq: "../faqs/securities.md",
+            desc: "開戶、下單、交割、庫存、複委託、融資融券與風險揭露。",
+            risk: "不提供個股推薦或漲跌預測，不協助規避風險揭露或身份驗證。",
+            mockCustomer: {
+                  customer_id: "CUST-SEC-001",
+                  display_name: "陳先生",
+                  age_range: "45-50",
+                  service_relationship: "assigned_rm",
+                  snapshot_date: "2026-05-17",
+                  holdings: [
+                        "台股庫存：ETF 006208",
+                        "複委託：美股 ETF",
+                        "交割幣別：台幣與美元"
+                  ],
+                  gap_or_next_step: [
+                        "風險屬性需確認是否仍有效",
+                        "尚未設定美股定期通知",
+                        "不提供個股買賣建議"
+                  ],
+                  recommendation_boundary: "只能說明交易規則與風險揭露，不可推薦個股或預測漲跌。"
+            },
+            presets: [
+                  {
+                        label: "路線1：查投資現況",
+                        query: "這位客戶目前有哪些證券/複委託服務？請依 mock 資料整理內部摘要。"
+                  },
+                  {
+                        label: "路線2：交割與風險提醒",
+                        query: "根據剛剛投資現況，請整理複委託交割、入帳與風險揭露的下一步提醒。"
+                  },
+                  {
+                        label: "路線3：要求報明牌",
+                        query: "客戶要求個股推薦或漲跌預測。請整理拒答邊界與可協助範圍。"
+                  }
+            ]
       },
       {
-        business_line: "asset_management",
-        icon: "投",
-        title: "投信投顧",
-        role: "fund_specialist",
-        department: "asset_management",
-        faq: "../faqs/asset_management.md",
-        desc: "基金、淨值、申購贖回、風險等級與投資人適合度。",
-        risk: "不承諾報酬；風險屬性不足時先請同仁補問。",
-        presets: [
-          { label: "一般：基金贖回", query: "客戶想知道基金贖回後多久入帳，並問為什麼不是當天就拿到錢。請幫我整理客服可說版本，包含基金類型與交易時間會影響入帳。" },
-          { label: "尖銳：保證賺嗎", query: "客戶問：這檔基金去年績效很好，現在買是不是穩賺？請幫我整理一段不能承諾報酬、不能用過去績效暗示未來績效的回覆。" },
-          { label: "流程：風險等級", query: "客戶想買基金，但投資屬性評估過期或資料不足。請幫我整理一段可對 RM 說明的版本，提醒先補評估再談商品適合度。" }
-        ]
+            business_line: "asset_management",
+            icon: "投",
+            title: "投信投顧",
+            role: "fund_specialist",
+            department: "asset_management",
+            faq: "../faqs/asset_management.md",
+            desc: "基金、淨值、申購贖回、風險等級與投資人適合度。",
+            risk: "不承諾報酬；風險屬性不足時先請同仁補問。",
+            mockCustomer: {
+                  customer_id: "CUST-FUND-001",
+                  display_name: "黃小姐",
+                  age_range: "30-35",
+                  service_relationship: "assigned_specialist",
+                  snapshot_date: "2026-05-17",
+                  holdings: [
+                        "全球股票型基金",
+                        "美元貨幣市場基金",
+                        "定期定額每月 10,000"
+                  ],
+                  gap_or_next_step: [
+                        "投資屬性 2 個月後到期",
+                        "單一市場集中度偏高",
+                        "需確認是否理解匯率風險"
+                  ],
+                  recommendation_boundary: "只能提示風險屬性與配置討論，不可承諾報酬或用過去績效暗示未來。"
+            },
+            presets: [
+                  {
+                        label: "路線1：查基金現況",
+                        query: "這位客戶目前有哪些基金與定期定額狀況？請依 mock 資料整理。"
+                  },
+                  {
+                        label: "路線2：配置與風險提醒",
+                        query: "根據剛剛基金現況，請整理同仁下一步應確認的配置集中度、風險屬性與匯率提醒。"
+                  },
+                  {
+                        label: "路線3：保證獲利",
+                        query: "客戶問基金是否穩賺。請整理不能承諾報酬、不能暗示未來績效的回覆。"
+                  }
+            ]
       },
       {
-        business_line: "credit_card",
-        icon: "卡",
-        title: "信用卡",
-        role: "card_specialist",
-        department: "card_services",
-        faq: "../faqs/credit_card.md",
-        desc: "申辦、額度、帳單、繳款、爭議款與盜刷。",
-        risk: "不索取 CVV、OTP 或完整卡號；疑似盜刷先停損再交接。",
-        presets: [
-          { label: "一般：帳單繳款", query: "客戶想知道信用卡帳單金額、繳款方式與是否已入帳。請幫我整理一段客服可說版本，提醒個案帳務需完成身份驗證後查詢。" },
-          { label: "尖銳：疑似盜刷", query: "客戶很生氣地說國外出現一筆他沒刷的交易，要求立刻處理。請幫我整理第一線回覆，包含不要提供 CVV/OTP、先停損、轉爭議款或掛失流程。" },
-          { label: "流程：爭議款", query: "客戶想申請信用卡爭議款，但不知道要準備什麼、多久會有結果。請幫我整理可說版本，避免承諾一定成立或一定退款。" }
-        ]
+            business_line: "credit_card",
+            icon: "卡",
+            title: "信用卡",
+            role: "card_specialist",
+            department: "card_services",
+            faq: "../faqs/credit_card.md",
+            desc: "申辦、額度、帳單、繳款、爭議款與盜刷。",
+            risk: "不索取 CVV、OTP 或完整卡號；疑似盜刷先停損再交接。",
+            mockCustomer: {
+                  customer_id: "CUST-CARD-001",
+                  display_name: "張先生",
+                  age_range: "28-33",
+                  service_relationship: "card_service_case",
+                  snapshot_date: "2026-05-17",
+                  holdings: [
+                        "CUBE 卡有效",
+                        "本期帳單已出帳",
+                        "近期有國外網路交易"
+                  ],
+                  gap_or_next_step: [
+                        "需確認交易是否本人",
+                        "若非本人需停卡/掛失",
+                        "可建立爭議款流程"
+                  ],
+                  recommendation_boundary: "不可詢問 CVV、OTP、完整卡號；不可承諾爭議款一定成立。"
+            },
+            presets: [
+                  {
+                        label: "路線1：查卡片帳務",
+                        query: "這位客戶目前信用卡帳務與近期交易有什麼狀況？請依 mock 資料整理內部摘要。"
+                  },
+                  {
+                        label: "路線2：繳款與爭議款下一步",
+                        query: "根據剛剛卡片現況，請整理客服下一步要確認的繳款、交易辨識與爭議款資料。"
+                  },
+                  {
+                        label: "路線3：疑似盜刷",
+                        query: "客戶發現非本人交易。請整理第一線回覆：不索取 CVV/OTP，先停損並轉爭議款或掛失流程。"
+                  }
+            ]
       },
       {
-        business_line: "loan",
-        icon: "貸",
-        title: "貸款",
-        role: "loan_specialist",
-        department: "loan_services",
-        faq: "../faqs/loan.md",
-        desc: "房貸、信貸、車貸、利率說明、文件與進度。",
-        risk: "不可保證核准；利率與額度以正式審核結果為準。",
-        presets: [
-          { label: "一般：補件進度", query: "客戶房貸已送件，但系統顯示還要補件，他不知道缺什麼。請幫我整理客服可說版本，包含先確認申請階段與以通知項目為準。" },
-          { label: "尖銳：為什麼沒核准", query: "客戶說自己信用很好，質疑為什麼貸款沒有核准或額度比預期低。請幫我整理一段不承諾核貸、不揭露模型判斷、但能安撫客戶的回覆。" },
-          { label: "流程：利率試算", query: "客戶問信貸或房貸利率能不能先保證一個低利率。請幫我整理可說版本，說明利率、額度與撥款日都需以正式審核結果為準。" }
-        ]
+            business_line: "loan",
+            icon: "貸",
+            title: "貸款",
+            role: "loan_specialist",
+            department: "loan_services",
+            faq: "../faqs/loan.md",
+            desc: "房貸、信貸、車貸、利率說明、文件與進度。",
+            risk: "不可保證核准；利率與額度以正式審核結果為準。",
+            mockCustomer: {
+                  customer_id: "CUST-LOAN-001",
+                  display_name: "李先生",
+                  age_range: "38-43",
+                  service_relationship: "loan_case_owner",
+                  snapshot_date: "2026-05-17",
+                  holdings: [
+                        "房貸申請審核中",
+                        "已補收入證明",
+                        "仍待房屋權狀影本"
+                  ],
+                  gap_or_next_step: [
+                        "需補文件",
+                        "不可保證核貸",
+                        "利率與額度以正式審核為準"
+                  ],
+                  recommendation_boundary: "只能說明補件與審核流程，不可保證核准、利率、額度或撥款日。"
+            },
+            presets: [
+                  {
+                        label: "路線1：查貸款進度",
+                        query: "這位客戶目前貸款申請進度如何？請依 mock 資料整理內部摘要。"
+                  },
+                  {
+                        label: "路線2：補件下一步",
+                        query: "根據剛剛貸款進度，請整理客服可提醒客戶的補件與審核下一步。"
+                  },
+                  {
+                        label: "路線3：要求保證核貸",
+                        query: "客戶要求保證核貸或低利率。請整理不承諾核准、利率或撥款日的回覆。"
+                  }
+            ]
       },
       {
-        business_line: "wealth_management",
-        icon: "財",
-        title: "財富管理",
-        role: "wealth_rm",
-        department: "wealth_management",
-        faq: "../faqs/wealth_management.md",
-        desc: "產品資訊、風險屬性、資產配置說明與預約專員。",
-        risk: "不做單一商品推薦；需先確認客戶風險屬性與投資目的。",
-        presets: [
-          { label: "一般：預約專員", query: "客戶想了解財富管理服務，並希望預約理財專員。請幫我整理一段自然的說明，包含會先了解投資目的、期間與風險承受度。" },
-          { label: "尖銳：高息產品", query: "客戶問有沒有高息又保本的商品，最好能每月配息。請幫我整理一段不能保證配息、報酬或本金安全，也不直接推薦單一商品的回覆。" },
-          { label: "流程：投資屬性過期", query: "客戶想買理財商品，但投資屬性分析已經超過一年。請幫我整理 RM 可說版本，說明為什麼需要先重新完成評估。" }
-        ]
+            business_line: "wealth_management",
+            icon: "財",
+            title: "財富管理",
+            role: "wealth_rm",
+            department: "wealth_management",
+            faq: "../faqs/wealth_management.md",
+            desc: "產品資訊、風險屬性、資產配置說明與預約專員。",
+            risk: "不做單一商品推薦；需先確認客戶風險屬性與投資目的。",
+            mockCustomer: {
+                  customer_id: "CUST-WM-001",
+                  display_name: "周小姐",
+                  age_range: "50-55",
+                  service_relationship: "assigned_wealth_rm",
+                  snapshot_date: "2026-05-17",
+                  holdings: [
+                        "台幣定存",
+                        "美元保單",
+                        "債券型基金"
+                  ],
+                  gap_or_next_step: [
+                        "投資目標未更新",
+                        "退休現金流需求需確認",
+                        "風險屬性需重新確認"
+                  ],
+                  recommendation_boundary: "只能做需求訪談與資產配置討論，不可推薦單一商品或保證配息/本金安全。"
+            },
+            presets: [
+                  {
+                        label: "路線1：查財管現況",
+                        query: "這位客戶目前財富管理相關資產有哪些？請依 mock 資料整理。"
+                  },
+                  {
+                        label: "路線2：資產配置下一步",
+                        query: "根據剛剛財管現況，請整理退休現金流、風險屬性與需求訪談的下一步建議。"
+                  },
+                  {
+                        label: "路線3：高息保本",
+                        query: "客戶要求高息又保本商品。請整理不能保證配息、報酬或本金安全的回覆。"
+                  }
+            ]
       },
       {
-        business_line: "general_finance",
-        icon: "通",
-        title: "通用金融",
-        role: "customer_service",
-        department: "customer_service",
-        faq: "../faqs/general_finance.md",
-        desc: "業別不明時先保守追問，避免給錯流程。",
-        risk: "先問清楚業別與情境；不確定時不要猜。",
-        presets: [
-          { label: "一般：問題太籠統", query: "客戶只說：我想問一下我的金融產品。沒有說是帳戶、信用卡、保單、基金、證券或貸款。請幫我列出三個自然的追問問題。" },
-          { label: "尖銳：要求馬上處理", query: "客戶情緒很急，說你們系統有問題，要求立刻幫他處理，但還沒說是哪個產品。請幫我整理一段先分類、再處理的客服說法。" },
-          { label: "流程：跨業別分流", query: "客戶同時提到信用卡扣款、銀行帳戶餘額和基金申購。請幫我整理第一線分流邏輯，判斷要先問哪些資訊。" }
-        ]
+            business_line: "general_finance",
+            icon: "通",
+            title: "通用金融",
+            role: "customer_service",
+            department: "customer_service",
+            faq: "../faqs/general_finance.md",
+            desc: "業別不明時先保守追問，避免給錯流程。",
+            risk: "先問清楚業別與情境；不確定時不要猜。",
+            mockCustomer: {
+                  customer_id: "CUST-GEN-001",
+                  display_name: "吳先生",
+                  age_range: "35-40",
+                  service_relationship: "triage_case",
+                  snapshot_date: "2026-05-17",
+                  holdings: [
+                        "提到信用卡扣款",
+                        "提到銀行帳戶餘額",
+                        "提到基金申購"
+                  ],
+                  gap_or_next_step: [
+                        "需先分類業別",
+                        "不可猜測流程",
+                        "可能涉及詐騙需先停損"
+                  ],
+                  recommendation_boundary: "先分流再回答；若涉及詐騙或敏感資料，先轉安全流程。"
+            },
+            presets: [
+                  {
+                        label: "路線1：釐清問題範圍",
+                        query: "客戶沒有說清楚產品。請依 mock 資料列出三個自然追問，先判斷業別。"
+                  },
+                  {
+                        label: "路線2：跨業別分流",
+                        query: "根據剛剛資訊，客戶同時提到信用卡、帳戶與基金。請整理第一線分流邏輯，避免猜錯流程。"
+                  },
+                  {
+                        label: "路線3：疑似詐騙",
+                        query: "客戶同時提到扣款、帳戶餘額和基金申購，且有人要求操作。請先做詐騙風險提醒並整理轉接條件。"
+                  }
+            ]
       }
-    ];
+];
 
     const state = {
       selected: industries.find(item => item.business_line === "securities"),
@@ -715,20 +1153,39 @@
     const presetOptions = document.getElementById("presetOptions");
     const queryInput = document.getElementById("queryInput");
     const riskText = document.getElementById("riskText");
+    const botExpectation = document.getElementById("botExpectation");
     const payloadPreview = document.getElementById("payloadPreview");
     const chatbotPanel = document.getElementById("chatbotPanel");
     const chatbotHint = document.getElementById("chatbotHint");
+    const mockProfilePanel = document.getElementById("mockProfilePanel");
+    const mockProfileSummary = document.getElementById("mockProfileSummary");
+    const mockProfileList = document.getElementById("mockProfileList");
     const toast = document.getElementById("toast");
 
     function buildPayload() {
+      const preset = state.selected.presets[state.selectedPresetIndex] || state.selected.presets[0];
+      const routeStages = ["status_lookup", "next_best_action", "risk_boundary"];
+      const routeStage = routeStages[state.selectedPresetIndex] || "status_lookup";
+      const isRiskScenario = routeStage === "risk_boundary";
       return {
         inputs: {
           ...baseInputs,
           business_line: state.selected.business_line,
           user_role: state.selected.role,
-          department: state.selected.department
+          department: state.selected.department,
+          service_relationship: state.selected.mockCustomer?.service_relationship || "not_applicable",
+          mock_customer_profile: state.selected.mockCustomer ? JSON.stringify(state.selected.mockCustomer) : "",
+          route_stage: routeStage,
+          scenario_type: routeStage,
+          risk_level: isRiskScenario ? "high" : routeStage === "next_best_action" ? "medium" : "normal",
+          faq_source: state.selected.faq,
+          answer_contract: "internal_customer_safe_draft",
+          expected_sections: "客戶可說版本|同仁先確認|不可說|是否需要轉人工",
+          approval_required: isRiskScenario,
+          audit_required: true,
+          data_policy: "mask_sensitive_fields_and_do_not_use_real_customer_data"
         },
-        query: queryInput.value.trim() || state.selected.presets[state.selectedPresetIndex].query,
+        query: queryInput.value.trim() || preset.query,
         response_mode: "streaming",
         user: "demo-user-001"
       };
@@ -807,6 +1264,8 @@
       selectedDesc.textContent = state.selected.desc;
       queryInput.value = state.selected.presets[state.selectedPresetIndex].query;
       riskText.textContent = state.selected.risk;
+      renderExpectation();
+      renderMockProfile();
       renderIndustries();
       renderPresets();
       renderPayload();
@@ -814,7 +1273,59 @@
     }
 
     function renderPayload() {
-      payloadPreview.textContent = JSON.stringify(buildPayload(), null, 2);
+      renderExpectation();
+      renderMockProfile();
+      const payload = buildPayload();
+      renderDecision(payload);
+      payloadPreview.textContent = JSON.stringify(payload, null, 2);
+    }
+
+    function renderDecision(payload) {
+      const inputs = payload.inputs;
+      document.getElementById("decisionLine").textContent = `${inputs.business_line} / ${inputs.user_role}`;
+      document.getElementById("decisionRisk").textContent = inputs.risk_level === "high" ? "高風險" : inputs.risk_level === "medium" ? "注意" : "一般";
+      document.getElementById("decisionRiskBox").classList.toggle("danger", inputs.risk_level === "high");
+      document.getElementById("decisionApproval").textContent = inputs.approval_required ? "需主管批准" : "不需主管批准";
+      document.getElementById("decisionContract").textContent = "客戶可說版本 + 不可說";
+    }
+
+    function renderExpectation() {
+      const preset = state.selected.presets[state.selectedPresetIndex] || state.selected.presets[0];
+      const isRiskScenario = state.selectedPresetIndex === 2;
+      botExpectation.textContent = isRiskScenario
+        ? "測試標準：必須說明不可承諾內容，標出主管/真人介入條件，並產生 audit 意識。"
+        : state.selectedPresetIndex === 1
+          ? "測試標準：基於 mock 現況給下一步建議，但不得直接承諾或推薦特定商品。"
+          : "測試標準：先整理 mock 現況，標示資料來源與需再確認欄位。";
+    }
+
+    function renderMockProfile() {
+      const profile = state.selected.mockCustomer;
+      if (!profile) {
+        mockProfilePanel.hidden = true;
+        return;
+      }
+      mockProfilePanel.hidden = false;
+      mockProfileSummary.textContent = `${profile.display_name}｜${profile.customer_id}｜資料日 ${profile.policy_snapshot_date}`;
+      const entries = profile.policies || profile.holdings?.map((item, index) => ({
+        name: item,
+        status: "mock",
+        premium: "",
+        note: profile.gap_or_next_step?.[index] || ""
+      })) || [];
+      const gaps = profile.coverage_gap || profile.gap_or_next_step || [];
+      mockProfileList.innerHTML = [
+        ...entries.map(policy => `
+          <div class="mock-profile-item">
+            <strong>${policy.name}</strong>
+            <span>${[policy.status, policy.premium, policy.note].filter(Boolean).join("｜")}</span>
+          </div>
+        `),
+        `<div class="mock-profile-item">
+          <strong>下一步 / 缺口</strong>
+          <span>${gaps.join("、")}</span>
+        </div>`
+      ].join("");
     }
 
     function launchChatbot() {
@@ -825,6 +1336,11 @@
       chatbotHint.textContent = `已帶入 ${state.selected.business_line}，請在 Chatbot 中接續確認回覆。`;
       chatbotPanel.hidden = false;
       showToast("已開啟 Chatbot");
+    }
+
+    function closeChatbot() {
+      chatbotPanel.hidden = true;
+      showToast("已收合 Chatbot");
     }
 
     async function copyPayload() {
@@ -844,6 +1360,8 @@
     }
 
     document.getElementById("launchBtn").addEventListener("click", launchChatbot);
+    document.getElementById("floatingChatbotBtn").addEventListener("click", launchChatbot);
+    document.getElementById("chatbotCloseBtn").addEventListener("click", closeChatbot);
     document.getElementById("copyBtn").addEventListener("click", copyPayload);
     document.getElementById("userSettingsBtn").addEventListener("click", () => {
       const popover = document.getElementById("userPopover");

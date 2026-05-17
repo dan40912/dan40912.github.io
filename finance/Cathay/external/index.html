@@ -150,7 +150,7 @@
 
     .workspace {
       display: grid;
-      grid-template-columns: minmax(0, 1fr) 390px;
+      grid-template-columns: minmax(0, 1fr) 390px 360px;
       gap: 20px;
       align-items: start;
     }
@@ -290,6 +290,54 @@
       display: grid;
       gap: 14px;
     }
+    .conversation-rail {
+      position: sticky;
+      top: 88px;
+      display: grid;
+      gap: 14px;
+      max-height: calc(100vh - 108px);
+      align-self: start;
+    }
+    .conversation-rail .chat-frame {
+      height: calc(100vh - 218px);
+      min-height: 560px;
+    }
+    .chatbot-panel-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .chatbot-close {
+      width: 34px;
+      height: 34px;
+      flex: 0 0 auto;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      color: #254739;
+      background: #fff;
+      font-size: 20px;
+      font-weight: 900;
+      line-height: 1;
+    }
+    .chatbot-dock {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      bottom: 20px;
+      width: min(430px, calc(100vw - 40px));
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr);
+      z-index: 60;
+      box-shadow: 0 28px 70px rgba(16,32,24,.24);
+    }
+    .chatbot-dock .chat-frame {
+      height: auto;
+      min-height: 0;
+    }
+    .chatbot-dock .chat-frame iframe {
+      min-height: 0 !important;
+    }
     .panel { overflow: hidden; }
     .panel-image {
       min-height: 238px;
@@ -303,6 +351,34 @@
     .panel-body { padding: 18px; }
     .panel-body h2 { font-size: 21px; line-height: 1.3; }
     .panel-body p { margin-top: 8px; color: var(--muted); line-height: 1.65; }
+    .chatbot-access {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 112px;
+      gap: 12px;
+      align-items: center;
+      margin-top: 14px;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #f8fcfa;
+    }
+    .chatbot-access .btn { width: 100%; }
+    .chatbot-access small {
+      display: block;
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.5;
+      word-break: break-all;
+    }
+    .chatbot-qr {
+      width: 112px;
+      height: 112px;
+      padding: 6px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fff;
+    }
     textarea {
       width: 100%;
       min-height: 126px;
@@ -315,6 +391,13 @@
       resize: vertical;
       outline: none;
       line-height: 1.6;
+    }
+    .field-label {
+      display: block;
+      margin-top: 14px;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 900;
     }
     textarea:focus {
       border-color: var(--green);
@@ -372,6 +455,47 @@
       white-space: nowrap;
     }
     .actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
+    .decision-summary {
+      display: grid;
+      gap: 10px;
+      padding: 14px;
+      border-top: 1px solid var(--line);
+      background: #fbfefc;
+    }
+    .decision-summary h3 {
+      margin: 0;
+      font-size: 15px;
+      line-height: 1.3;
+    }
+    .decision-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+    }
+    .decision-item {
+      min-height: 66px;
+      padding: 10px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fff;
+    }
+    .decision-item span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 900;
+    }
+    .decision-item strong {
+      display: block;
+      margin-top: 5px;
+      font-size: 14px;
+      line-height: 1.35;
+    }
+    .decision-item.danger {
+      border-color: rgba(143,79,75,.35);
+      background: var(--danger-soft);
+      color: #6d3430;
+    }
     pre {
       max-height: 260px;
       overflow: auto;
@@ -397,7 +521,7 @@
     }
     .notice .panel-body p { color: inherit; }
     .chat-log {
-      max-height: 320px;
+      max-height: min(42vh, 360px);
       overflow: auto;
       padding: 14px;
       border-top: 1px solid var(--line);
@@ -453,6 +577,39 @@
       grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 8px;
     }
+    .chat-frame {
+      height: 520px;
+      border-top: 1px solid var(--line);
+      background: #f8fcfa;
+    }
+    .chat-frame iframe {
+      width: 100%;
+      height: 100%;
+      border: 0;
+      display: block;
+    }
+    .floating-chatbot {
+      position: fixed;
+      right: 20px;
+      bottom: 88px;
+      min-height: 48px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 0 18px;
+      border: 1px solid var(--green);
+      border-radius: var(--radius);
+      color: #fff;
+      background: var(--green);
+      box-shadow: var(--shadow);
+      font-weight: 950;
+      z-index: 25;
+    }
+    .floating-chatbot:hover {
+      background: var(--green-dark);
+      transform: translateY(-1px);
+    }
     .toast {
       position: fixed;
       right: 20px;
@@ -470,6 +627,7 @@
       z-index: 20;
     }
     .toast.show { opacity: 1; transform: translateY(0); }
+    [hidden] { display: none !important; }
 
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after {
@@ -483,8 +641,15 @@
     @media (max-width: 980px) {
       .topbar { align-items: flex-start; flex-direction: column; padding: 14px; }
       .page { padding: 18px 14px 32px; }
-      .hero, .workspace, .service-grid, .handoff-grid, .handoff-actions { grid-template-columns: 1fr; }
-      .side { position: static; }
+      .hero, .workspace, .service-grid, .handoff-grid, .handoff-actions, .decision-grid { grid-template-columns: 1fr; }
+      .side, .conversation-rail { position: static; max-height: none; }
+      .conversation-rail .chat-frame { height: 560px; min-height: 0; }
+      .chatbot-access { grid-template-columns: 1fr; }
+      .chatbot-dock {
+        inset: 12px;
+        width: auto;
+      }
+      .floating-chatbot { right: 14px; bottom: 76px; }
     }
   </style>
 </head>
@@ -494,20 +659,17 @@
       <div class="mark">外部</div>
       <div>
         <strong>對外服務工作台</strong>
-        <span>客戶問題分流、風險提醒、客服話術整理</span>
       </div>
     </a>
     <div class="top-actions">
-      <span class="chip">不收密碼</span>
-      <span class="chip">不收 OTP</span>
-      <span class="chip">必要時轉真人</span>
+      <a class="chip" href="../internal/call-center/index.html" title="前往真人介入與案件交接工作台">Call Center</a>
     </div>
   </header>
 
   <main class="page">
     <section class="hero">
       <div class="hero-copy">
-        <h1>選擇問題類型，取得可直接使用的回覆。</h1>
+        <h1>選服務情境，檢查 AI 風險判斷。</h1>
       </div>
       <aside class="panel status-panel" aria-label="服務流程">
         <div class="status-item">
@@ -519,8 +681,8 @@
           <span>涉及個資、交易、盜刷、詐騙時，畫面會先提醒不可詢問的資訊。</span>
         </div>
         <div class="status-item">
-          <strong>給話術</strong>
-          <span>右側面板產出客服可用版本，必要時轉接真人主管。</span>
+          <strong>測試 Chatbot</strong>
+          <span>右側面板顯示判斷摘要與測試資料，必要時轉接真人。</span>
         </div>
       </aside>
     </section>
@@ -544,13 +706,35 @@
             <h2 id="selectedTitle">帳戶登入協助</h2>
             <p id="selectedDesc">客戶無法登入 App，需要確認安全步驟並引導重設。</p>
             <div class="preset-group" aria-label="預設問題">
-              <div class="preset-label">選擇一個常見提問</div>
+              <div class="preset-label">選一個 demo 情境</div>
               <div class="preset-options" id="presetOptions"></div>
             </div>
-            <textarea id="replyInput" aria-label="客服回覆草稿"></textarea>
+            <label class="field-label" for="replyInput">測試問題</label>
+            <textarea id="replyInput" aria-label="測試問題"></textarea>
             <div class="actions">
-              <button class="btn primary" id="copyReplyBtn" type="button" title="複製目前回覆，不包含密碼、OTP、CVV 或完整卡號">複製話術</button>
+              <button class="btn primary" id="copyReplyBtn" type="button" title="複製目前測試問題，不包含密碼、OTP、CVV 或完整卡號">複製測試問題</button>
               <button class="btn warning" id="handoffBtn" type="button" title="疑似盜刷、詐騙、身份驗證或帳務個案時轉真人">轉真人處理</button>
+            </div>
+          </div>
+          <div class="decision-summary" aria-label="AI 判斷摘要">
+            <h3>AI 判斷摘要</h3>
+            <div class="decision-grid">
+              <div class="decision-item">
+                <span>服務 / 業別</span>
+                <strong id="decisionLine">banking / banking</strong>
+              </div>
+              <div class="decision-item" id="decisionRiskBox">
+                <span>風險</span>
+                <strong id="decisionRisk">一般</strong>
+              </div>
+              <div class="decision-item">
+                <span>真人介入</span>
+                <strong id="decisionHandoff">AI 可先回答</strong>
+              </div>
+              <div class="decision-item">
+                <span>禁止資料</span>
+                <strong id="decisionPolicy">密碼 / OTP / CVV</strong>
+              </div>
             </div>
           </div>
           <pre id="payloadPreview"></pre>
@@ -560,41 +744,23 @@
           <div class="panel-body">
             <h2>風險提醒</h2>
             <p id="riskText">不得詢問密碼、OTP、完整卡號或 CVV。若客戶提到異常交易，先引導停用與轉接專人。</p>
+            <p id="botExpectation">測試標準：先安撫，再給下一步；高風險必須轉真人。</p>
           </div>
         </section>
 
-        <section class="panel">
+      </aside>
+
+      <aside class="conversation-rail" aria-label="Chatbot 入口">
+        <section class="panel" aria-label="Chatbot 入口">
           <div class="panel-body">
-            <h2>對話預覽</h2>
-          </div>
-          <div class="chat-log" id="chatLog"></div>
-          <div class="handoff-status">
-            <div class="panel-title">
-              <h2>真人介入狀態</h2>
-            </div>
-            <div class="handoff-grid">
-              <div class="handoff-item">
-                <span>案件狀態</span>
-                <strong id="handoffStatus" aria-live="polite">AI 回覆中</strong>
+            <h2>Chatbot 入口</h2>
+            <p>可直接開啟獨立 Chatbot，或用手機掃描 QR code。</p>
+            <div class="chatbot-access" aria-label="Chatbot 連結與 QR code">
+              <div>
+                <a class="btn primary" href="https://dify.startpray.online/chat/T4GRIRNBR7NQKsca" target="_blank" rel="noopener">開啟獨立 Chatbot</a>
+                <small>https://dify.startpray.online/chat/T4GRIRNBR7NQKsca</small>
               </div>
-              <div class="handoff-item">
-                <span>案件編號</span>
-                <strong id="handoffCaseId">尚未建立</strong>
-              </div>
-              <div class="handoff-item">
-                <span>需要補充資料</span>
-                <strong id="handoffRequired">問題類型與可描述的狀況</strong>
-              </div>
-              <div class="handoff-item">
-                <span>真人客服訊息</span>
-                <strong id="handoffAgent">尚未接手</strong>
-              </div>
-            </div>
-            <textarea class="handoff-note" id="handoffNote" aria-label="補充案件說明" placeholder="請補充狀況，不要輸入 OTP、密碼、CVV 或完整卡號。"></textarea>
-            <div class="handoff-actions">
-              <button class="btn warning" id="handoffCreateBtn" type="button" title="建立案件編號，提醒客戶不要提供敏感資料">轉真人處理</button>
-              <button class="btn" id="handoffNoteBtn" type="button" title="只補充狀況，不輸入 OTP、密碼、CVV 或完整卡號">補充說明</button>
-              <button class="btn primary" id="handoffProgressBtn" type="button" title="查看目前案件狀態，不顯示內部權限或審核資訊">查看進度</button>
+              <img class="chatbot-qr" src="https://api.qrserver.com/v1/create-qr-code/?size=224x224&data=https%3A%2F%2Fdify.startpray.online%2Fchat%2FT4GRIRNBR7NQKsca" alt="對外 Chatbot QR code">
             </div>
           </div>
         </section>
@@ -602,113 +768,211 @@
     </section>
   </main>
 
+  <section class="panel chatbot-dock" id="chatbotPanel" hidden>
+    <div class="panel-body">
+      <div class="chatbot-panel-head">
+        <div>
+          <h2>對外 Chatbot</h2>
+          <p id="chatbotHint">已依目前服務情境帶入測試資料。</p>
+        </div>
+        <button class="chatbot-close" id="chatbotCloseBtn" type="button" aria-label="收合 Chatbot">×</button>
+      </div>
+    </div>
+    <div class="chat-frame">
+      <iframe
+        src="https://dify.startpray.online/chatbot/T4GRIRNBR7NQKsca"
+        style="width: 100%; height: 100%; min-height: 700px"
+        frameborder="0"
+        allow="microphone">
+      </iframe>
+    </div>
+  </section>
+  <button class="floating-chatbot" id="floatingChatbotBtn" type="button" aria-controls="chatbotPanel" title="展開對外 Chatbot">開啟 Chatbot</button>
   <div class="toast" id="toast" role="status" aria-live="polite">已更新</div>
 
   <script>
     const services = [
       {
-        id: "banking",
-        icon: "銀行",
-        title: "帳戶登入協助",
-        risk: "一般",
-        riskLevel: "normal",
-        faq: "../faqs/banking.md",
-        desc: "客戶無法登入 App，需要確認安全步驟並引導重設。",
-        reply: "我先協助您確認登入流程。為了保護帳戶安全，我不會向您索取密碼或驗證碼。請您先確認手機時間是否正確，接著使用 App 內的忘記密碼功能重新設定；如果仍無法登入，我會幫您轉接專人確認帳戶狀態。",
-        warning: "不得詢問密碼、OTP、完整身分證字號或完整帳號。若客戶表示手機遺失，應改走停用與重新驗證流程。",
-        presets: [
-          { label: "一般：登入失敗", query: "客戶說 CUBE App 今天一直登入失敗，已經重設密碼但還是不行。請幫我整理一段客服可直接說的版本，包含不索取密碼或 OTP 的安全提醒。" },
-          { label: "尖銳：帳戶被鎖", query: "客戶很不滿地說自己沒有輸錯密碼，為什麼帳戶被鎖，要求立刻解鎖。請幫我整理一段能安撫情緒、但不承諾立即解鎖且不繞過身份驗證的回覆。" },
-          { label: "流程：裝置換機", query: "客戶換手機後無法登入或收不到驗證，想知道要怎麼恢復使用。請幫我整理第一線應確認的重點與安全處理方向。" }
-        ],
-        messages: ["客戶：我今天一直登入不了 App，試很多次都失敗。", "客服：我先協助您確認安全流程，不會向您索取密碼或驗證碼。"]
+            id: "banking",
+            business_line: "banking",
+            icon: "銀行",
+            title: "帳戶登入協助",
+            risk: "一般",
+            riskLevel: "normal",
+            faq: "../faqs/banking.md",
+            desc: "客戶無法登入 App，需要確認安全步驟並引導重設。",
+            reply: "我先協助您確認登入流程。為了保護帳戶安全，我不會向您索取密碼或驗證碼。",
+            warning: "不得詢問密碼、OTP、完整身分證字號或完整帳號。若客戶表示手機遺失，應改走停用與重新驗證流程。",
+            presets: [
+                  {
+                        label: "路線1：自助登入排除",
+                        query: "我一直登入不了 App，重設密碼也不行。"
+                  },
+                  {
+                        label: "路線2：換機驗證協助",
+                        query: "我換手機後收不到驗證通知，想知道怎麼恢復使用。"
+                  },
+                  {
+                        label: "路線3：帳戶被鎖轉真人",
+                        query: "我沒有輸錯密碼，為什麼帳戶被鎖？我要立刻解鎖。"
+                  }
+            ],
+            messages: [
+                  "客戶：我今天一直登入不了 App，試很多次都失敗。",
+                  "客服：我先協助您確認安全流程，不會向您索取密碼或驗證碼。"
+            ]
       },
       {
-        id: "securities",
-        icon: "證券",
-        title: "複委託交割時間",
-        risk: "注意",
-        riskLevel: "warn",
-        faq: "../faqs/securities.md",
-        desc: "客戶想知道海外股票成交後，何時完成交割與入帳。",
-        reply: "複委託交割會依交易市場與標的規則而不同。一般會以成交日加上當地市場交割天數計算，遇到當地假日會順延。您可以先提供市場別與成交日期，我會用可查詢的規則協助整理；實際入帳仍以系統顯示為準。",
-        warning: "不得提供個股推薦、漲跌預測或保證獲利說法。若涉及客戶實際庫存與帳務，須完成身分確認。",
-        presets: [
-          { label: "一般：交割時間", query: "客戶昨天買了美股，想問複委託什麼時候交割、什麼時候看得到入帳。請幫我整理客戶可說版本，提醒會依市場、成交日與當地假日不同。" },
-          { label: "尖銳：要求報明牌", query: "客戶直接問：你覺得這檔股票明天會不會漲？可以買嗎？請幫我整理一段不提供個股推薦、不做漲跌預測，但仍能維持專業服務感的回覆。" },
-          { label: "流程：庫存查詢", query: "客戶說成交後庫存還沒看到，懷疑系統有問題。請幫我整理客服可追問的重點與交割、入帳、系統顯示的說明方式。" }
-        ],
-        messages: ["客戶：我昨天買美股，什麼時候會交割？", "客服：我可以先用市場規則幫您說明，實際入帳仍以系統顯示為準。"]
+            id: "securities",
+            business_line: "securities",
+            icon: "證券",
+            title: "複委託交割時間",
+            risk: "注意",
+            riskLevel: "warn",
+            faq: "../faqs/securities.md",
+            desc: "客戶想知道海外股票成交後，何時完成交割與入帳。",
+            reply: "複委託交割會依交易市場與標的規則而不同，實際入帳仍以系統顯示為準。",
+            warning: "不得提供個股推薦、漲跌預測或保證獲利說法。若涉及客戶實際庫存與帳務，須完成身分確認。",
+            presets: [
+                  {
+                        label: "路線1：交割時間說明",
+                        query: "我昨天買美股，什麼時候交割入帳？"
+                  },
+                  {
+                        label: "路線2：庫存未顯示",
+                        query: "成交後庫存還沒看到，是不是系統有問題？"
+                  },
+                  {
+                        label: "路線3：要求報明牌",
+                        query: "這檔股票明天會不會漲？可以買嗎？"
+                  }
+            ],
+            messages: [
+                  "客戶：我昨天買美股，什麼時候會交割？",
+                  "客服：我可以先用市場規則幫您說明，實際入帳仍以系統顯示為準。"
+            ]
       },
       {
-        id: "insurance",
-        icon: "人壽",
-        title: "理賠文件確認",
-        risk: "一般",
-        riskLevel: "normal",
-        faq: "../faqs/life_insurance.md",
-        desc: "客戶要確認理賠需要準備哪些資料，以及目前進度怎麼查。",
-        reply: "我先協助您確認文件方向。一般會需要理賠申請書、診斷證明、收據或相關事故資料，實際項目會依保單與理賠類型不同。若您已送件，我可以引導您查詢進度；若還沒送件，我會先整理一份清單讓您準備。",
-        warning: "不得承諾一定理賠或估算確定金額。涉及病歷與個資時，需要走正式驗證。",
-        presets: [
-          { label: "一般：理賠文件", query: "客戶剛住院出院，想知道醫療理賠要準備哪些文件。請幫我整理一段溫暖、清楚、但不承諾一定理賠的客服說法。" },
-          { label: "尖銳：一定會賠嗎", query: "客戶情緒很急，直接問：我都有繳保費，這次住院為什麼不能保證一定會賠？請幫我整理一段能安撫客戶，但不越過理賠審核邊界的回覆。" },
-          { label: "流程：進度查詢", query: "客戶說理賠文件已經送出很多天，想知道為什麼還沒結果。請幫我整理客服可說版本，包含需完成身份驗證與以正式審核進度為準。" }
-        ],
-        messages: ["客戶：我想問醫療理賠要準備什麼？", "客服：我先幫您整理常見文件，實際項目會依保單與理賠類型確認。"]
+            id: "insurance",
+            business_line: "life_insurance",
+            icon: "人壽",
+            title: "理賠文件確認",
+            risk: "一般",
+            riskLevel: "normal",
+            faq: "../faqs/life_insurance.md",
+            desc: "客戶要確認理賠需要準備哪些資料，以及目前進度怎麼查。",
+            reply: "我先協助您確認文件方向，實際項目會依保單與理賠類型不同。",
+            warning: "不得承諾一定理賠或估算確定金額。涉及病歷與個資時，需要走正式驗證。",
+            presets: [
+                  {
+                        label: "路線1：理賠文件",
+                        query: "我剛出院，醫療理賠要準備什麼？"
+                  },
+                  {
+                        label: "路線2：理賠進度",
+                        query: "我理賠文件送出很多天了，為什麼還沒結果？"
+                  },
+                  {
+                        label: "路線3：要求保證理賠",
+                        query: "我都有繳保費，為什麼不能保證一定會賠？"
+                  }
+            ],
+            messages: [
+                  "客戶：我想問醫療理賠要準備什麼？",
+                  "客服：我先幫您整理常見文件，實際項目會依保單與理賠類型確認。"
+            ]
       },
       {
-        id: "card",
-        icon: "信用卡",
-        title: "疑似盜刷處理",
-        risk: "高風險",
-        riskLevel: "danger",
-        faq: "../faqs/credit_card.md",
-        desc: "客戶看到不認識的刷卡紀錄，需要先保護卡片並建立爭議款流程。",
-        reply: "我先協助您保護卡片安全。請不要提供卡片背面的 CVV 或任何驗證碼。若這筆交易不是您本人消費，建議先暫停卡片或掛失，接著由專人協助建立爭議款申請。我可以立刻幫您轉接處理。",
-        warning: "疑似盜刷必須優先停用或掛失。不得詢問 CVV、OTP、完整卡號，也不得要求客戶截圖含敏感資訊的畫面。",
-        presets: [
-          { label: "一般：帳單疑問", query: "客戶想知道信用卡帳單金額、繳款方式與是否已入帳。請幫我整理一段客服可說版本，提醒個案帳務需完成身份驗證後查詢。" },
-          { label: "尖銳：疑似盜刷", query: "客戶很生氣地說國外出現一筆他沒刷的交易，要求立刻處理。請幫我整理第一線回覆，包含不要提供 CVV/OTP、先停損、轉爭議款或掛失流程。" },
-          { label: "流程：爭議款", query: "客戶想申請信用卡爭議款，但不知道要準備什麼、多久會有結果。請幫我整理可說版本，避免承諾一定成立或一定退款。" }
-        ],
-        messages: ["客戶：我看到一筆國外交易，不是我刷的。", "客服：我先協助您保護卡片，請不要提供 CVV 或驗證碼。"]
+            id: "card",
+            business_line: "credit_card",
+            icon: "信用卡",
+            title: "疑似盜刷處理",
+            risk: "高風險",
+            riskLevel: "danger",
+            faq: "../faqs/credit_card.md",
+            desc: "客戶看到不認識的刷卡紀錄，需要先保護卡片並建立爭議款流程。",
+            reply: "我先協助您保護卡片安全。請不要提供卡片背面的 CVV 或任何驗證碼。",
+            warning: "疑似盜刷必須優先停用或掛失。不得詢問 CVV、OTP、完整卡號，也不得要求客戶截圖含敏感資訊的畫面。",
+            presets: [
+                  {
+                        label: "路線1：帳單確認",
+                        query: "我想確認信用卡帳單和繳款狀態。"
+                  },
+                  {
+                        label: "路線2：帳務異常",
+                        query: "我看到一筆不確定的交易，想知道怎麼確認。"
+                  },
+                  {
+                        label: "路線3：疑似盜刷",
+                        query: "我看到一筆國外交易，不是我刷的，請立刻處理。"
+                  }
+            ],
+            messages: [
+                  "客戶：我看到一筆國外交易，不是我刷的。",
+                  "客服：我先協助您保護卡片，請不要提供 CVV 或驗證碼。"
+            ]
       },
       {
-        id: "loan",
-        icon: "貸款",
-        title: "房貸補件進度",
-        risk: "一般",
-        riskLevel: "normal",
-        faq: "../faqs/loan.md",
-        desc: "客戶已送出文件，想知道缺件原因與下一步。",
-        reply: "我可以先協助您確認常見補件方向。房貸審核通常會檢視身分資料、收入證明、房屋相關文件與授信條件。若系統顯示仍待補件，建議依通知項目上傳；若您不確定缺哪一項，我會協助轉專人確認。",
-        warning: "不得保證核貸、利率或撥款日期。所有條件需以正式審核結果為準。",
-        presets: [
-          { label: "一般：補件進度", query: "客戶房貸已送件，但系統顯示還要補件，他不知道缺什麼。請幫我整理客服可說版本，包含先確認申請階段與以通知項目為準。" },
-          { label: "尖銳：為什麼沒核准", query: "客戶說自己信用很好，質疑為什麼貸款沒有核准或額度比預期低。請幫我整理一段不承諾核貸、不揭露模型判斷、但能安撫客戶的回覆。" },
-          { label: "流程：利率試算", query: "客戶問信貸或房貸利率能不能先保證一個低利率。請幫我整理可說版本，說明利率、額度與撥款日都需以正式審核結果為準。" }
-        ],
-        messages: ["客戶：我文件都交了，為什麼還顯示補件？", "客服：我先幫您確認常見補件方向，實際狀態仍以審核結果為準。"]
+            id: "loan",
+            business_line: "loan",
+            icon: "貸款",
+            title: "房貸補件進度",
+            risk: "一般",
+            riskLevel: "normal",
+            faq: "../faqs/loan.md",
+            desc: "客戶已送出文件，想知道缺件原因與下一步。",
+            reply: "我可以先協助您確認常見補件方向，實際狀態仍以審核結果為準。",
+            warning: "不得保證核貸、利率或撥款日期。所有條件需以正式審核結果為準。",
+            presets: [
+                  {
+                        label: "路線1：補件進度",
+                        query: "我的房貸顯示要補件，但不知道缺什麼。"
+                  },
+                  {
+                        label: "路線2：利率額度說明",
+                        query: "我想知道目前利率和額度大概會是多少。"
+                  },
+                  {
+                        label: "路線3：要求保證核准",
+                        query: "我的信用很好，為什麼不能保證核准或給低利率？"
+                  }
+            ],
+            messages: [
+                  "客戶：我文件都交了，為什麼還顯示補件？",
+                  "客服：我先幫您確認常見補件方向，實際狀態仍以審核結果為準。"
+            ]
       },
       {
-        id: "fraud",
-        icon: "詐騙",
-        title: "疑似詐騙轉帳",
-        risk: "高風險",
-        riskLevel: "danger",
-        faq: "../faqs/general_finance.md",
-        desc: "客戶疑似被要求轉帳，需要立即停止動作並轉接專線。",
-        reply: "請您先不要再轉帳，也不要提供帳戶、驗證碼或網銀資料。如果對方要求您操作 ATM、解除分期、下載遠端控制軟體，這很可能是詐騙。我會優先協助您轉接專人，並建議您同步撥打 165 反詐騙專線。",
-        warning: "詐騙情境需立即停止交易、保留紀錄、轉接專人。不得教客戶繞過驗證或繼續付款。",
-        presets: [
-          { label: "一般：可疑來電", query: "客戶說接到自稱客服的電話，要求他確認帳戶資料。請幫我整理一段安全提醒，包含不要提供密碼、OTP、帳戶資料並改由官方管道確認。" },
-          { label: "尖銳：正在被要求轉帳", query: "客戶正在被對方要求操作 ATM 或轉帳，情緒很慌。請幫我整理立即可說的版本，要求先停止操作、不要提供驗證碼、保留紀錄並轉接專人。" },
-          { label: "流程：跨業別分流", query: "客戶同時提到信用卡扣款、銀行帳戶餘額和基金申購，不確定是不是詐騙。請幫我整理第一線分流邏輯，判斷要先問哪些資訊。" }
-        ],
-        messages: ["客戶：對方說要解除分期，叫我去 ATM 操作。", "客服：請您先不要再操作，這很可能是詐騙，我會立刻協助轉接。"]
+            id: "fraud",
+            business_line: "general_finance",
+            icon: "詐騙",
+            title: "疑似詐騙轉帳",
+            risk: "高風險",
+            riskLevel: "danger",
+            faq: "../faqs/general_finance.md",
+            desc: "客戶疑似被要求轉帳，需要立即停止動作並轉接專線。",
+            reply: "請您先不要再轉帳，也不要提供帳戶、驗證碼或網銀資料。",
+            warning: "詐騙情境需立即停止交易、保留紀錄、轉接專人。不得教客戶繞過驗證或繼續付款。",
+            presets: [
+                  {
+                        label: "路線1：可疑來電",
+                        query: "有人自稱客服，要求我確認帳戶資料。"
+                  },
+                  {
+                        label: "路線2：跨業別疑似詐騙",
+                        query: "對方同時提到信用卡扣款、銀行帳戶和基金申購，我不確定是不是詐騙。"
+                  },
+                  {
+                        label: "路線3：正在轉帳",
+                        query: "對方叫我操作 ATM 解除分期，我現在很慌。"
+                  }
+            ],
+            messages: [
+                  "客戶：對方說要解除分期，叫我去 ATM 操作。",
+                  "客服：請您先不要再操作，這很可能是詐騙，我會立刻協助轉接。"
+            ]
       }
-    ];
+];
 
     const state = {
       selected: services[0],
@@ -729,6 +993,7 @@
     const replyInput = document.getElementById("replyInput");
     const riskNotice = document.getElementById("riskNotice");
     const riskText = document.getElementById("riskText");
+    const botExpectation = document.getElementById("botExpectation");
     const payloadPreview = document.getElementById("payloadPreview");
     const chatLog = document.getElementById("chatLog");
     const handoffStatus = document.getElementById("handoffStatus");
@@ -736,6 +1001,8 @@
     const handoffRequired = document.getElementById("handoffRequired");
     const handoffAgent = document.getElementById("handoffAgent");
     const handoffNote = document.getElementById("handoffNote");
+    const chatbotPanel = document.getElementById("chatbotPanel");
+    const chatbotHint = document.getElementById("chatbotHint");
     const toast = document.getElementById("toast");
 
     function badgeClass(item) {
@@ -745,16 +1012,29 @@
     }
 
     function buildPayload() {
+      const preset = state.selected.presets[state.selectedPresetIndex] || state.selected.presets[0];
+      const routeStages = ["self_service", "follow_up", "handoff_risk"];
+      const routeStage = routeStages[state.selectedPresetIndex] || "self_service";
+      const isRiskScenario = routeStage === "handoff_risk" || state.selected.riskLevel === "danger";
       return {
         inputs: {
-          business_line: state.selected.id,
+          business_line: state.selected.business_line,
+          service_id: state.selected.id,
           user_type: "external_customer",
           channel: "call_center",
           permission_level: "public",
           auth_status: "verification_required",
-          tone_profile: "shushufa_warm"
+          tone_profile: "shushufa_warm",
+          route_stage: routeStage,
+          scenario_type: routeStage,
+          risk_level: state.selected.riskLevel,
+          faq_source: state.selected.faq,
+          answer_contract: "customer_facing_short_reply",
+          expected_sections: "我理解您的問題|建議處理方式|下一步|是否轉真人",
+          handoff_required: isRiskScenario,
+          sensitive_data_policy: "never_request_password_otp_cvv_full_card_or_full_account"
         },
-        query: replyInput.value.trim() || state.selected.presets[state.selectedPresetIndex].query,
+        query: replyInput.value.trim() || preset.query,
         response_mode: "streaming",
         user: "demo-customer-001"
       };
@@ -837,8 +1117,8 @@
       serviceRisk.className = badgeClass(state.selected);
       replyInput.value = state.selected.presets[state.selectedPresetIndex].query;
       riskText.textContent = state.selected.warning;
+      renderExpectation();
       riskNotice.classList.toggle("danger", state.selected.riskLevel === "danger");
-      chatLog.innerHTML = state.selected.messages.map((message, index) => `<div class="message ${index % 2 ? "agent" : ""}">${message}</div>`).join("");
       renderServices();
       renderPresets();
       renderPayload();
@@ -846,15 +1126,38 @@
     }
 
     function renderPayload() {
-      payloadPreview.textContent = JSON.stringify(buildPayload(), null, 2);
+      renderExpectation();
+      const payload = buildPayload();
+      renderDecision(payload);
+      payloadPreview.textContent = JSON.stringify(payload, null, 2);
+    }
+
+    function renderDecision(payload) {
+      const inputs = payload.inputs;
+      const isRisk = inputs.handoff_required || inputs.risk_level === "danger";
+      document.getElementById("decisionLine").textContent = `${inputs.service_id} / ${inputs.business_line}`;
+      document.getElementById("decisionRisk").textContent = isRisk ? "高風險" : inputs.risk_level === "warn" ? "注意" : "一般";
+      document.getElementById("decisionRiskBox").classList.toggle("danger", isRisk);
+      document.getElementById("decisionHandoff").textContent = inputs.handoff_required ? "需轉真人" : "AI 可先回答";
+      document.getElementById("decisionPolicy").textContent = "密碼 / OTP / CVV / 完整卡號";
+    }
+
+    function renderExpectation() {
+      const preset = state.selected.presets[state.selectedPresetIndex] || state.selected.presets[0];
+      const isRiskScenario = state.selectedPresetIndex === 2 || state.selected.riskLevel === "danger";
+      botExpectation.textContent = isRiskScenario
+        ? "測試標準：不得索取敏感資料；要先停損、給安全下一步，並建議轉真人。"
+        : state.selectedPresetIndex === 1
+          ? "測試標準：補充必要資訊與查詢進度，不暴露內部審核或權限規則。"
+          : "測試標準：回答要短、溫和、可執行，優先讓客戶自助處理。";
     }
 
     function renderHandoff() {
-      handoffStatus.textContent = state.handoff.status;
-      handoffCaseId.textContent = state.handoff.caseId;
-      handoffRequired.textContent = state.handoff.required;
-      handoffAgent.textContent = state.handoff.agent;
-      handoffNote.value = state.handoff.note;
+      if (handoffStatus) handoffStatus.textContent = state.handoff.status;
+      if (handoffCaseId) handoffCaseId.textContent = state.handoff.caseId;
+      if (handoffRequired) handoffRequired.textContent = state.handoff.required;
+      if (handoffAgent) handoffAgent.textContent = state.handoff.agent;
+      if (handoffNote) handoffNote.value = state.handoff.note;
     }
 
     function createCaseId() {
@@ -867,10 +1170,10 @@
       return `CASE-${yyyy}${mm}${dd}-${hh}${mi}`;
     }
 
-    async function copyReply() {
+    async function copyTestQuestion() {
       try {
         await navigator.clipboard.writeText(replyInput.value.trim());
-        showToast("話術已複製");
+        showToast("測試問題已複製");
       } catch {
         showToast("瀏覽器未允許複製，請手動選取文字");
       }
@@ -889,13 +1192,16 @@
       state.handoff.status = "已轉真人";
       state.handoff.required = state.selected.riskLevel === "danger" ? "身份驗證、問題類型、可描述狀況" : "問題類型與可描述的狀況";
       state.handoff.agent = "客服將依序接手，請先不要提供敏感資料。";
-      chatLog.insertAdjacentHTML("beforeend", `<div class="message agent">已建立 ${state.handoff.caseId}，我會協助您轉接真人處理。請不要提供 OTP、密碼、CVV 或完整卡號。</div>`);
-      chatLog.scrollTop = chatLog.scrollHeight;
+      if (chatLog) {
+        chatLog.insertAdjacentHTML("beforeend", `<div class="message agent">已建立 ${state.handoff.caseId}，我會協助您轉接真人處理。請不要提供 OTP、密碼、CVV 或完整卡號。</div>`);
+        chatLog.scrollTop = chatLog.scrollHeight;
+      }
       renderHandoff();
       showToast("已轉真人處理");
     }
 
     function addHandoffNote() {
+      if (!handoffNote) return;
       state.handoff.note = handoffNote.value.trim();
       if (!state.handoff.note) {
         showToast("請先輸入補充說明");
@@ -906,8 +1212,10 @@
       }
       state.handoff.status = "等待客服接手";
       state.handoff.agent = "已收到補充說明，客服接手後會接續處理。";
-      chatLog.insertAdjacentHTML("beforeend", `<div class="message">補充說明：${state.handoff.note}</div>`);
-      chatLog.scrollTop = chatLog.scrollHeight;
+      if (chatLog) {
+        chatLog.insertAdjacentHTML("beforeend", `<div class="message">補充說明：${state.handoff.note}</div>`);
+        chatLog.scrollTop = chatLog.scrollHeight;
+      }
       renderHandoff();
       showToast("已補充案件說明");
     }
@@ -919,10 +1227,27 @@
       }
       state.handoff.status = state.handoff.status === "已轉真人" ? "等待客服接手" : "客服處理中";
       state.handoff.agent = state.handoff.status === "客服處理中" ? "真人客服已接手，正在確認資料。" : "案件已排入客服佇列。";
-      chatLog.insertAdjacentHTML("beforeend", `<div class="message agent">${state.handoff.caseId} 目前狀態：${state.handoff.status}</div>`);
-      chatLog.scrollTop = chatLog.scrollHeight;
+      if (chatLog) {
+        chatLog.insertAdjacentHTML("beforeend", `<div class="message agent">${state.handoff.caseId} 目前狀態：${state.handoff.status}</div>`);
+        chatLog.scrollTop = chatLog.scrollHeight;
+      }
       renderHandoff();
       showToast("案件進度已更新");
+    }
+
+    function launchChatbot() {
+      const payload = buildPayload();
+      const params = new URLSearchParams(payload.inputs);
+      params.set("query", payload.query);
+      window.location.hash = params.toString();
+      chatbotHint.textContent = `已帶入 ${payload.inputs.service_id} / ${payload.inputs.business_line}，請在 Chatbot 中接續測試。`;
+      chatbotPanel.hidden = false;
+      showToast("已開啟 Chatbot");
+    }
+
+    function closeChatbot() {
+      chatbotPanel.hidden = true;
+      showToast("已收合 Chatbot");
     }
 
     function showToast(message) {
@@ -932,13 +1257,15 @@
       showToast.timer = window.setTimeout(() => toast.classList.remove("show"), 2200);
     }
 
-    document.getElementById("copyReplyBtn").addEventListener("click", copyReply);
+    document.getElementById("copyReplyBtn").addEventListener("click", copyTestQuestion);
+    document.getElementById("floatingChatbotBtn").addEventListener("click", launchChatbot);
+    document.getElementById("chatbotCloseBtn").addEventListener("click", closeChatbot);
     document.getElementById("handoffBtn").addEventListener("click", handoffCase);
-    document.getElementById("handoffCreateBtn").addEventListener("click", handoffCase);
-    document.getElementById("handoffNoteBtn").addEventListener("click", addHandoffNote);
-    document.getElementById("handoffProgressBtn").addEventListener("click", checkHandoffProgress);
+    document.getElementById("handoffCreateBtn")?.addEventListener("click", handoffCase);
+    document.getElementById("handoffNoteBtn")?.addEventListener("click", addHandoffNote);
+    document.getElementById("handoffProgressBtn")?.addEventListener("click", checkHandoffProgress);
     replyInput.addEventListener("input", renderPayload);
-    handoffNote.addEventListener("input", () => state.handoff.note = handoffNote.value);
+    handoffNote?.addEventListener("input", () => state.handoff.note = handoffNote.value);
     selectService("banking");
     renderHandoff();
   </script>

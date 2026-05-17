@@ -220,6 +220,44 @@
     .meta-item span { color: var(--muted); font-size: 12px; font-weight: 900; }
     .meta-item strong { display: block; margin-top: 5px; font-size: 15px; }
 
+    .case-steps {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: 8px;
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--line);
+      background: #fff;
+    }
+    .case-step {
+      min-height: 58px;
+      padding: 9px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #f8fcfa;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 900;
+      line-height: 1.35;
+    }
+    .case-step span {
+      display: block;
+      margin-bottom: 4px;
+      color: #235b40;
+      font-size: 11px;
+    }
+    .case-step.active {
+      border-color: var(--green);
+      color: #fff;
+      background: var(--green);
+      box-shadow: 0 8px 18px rgba(29,78,53,.12);
+    }
+    .case-step.active span { color: #dff3e8; }
+    .case-step.done {
+      border-color: rgba(36,122,81,.35);
+      color: #235b40;
+      background: var(--green-soft);
+    }
+
     .conversation {
       display: grid;
       gap: 10px;
@@ -343,7 +381,7 @@
 
     @media (max-width: 1180px) {
       .workspace { grid-template-columns: 1fr; }
-      .meta-grid, .editor-grid, .action-grid { grid-template-columns: 1fr; }
+      .meta-grid, .editor-grid, .action-grid, .case-steps { grid-template-columns: 1fr; }
       .case-hero { grid-template-columns: 1fr; }
     }
     @media (max-width: 760px) {
@@ -358,21 +396,21 @@
     <a class="brand" href="../index.html" aria-label="返回對內工作台">
       <div class="mark">CC</div>
       <div>
-        <strong>Call Center 真人介入工作台</strong>
-        <span>案件介入、權限批准、知識庫候選與稽核紀錄</span>
+        <strong>Call Center 工作台</strong>
+        <span>接手、批准、回覆、留痕</span>
       </div>
     </a>
     <div class="top-actions">
-      <span class="chip">使用者 Jay Wu</span>
-      <span class="chip">主管權限</span>
-      <a class="chip" href="../../external/index.html">查看對外狀態頁</a>
+      <span class="chip">Jay Wu</span>
+      <span class="chip">主管 / 知識審核</span>
+      <a class="chip" href="../../external/index.html">對外頁</a>
     </div>
   </header>
 
   <main class="page">
     <section class="console-head">
       <div>
-        <h1>真人介入工作台</h1>
+        <h1>真人接手與批准</h1>
       </div>
       <div class="metrics">
         <span class="chip danger" id="highRiskMetric">高風險 2</span>
@@ -386,7 +424,7 @@
         <div class="panel-body">
           <div class="panel-title">
             <div>
-              <h2>案件佇列</h2>
+              <h2>待處理</h2>
             </div>
           </div>
           <div class="queue-tabs" id="queueTabs"></div>
@@ -413,24 +451,26 @@
           <div class="case-photo" aria-hidden="true"></div>
         </div>
 
+        <div class="case-steps" id="caseSteps" aria-label="案件處理流程"></div>
+
         <div class="conversation" id="conversation"></div>
 
         <div class="editor-grid">
           <div class="field">
-            <label for="humanReply">真人客服回覆</label>
+            <label for="humanReply">客戶回覆</label>
             <textarea id="humanReply"></textarea>
           </div>
           <div class="field">
-            <label for="internalNote">內部備註</label>
+            <label for="internalNote">處理備註</label>
             <textarea id="internalNote"></textarea>
           </div>
         </div>
         <div class="action-grid">
-          <button class="btn primary" id="assignBtn" type="button" title="接手後會記錄 Jay Wu 與處理時間">接手案件</button>
-          <button class="btn warning" id="submitApprovalBtn" type="button" title="高風險、投資、理賠、貸款邊界案件需先送主管批准">送出批准</button>
-          <button class="btn primary" id="approveBtn" type="button" title="批准後才可回覆高風險案件或發布知識庫候選">主管批准</button>
+          <button class="btn primary" id="assignBtn" type="button" title="接手後會記錄 Jay Wu 與處理時間">接手</button>
+          <button class="btn warning" id="submitApprovalBtn" type="button" title="高風險、投資、理賠、貸款邊界案件需先送主管批准">送批准</button>
+          <button class="btn primary" id="approveBtn" type="button" title="批准後才可回覆高風險案件或發布知識庫候選">批准</button>
           <button class="btn" id="rejectBtn" type="button" title="資料不足時退回補充身份驗證、客戶同意或風險說明">退回補充</button>
-          <button class="btn primary" id="replyBtn" type="button" title="高風險案件未批准前不可回覆客戶">回覆客戶</button>
+          <button class="btn primary" id="replyBtn" type="button" title="高風險案件未批准前不可回覆客戶">回覆</button>
           <button class="btn" id="closeBtn" type="button" title="完成回覆與紀錄後結案">結案</button>
         </div>
       </section>
@@ -438,29 +478,29 @@
       <aside class="panel">
         <div class="panel-body">
           <div class="panel-title">
-            <h2>案件資訊</h2>
+            <h2>案件</h2>
             <span class="chip" id="caseLine">credit_card</span>
           </div>
           <ul class="info-list" id="caseInfo"></ul>
         </div>
         <div class="panel-body">
           <div class="panel-title">
-            <h2>權限控管</h2>
+            <h2>處理規則</h2>
           </div>
           <div id="permissionMatrix"></div>
         </div>
         <div class="panel-body">
           <div class="panel-title">
-            <h2>知識庫候選</h2>
+            <h2>知識候選</h2>
             <span class="chip" id="kbStatus">草稿</span>
           </div>
           <div class="kb-card">
             <h3 id="kbQuestion">疑似盜刷第一線怎麼回？</h3>
             <p id="kbAnswer">先停損，不索取敏感資訊，轉專人處理。</p>
             <div class="kb-actions">
-              <button class="btn" id="kbDraftBtn" type="button" title="只建立草稿，不會寫入正式 FAQ">加入候選</button>
-              <button class="btn warning" id="kbReviewBtn" type="button" title="送知識庫管理者審核，確認不可承諾與敏感資料邊界">送審知識庫</button>
-              <button class="btn primary" id="kbPublishBtn" type="button" title="需主管批准後才能發布，避免錯誤知識進入正式 FAQ">發布到知識庫</button>
+              <button class="btn" id="kbDraftBtn" type="button" title="只建立草稿，不會寫入正式 FAQ">候選</button>
+              <button class="btn warning" id="kbReviewBtn" type="button" title="送知識庫管理者審核，確認不可承諾與敏感資料邊界">送審</button>
+              <button class="btn primary" id="kbPublishBtn" type="button" title="需主管批准後才能發布，避免錯誤知識進入正式 FAQ">發布</button>
             </div>
           </div>
         </div>
@@ -499,12 +539,19 @@
       { id: "pending_approval", label: "待批准" },
       { id: "closed", label: "已結案" }
     ];
+    const caseSteps = [
+      { id: "assign", label: "接手" },
+      { id: "draft", label: "編輯回覆" },
+      { id: "approval", label: "送批准" },
+      { id: "approved", label: "批准" },
+      { id: "reply", label: "回覆" },
+      { id: "close", label: "結案 / 知識" }
+    ];
     const permissions = [
-      ["客服人員", "接手案件、補充紀錄、複製話術"],
-      ["RM", "查看投資/財管邊界、送主管批准"],
-      ["主管", "批准高風險回覆、退回案件"],
-      ["知識庫管理者", "新增、送審、發布知識庫候選"],
-      ["稽核", "查看紀錄，不可修改"]
+      ["接手", "先確認身份、風險與服務關係"],
+      ["批准", "高風險回覆需主管同意"],
+      ["回覆", "只給客戶可見版本，不暴露內部規則"],
+      ["留痕", "每次接手、批准、回覆與發布都寫入稽核"]
     ];
     const cases = [
       {
@@ -519,10 +566,10 @@
         assigned_to: "",
         approval_status: "not_submitted",
         required_permission: "supervisor_approval",
-        customer_summary: "客戶表示國外出現非本人交易，需要先保護卡片並建立爭議款流程。",
-        ai_suggested_reply: "我先協助您保護卡片安全。請不要提供 CVV、OTP 或完整卡號。若這筆交易不是您本人消費，建議先暫停卡片或掛失，接著由專人協助建立爭議款流程。",
-        human_reply: "王小姐，我先協助您保護卡片安全。請不要提供 CVV、OTP 或完整卡號。我會先協助您停用卡片，接著轉專人建立爭議款流程。",
-        internal_note: "高風險：疑似境外盜刷，需主管批准後回覆。",
+        customer_summary: "客戶表示國外出現非本人交易，需先停損並建立爭議款流程。",
+        ai_suggested_reply: "請不要提供 CVV、OTP 或完整卡號。我會協助您停用卡片，並轉專人建立爭議款流程。",
+        human_reply: "王小姐，請先不要提供 CVV、OTP 或完整卡號。我會協助您停用卡片，並轉專人建立爭議款流程。",
+        internal_note: "高風險：疑似境外盜刷，回覆前需批准。",
         kb_candidate: {
           question: "疑似盜刷第一線怎麼回？",
           answer: "先保護卡片，不詢問 CVV/OTP/完整卡號，必要時停卡並建立爭議款流程。",
@@ -543,9 +590,9 @@
         assigned_to: "Jay Wu",
         approval_status: "not_submitted",
         required_permission: "rm_review",
-        customer_summary: "客戶詢問美股成交後交割與入帳時間，並追問是否代表資金有風險。",
-        ai_suggested_reply: "複委託交割依市場、成交日、幣別與當地假日而不同，實際入帳仍以系統顯示為準。",
-        human_reply: "陳先生，複委託交割會依交易市場、成交日與當地假日調整。您這筆交易的實際入帳仍以系統顯示為準，我可以先協助您確認市場別與成交日。",
+        customer_summary: "客戶詢問美股成交後交割與入帳時間。",
+        ai_suggested_reply: "複委託交割依市場、成交日與當地假日而不同，實際入帳以系統顯示為準。",
+        human_reply: "陳先生，複委託交割依市場、成交日與當地假日而不同，實際入帳以系統顯示為準。",
         internal_note: "不得延伸到個股建議或資金安全保證。",
         kb_candidate: {
           question: "複委託交割時間怎麼說？",
@@ -567,10 +614,10 @@
         assigned_to: "Jay Wu",
         approval_status: "pending",
         required_permission: "supervisor_approval",
-        customer_summary: "客戶正在被陌生人要求操作 ATM 解除分期，需立即停止操作並轉安全流程。",
+        customer_summary: "客戶被要求操作 ATM 解除分期，需立即停止並轉安全流程。",
         ai_suggested_reply: "請先不要再操作 ATM，也不要提供驗證碼或帳戶資料。這很可能是詐騙，我會協助您轉接專人。",
-        human_reply: "林先生，請您先不要再操作 ATM，也不要提供驗證碼或帳戶資料。這很可能是詐騙，我會立即協助您轉接安全專人處理。",
-        internal_note: "已送主管批准，等待確認後回覆。",
+        human_reply: "林先生，請先不要再操作 ATM，也不要提供驗證碼或帳戶資料。我會立即協助您轉接安全專人。",
+        internal_note: "待主管批准後回覆。",
         kb_candidate: {
           question: "客戶正在被要求操作 ATM 怎麼辦？",
           answer: "先停止操作，不提供驗證碼或帳戶資料，保留紀錄並轉接安全專人。",
@@ -650,6 +697,7 @@
       document.getElementById("caseAssignee").textContent = item.assigned_to || "尚未接手";
       document.getElementById("caseApproval").textContent = approvalLabels[item.approval_status];
       document.getElementById("caseSla").textContent = item.sla;
+      renderCaseSteps(item);
       humanReply.value = item.human_reply;
       internalNote.value = item.internal_note;
       conversation.innerHTML = item.messages.map((message, index) => `<div class="message ${index % 2 ? "agent" : ""}">${message}</div>`).join("") + `<div class="message system">AI 建議：${item.ai_suggested_reply}</div>`;
@@ -676,6 +724,23 @@
       document.getElementById("closeBtn").disabled = item.status !== "customer_replied";
       document.getElementById("kbReviewBtn").disabled = isClosed || item.kb_candidate.status !== "draft";
       document.getElementById("kbPublishBtn").disabled = item.approval_status !== "approved" || item.kb_candidate.status !== "reviewing";
+    }
+
+    function currentStepIndex(item) {
+      if (item.status === "closed") return 5;
+      if (item.status === "customer_replied") return 4;
+      if (item.approval_status === "approved" || item.status === "approved") return 3;
+      if (item.approval_status === "pending" || item.status === "pending_approval") return 2;
+      if (item.assigned_to) return 1;
+      return 0;
+    }
+
+    function renderCaseSteps(item) {
+      const activeIndex = currentStepIndex(item);
+      document.getElementById("caseSteps").innerHTML = caseSteps.map((step, index) => {
+        const stateClass = index < activeIndex ? "done" : index === activeIndex ? "active" : "";
+        return `<div class="case-step ${stateClass}"><span>${index + 1}</span>${step.label}</div>`;
+      }).join("");
     }
 
     function renderMetrics() {

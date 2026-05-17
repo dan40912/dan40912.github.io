@@ -1,6 +1,6 @@
 {
   "app": {
-    "description": "對內版｜金融集團內部 AI Assistant、知識庫管理、權限審批與案件協作 Demo",
+    "description": "對內版｜金融集團內部 AI Assistant、知識庫管理、權限審批與案件協作 Demo｜已補 PM 備註：路線判斷、權限決策、風險場景與審批條件",
     "icon": "🤖",
     "icon_background": "#FFEAD5",
     "icon_type": "emoji",
@@ -63,7 +63,7 @@
         },
         "number_limits": 3
       },
-      "opening_statement": "您好，我是 Financial AI Service Hub｜對內版，這裡協助內部同仁把客戶查詢、SOP、權限判斷與案件協作整理得更清楚。\n\n您可以把我當成內部 AI Assistant：我能協助業務、客服、理賠、法遵、IT 與主管快速整理問題脈絡，判斷是否符合查詢權限，產出可對客戶說明的安全版本，並建立 mock Case、Approval、Audit Log 與 Teams 通知內容。\n\n為了保護客戶資料，請先告訴我 4 件事：您的角色與部門、查詢目的、查詢對象、您與客戶的服務關係。若資料不足、可能越權、涉及敏感欄位或需要主管審批，我會先提醒風險，再協助整理審批摘要。\n\n這是個人面試 Demo，不串接真實 API，也不查詢真實客戶資料。",
+      "opening_statement": "您好，我是 Financial AI Service Hub｜對內版。我會先判斷業別、路線、風險、權限與是否需要主管批准，再產出同仁可使用的客戶可說版本。\n\n前台已為每個產業準備三條路線：路線1 查現況、路線2 下一步建議、路線3 風險/審批。若帶入 mock_customer_profile，我會依該產業的 mock context 回答，不宣稱是真實核心系統資料。\n\n固定輸出：現況摘要、下一步建議、不可說、是否需要轉人工/主管批准、客戶可說版本、mock Audit Log。這是 demo，不查真實客戶資料，也不宣稱已送出正式案件。",
       "retriever_resource": {
         "enabled": true
       },
@@ -74,12 +74,10 @@
         "enabled": false
       },
       "suggested_questions": [
-        "我是分行 RM，要查客戶保單權益與可對客戶說明版本",
-        "我要查理賠初判 SOP，請判斷是否需要主管審批",
-        "我要查某位客戶 90 日客訴紀錄，請檢查權限與遮罩規則",
-        "業務想查減額繳清與借款資訊，請建立權限審批摘要",
-        "請把這個內部工單整理成 Case Summary、SLA 與負責團隊",
-        "請判斷這次查詢是否有越權或法遵風險"
+        "這位客戶目前有哪些服務或商品？請依 demo mock data 整理",
+        "根據剛剛的現況，請給同仁下一步建議",
+        "請處理路線3高風險問題，標出不可說與轉人工條件",
+        "請把這個案件整理成 Call Center 交接摘要與 Audit Log"
       ],
       "suggested_questions_after_answer": {
         "enabled": true
@@ -336,11 +334,83 @@
       "nodes": [
         {
           "data": {
-            "desc": "內部員工開啟對內版 Internal AI Assistant，輸入查詢或作業需求。",
+            "desc": "備註｜START 接收前台帶入的 business_line、route_stage、risk_level、approval_required 與 mock_customer_profile。PM 判斷：先讓 demo 明確知道「產業、路線、風險、是否審批」四件事，避免機器人自由猜測。",
             "selected": false,
             "title": "START",
             "type": "start",
-            "variables": []
+            "variables": [
+              {
+                "variable": "business_line",
+                "label": "business_line",
+                "type": "text-input",
+                "required": false,
+                "max_length": 64,
+                "options": []
+              },
+              {
+                "variable": "user_role",
+                "label": "user_role",
+                "type": "text-input",
+                "required": false,
+                "max_length": 64,
+                "options": []
+              },
+              {
+                "variable": "department",
+                "label": "department",
+                "type": "text-input",
+                "required": false,
+                "max_length": 64,
+                "options": []
+              },
+              {
+                "variable": "service_relationship",
+                "label": "service_relationship",
+                "type": "text-input",
+                "required": false,
+                "max_length": 64,
+                "options": []
+              },
+              {
+                "variable": "scenario_type",
+                "label": "scenario_type",
+                "type": "text-input",
+                "required": false,
+                "max_length": 64,
+                "options": []
+              },
+              {
+                "label": "route_stage",
+                "variable": "route_stage",
+                "required": false,
+                "max_length": 64,
+                "type": "text-input"
+              },
+              {
+                "variable": "risk_level",
+                "label": "risk_level",
+                "type": "text-input",
+                "required": false,
+                "max_length": 64,
+                "options": []
+              },
+              {
+                "variable": "approval_required",
+                "label": "approval_required",
+                "type": "text-input",
+                "required": false,
+                "max_length": 16,
+                "options": []
+              },
+              {
+                "variable": "mock_customer_profile",
+                "label": "mock_customer_profile",
+                "type": "paragraph",
+                "required": false,
+                "max_length": 6000,
+                "options": []
+              }
+            ]
           },
           "height": 117,
           "id": "1711528914102",
@@ -364,7 +434,7 @@
               "enabled": false,
               "variable_selector": []
             },
-            "desc": "整理員工角色、部門、查詢目的與客戶服務關係，避免一開始就進入未授權查詢。",
+            "desc": "備註｜第一關只做角色/目的/服務關係整理。決策理由：內部查詢不能直接回答客戶資料，必須先確認誰查、為何查、是否有服務關係；三路線在這裡先被標記。",
             "memory": {
               "role_prefix": {
                 "assistant": "",
@@ -390,7 +460,7 @@
             "prompt_template": [
               {
                 "role": "system",
-                "text": "你是對內版 AI Assistant 的開場整理節點。請用溫暖但專業的語氣整理使用者需求，確認角色、部門、查詢目的、查詢對象、服務關係與是否已有主管授權。若資訊不足，標示待補欄位。\n\n輸出：需求摘要、必要欄位完整度、是否可進入下一步。"
+                "text": "你是對內版 AI Assistant 的開場整理節點。請用溫暖但專業的語氣整理使用者需求，確認角色、部門、查詢目的、查詢對象、服務關係與是否已有主管授權。若資訊不足，標示待補欄位。\n\n前台可能帶入的 inputs：\n- business_line: {{#1711528914102.business_line#}}\n- user_role: {{#1711528914102.user_role#}}\n- department: {{#1711528914102.department#}}\n- service_relationship: {{#1711528914102.service_relationship#}}\n- route_stage: {{#1711528914102.route_stage#}}\n- mock_customer_profile: {{#1711528914102.mock_customer_profile#}}\n\n三路線定義：\n1. status_lookup：查現況，整理 mock 資料與需確認欄位。\n2. next_best_action：基於現況給同仁下一步建議，但不可承諾或直接推薦特定商品。\n3. risk_boundary：處理高風險、不可說、審批或轉人工條件。\n\n若 mock_customer_profile 有值，請明確標示這是 demo mock data，不是真實核心系統查詢。\n\n輸出：需求摘要、路線判斷、必要欄位完整度、是否可進入下一步。\n\n設計備註（給 demo presenter，不需逐字輸出）：此節點的任務是「辨識情境」，不是回答問題；輸出要讓 presenter 看出模型如何理解角色、目的、服務關係與路線。"
               }
             ],
             "selected": false,
@@ -423,7 +493,7 @@
               "enabled": false,
               "variable_selector": []
             },
-            "desc": "在需求分流前先判斷是否涉及個資、正式金額、敏感欄位、越權或法遵風險。",
+            "desc": "備註｜第二關做權限與風險初判。決策理由：只要涉及正式金額、保單價值、理賠結果、投資建議、敏感欄位、非服務關係或 route_stage=risk_boundary，就要提高風險並導向審批/轉人工。",
             "memory": {
               "role_prefix": {
                 "assistant": "",
@@ -449,7 +519,7 @@
             "prompt_template": [
               {
                 "role": "system",
-                "text": "你是對內版權限與風險初判節點。請檢查是否涉及客戶個資、正式金額、保單價值、理賠結果、風險屬性、API key、密碼、token、非服務關係查詢、大量查詢或繞過審批。\n\n輸出：risk_level、permission_status、required_approval、data_minimization_rule、建議分流。"
+                "text": "你是對內版權限與風險初判節點。請檢查是否涉及客戶個資、正式金額、保單價值、理賠結果、風險屬性、API key、密碼、token、非服務關係查詢、大量查詢或繞過審批。\n\n前台 inputs：\n- business_line: {{#1711528914102.business_line#}}\n- user_role: {{#1711528914102.user_role#}}\n- department: {{#1711528914102.department#}}\n- service_relationship: {{#1711528914102.service_relationship#}}\n- route_stage: {{#1711528914102.route_stage#}}\n- risk_level: {{#1711528914102.risk_level#}}\n- approval_required: {{#1711528914102.approval_required#}}\n- mock_customer_profile: {{#1711528914102.mock_customer_profile#}}\n\n規則：\n1. mock_customer_profile 只能作為 demo 模擬資料，不可宣稱來自正式核心系統。\n2. 查現況可整理 mock 摘要，但仍需標示資料限制與 audit log。\n3. 下一步建議只能做流程、風險、需求訪談或補件提醒，不可直接承諾結果。\n4. route_stage=risk_boundary 或 approval_required=true 時，必須標出不可說、審批/轉人工條件。\n\n輸出：risk_level、permission_status、required_approval、data_minimization_rule、建議分流。\n\n設計備註（給 demo presenter，不需逐字輸出）：風險判斷採保守原則；無法確認授權時不提供資料，改列待補欄位或審批需求。"
               }
             ],
             "selected": false,
@@ -510,8 +580,8 @@
                 "name": "角色不明、查詢目的不明、服務關係不足、要求未授權資料或與金融內部作業無關"
               }
             ],
-            "desc": null,
-            "instructions": "請依前置風險初判結果與使用者訊息判斷最適合的內部作業分類。優先辨識內部知識庫、客戶資料查詢、權限審批、保單/理賠/業務查詢、內部 Incident、越權或法遵風險。若缺少角色、部門、查詢目的或服務關係，分類到補充資訊 / 拒答。",
+            "desc": "備註｜需求分流節點。PM 分流順序：高風險/權限不足優先，其次客戶資料、業務/理賠/金融服務、內部工單，最後才是知識庫或補充資訊。這樣 demo 能顯示全權限控管不是事後補救。",
+            "instructions": "請依前置風險初判結果與使用者訊息判斷最適合的內部作業分類。優先辨識內部知識庫、客戶資料查詢、權限審批、保單/理賠/業務查詢、內部 Incident、越權或法遵風險。若缺少角色、部門、查詢目的或服務關係，分類到補充資訊 / 拒答。\n\n設計備註：如果前台 route_stage=risk_boundary 或 approval_required=true，即使文字看似一般，也優先分類到「權限審批 / 高風險」。這是 demo 的全權限控管重點。",
             "model": {
               "completion_params": {
                 "frequency_penalty": 0,
@@ -556,7 +626,7 @@
             "dataset_ids": [
               "ZR+xZ5cK2YioRhzWHlnc3Ms+gmQhTNfBYgPefpY3r8FAqUgeUXf9KFmI5TVTkEKu"
             ],
-            "desc": "查詢內部 SOP、權限矩陣、敏感資料遮罩規則與知識候選資料集。",
+            "desc": "備註｜RAG 只負責查 SOP/FAQ/權限規則，不負責個案承諾。判斷依據不足時要回「目前知識庫沒有足夠依據」。",
             "query_variable_selector": [
               "1711528914102",
               "sys.query"
@@ -602,7 +672,7 @@
               "enabled": false,
               "variable_selector": []
             },
-            "desc": "用 RAG 回答內部 SOP、權限矩陣、敏感資料遮罩規則與知識候選。",
+            "desc": "備註｜把檢索結果轉成內部可用答案。場景重點：要標出適用角色、權限限制、是否需 Reviewer，而不是只給一般 FAQ。",
             "memory": {
               "role_prefix": {
                 "assistant": "",
@@ -661,7 +731,7 @@
               "enabled": false,
               "variable_selector": []
             },
-            "desc": "RAG 回覆後判斷是否可沉澱為知識候選，並要求審核。",
+            "desc": "備註｜判斷能不能沉澱為知識候選。不能收錄個資、正式金額、未審核金融建議或高度客製判斷。",
             "memory": {
               "role_prefix": {
                 "assistant": "",
@@ -717,7 +787,7 @@
         {
           "data": {
             "answer": "{{#2026051607.text#}}",
-            "desc": "",
+            "desc": "備註｜知識庫回答出口。PM 觀察點：是否有說明知識來源、適用角色、審核需求與 Audit Log 欄位。",
             "selected": false,
             "title": "內部知識庫回覆",
             "type": "answer",
@@ -745,7 +815,7 @@
               "enabled": false,
               "variable_selector": []
             },
-            "desc": "在客戶資料查詢前先確認可提供欄位與必須遮罩欄位。",
+            "desc": "備註｜資料最小化與欄位遮罩。決策理由：就算有服務關係，也只給任務必要欄位；缺授權時只產生審批摘要，不給明細。",
             "memory": {
               "role_prefix": {
                 "assistant": "",
@@ -804,7 +874,7 @@
               "enabled": false,
               "variable_selector": []
             },
-            "desc": "內部員工查詢客戶資料、服務關係、欄位權限與遮罩判斷。",
+            "desc": "備註｜客戶資料查詢回答。場景重點：內部同仁可看到「可提供/不可提供/需遮罩/審批摘要/客戶可說版本」，避免把內部判斷直接講給客戶。",
             "memory": {
               "role_prefix": {
                 "assistant": "",
@@ -860,7 +930,7 @@
         {
           "data": {
             "answer": "{{#2026051502.text#}}",
-            "desc": "",
+            "desc": "備註｜權限查詢出口。PM 觀察點：是否把內部可看資料與客戶可說版本分開。",
             "selected": false,
             "title": "權限查詢回覆",
             "type": "answer",
@@ -888,7 +958,7 @@
               "enabled": false,
               "variable_selector": []
             },
-            "desc": "在保單、理賠、借款、減額繳清與內部試算前檢查審批需求。",
+            "desc": "備註｜業務查詢審批檢查。決策理由：保單、理賠、貸款、投資、卡務等個案都可能碰到正式結果或承諾；路線2只能給下一步，路線3必須列不可說與介入條件。",
             "memory": {
               "role_prefix": {
                 "assistant": "",
@@ -914,7 +984,7 @@
             "prompt_template": [
               {
                 "role": "system",
-                "text": "你是業務 / 理賠查詢審批檢查節點。請判斷是否涉及正式金額、理賠初判、保單價值準備金、借款、解約金、減額繳清、佣金或客戶可見版本。\n\n輸出：是否可回答、需審批人、可對客戶說明版本限制。"
+                "text": "你是業務 / 理賠 / 金融服務查詢審批檢查節點。請判斷是否涉及正式金額、理賠初判、保單價值準備金、借款、解約金、貸款核准、投資建議、爭議款結果、佣金或客戶可見版本。\n\n前台 inputs：\n- business_line: {{#1711528914102.business_line#}}\n- route_stage: {{#1711528914102.route_stage#}}\n- mock_customer_profile: {{#1711528914102.mock_customer_profile#}}\n\n三路線規則：\n1. status_lookup：可依 mock_customer_profile 整理現況，但需標示 demo mock data。\n2. next_best_action：可給同仁下一步建議，例如安全設定、需求訪談、補件、風險屬性確認、轉接條件；不可直接推薦特定商品或承諾結果。\n3. risk_boundary：需輸出不可說、需主管/法遵/真人介入條件。\n\n人壽範例：若 mock 資料顯示已有儲蓄險/美元保單、未見實支實付/住院日額，下一步只能建議保障需求訪談與確認外部保單，不可直接推薦商品。\n\n輸出：是否可回答、需審批人、可對客戶說明版本限制。\n\n設計備註（給 demo presenter，不需逐字輸出）：所有產業共用三路線；不要把人壽範例寫死成唯一情境，銀行/證券/投信/信用卡/貸款/財管也要套用同一個決策框架。"
               }
             ],
             "selected": false,
@@ -947,15 +1017,15 @@
               "enabled": false,
               "variable_selector": []
             },
-            "desc": "內部業務與理賠作業：保單、理賠、缺件、試算與客戶可說版本。",
+            "desc": "備註｜金融服務作業助理。三路線示範：路線1整理 mock 現況；路線2給同仁下一步但不推薦商品/不承諾結果；路線3處理不可說、主管/法遵/真人介入。人壽缺口只是需求訪談方向，不是商品推薦。",
             "memory": {
               "role_prefix": {
                 "assistant": "",
                 "user": ""
               },
               "window": {
-                "enabled": false,
-                "size": 50
+                "enabled": true,
+                "size": 8
               }
             },
             "model": {
@@ -973,7 +1043,7 @@
             "prompt_template": [
               {
                 "role": "system",
-                "text": "你是金融集團對內版的「業務 / 理賠 / 保單作業助理」。不得輸出未授權正式金額或最終承諾。\n\n前置業務查詢審批檢查結果：{{#2026051604.text#}}\n\n固定輸出：案件摘要、可回答內容、不可回答內容、待補資料、是否需主管/法遵/資安審批、客戶可見版本、mock Case / Approval。"
+                "text": "你是金融集團對內版的「業務 / 理賠 / 金融服務作業助理」。不得輸出未授權正式金額或最終承諾。\n\n前置業務查詢審批檢查結果：{{#2026051604.text#}}\n\n前台 inputs：\n- business_line: {{#1711528914102.business_line#}}\n- user_role: {{#1711528914102.user_role#}}\n- service_relationship: {{#1711528914102.service_relationship#}}\n- route_stage: {{#1711528914102.route_stage#}}\n- mock_customer_profile: {{#1711528914102.mock_customer_profile#}}\n\n三路線輸出規則：\n1. status_lookup：使用 mock_customer_profile 整理該產業現況，例如帳戶/保單/投資/基金/卡片/貸款/財管/跨業別訊息。必須說明這是 demo mock data，不是正式核心系統查詢。\n2. next_best_action：基於前述 mock 現況整理同仁下一步。可建議確認資料、需求訪談、補件、安全設定、風險屬性、轉接團隊；不可直接推薦特定商品、承諾核准、承諾理賠、預測報酬或保證結果。\n3. risk_boundary：先處理安全與合規邊界，列出不可說、不可索取資料、需主管/法遵/真人介入條件。\n\n人壽特別規則：若 mock 保單組合是儲蓄型壽險與美元保單，且未見實支實付、住院日額、重大傷病/癌症一次金，請以保障缺口和需求訪談角度說明，不直接推薦特定商品。\n\n固定輸出：\n1. 【案件摘要】\n2. 【mock 現況】\n3. 【下一步建議】\n4. 【不可回答內容】\n5. 【是否需主管/法遵/真人介入】\n6. 【客戶可見版本】\n7. 【mock Case / Approval / Audit Log】\n\n設計備註（給 demo presenter，不需逐字輸出）：回答時要讓 demo 觀眾看見「為什麼不能直接推薦或承諾」，用不可說與客戶可見版本呈現權限邊界。"
               }
             ],
             "selected": false,
@@ -1003,7 +1073,7 @@
         {
           "data": {
             "answer": "{{#2026051503.text#}}",
-            "desc": "",
+            "desc": "備註｜業務/理賠出口。PM 觀察點：答案要同時有 mock 現況、下一步、不可回答、是否介入、客戶可見版本與 Audit Log。",
             "selected": false,
             "title": "業務 / 理賠查詢回覆",
             "type": "answer",
@@ -1031,7 +1101,7 @@
               "enabled": false,
               "variable_selector": []
             },
-            "desc": "內部 Case、Incident、Jira、Teams、ITSM 與 SLA 追蹤 mock。",
+            "desc": "備註｜內部案件/系統異常/審批工單。判斷重點：這裡只產 mock payload，不宣稱真的建立 Jira/ITSM/Teams/Approval。",
             "memory": {
               "role_prefix": {
                 "assistant": "",
@@ -1090,7 +1160,7 @@
               "enabled": false,
               "variable_selector": []
             },
-            "desc": "把內部案件、ITSM、Jira、Teams 與 Approval Request 包裝成可追蹤格式。",
+            "desc": "備註｜SLA 與通知 payload 包裝。場景重點：讓 Call Center 或 IT 接手時有 priority、SLA、負責團隊與升級條件。",
             "memory": {
               "role_prefix": {
                 "assistant": "",
@@ -1146,7 +1216,7 @@
         {
           "data": {
             "answer": "{{#2026051605.text#}}",
-            "desc": "",
+            "desc": "備註｜內部案件出口。PM 觀察點：是否清楚列 mock Case、SLA、分派團隊與下一步。",
             "selected": false,
             "title": "內部案件 / 工單回覆",
             "type": "answer",
@@ -1174,7 +1244,7 @@
               "enabled": false,
               "variable_selector": []
             },
-            "desc": "內部權限不足、敏感資料、越權查詢、大量查詢與法遵高風險處理。",
+            "desc": "備註｜高風險守門員。決策理由：非服務關係、大量查詢、敏感資料、繞過 SSO/MFA/主管審批、AML/個資/稽核都不能直接回答，改成拒答範圍與審批摘要。",
             "memory": {
               "role_prefix": {
                 "assistant": "",
@@ -1200,7 +1270,7 @@
             "prompt_template": [
               {
                 "role": "system",
-                "text": "你是金融集團對內版的「權限審批與高風險查詢守門員」。高風險情境包含非服務關係查詢、大量查詢、敏感資料未遮罩、試圖繞過 SSO/MFA/主管審批、涉及 AML/個資/稽核。\n\n前置權限 / 風險初判結果：{{#2026051602.text#}}\n\n固定輸出：風險判斷、拒答或可協助範圍、審批建議、資料最小化、mock Audit Event。"
+                "text": "你是金融集團對內版的「權限審批與高風險查詢守門員」。高風險情境包含非服務關係查詢、大量查詢、敏感資料未遮罩、試圖繞過 SSO/MFA/主管審批、涉及 AML/個資/稽核。\n\n前置權限 / 風險初判結果：{{#2026051602.text#}}\n\n固定輸出：風險判斷、拒答或可協助範圍、審批建議、資料最小化、mock Audit Event。\n\n設計備註（給 demo presenter，不需逐字輸出）：高風險不是單純拒答；要把不可回答內容轉成審批、稽核、轉人工或補資料的可執行流程。"
               }
             ],
             "selected": false,
@@ -1233,7 +1303,7 @@
               "enabled": false,
               "variable_selector": []
             },
-            "desc": "把高風險查詢轉成審批摘要與稽核紀錄。",
+            "desc": "備註｜審批與 Audit Log 包裝。場景重點：把拒答變成可追蹤申請，包含審批人、資料範圍、有效期限與拒絕原因。",
             "memory": {
               "role_prefix": {
                 "assistant": "",
@@ -1289,7 +1359,7 @@
         {
           "data": {
             "answer": "{{#2026051606.text#}}",
-            "desc": "",
+            "desc": "備註｜高風險出口。PM 觀察點：答案是否有拒答理由、可協助範圍、審批建議與 mock Audit Event。",
             "selected": false,
             "title": "權限審批 / 高風險回覆",
             "type": "answer",
@@ -1314,7 +1384,7 @@
         {
           "data": {
             "answer": "這個問題目前缺少內部查詢必要資訊，或超出您目前可使用的權限。\n\n請補充：角色 / 部門 / 查詢目的、是否與該客戶有服務關係、需要查詢的資料範圍、是否已有主管或資料 Owner 授權。若涉及客戶個資、正式金額、理賠結果、投資風險屬性、內部風控規則、API key、密碼或 token，我無法直接提供。若確有業務需要，我可以協助整理 mock 權限申請與 Audit Log。",
-            "desc": "",
+            "desc": "備註｜補充資訊出口。若缺角色、部門、查詢目的、服務關係或授權，停在這裡要求補資料。",
             "selected": false,
             "title": "補充資訊 / 權限不足",
             "type": "answer",

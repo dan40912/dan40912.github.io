@@ -1,6 +1,6 @@
 {
   "app": {
-    "description": "對外版｜金融集團客戶 Chatbot、Call Center、知識庫、真人介入與特殊案件 Demo",
+    "description": "對外版｜金融集團客戶 Chatbot、Call Center、知識庫、真人介入與特殊案件 Demo｜已補 PM 備註：三路線決策、風險場景、轉真人條件與客服交接",
     "icon": "🤖",
     "icon_background": "#FFEAD5",
     "icon_type": "emoji",
@@ -63,7 +63,7 @@
         },
         "number_limits": 3
       },
-      "opening_statement": "您好，我是 Financial AI Service Hub｜對外版，很高興協助您處理金融服務相關問題。\n\n您可以詢問開戶流程、產品資訊、文件上傳、登入與身份驗證、疑似詐騙、不明資金、網站異常，或請我協助整理案件摘要並轉接真人客服。\n\n如果您遇到可疑連結、被要求提供驗證碼、收到不明款項，或系統一直無法完成操作，請直接告訴我發生了什麼事。我會先協助您降低風險，再整理需要補充的資料與下一步。\n\n為了保護您的權益，我不能提供個別投資建議、預測漲跌、承諾收益、揭露第三方個資，或取代正式審核結果。若問題涉及高風險、正式金額、理賠、借款或個人化判斷，我會協助整理案件並建議轉真人。\n\n這是個人面試 Demo，使用 mock data，不會送出正式案件。",
+      "opening_statement": "您好，我是 Financial AI Service Hub｜對外版。我會先理解您的問題，再用短句給您安全、可執行的下一步。\n\n前台已為每個對外服務準備三條路線：路線1 自助處理、路線2 進度/補件追蹤、路線3 高風險或需真人介入。若問題涉及 OTP、密碼、CVV、完整卡號、疑似盜刷、正在轉帳、投資建議、保證理賠或保證核貸，我會先提醒安全邊界，並建議轉真人。\n\n固定回答：我理解您的問題、建議處理方式、需要補充的資訊、下一步、是否轉真人。這是 demo，不會送出正式案件，也不會要求您提供敏感資料。",
       "retriever_resource": {
         "enabled": true
       },
@@ -74,12 +74,10 @@
         "enabled": false
       },
       "suggested_questions": [
-        "我要怎麼開戶？需要準備什麼文件？",
-        "PDF 上傳失敗，系統說超過 5MB 但我的檔案只有 3MB",
-        "我收到可疑簡訊，像是有人假冒你們公司",
-        "我收到不認識的人匯款，可以直接退回嗎？",
-        "網站出現 500 error，請幫我整理回報資料",
-        "我要轉真人客服，請幫我整理案件摘要"
+        "路線1：我登入 App 失敗，請先帶我自助排除",
+        "路線2：我想追蹤理賠/貸款/交易進度，還需要補什麼資料？",
+        "路線3：我看到疑似盜刷或詐騙，請協助我轉真人",
+        "請把這次對話整理成客服交接摘要"
       ],
       "suggested_questions_after_answer": {
         "enabled": true
@@ -336,11 +334,61 @@
       "nodes": [
         {
           "data": {
-            "desc": "外部客戶開啟對外版 Customer Chatbot，輸入客服、開戶、安全或系統問題。",
+            "desc": "備註｜START 接收前台帶入的 service_id、business_line、route_stage、risk_level 與 handoff_required。PM 判斷：讓 chatbot 一開始就知道服務類型與路線，不靠模型自行猜場景。",
             "selected": false,
             "title": "START",
             "type": "start",
-            "variables": []
+            "variables": [
+              {
+                "label": "business_line",
+                "variable": "business_line",
+                "required": false,
+                "max_length": 64,
+                "type": "text-input"
+              },
+              {
+                "label": "service_id",
+                "variable": "service_id",
+                "required": false,
+                "max_length": 64,
+                "type": "text-input"
+              },
+              {
+                "label": "route_stage",
+                "variable": "route_stage",
+                "required": false,
+                "max_length": 64,
+                "type": "text-input"
+              },
+              {
+                "label": "scenario_type",
+                "variable": "scenario_type",
+                "required": false,
+                "max_length": 64,
+                "type": "text-input"
+              },
+              {
+                "label": "risk_level",
+                "variable": "risk_level",
+                "required": false,
+                "max_length": 64,
+                "type": "text-input"
+              },
+              {
+                "label": "handoff_required",
+                "variable": "handoff_required",
+                "required": false,
+                "max_length": 64,
+                "type": "text-input"
+              },
+              {
+                "label": "channel",
+                "variable": "channel",
+                "required": false,
+                "max_length": 64,
+                "type": "text-input"
+              }
+            ]
           },
           "height": 117,
           "id": "1711528914102",
@@ -364,7 +412,7 @@
               "enabled": false,
               "variable_selector": []
             },
-            "desc": "先安定客戶情緒，整理問題類型與下一步所需資訊。",
+            "desc": "備註｜開場整理只做理解與路線判斷。三路線：self_service=自助短步驟；follow_up=進度/補件資訊；handoff_risk=安全邊界與真人介入。",
             "memory": {
               "role_prefix": {
                 "assistant": "",
@@ -390,7 +438,7 @@
             "prompt_template": [
               {
                 "role": "system",
-                "text": "你是對外版客戶服務開場整理節點。請用溫暖、專業、不推責的語氣整理客戶問題，辨識是否為開戶、產品、文件上傳、登入驗證、詐騙、不明資金、網站異常或轉真人。\n\n輸出：我理解的問題、可能類型、需要補充資訊、下一步。"
+                "text": "你是對外版客戶服務開場整理節點。請用溫暖、專業、不推責的語氣整理客戶問題，辨識服務別、路線與是否需要真人。\n\n前台 inputs：\n- business_line: {{#1711528914102.business_line#}}\n- service_id: {{#1711528914102.service_id#}}\n- route_stage: {{#1711528914102.route_stage#}}\n- scenario_type: {{#1711528914102.scenario_type#}}\n- risk_level: {{#1711528914102.risk_level#}}\n- handoff_required: {{#1711528914102.handoff_required#}}\n\n三路線定義：\n1. self_service：客戶可自行完成，提供短步驟與安全提醒。\n2. follow_up：需要進度、補件、交易狀態或下一步說明，先蒐集必要但非敏感資訊。\n3. handoff_risk：疑似詐騙、盜刷、保證結果、投資建議、身份驗證繞過或客訴升級，需轉真人。\n\n輸出：我理解的問題、路線判斷、需要補充資訊、下一步。\n\n設計備註（給 demo presenter，不需逐字輸出）：此節點要讓 presenter 看見「服務別 + 路線 + 是否真人」三個判斷，不要過早產生完整客服話術。"
               }
             ],
             "selected": false,
@@ -423,7 +471,7 @@
               "enabled": false,
               "variable_selector": []
             },
-            "desc": "進入分類前先判斷 emotion_score、詐騙、不明資金、自傷與重大客訴風險。",
+            "desc": "備註｜情緒與安全風險偵測。決策理由：疑似詐騙、盜刷、正在轉帳、保證理賠/核貸、投資建議、身份驗證繞過都要升級；即使 route_stage 不是第 3 路線，只要服務本身是 fraud/card danger 也保守處理。",
             "memory": {
               "role_prefix": {
                 "assistant": "",
@@ -449,7 +497,7 @@
             "prompt_template": [
               {
                 "role": "system",
-                "text": "你是對外版情緒與安全風險偵測節點。請判斷 emotion_score 0-5、risk_level Low / Medium / High / Critical、是否涉及詐騙、不明資金、自傷風險、重大客訴、正式金額或個資。若高風險，建議轉真人與建立 mock case。"
+                "text": "你是對外版情緒與安全風險偵測節點。請判斷 emotion_score 0-5、risk_level Low / Medium / High / Critical、是否涉及詐騙、不明資金、自傷風險、重大客訴、正式金額或個資。\n\n前台 inputs：\n- route_stage: {{#1711528914102.route_stage#}}\n- risk_level: {{#1711528914102.risk_level#}}\n- handoff_required: {{#1711528914102.handoff_required#}}\n\n規則：route_stage=handoff_risk、risk_level=danger 或 handoff_required=true 時，必須建議轉真人與建立 mock case；不得要求 OTP、密碼、CVV、完整卡號或完整身分證字號。\n\n輸出：emotion_score、risk_level、是否轉真人、不可索取資料、建議分流。\n\n設計備註（給 demo presenter，不需逐字輸出）：風險採保守原則；只要碰到 OTP、密碼、CVV、完整卡號、正在轉帳或保證結果，就要標出不可索取與轉真人條件。"
               }
             ],
             "selected": false,
@@ -510,8 +558,8 @@
                 "name": "無關問題、寫程式、數學題、閒聊、要求個資、資訊不足、需求不明"
               }
             ],
-            "desc": null,
-            "instructions": "請依前置情緒與安全風險偵測結果，將客戶訊息分類到最適合的對外服務流程。優先辨識高風險安全事件、詐騙、不明資金、自傷風險與正式金額要求；其次分類開戶、產品資訊、文件上傳、網站異常、轉真人與知識庫 FAQ。",
+            "desc": "備註｜對外需求分流。PM 分流順序：安全/合規/高風險優先，其次轉真人/案件摘要、系統異常、一般客服，最後才是 FAQ。避免客戶危急狀態被一般 FAQ 吸走。",
+            "instructions": "請依前置情緒與安全風險偵測結果，將客戶訊息分類到最適合的對外服務流程。優先辨識高風險安全事件、詐騙、不明資金、自傷風險與正式金額要求；其次分類開戶、產品資訊、文件上傳、網站異常、轉真人與知識庫 FAQ。\n\n設計備註：若 route_stage=handoff_risk、handoff_required=true、risk_level=danger，優先分類到「安全 / 合規 / 高風險」或「真人介入」，不要走一般 FAQ。",
             "model": {
               "completion_params": {
                 "frequency_penalty": 0,
@@ -556,7 +604,7 @@
             "dataset_ids": [
               "ZR+xZ5cK2YioRhzWHlnc3Ms+gmQhTNfBYgPefpY3r8FAqUgeUXf9KFmI5TVTkEKu"
             ],
-            "desc": "查詢對外 FAQ、開戶、產品、文件上傳、安全通報與知識候選資料集。",
+            "desc": "備註｜對外 RAG 檢索只提供 FAQ/SOP 依據，不回答個案正式結果。沒有依據要明講不足。",
             "query_variable_selector": [
               "1711528914102",
               "sys.query"
@@ -602,7 +650,7 @@
               "enabled": false,
               "variable_selector": []
             },
-            "desc": "查詢對外 FAQ、開戶、產品、文件上傳、安全通報與知識候選。",
+            "desc": "備註｜對外知識庫回答。場景重點：答案要短、溫和、可執行；不得推薦商品、預測漲跌或承諾收益。",
             "memory": {
               "role_prefix": {
                 "assistant": "",
@@ -661,7 +709,7 @@
               "enabled": false,
               "variable_selector": []
             },
-            "desc": "知識庫回答後收集 Like / Dislike，判斷是否可沉澱為知識候選。",
+            "desc": "備註｜回饋與知識候選。只能把通用 FAQ 缺口收成候選，不收個資、正式金額或未審核投資建議。",
             "memory": {
               "role_prefix": {
                 "assistant": "",
@@ -717,7 +765,7 @@
         {
           "data": {
             "answer": "{{#2026051703.text#}}",
-            "desc": "",
+            "desc": "備註｜知識庫回答出口。PM 觀察點：是否有清楚下一步與是否轉真人。",
             "selected": false,
             "title": "對外知識庫回覆",
             "type": "answer",
@@ -745,7 +793,7 @@
               "enabled": false,
               "variable_selector": []
             },
-            "desc": "對外客戶服務：開戶、產品資訊、文件上傳、登入驗證、申請進度與一般 FAQ。",
+            "desc": "備註｜一般對外客服助理。三路線示範：路線1自助；路線2補件/追蹤；路線3安全提醒與真人。這裡不能承諾核准、理賠、退款或投資結果。",
             "memory": {
               "role_prefix": {
                 "assistant": "",
@@ -771,7 +819,7 @@
             "prompt_template": [
               {
                 "role": "system",
-                "text": "你是金融集團官網 / App 的對外客戶 Chatbot。請用繁體中文，語氣溫暖、專業、沒有距離感。不得推薦特定商品、預測漲跌或承諾收益。\n\n前置情緒與安全風險偵測結果：{{#2026051702.text#}}\n\n固定回答格式：\n【我理解您的問題】\n【建議處理方式】\n【需要補充的資訊】\n【下一步】\n【回饋】"
+                "text": "你是金融集團官網 / App 的對外客戶 Chatbot。請用繁體中文，語氣溫暖、專業、沒有距離感。不得推薦特定商品、預測漲跌、承諾收益、保證理賠或保證核貸。\n\n前置情緒與安全風險偵測結果：{{#2026051702.text#}}\n\n前台 inputs：\n- business_line: {{#1711528914102.business_line#}}\n- service_id: {{#1711528914102.service_id#}}\n- route_stage: {{#1711528914102.route_stage#}}\n\n三路線回答規則：\n1. self_service：給 2-4 個可自行操作的步驟，提醒不要提供敏感資料。\n2. follow_up：說明可追蹤/補件方向，列出需要補充的非敏感資訊，例如日期、案件類型、末四碼、裝置環境或文件類型。\n3. handoff_risk：先給安全提醒，列出不可操作事項，明確建議轉真人或官方管道。\n\n固定回答格式：\n【我理解您的問題】\n【建議處理方式】\n【需要補充的資訊】\n【下一步】\n【是否轉真人】\n\n設計備註（給 demo presenter，不需逐字輸出）：對外答案必須比對內更短、更可執行；只給客戶下一步，不揭露內部審核、模型判斷或風控細節。"
               }
             ],
             "selected": false,
@@ -804,7 +852,7 @@
               "enabled": false,
               "variable_selector": []
             },
-            "desc": "一般客服回答後補上下一步選項與回饋機制。",
+            "desc": "備註｜下一步與回饋收集。決策重點：一般問題給 2-4 個可行下一步；若訊息變高風險，要補轉真人選項。",
             "memory": {
               "role_prefix": {
                 "assistant": "",
@@ -860,7 +908,7 @@
         {
           "data": {
             "answer": "{{#2026051704.text#}}",
-            "desc": "",
+            "desc": "備註｜客服回覆出口。PM 觀察點：是否短句、可執行、沒有要求敏感資料。",
             "selected": false,
             "title": "客戶服務回覆",
             "type": "answer",
@@ -888,7 +936,7 @@
               "enabled": false,
               "variable_selector": []
             },
-            "desc": "對外 Call Center 轉真人、案件摘要、SLA 與客服交接。",
+            "desc": "備註｜真人介入與案件摘要。決策理由：第 3 路線或 handoff_required=true 時，重點不是繼續聊天，而是交接摘要、SLA、分派團隊與 mock case。",
             "memory": {
               "role_prefix": {
                 "assistant": "",
@@ -914,7 +962,7 @@
             "prompt_template": [
               {
                 "role": "system",
-                "text": "你是對外版真人介入與案件摘要助理。請整理案件類型、優先級、問題摘要、已提供資訊、待補充資訊、建議分派團隊、SLA 建議、Mock Case ID、客服交接話術。請明確說這是 Demo mock case，不代表正式送出。\n\n前置情緒與安全風險偵測結果：{{#2026051702.text#}}"
+                "text": "你是對外版真人介入與案件摘要助理。請整理案件類型、優先級、問題摘要、已提供資訊、待補充資訊、建議分派團隊、SLA 建議、Mock Case ID、客服交接話術。請明確說這是 Demo mock case，不代表正式送出。\n\n前置情緒與安全風險偵測結果：{{#2026051702.text#}}\n\n前台 inputs：\n- business_line: {{#1711528914102.business_line#}}\n- service_id: {{#1711528914102.service_id#}}\n- route_stage: {{#1711528914102.route_stage#}}\n- handoff_required: {{#1711528914102.handoff_required#}}\n\n若 route_stage=handoff_risk，優先輸出：安全提醒、立刻停止的操作、建議分派團隊、真人接手摘要。\n\n設計備註（給 demo presenter，不需逐字輸出）：轉真人不是失敗，而是高風險場景的正確產品體驗；要把對話整理成客服可接手的摘要。"
               }
             ],
             "selected": false,
@@ -947,7 +995,7 @@
               "enabled": false,
               "variable_selector": []
             },
-            "desc": "真人介入前產生客服交接摘要、SLA、優先級與分派團隊。",
+            "desc": "備註｜Call Center 交接包。場景重點：客服接手前要看得懂客戶情緒、觸發原因、優先級、待補資訊與建議團隊。",
             "memory": {
               "role_prefix": {
                 "assistant": "",
@@ -1003,7 +1051,7 @@
         {
           "data": {
             "answer": "{{#2026051705.text#}}",
-            "desc": "",
+            "desc": "備註｜真人介入出口。PM 觀察點：是否明確說是 demo mock case，不代表正式送出。",
             "selected": false,
             "title": "真人介入 / 案件摘要回覆",
             "type": "answer",
@@ -1031,7 +1079,7 @@
               "enabled": false,
               "variable_selector": []
             },
-            "desc": "對外網站、App、文件上傳與系統異常分流，外部串接以 mock data 模擬。",
+            "desc": "備註｜網站/App/文件上傳異常。決策重點：只收集 URL、時間、裝置、錯誤訊息與重現步驟，不要求敏感資料。",
             "memory": {
               "role_prefix": {
                 "assistant": "",
@@ -1090,7 +1138,7 @@
               "enabled": false,
               "variable_selector": []
             },
-            "desc": "系統異常回報後產生技術團隊可接手的 mock payload。",
+            "desc": "備註｜ITSM/Jira mock payload。場景重點：讓技術團隊能接手，但不宣稱真的開單。",
             "memory": {
               "role_prefix": {
                 "assistant": "",
@@ -1146,7 +1194,7 @@
         {
           "data": {
             "answer": "{{#2026051706.text#}}",
-            "desc": "",
+            "desc": "備註｜系統異常出口。PM 觀察點：是否有重現步驟、影響範圍、Priority 與 SLA。",
             "selected": false,
             "title": "系統異常回報回覆",
             "type": "answer",
@@ -1174,7 +1222,7 @@
               "enabled": false,
               "variable_selector": []
             },
-            "desc": "高風險安全、詐騙、不明資金、自傷風險先做安全分流。",
+            "desc": "備註｜Critical Safety Triage。決策理由：詐騙/盜刷/自傷/不明資金/高情緒客訴先降風險，再談流程；正在轉帳要立即停止操作並轉官方管道。",
             "memory": {
               "role_prefix": {
                 "assistant": "",
@@ -1200,7 +1248,7 @@
             "prompt_template": [
               {
                 "role": "system",
-                "text": "你是 Critical Safety Triage 節點。請優先處理詐騙、不明資金、自傷風險、高情緒客訴、投資建議邊界與正式金額。\n\n輸出：立即安全建議、不可建議操作、需轉真人原因、優先級、通報團隊。"
+                "text": "你是 Critical Safety Triage 節點。請優先處理詐騙、不明資金、自傷風險、高情緒客訴、投資建議邊界與正式金額。\n\n前台 inputs：\n- business_line: {{#1711528914102.business_line#}}\n- route_stage: {{#1711528914102.route_stage#}}\n- risk_level: {{#1711528914102.risk_level#}}\n\n輸出：立即安全建議、不可建議操作、需轉真人原因、優先級、通報團隊。"
               }
             ],
             "selected": false,
@@ -1233,7 +1281,7 @@
               "enabled": false,
               "variable_selector": []
             },
-            "desc": "對外投資建議邊界、詐騙、不明資金、自傷風險與高情緒客訴。",
+            "desc": "備註｜安全/合規守門員。高風險場景必須輸出立即安全建議、不可提供內容、案件優先級、分派團隊與轉真人，不做個別投資或保證結果。",
             "memory": {
               "role_prefix": {
                 "assistant": "",
@@ -1259,7 +1307,7 @@
             "prompt_template": [
               {
                 "role": "system",
-                "text": "你是對外版安全 / 合規 / 高風險守門員。不得提供投資建議、預測漲跌、承諾收益、揭露第三方個資或協助繞過身份驗證。\n\nCritical Safety Triage 結果：{{#2026051707.text#}}\n\n固定輸出：我理解您的情況、立即安全建議、不可提供/不建議操作、案件類型與優先級、建議分派團隊、Mock Case Summary、轉真人。"
+                "text": "你是對外版安全 / 合規 / 高風險守門員。不得提供投資建議、預測漲跌、承諾收益、保證理賠、保證核貸、揭露第三方個資或協助繞過身份驗證。\n\nCritical Safety Triage 結果：{{#2026051707.text#}}\n\n前台 inputs：\n- business_line: {{#1711528914102.business_line#}}\n- service_id: {{#1711528914102.service_id#}}\n- route_stage: {{#1711528914102.route_stage#}}\n\n固定輸出：我理解您的情況、立即安全建議、不可提供/不建議操作、案件類型與優先級、建議分派團隊、Mock Case Summary、轉真人。\n\n設計備註（給 demo presenter，不需逐字輸出）：安全守門員要先保護客戶，再說流程；不可讓客戶繼續危險操作或提供敏感資料。"
               }
             ],
             "selected": false,
@@ -1289,7 +1337,7 @@
         {
           "data": {
             "answer": "{{#2026051505.text#}}",
-            "desc": "",
+            "desc": "備註｜安全/高風險出口。PM 觀察點：是否先停損、保留證據、轉真人/官方管道，而不是給一般 FAQ。",
             "selected": false,
             "title": "安全 / 高風險回覆",
             "type": "answer",
@@ -1314,7 +1362,7 @@
         {
           "data": {
             "answer": "這個問題超出我可以協助的金融服務範圍，或目前資訊不足。\n\n我可以協助您處理開戶、產品資訊、文件上傳、帳戶登入與身份驗證、疑似詐騙、不明資金、網站異常回報、客服案件整理與轉真人客服。我不能提供個別投資建議、預測漲跌、承諾收益、揭露第三方個資或協助繞過身份驗證。請補充您的金融服務需求。",
-            "desc": "",
+            "desc": "備註｜超出範圍/資訊不足出口。若不是金融服務、資訊不足或要求越界，停在這裡請客戶補充。",
             "selected": false,
             "title": "超出範圍 / 補充資訊",
             "type": "answer",
