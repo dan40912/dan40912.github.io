@@ -221,7 +221,7 @@ DATA.update(
             "font": "Helvetica",
             "name": "Jay Wu",
             "title": "Product Manager | Finance, Retail Tech, and Growth Systems",
-            "summary": "9 years of cross-industry product and operations integration, turning complex workflows into executable specs and measurable outcomes across engineering, operations, support, finance, marketing, and external partners.",
+            "summary": "10 years of cross-industry product and operations integration, turning complex workflows into executable specs and measurable outcomes across engineering, operations, support, finance, marketing, and external partners.",
             "labels": {
                 "proof": "Key Proof",
                 "snapshot": "Resume Snapshot",
@@ -303,7 +303,7 @@ DATA.update(
             "font": ZH_FONT_NAME,
             "name": "吳新捷 Jay Wu",
             "title": "產品經理｜金融、零售科技與成長系統",
-            "summary": "9 年跨產業產品與營運整合經驗，擅長把複雜流程拆成可執行規格，串接工程、營運、客服、財務、行銷與外部夥伴，落地成可量化成果。",
+            "summary": "10 年跨產業產品與營運整合經驗，擅長把複雜流程拆成可執行規格，串接工程、營運、客服、財務、行銷與外部夥伴，落地成可量化成果。",
             "labels": {
                 "proof": "關鍵成果",
                 "snapshot": "履歷摘要",
