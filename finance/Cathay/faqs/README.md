@@ -12,7 +12,8 @@
 
 | business_line | 檔案 | 適用 |
 | --- | --- | --- |
-| banking | `banking.md` | 帳戶、登入、轉帳、存款、不明資金 |
+| banking | `banking.md` | 帳戶、登入、轉帳、存款、不明資金，內部員工版 |
+| banking_external | `banking_external.md` | 帳戶登入、換機驗證、轉帳設定、不明資金，對外客戶版 |
 | life_insurance | `life_insurance.md` | 保單、理賠、保單借款、保單價值 |
 | securities | `securities.md` | 開戶、下單、交割、複委託、融資融券 |
 | asset_management | `asset_management.md` | 基金、淨值、申購贖回、風險等級 |
@@ -29,7 +30,7 @@
 
 | external service | FAQ |
 | --- | --- |
-| 帳戶登入協助 | `banking.md` |
+| 帳戶登入協助 | `banking_external.md` |
 | 複委託交割時間 | `securities.md` |
 | 理賠文件確認 | `life_insurance.md` |
 | 疑似盜刷處理 | `credit_card.md` |
