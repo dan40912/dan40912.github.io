@@ -148,6 +148,70 @@
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 18px;
     }
+    .mock-overview {
+      display: grid;
+      gap: 16px;
+      margin: 0 0 20px;
+      padding: 20px;
+    }
+    .section-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .section-head h2 {
+      font-size: 24px;
+      line-height: 1.25;
+    }
+    .section-head p {
+      max-width: 760px;
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.7;
+    }
+    .mock-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+    .mock-card {
+      display: grid;
+      gap: 12px;
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #f8fcfa;
+      box-shadow: var(--shadow-soft);
+    }
+    .mock-card h3 {
+      font-size: 18px;
+      line-height: 1.3;
+    }
+    .mock-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .mock-tag {
+      display: inline-flex;
+      align-items: center;
+      min-height: 30px;
+      padding: 0 10px;
+      border: 1px solid rgba(36,122,81,.20);
+      border-radius: 999px;
+      color: #235b40;
+      background: #fff;
+      font-size: 12px;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+    .mock-note {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.65;
+    }
     .entry-card {
       overflow: hidden;
       display: grid;
@@ -225,7 +289,8 @@
     @media (max-width: 980px) {
       .topbar { align-items: flex-start; flex-direction: column; padding: 14px; }
       .page { padding: 18px 14px 32px; }
-      .hero, .entry-grid { grid-template-columns: 1fr; }
+      .hero, .entry-grid, .mock-grid { grid-template-columns: 1fr; }
+      .section-head { flex-direction: column; }
     }
   </style>
 </head>
@@ -264,6 +329,44 @@
           <span>同樣的卡片、按鈕、右側操作面板與淡綠色主題。</span>
         </div>
       </aside>
+    </section>
+
+    <section class="panel mock-overview" aria-label="Mock data overview">
+      <div class="section-head">
+        <div>
+          <h2>Mock Data Overview</h2>
+          <p>Demo 會把 mock profile 帶進 payload 與 Chatbot URL 參數，頁面只顯示可展示摘要，不連正式核心系統。</p>
+        </div>
+        <a class="btn" href="./mock-data-overview.html">查看完整 Mock Data</a>
+      </div>
+      <div class="mock-grid">
+        <article class="mock-card">
+          <h3>對外客戶服務</h3>
+          <div class="mock-list" aria-label="對外 mock 情境">
+            <span class="mock-tag">帳戶登入協助</span>
+            <span class="mock-tag">複委託交割</span>
+            <span class="mock-tag">理賠文件</span>
+            <span class="mock-tag">疑似盜刷</span>
+            <span class="mock-tag">房貸補件</span>
+            <span class="mock-tag">疑似詐騙</span>
+          </div>
+          <p class="mock-note">每個情境會帶入服務別、風險等級、安全邊界、mock customer context 與三條 demo route。</p>
+        </article>
+        <article class="mock-card">
+          <h3>對內工作台</h3>
+          <div class="mock-list" aria-label="對內 mock profile">
+            <span class="mock-tag">銀行</span>
+            <span class="mock-tag">人壽</span>
+            <span class="mock-tag">證券</span>
+            <span class="mock-tag">投信投顧</span>
+            <span class="mock-tag">信用卡</span>
+            <span class="mock-tag">貸款</span>
+            <span class="mock-tag">財富管理</span>
+            <span class="mock-tag">通用金融</span>
+          </div>
+          <p class="mock-note">每個產業會帶入角色、部門、服務關係、mock customer profile、status lookup、next best action 與 risk boundary。</p>
+        </article>
+      </div>
     </section>
 
     <section class="entry-grid" aria-label="入口選擇">
