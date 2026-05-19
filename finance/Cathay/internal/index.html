@@ -1184,6 +1184,21 @@
       const routeStages = ["status_lookup", "next_best_action", "risk_boundary"];
       const routeStage = routeStages[state.selectedPresetIndex] || "status_lookup";
       const isRiskScenario = routeStage === "risk_boundary";
+      const rawQuestion = queryInput.value.trim() || preset.query;
+      const mockProfile = state.selected.mockCustomer ? JSON.stringify(state.selected.mockCustomer, null, 2) : "";
+      const scenarioPrompt = [
+        "【Dify 預設場景】",
+        `使用者類型：內部同仁`,
+        `產業別：${state.selected.title} / ${state.selected.business_line}`,
+        `角色與部門：${state.selected.role} / ${state.selected.department}`,
+        `路線：${routeStage}`,
+        `風險：${isRiskScenario ? "high" : routeStage === "next_best_action" ? "medium" : "normal"}`,
+        `回答契約：輸出現況摘要、下一步建議、不可說、是否需要轉人工/主管批准、客戶可說版本、mock Audit Log。`,
+        `回覆界線：${state.selected.risk}`,
+        mockProfile ? `Mock data：\n${mockProfile}` : "",
+        "【使用者問題】",
+        rawQuestion
+      ].filter(Boolean).join("\n\n");
       return {
         inputs: {
           ...baseInputs,
@@ -1205,7 +1220,8 @@
           audit_required: true,
           data_policy: "mask_sensitive_fields_and_do_not_use_real_customer_data"
         },
-        query: queryInput.value.trim() || preset.query,
+        query: scenarioPrompt,
+        raw_query: rawQuestion,
         response_mode: "streaming",
         user: "demo-user-001"
       };
@@ -1367,7 +1383,7 @@
         return;
       }
       mockProfilePanel.hidden = false;
-      mockProfileSummary.textContent = `${profile.display_name}｜${profile.customer_id}｜資料日 ${profile.policy_snapshot_date}`;
+      mockProfileSummary.textContent = `${profile.display_name}｜${profile.customer_id}｜資料日 ${profile.policy_snapshot_date || profile.snapshot_date || "demo"}`;
       const entries = profile.policies || profile.holdings?.map((item, index) => ({
         name: item,
         status: "mock",
@@ -1395,7 +1411,7 @@
       params.set("query", payload.query);
       window.location.hash = params.toString();
       chatbotFrame.src = buildChatbotUrl("chatbot", payload);
-      chatbotHint.textContent = `已帶入 ${state.selected.business_line}，請在 Chatbot 中接續確認回覆。`;
+      chatbotHint.textContent = `已帶入 ${state.selected.business_line} / ${payload.inputs.route_stage} 與 mock data。若 Dify 未自動吃參數，請複製右側 payload 貼入。`;
       chatbotPanel.hidden = false;
       showToast("已開啟 Chatbot");
     }
