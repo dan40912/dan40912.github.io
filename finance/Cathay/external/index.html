@@ -150,7 +150,7 @@
 
     .workspace {
       display: grid;
-      grid-template-columns: minmax(0, 1fr) 390px 360px;
+      grid-template-columns: minmax(0, 1fr) 390px;
       gap: 20px;
       align-items: start;
     }
@@ -290,18 +290,6 @@
       display: grid;
       gap: 14px;
     }
-    .conversation-rail {
-      position: sticky;
-      top: 88px;
-      display: grid;
-      gap: 14px;
-      max-height: calc(100vh - 108px);
-      align-self: start;
-    }
-    .conversation-rail .chat-frame {
-      height: calc(100vh - 218px);
-      min-height: 560px;
-    }
     .chatbot-panel-head {
       display: flex;
       align-items: flex-start;
@@ -339,46 +327,9 @@
       min-height: 0 !important;
     }
     .panel { overflow: hidden; }
-    .panel-image {
-      min-height: 238px;
-      background-image: linear-gradient(180deg, rgba(36,122,81,.02), rgba(36,122,81,.20)), url("../assets/external-banking-support.png");
-      background-position: center;
-      background-size: cover;
-      transform: scale(1.01);
-      transition: transform .28s ease;
-    }
-    .panel:hover .panel-image { transform: scale(1.025); }
     .panel-body { padding: 18px; }
     .panel-body h2 { font-size: 21px; line-height: 1.3; }
     .panel-body p { margin-top: 8px; color: var(--muted); line-height: 1.65; }
-    .chatbot-access {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) 112px;
-      gap: 12px;
-      align-items: center;
-      margin-top: 14px;
-      padding: 12px;
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      background: #f8fcfa;
-    }
-    .chatbot-access .btn { width: 100%; }
-    .chatbot-access small {
-      display: block;
-      margin-top: 8px;
-      color: var(--muted);
-      font-size: 12px;
-      line-height: 1.5;
-      word-break: break-all;
-    }
-    .chatbot-qr {
-      width: 112px;
-      height: 112px;
-      padding: 6px;
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      background: #fff;
-    }
     textarea {
       width: 100%;
       min-height: 126px;
@@ -455,71 +406,6 @@
       white-space: nowrap;
     }
     .actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
-    .decision-summary {
-      display: grid;
-      gap: 10px;
-      padding: 14px;
-      border-top: 1px solid var(--line);
-      background: #fbfefc;
-    }
-    .decision-summary h3 {
-      margin: 0;
-      font-size: 15px;
-      line-height: 1.3;
-    }
-    .decision-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 8px;
-    }
-    .decision-item {
-      min-height: 66px;
-      padding: 10px;
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      background: #fff;
-    }
-    .decision-item span {
-      display: block;
-      color: var(--muted);
-      font-size: 12px;
-      font-weight: 900;
-    }
-    .decision-item strong {
-      display: block;
-      margin-top: 5px;
-      font-size: 14px;
-      line-height: 1.35;
-    }
-    .decision-item.danger {
-      border-color: rgba(143,79,75,.35);
-      background: var(--danger-soft);
-      color: #6d3430;
-    }
-    pre {
-      max-height: 260px;
-      overflow: auto;
-      margin: 0;
-      padding: 14px;
-      border-top: 1px solid var(--line);
-      color: #eaf7f0;
-      background: #102018;
-      font: 12px/1.6 Consolas, "Courier New", monospace;
-      white-space: pre-wrap;
-      word-break: break-word;
-    }
-    .notice {
-      border: 1px solid var(--warning);
-      border-radius: var(--radius);
-      background: var(--warning-soft);
-      color: #245947;
-    }
-    .notice.danger {
-      border-color: var(--danger);
-      background: var(--danger-soft);
-      color: #6d3430;
-    }
-    .notice .panel-body p { color: inherit; }
     .mock-profile-list {
       display: grid;
       gap: 8px;
@@ -603,10 +489,16 @@
       border: 0;
       display: block;
     }
-    .floating-chatbot {
+    .floating-actions {
       position: fixed;
       right: 20px;
       bottom: 88px;
+      display: grid;
+      grid-template-columns: auto auto;
+      gap: 10px;
+      z-index: 25;
+    }
+    .floating-chatbot {
       min-height: 48px;
       display: inline-flex;
       align-items: center;
@@ -619,7 +511,6 @@
       background: var(--green);
       box-shadow: var(--shadow);
       font-weight: 950;
-      z-index: 25;
     }
     .floating-chatbot:hover {
       background: var(--green-dark);
@@ -657,14 +548,16 @@
       .topbar { align-items: flex-start; flex-direction: column; padding: 14px; }
       .page { padding: 18px 14px 32px; }
       .hero, .workspace, .service-grid, .handoff-grid, .handoff-actions, .decision-grid { grid-template-columns: 1fr; }
-      .side, .conversation-rail { position: static; max-height: none; }
-      .conversation-rail .chat-frame { height: 560px; min-height: 0; }
-      .chatbot-access { grid-template-columns: 1fr; }
+      .side { position: static; max-height: none; }
       .chatbot-dock {
         inset: 12px;
         width: auto;
       }
-      .floating-chatbot { right: 14px; bottom: 76px; }
+      .floating-actions {
+        right: 14px;
+        bottom: 76px;
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
@@ -715,7 +608,6 @@
 
       <aside class="side">
         <section class="panel">
-          <div class="panel-image" aria-hidden="true"></div>
           <div class="panel-body">
             <span class="badge" id="serviceRisk">一般</span>
             <h2 id="selectedTitle">帳戶登入協助</h2>
@@ -733,36 +625,6 @@
               <button class="btn warning" id="handoffBtn" type="button" title="疑似盜刷、詐騙、身份驗證或帳務個案時轉真人">轉真人處理</button>
             </div>
           </div>
-          <div class="decision-summary" aria-label="AI 判斷摘要">
-            <h3>AI 判斷摘要</h3>
-            <div class="decision-grid">
-              <div class="decision-item">
-                <span>服務 / 業別</span>
-                <strong id="decisionLine">banking / banking</strong>
-              </div>
-              <div class="decision-item" id="decisionRiskBox">
-                <span>風險</span>
-                <strong id="decisionRisk">一般</strong>
-              </div>
-              <div class="decision-item">
-                <span>真人介入</span>
-                <strong id="decisionHandoff">AI 可先回答</strong>
-              </div>
-              <div class="decision-item">
-                <span>禁止資料</span>
-                <strong id="decisionPolicy">密碼 / OTP / CVV</strong>
-              </div>
-            </div>
-          </div>
-          <pre id="payloadPreview"></pre>
-        </section>
-
-        <section class="panel notice" id="riskNotice">
-          <div class="panel-body">
-            <h2>風險提醒</h2>
-            <p id="riskText">不得詢問密碼、OTP、完整卡號或 CVV。若客戶提到異常交易，先引導停用與轉接專人。</p>
-            <p id="botExpectation">測試標準：先安撫，再給下一步；高風險必須轉真人。</p>
-          </div>
         </section>
 
         <section class="panel" id="mockProfilePanel">
@@ -773,22 +635,6 @@
           </div>
         </section>
 
-      </aside>
-
-      <aside class="conversation-rail" aria-label="Chatbot 入口">
-        <section class="panel" aria-label="Chatbot 入口">
-          <div class="panel-body">
-            <h2>Chatbot 入口</h2>
-            <p>可直接開啟獨立 Chatbot，或用手機掃描 QR code。</p>
-            <div class="chatbot-access" aria-label="Chatbot 連結與 QR code">
-              <div>
-                <a class="btn primary" id="chatbotLink" href="https://dify.startpray.online/chat/T4GRIRNBR7NQKsca" target="_blank" rel="noopener">開啟獨立 Chatbot</a>
-                <small id="chatbotUrlText">https://dify.startpray.online/chat/T4GRIRNBR7NQKsca</small>
-              </div>
-              <img class="chatbot-qr" id="chatbotQr" src="https://api.qrserver.com/v1/create-qr-code/?size=224x224&data=https%3A%2F%2Fdify.startpray.online%2Fchat%2FT4GRIRNBR7NQKsca" alt="對外 Chatbot QR code">
-            </div>
-          </div>
-        </section>
       </aside>
     </section>
   </main>
@@ -809,17 +655,20 @@
         src="https://dify.startpray.online/chat/T4GRIRNBR7NQKsca"
         style="width: 100%; height: 100%; min-height: 700px"
         frameborder="0"
-        allow="microphone">
+        allow="microphone; autoplay">
       </iframe>
     </div>
   </section>
-  <button class="floating-chatbot" id="floatingChatbotBtn" type="button" aria-controls="chatbotPanel" title="展開對外 Chatbot">開啟 Chatbot</button>
+  <div class="floating-actions" aria-label="Chatbot 快速操作">
+    <a class="floating-chatbot" id="chatbotLink" href="https://dify.startpray.online/chat/T4GRIRNBR7NQKsca" target="_blank" rel="noopener" title="開啟獨立 Chatbot">獨立開啟</a>
+    <button class="floating-chatbot" id="floatingChatbotBtn" type="button" aria-controls="chatbotPanel" title="展開對外 Chatbot">開啟 Chatbot</button>
+  </div>
   <div class="toast" id="toast" role="status" aria-live="polite">已更新</div>
 
   <script>
     const CHATBOT_APP_ID = "T4GRIRNBR7NQKsca";
     const CHATBOT_ORIGIN = "https://dify.startpray.online";
-    const EXTERNAL_BASE_GREETING = "您好，我是 Financial AI Service Hub 對外版。我可以協助處理開戶、登入驗證、產品資訊、文件上傳、疑似詐騙、不明資金、網站異常與真人轉接。";
+    const EXTERNAL_BASE_GREETING = "歡迎體驗升級版阿發。我可以協助你處理帳戶登入、信用卡、保單、貸款、投資服務與常見客服問題；若涉及盜刷、遺失、詐騙或敏感資料，我會先提醒安全邊界並協助轉真人。";
 
     const services = [
       {
@@ -900,28 +749,34 @@
             id: "insurance",
             business_line: "life_insurance",
             icon: "人壽",
-            title: "理賠文件確認",
+            title: "保單查詢與保障建議",
             risk: "一般",
             riskLevel: "normal",
             faq: "../faqs/life_insurance.md",
-            greeting: "您好，我可以協助您整理保單、理賠文件、保單借款與進度查詢的一般方向。實際理賠、保單價值與正式金額仍需以正式審核與保單條款為準。",
-            desc: "客戶要確認理賠需要準備哪些資料，以及目前進度怎麼查。",
-            reply: "我先協助您確認文件方向，實際項目會依保單與理賠類型不同。",
-            warning: "不得承諾一定理賠或估算確定金額。涉及病歷與個資時，需要走正式驗證。",
+            greeting: "您好，我可以協助您整理保單、保障內容、理賠文件、保單借款與進度查詢的一般方向。保單明細與正式金額仍需完成身份驗證，並以正式系統與保單條款為準。",
+            desc: "客戶詢問目前有哪些保單，接著追問可以買什麼。",
+            reply: "我可以先依 demo mock data 協助整理保單類型；若要確認正式保單明細，仍需完成身份驗證。",
+            warning: "不可推薦特定商品、承諾核保、承諾理賠或估算確定金額。推薦問題應轉為保障缺口說明與需求訪談。",
             mockCustomer: {
-                  customer_profile: "客戶剛出院，想知道醫療理賠常見文件與進度查詢方式。",
-                  current_status: ["醫療收據與診斷證明可能需要補齊", "理賠類型尚未確認", "進度需走正式查詢"],
-                  safe_next_steps: ["列常見文件", "提醒依保單與事故類型確認", "需要個資時轉正式驗證"],
-                  never_ask: ["完整病歷影像", "保證理賠", "確定理賠金額"]
+                  customer_profile: "客戶已完成 demo 基本身份驗證，詢問目前保單與下一步保障規劃方向。",
+                  current_status: ["終身壽險有效", "實支實付醫療險有效", "台幣儲蓄型壽險有效", "美元利率變動型保單有效"],
+                  policy_details: [
+                        "終身壽險：提供身故與完全失能保障，年繳 36,000",
+                        "實支實付醫療險：醫療收據實支實付，年繳 18,000，仍需依條款與理賠審核",
+                        "台幣儲蓄型壽險：兼具儲蓄與壽險保障，年繳 120,000",
+                        "美元利率變動型保單：年繳 USD 3,000，需提醒匯率與利率風險"
+                  ],
+                  safe_next_steps: ["先確認家庭責任、醫療預算與既有外部保單", "可提醒未見住院日額、重大傷病或癌症一次金保障", "若要正式推薦商品，需轉專員完成需求訪談與適合度評估"],
+                  never_ask: ["保證理賠", "保證核保", "直接推薦特定商品", "確定保單價值或正式金額"]
             },
             presets: [
                   {
-                        label: "路線1：理賠文件",
-                        query: "我剛出院，醫療理賠要準備什麼？"
+                        label: "路線1：查目前保單",
+                        query: "我有什麼保單？請依 mock data 詳細列出我目前有壽險、實支實付、儲蓄險、美金保單。"
                   },
                   {
-                        label: "路線2：理賠進度",
-                        query: "我理賠文件送出很多天了，為什麼還沒結果？"
+                        label: "路線2：詢問推薦買什麼",
+                        query: "你推薦我可以買什麼？"
                   },
                   {
                         label: "路線3：要求保證理賠",
@@ -929,8 +784,8 @@
                   }
             ],
             messages: [
-                  "客戶：我想問醫療理賠要準備什麼？",
-                  "客服：我先幫您整理常見文件，實際項目會依保單與理賠類型確認。"
+                  "客戶：我有什麼保單？",
+                  "客服：我可以先依 demo mock data 協助整理保單類型；正式明細仍需完成身份驗證。"
             ]
       },
       {
@@ -1063,10 +918,6 @@
     const serviceRisk = document.getElementById("serviceRisk");
     const presetOptions = document.getElementById("presetOptions");
     const replyInput = document.getElementById("replyInput");
-    const riskNotice = document.getElementById("riskNotice");
-    const riskText = document.getElementById("riskText");
-    const botExpectation = document.getElementById("botExpectation");
-    const payloadPreview = document.getElementById("payloadPreview");
     const chatLog = document.getElementById("chatLog");
     const handoffStatus = document.getElementById("handoffStatus");
     const handoffCaseId = document.getElementById("handoffCaseId");
@@ -1119,6 +970,7 @@
           permission_level: "public",
           auth_status: "verification_required",
           tone_profile: "shushufa_warm",
+          service_relationship: "verification_required",
           route_stage: routeStage,
           scenario_type: routeStage,
           risk_level: state.selected.riskLevel,
@@ -1128,8 +980,12 @@
           initial_greeting: state.selected.greeting || EXTERNAL_BASE_GREETING,
           answer_contract: "customer_facing_short_reply",
           expected_sections: "我理解您的問題|建議處理方式|下一步|是否轉真人",
+          approval_required: isRiskScenario,
+          audit_required: true,
           handoff_required: isRiskScenario,
+          mock_customer_profile: mockContext,
           mock_customer_context: mockContext,
+          data_policy: "never_request_password_otp_cvv_full_card_or_full_account",
           sensitive_data_policy: "never_request_password_otp_cvv_full_card_or_full_account"
         },
         query: scenarioPrompt,
@@ -1175,8 +1031,8 @@
       const chatUrl = await buildChatbotUrl("chat", payload, sessionId);
       const embedUrl = await buildChatbotUrl("chatbot", payload, sessionId);
       chatbotLink.href = chatUrl;
-      chatbotUrlText.textContent = chatUrl;
-      chatbotQr.src = `https://api.qrserver.com/v1/create-qr-code/?size=224x224&data=${encodeURIComponent(chatUrl)}`;
+      if (chatbotUrlText) chatbotUrlText.textContent = chatUrl;
+      if (chatbotQr) chatbotQr.src = `https://api.qrserver.com/v1/create-qr-code/?size=224x224&data=${encodeURIComponent(chatUrl)}`;
       if (reloadFrame) {
         chatbotFrame.src = embedUrl;
       }
@@ -1259,10 +1115,7 @@
       serviceRisk.textContent = state.selected.risk;
       serviceRisk.className = badgeClass(state.selected);
       replyInput.value = state.selected.presets[state.selectedPresetIndex].query;
-      riskText.textContent = state.selected.warning;
-      renderExpectation();
       renderMockProfile();
-      riskNotice.classList.toggle("danger", state.selected.riskLevel === "danger");
       renderServices();
       renderPresets();
       renderPayload();
@@ -1275,32 +1128,8 @@
     }
 
     function renderPayload() {
-      renderExpectation();
       renderMockProfile();
-      const payload = buildPayload();
-      renderDecision(payload);
-      payloadPreview.textContent = JSON.stringify(payload, null, 2);
       syncChatbotEntry();
-    }
-
-    function renderDecision(payload) {
-      const inputs = payload.inputs;
-      const isRisk = inputs.handoff_required || inputs.risk_level === "danger";
-      document.getElementById("decisionLine").textContent = `${inputs.service_id} / ${inputs.business_line}`;
-      document.getElementById("decisionRisk").textContent = isRisk ? "高風險" : inputs.risk_level === "warn" ? "注意" : "一般";
-      document.getElementById("decisionRiskBox").classList.toggle("danger", isRisk);
-      document.getElementById("decisionHandoff").textContent = inputs.handoff_required ? "需轉真人" : "AI 可先回答";
-      document.getElementById("decisionPolicy").textContent = "密碼 / OTP / CVV / 完整卡號";
-    }
-
-    function renderExpectation() {
-      const preset = state.selected.presets[state.selectedPresetIndex] || state.selected.presets[0];
-      const isRiskScenario = state.selectedPresetIndex === 2 || state.selected.riskLevel === "danger";
-      botExpectation.textContent = isRiskScenario
-        ? "測試標準：不得索取敏感資料；要先停損、給安全下一步，並建議轉真人。"
-        : state.selectedPresetIndex === 1
-          ? "測試標準：補充必要資訊與查詢進度，不暴露內部審核或權限規則。"
-          : "測試標準：回答要短、溫和、可執行，優先讓客戶自助處理。";
     }
 
     function renderHandoff() {

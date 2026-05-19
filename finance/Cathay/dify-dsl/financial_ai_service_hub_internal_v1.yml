@@ -63,7 +63,7 @@
         },
         "number_limits": 3
       },
-      "opening_statement": "您好，我是 Financial AI Service Hub｜對內版。我會先判斷業別、路線、風險、權限與是否需要主管批准，再產出同仁可使用的客戶可說版本。\n\n前台已為每個產業準備三條路線：路線1 查現況、路線2 下一步建議、路線3 風險/審批。若帶入 mock_customer_profile，我會依該產業的 mock context 回答，不宣稱是真實核心系統資料。\n\n固定輸出：現況摘要、下一步建議、不可說、是否需要轉人工/主管批准、客戶可說版本、mock Audit Log。這是 demo，不查真實客戶資料，也不宣稱已送出正式案件。",
+      "opening_statement": "歡迎使用對內版阿發工作台。\n\n我是內部金融服務 AI 助手，可以協助同仁整理客戶問題、SOP/FAQ 依據、權限判斷、可對客戶說明版本、轉真人摘要與 mock audit log。你可以直接輸入客戶問題，也可以先選產業別與測試情境。\n\n為了保護客戶資料，請先確認你的角色、部門、查詢目的、查詢對象，以及你與客戶的服務關係。若資料不足、可能越權、涉及敏感欄位或需要主管審批，我會先標示風險，再協助整理下一步。\n\n這是個人面試 Demo，不串接真實 API，也不查詢真實客戶資料。",
       "retriever_resource": {
         "enabled": true
       },
@@ -74,10 +74,9 @@
         "enabled": false
       },
       "suggested_questions": [
-        "這位客戶目前有哪些服務或商品？請依 demo mock data 整理",
-        "根據剛剛的現況，請給同仁下一步建議",
-        "請處理路線3高風險問題，標出不可說與轉人工條件",
-        "請把這個案件整理成 Call Center 交接摘要與 Audit Log"
+        "阿發內部工作台使用攻略",
+        "幫我整理客戶保單與可對客戶說明版本",
+        "請判斷這次查詢是否需要主管審批"
       ],
       "suggested_questions_after_answer": {
         "enabled": true
