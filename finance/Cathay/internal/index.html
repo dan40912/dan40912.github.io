@@ -669,7 +669,7 @@
             title: "銀行",
             role: "bank_rm",
             department: "banking_sales",
-            faq: "../faqs/banking.md",
+            faq: "/finance/Cathay/faqs/banking.md",
             greeting: "您好，這裡是銀行內部工作台。我可以協助整理帳戶、開戶、登入、轉帳、不明資金與帳戶安全的內部摘要，並提醒身份驗證與不可索取敏感資訊的邊界。",
             desc: "帳戶、開戶、登入、轉帳、存款、貸款與不明資金。",
             risk: "不協助繞過身份驗證；遇到不明資金或詐騙，先轉安全流程。",
@@ -712,7 +712,7 @@
             title: "人壽",
             role: "life_agent",
             department: "life_insurance_sales",
-            faq: "../faqs/life_insurance.md",
+            faq: "/finance/Cathay/faqs/life_insurance.md",
             greeting: "您好，這裡是人壽內部工作台。我可以協助整理保單、理賠、保單借款、保單價值與保障缺口的內部摘要，並標出不可承諾理賠或正式金額的邊界。",
             desc: "保單、保障、理賠、保單價值、借款與減額繳清。",
             risk: "不承諾理賠結果；醫療與文件判定需回到正式流程。",
@@ -779,7 +779,7 @@
             title: "證券",
             role: "securities_rm",
             department: "securities_sales",
-            faq: "../faqs/securities.md",
+            faq: "/finance/Cathay/faqs/securities.md",
             greeting: "您好，這裡是證券內部工作台。我可以協助整理開戶、下單、交割、庫存、複委託與風險揭露資訊；不可提供個股推薦或漲跌預測。",
             desc: "開戶、下單、交割、庫存、複委託、融資融券與風險揭露。",
             risk: "不提供個股推薦或漲跌預測，不協助規避風險揭露或身份驗證。",
@@ -822,7 +822,7 @@
             title: "投信投顧",
             role: "fund_specialist",
             department: "asset_management",
-            faq: "../faqs/asset_management.md",
+            faq: "/finance/Cathay/faqs/asset_management.md",
             greeting: "您好，這裡是投信投顧內部工作台。我可以協助整理基金、淨值、申購贖回、風險等級與投資屬性提醒；不可承諾報酬或暗示未來績效。",
             desc: "基金、淨值、申購贖回、風險等級與投資人適合度。",
             risk: "不承諾報酬；風險屬性不足時先請同仁補問。",
@@ -865,7 +865,7 @@
             title: "信用卡",
             role: "card_specialist",
             department: "card_services",
-            faq: "../faqs/credit_card.md",
+            faq: "/finance/Cathay/faqs/credit_card.md",
             greeting: "您好，這裡是信用卡內部工作台。我可以協助整理申辦、額度、帳單、繳款、爭議款與疑似盜刷流程；不可索取 CVV、OTP 或完整卡號。",
             desc: "申辦、額度、帳單、繳款、爭議款與盜刷。",
             risk: "不索取 CVV、OTP 或完整卡號；疑似盜刷先停損再交接。",
@@ -908,7 +908,7 @@
             title: "貸款",
             role: "loan_specialist",
             department: "loan_services",
-            faq: "../faqs/loan.md",
+            faq: "/finance/Cathay/faqs/loan.md",
             greeting: "您好，這裡是貸款內部工作台。我可以協助整理房貸、信貸、車貸、利率說明、補件與進度資訊；不可保證核准、利率、額度或撥款日。",
             desc: "房貸、信貸、車貸、利率說明、文件與進度。",
             risk: "不可保證核准；利率與額度以正式審核結果為準。",
@@ -951,7 +951,7 @@
             title: "財富管理",
             role: "wealth_rm",
             department: "wealth_management",
-            faq: "../faqs/wealth_management.md",
+            faq: "/finance/Cathay/faqs/wealth_management.md",
             greeting: "您好，這裡是財富管理內部工作台。我可以協助整理產品資訊、風險屬性、資產配置與預約專員脈絡；不可推薦單一商品或保證配息與本金安全。",
             desc: "產品資訊、風險屬性、資產配置說明與預約專員。",
             risk: "不做單一商品推薦；需先確認客戶風險屬性與投資目的。",
@@ -994,7 +994,7 @@
             title: "通用金融",
             role: "customer_service",
             department: "customer_service",
-            faq: "../faqs/general_finance.md",
+            faq: "/finance/Cathay/faqs/general_finance.md",
             greeting: "您好，這裡是通用金融內部工作台。我會先協助分流業別與風險，避免猜測流程；若涉及詐騙、敏感資料或不明資金，優先轉安全流程。",
             desc: "業別不明時先保守追問，避免給錯流程。",
             risk: "先問清楚業別與情境；不確定時不要猜。",
@@ -1112,16 +1112,7 @@
     }
 
     async function encodeDifyInput(value) {
-      const text = String(value ?? "");
-      if (!("CompressionStream" in window)) return text;
-      const compressedStream = new Blob([text]).stream().pipeThrough(new CompressionStream("gzip"));
-      const buffer = await new Response(compressedStream).arrayBuffer();
-      const bytes = new Uint8Array(buffer);
-      let binary = "";
-      for (let index = 0; index < bytes.length; index += 0x8000) {
-        binary += String.fromCharCode(...bytes.subarray(index, index + 0x8000));
-      }
-      return btoa(binary);
+      return String(value ?? "");
     }
 
     async function buildChatbotUrl(mode = "chatbot", payload = buildPayload(), sessionId = createChatSessionId()) {

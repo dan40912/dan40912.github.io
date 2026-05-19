@@ -339,60 +339,220 @@
             "type": "start",
             "variables": [
               {
-                "label": "business_line",
                 "variable": "business_line",
+                "label": "business_line",
+                "type": "text-input",
                 "required": false,
                 "max_length": 64,
-                "type": "text-input"
+                "options": []
               },
               {
-                "label": "service_id",
-                "variable": "service_id",
+                "variable": "user_type",
+                "label": "user_type",
+                "type": "text-input",
                 "required": false,
                 "max_length": 64,
-                "type": "text-input"
+                "options": []
               },
               {
-                "label": "route_stage",
-                "variable": "route_stage",
+                "variable": "user_role",
+                "label": "user_role",
+                "type": "text-input",
                 "required": false,
                 "max_length": 64,
-                "type": "text-input"
+                "options": []
               },
               {
-                "label": "scenario_type",
-                "variable": "scenario_type",
+                "variable": "department",
+                "label": "department",
+                "type": "text-input",
                 "required": false,
                 "max_length": 64,
-                "type": "text-input"
+                "options": []
               },
               {
-                "label": "risk_level",
-                "variable": "risk_level",
-                "required": false,
-                "max_length": 64,
-                "type": "text-input"
-              },
-              {
-                "label": "handoff_required",
-                "variable": "handoff_required",
-                "required": false,
-                "max_length": 64,
-                "type": "text-input"
-              },
-              {
-                "label": "channel",
                 "variable": "channel",
+                "label": "channel",
+                "type": "text-input",
                 "required": false,
                 "max_length": 64,
-                "type": "text-input"
+                "options": []
               },
               {
-                "label": "mock_customer_context",
-                "variable": "mock_customer_context",
+                "variable": "customer_segment",
+                "label": "customer_segment",
+                "type": "text-input",
+                "required": false,
+                "max_length": 64,
+                "options": []
+              },
+              {
+                "variable": "permission_level",
+                "label": "permission_level",
+                "type": "text-input",
+                "required": false,
+                "max_length": 64,
+                "options": []
+              },
+              {
+                "variable": "auth_status",
+                "label": "auth_status",
+                "type": "text-input",
+                "required": false,
+                "max_length": 64,
+                "options": []
+              },
+              {
+                "variable": "tone_profile",
+                "label": "tone_profile",
+                "type": "text-input",
+                "required": false,
+                "max_length": 64,
+                "options": []
+              },
+              {
+                "variable": "service_relationship",
+                "label": "service_relationship",
+                "type": "text-input",
+                "required": false,
+                "max_length": 64,
+                "options": []
+              },
+              {
+                "variable": "service_id",
+                "label": "service_id",
+                "type": "text-input",
+                "required": false,
+                "max_length": 64,
+                "options": []
+              },
+              {
+                "variable": "route_stage",
+                "label": "route_stage",
+                "type": "text-input",
+                "required": false,
+                "max_length": 64,
+                "options": []
+              },
+              {
+                "variable": "scenario_type",
+                "label": "scenario_type",
+                "type": "text-input",
+                "required": false,
+                "max_length": 64,
+                "options": []
+              },
+              {
+                "variable": "risk_level",
+                "label": "risk_level",
+                "type": "text-input",
+                "required": false,
+                "max_length": 64,
+                "options": []
+              },
+              {
+                "variable": "approval_required",
+                "label": "approval_required",
+                "type": "text-input",
+                "required": false,
+                "max_length": 16,
+                "options": []
+              },
+              {
+                "variable": "audit_required",
+                "label": "audit_required",
+                "type": "text-input",
+                "required": false,
+                "max_length": 16,
+                "options": []
+              },
+              {
+                "variable": "handoff_required",
+                "label": "handoff_required",
+                "type": "text-input",
+                "required": false,
+                "max_length": 16,
+                "options": []
+              },
+              {
+                "variable": "faq_source",
+                "label": "faq_source",
+                "type": "paragraph",
                 "required": false,
                 "max_length": 6000,
-                "type": "paragraph"
+                "options": []
+              },
+              {
+                "variable": "faq_title",
+                "label": "faq_title",
+                "type": "text-input",
+                "required": false,
+                "max_length": 200,
+                "options": []
+              },
+              {
+                "variable": "greeting_source",
+                "label": "greeting_source",
+                "type": "text-input",
+                "required": false,
+                "max_length": 200,
+                "options": []
+              },
+              {
+                "variable": "initial_greeting",
+                "label": "initial_greeting",
+                "type": "paragraph",
+                "required": false,
+                "max_length": 3000,
+                "options": []
+              },
+              {
+                "variable": "answer_contract",
+                "label": "answer_contract",
+                "type": "text-input",
+                "required": false,
+                "max_length": 200,
+                "options": []
+              },
+              {
+                "variable": "expected_sections",
+                "label": "expected_sections",
+                "type": "paragraph",
+                "required": false,
+                "max_length": 1000,
+                "options": []
+              },
+              {
+                "variable": "mock_customer_profile",
+                "label": "mock_customer_profile",
+                "type": "paragraph",
+                "required": false,
+                "max_length": 6000,
+                "options": []
+              },
+              {
+                "variable": "mock_customer_context",
+                "label": "mock_customer_context",
+                "type": "paragraph",
+                "required": false,
+                "max_length": 6000,
+                "options": []
+              },
+              {
+                "variable": "data_policy",
+                "label": "data_policy",
+                "type": "paragraph",
+                "required": false,
+                "max_length": 1000,
+                "options": []
+              },
+              {
+                "variable": "sensitive_data_policy",
+                "label": "sensitive_data_policy",
+                "type": "paragraph",
+                "required": false,
+                "max_length": 1000,
+                "options": []
               }
             ]
           },

@@ -678,7 +678,7 @@
             title: "帳戶登入協助",
             risk: "一般",
             riskLevel: "normal",
-            faq: "../faqs/banking_external.md",
+            faq: "/finance/Cathay/faqs/banking_external.md",
             greeting: "您好，我可以協助您處理帳戶登入、App / 網銀、換機驗證、轉帳設定、不明資金與疑似詐騙問題。為了帳戶安全，請不要提供密碼、OTP、完整帳號或身分證字號。",
             desc: "客戶無法登入 App，需要確認安全步驟並引導重設。",
             reply: "我先協助您確認登入流程。為了保護帳戶安全，我不會向您索取密碼或驗證碼。",
@@ -715,7 +715,7 @@
             title: "複委託交割時間",
             risk: "注意",
             riskLevel: "warn",
-            faq: "../faqs/securities.md",
+            faq: "/finance/Cathay/faqs/securities.md",
             greeting: "您好，我可以協助您了解證券開戶、下單、交割、庫存與複委託的一般流程。涉及個人帳務或庫存時，需要完成正式身份驗證；我不提供個股推薦或漲跌預測。",
             desc: "客戶想知道海外股票成交後，何時完成交割與入帳。",
             reply: "複委託交割會依交易市場與標的規則而不同，實際入帳仍以系統顯示為準。",
@@ -752,7 +752,7 @@
             title: "保單查詢與保障建議",
             risk: "一般",
             riskLevel: "normal",
-            faq: "../faqs/life_insurance.md",
+            faq: "/finance/Cathay/faqs/life_insurance.md",
             greeting: "您好，我可以協助您整理保單、保障內容、理賠文件、保單借款與進度查詢的一般方向。保單明細與正式金額仍需完成身份驗證，並以正式系統與保單條款為準。",
             desc: "客戶詢問目前有哪些保單，接著追問可以買什麼。",
             reply: "我可以先依 demo mock data 協助整理保單類型；若要確認正式保單明細，仍需完成身份驗證。",
@@ -795,7 +795,7 @@
             title: "疑似盜刷處理",
             risk: "高風險",
             riskLevel: "danger",
-            faq: "../faqs/credit_card.md",
+            faq: "/finance/Cathay/faqs/credit_card.md",
             greeting: "您好，我可以協助您處理信用卡帳單、繳款、交易確認與疑似盜刷問題。請不要提供 CVV、OTP、完整卡號或含敏感資訊的截圖。",
             desc: "客戶看到不認識的刷卡紀錄，需要先保護卡片並建立爭議款流程。",
             reply: "我先協助您保護卡片安全。請不要提供卡片背面的 CVV 或任何驗證碼。",
@@ -832,7 +832,7 @@
             title: "房貸補件進度",
             risk: "一般",
             riskLevel: "normal",
-            faq: "../faqs/loan.md",
+            faq: "/finance/Cathay/faqs/loan.md",
             greeting: "您好，我可以協助您了解貸款申請、補件、審核流程與常見進度問題。核准、額度、利率與撥款日都需要以正式審核結果為準。",
             desc: "客戶已送出文件，想知道缺件原因與下一步。",
             reply: "我可以先協助您確認常見補件方向，實際狀態仍以審核結果為準。",
@@ -869,7 +869,7 @@
             title: "疑似詐騙轉帳",
             risk: "高風險",
             riskLevel: "danger",
-            faq: "../faqs/general_finance.md",
+            faq: "/finance/Cathay/faqs/general_finance.md",
             greeting: "您好，我會先協助您釐清金融服務類型並確認風險。若涉及疑似詐騙、陌生指示、可疑扣款或不明資金，請先停止操作並保留紀錄。",
             desc: "客戶疑似被要求轉帳，需要立即停止動作並轉接專線。",
             reply: "請您先不要再轉帳，也不要提供帳戶、驗證碼或網銀資料。",
@@ -1002,16 +1002,7 @@
     }
 
     async function encodeDifyInput(value) {
-      const text = String(value ?? "");
-      if (!("CompressionStream" in window)) return text;
-      const compressedStream = new Blob([text]).stream().pipeThrough(new CompressionStream("gzip"));
-      const buffer = await new Response(compressedStream).arrayBuffer();
-      const bytes = new Uint8Array(buffer);
-      let binary = "";
-      for (let index = 0; index < bytes.length; index += 0x8000) {
-        binary += String.fromCharCode(...bytes.subarray(index, index + 0x8000));
-      }
-      return btoa(binary);
+      return String(value ?? "");
     }
 
     async function buildChatbotUrl(mode = "chatbot", payload = buildPayload(), sessionId = createChatSessionId()) {
