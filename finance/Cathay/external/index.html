@@ -806,7 +806,7 @@
     <div class="chat-frame">
       <iframe
         id="chatbotFrame"
-        src="https://dify.startpray.online/chatbot/T4GRIRNBR7NQKsca"
+        src="https://dify.startpray.online/chat/T4GRIRNBR7NQKsca"
         style="width: 100%; height: 100%; min-height: 700px"
         frameborder="0"
         allow="microphone">
@@ -1164,7 +1164,7 @@
       const payload = buildPayload();
       const sessionId = createChatSessionId();
       const chatUrl = buildChatbotUrl("chat", payload, sessionId);
-      const embedUrl = buildChatbotUrl("chatbot", payload, sessionId);
+      const embedUrl = buildChatbotUrl("chat", payload, sessionId);
       chatbotLink.href = chatUrl;
       chatbotUrlText.textContent = chatUrl;
       chatbotQr.src = `https://api.qrserver.com/v1/create-qr-code/?size=224x224&data=${encodeURIComponent(chatUrl)}`;
@@ -1403,7 +1403,7 @@
       const params = new URLSearchParams(payload.inputs);
       params.set("query", payload.query);
       window.location.hash = params.toString();
-      chatbotFrame.src = buildChatbotUrl("chatbot", payload);
+      chatbotFrame.src = buildChatbotUrl("chat", payload);
       chatbotHint.textContent = `已帶入 ${payload.inputs.service_id} / ${payload.inputs.route_stage} 與 mock 場景。若 Dify 未自動吃參數，請複製 payload 貼入。`;
       chatbotPanel.hidden = false;
       showToast("已開啟 Chatbot");
