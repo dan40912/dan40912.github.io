@@ -1145,26 +1145,35 @@
       return `${state.selected.id}-${timestamp}-${random}`;
     }
 
-    function buildChatbotUrl(mode = "chatbot", payload = buildPayload(), sessionId = createChatSessionId()) {
+    async function encodeDifyInput(value) {
+      const text = String(value ?? "");
+      if (!("CompressionStream" in window)) return text;
+      const compressedStream = new Blob([text]).stream().pipeThrough(new CompressionStream("gzip"));
+      const buffer = await new Response(compressedStream).arrayBuffer();
+      const bytes = new Uint8Array(buffer);
+      let binary = "";
+      for (let index = 0; index < bytes.length; index += 0x8000) {
+        binary += String.fromCharCode(...bytes.subarray(index, index + 0x8000));
+      }
+      return btoa(binary);
+    }
+
+    async function buildChatbotUrl(mode = "chatbot", payload = buildPayload(), sessionId = createChatSessionId()) {
       const params = new URLSearchParams();
-      params.set("query", payload.query);
-      params.set("user", payload.user);
-      params.set("response_mode", payload.response_mode);
       params.set("chat_session_id", sessionId);
       params.set("new_conversation", "1");
-      Object.entries(payload.inputs).forEach(([key, value]) => {
-        params.set(key, typeof value === "boolean" ? String(value) : value);
-      });
-      params.set("inputs", JSON.stringify(payload.inputs));
-      params.set("payload", JSON.stringify({ ...payload, chat_session_id: sessionId }));
+      params.set("user", payload.user);
+      for (const [key, value] of Object.entries(payload.inputs)) {
+        params.set(key, await encodeDifyInput(typeof value === "boolean" ? String(value) : value));
+      }
       return `${CHATBOT_ORIGIN}/${mode}/${CHATBOT_APP_ID}?${params.toString()}`;
     }
 
-    function syncChatbotEntry({ reloadFrame = false } = {}) {
+    async function syncChatbotEntry({ reloadFrame = false } = {}) {
       const payload = buildPayload();
       const sessionId = createChatSessionId();
-      const chatUrl = buildChatbotUrl("chat", payload, sessionId);
-      const embedUrl = buildChatbotUrl("chat", payload, sessionId);
+      const chatUrl = await buildChatbotUrl("chat", payload, sessionId);
+      const embedUrl = await buildChatbotUrl("chatbot", payload, sessionId);
       chatbotLink.href = chatUrl;
       chatbotUrlText.textContent = chatUrl;
       chatbotQr.src = `https://api.qrserver.com/v1/create-qr-code/?size=224x224&data=${encodeURIComponent(chatUrl)}`;
@@ -1398,13 +1407,13 @@
       showToast("案件進度已更新");
     }
 
-    function launchChatbot() {
+    async function launchChatbot() {
       const payload = buildPayload();
       const params = new URLSearchParams(payload.inputs);
       params.set("query", payload.query);
       window.location.hash = params.toString();
-      chatbotFrame.src = buildChatbotUrl("chat", payload);
-      chatbotHint.textContent = `已帶入 ${payload.inputs.service_id} / ${payload.inputs.route_stage} 與 mock 場景。若 Dify 未自動吃參數，請複製 payload 貼入。`;
+      chatbotFrame.src = await buildChatbotUrl("chatbot", payload);
+      chatbotHint.textContent = `已帶入 ${payload.inputs.service_id} / ${payload.inputs.route_stage} 與 mock 場景。Dify 會讀取 inputs；第一句測試問題仍需在 Chatbot 送出。`;
       chatbotPanel.hidden = false;
       showToast("已開啟 Chatbot");
     }
