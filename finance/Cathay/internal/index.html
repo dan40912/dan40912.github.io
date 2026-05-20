@@ -1052,6 +1052,27 @@
     const mockProfileSummary = document.getElementById("mockProfileSummary");
     const mockProfileList = document.getElementById("mockProfileList");
     const toast = document.getElementById("toast");
+    const QR_SAFE_URL_LENGTH = 1800;
+    let chatbotSyncSeq = 0;
+
+    function summarizeMockData(profile) {
+      if (!profile) return "";
+      const facts = [];
+      const holdings = profile.policies || profile.holdings || [];
+      const gaps = profile.coverage_gap || profile.gap_or_next_step || [];
+      facts.push(`customer=${[profile.display_name, profile.customer_id].filter(Boolean).join(" / ") || "demo customer"}`);
+      if (profile.service_relationship) facts.push(`service_relationship=${profile.service_relationship}`);
+      if (holdings.length) {
+        const holdingSummary = holdings.map(item => {
+          if (typeof item === "string") return item;
+          return [item.name || item.type, item.status, item.premium, item.note].filter(Boolean).join(" / ");
+        }).join("；");
+        facts.push(`known_facts=${holdingSummary}`);
+      }
+      if (gaps.length) facts.push(`gaps_or_next_steps=${gaps.join("；")}`);
+      if (profile.recommendation_boundary) facts.push(`boundary=${profile.recommendation_boundary}`);
+      return facts.join("\n");
+    }
 
     function buildPayload() {
       const preset = state.selected.presets[state.selectedPresetIndex] || state.selected.presets[0];
@@ -1060,6 +1081,9 @@
       const isRiskScenario = routeStage === "risk_boundary";
       const rawQuestion = queryInput.value.trim() || preset.query;
       const mockProfile = state.selected.mockCustomer ? JSON.stringify(state.selected.mockCustomer, null, 2) : "";
+      const mockDataAvailable = Boolean(mockProfile);
+      const mockDataSummary = summarizeMockData(state.selected.mockCustomer);
+      const mockDataContract = "對內版：必須輸出 mock 現況、下一步建議、不可回答內容、是否需主管/法遵/真人介入、客戶可見版本、mock Audit Log；不可宣稱正式查詢核心系統。";
       const scenarioPrompt = [
         "【Dify 預設場景】",
         `使用者類型：內部同仁`,
@@ -1069,6 +1093,9 @@
         `風險：${isRiskScenario ? "high" : routeStage === "next_best_action" ? "medium" : "normal"}`,
         `回答契約：輸出現況摘要、下一步建議、不可說、是否需要轉人工/主管批准、客戶可說版本、mock Audit Log。`,
         `回覆界線：${state.selected.risk}`,
+        mockDataAvailable ? "【Mock Data 使用規則 - 必讀】請優先依下方 mock data 回答；只能引用 mock data 實際存在的欄位；缺少的資料請說明 mock data 未提供；不可宣稱已查詢正式核心系統。" : "",
+        mockDataSummary ? `Mock data summary：\n${mockDataSummary}` : "",
+        `Mock data contract：${mockDataContract}`,
         mockProfile ? `Mock data：\n${mockProfile}` : "",
         "【使用者問題】",
         rawQuestion
@@ -1081,6 +1108,10 @@
           department: state.selected.department,
           service_relationship: state.selected.mockCustomer?.service_relationship || "not_applicable",
           service_id: state.selected.business_line,
+          mock_data_available: mockDataAvailable,
+          mock_data_source: mockDataAvailable ? "frontend_demo" : "none",
+          mock_data_summary: mockDataSummary,
+          mock_data_contract: mockDataContract,
           mock_customer_profile: state.selected.mockCustomer ? JSON.stringify(state.selected.mockCustomer) : "",
           mock_customer_context: mockProfile,
           route_stage: routeStage,
@@ -1120,24 +1151,46 @@
       params.set("chat_session_id", sessionId);
       params.set("new_conversation", "1");
       params.set("user", payload.user);
+      params.set("query", await encodeDifyInput(payload.query));
+      params.set("raw_query", await encodeDifyInput(payload.raw_query));
       for (const [key, value] of Object.entries(payload.inputs)) {
         params.set(key, await encodeDifyInput(typeof value === "boolean" ? String(value) : value));
       }
       return `${CHATBOT_ORIGIN}/${mode}/${CHATBOT_APP_ID}?${params.toString()}`;
     }
 
+    function syncHashParams(payload) {
+      const params = new URLSearchParams(payload.inputs);
+      params.set("query", payload.query);
+      params.set("raw_query", payload.raw_query);
+      window.location.hash = params.toString();
+    }
+
+    function updateQrCode(chatUrl) {
+      if (!chatbotQr) return;
+      if (chatUrl.length > QR_SAFE_URL_LENGTH) {
+        chatbotQr.removeAttribute("src");
+        chatbotQr.alt = "Dify URL 過長，請改用獨立開啟或複製 payload";
+        return;
+      }
+      chatbotQr.src = `https://api.qrserver.com/v1/create-qr-code/?size=224x224&data=${encodeURIComponent(chatUrl)}`;
+      chatbotQr.alt = "Dify Chatbot QR Code";
+    }
+
     async function syncChatbotEntry({ reloadFrame = false } = {}) {
+      const syncSeq = ++chatbotSyncSeq;
       const payload = buildPayload();
       const sessionId = createChatSessionId();
       const chatUrl = await buildChatbotUrl("chat", payload, sessionId);
-      const embedUrl = await buildChatbotUrl("chatbot", payload, sessionId);
+      const embedUrl = reloadFrame ? await buildChatbotUrl("chatbot", payload, sessionId) : "";
+      if (syncSeq !== chatbotSyncSeq) return "";
       chatbotLink.href = chatUrl;
       if (chatbotUrlText) chatbotUrlText.textContent = chatUrl;
-      if (chatbotQr) chatbotQr.src = `https://api.qrserver.com/v1/create-qr-code/?size=224x224&data=${encodeURIComponent(chatUrl)}`;
+      updateQrCode(chatUrl);
       if (reloadFrame) {
         chatbotFrame.src = embedUrl;
       }
-      return embedUrl;
+      return embedUrl || chatUrl;
     }
 
     function renderPresets() {
@@ -1215,8 +1268,7 @@
       renderMockProfile();
       renderIndustries();
       renderPresets();
-      renderPayload();
-      syncChatbotEntry({ reloadFrame: openChatbot || !chatbotPanel.hidden });
+      renderPayload({ reloadFrame: openChatbot || !chatbotPanel.hidden });
       if (openChatbot) {
         chatbotPanel.hidden = false;
         chatbotHint.textContent = `已切換到 ${state.selected.title}，並建立新的 ${state.selected.business_line} 對話。`;
@@ -1224,9 +1276,9 @@
       showToast(`已選擇：${state.selected.title}`);
     }
 
-    function renderPayload() {
+    function renderPayload(options = {}) {
       renderMockProfile();
-      syncChatbotEntry();
+      syncChatbotEntry(options);
     }
 
     function renderMockProfile() {
@@ -1259,11 +1311,17 @@
     }
 
     async function launchChatbot() {
+      const syncSeq = ++chatbotSyncSeq;
       const payload = buildPayload();
-      const params = new URLSearchParams(payload.inputs);
-      params.set("query", payload.query);
-      window.location.hash = params.toString();
-      chatbotFrame.src = await buildChatbotUrl("chatbot", payload);
+      syncHashParams(payload);
+      const sessionId = createChatSessionId();
+      const chatUrl = await buildChatbotUrl("chat", payload, sessionId);
+      const embedUrl = await buildChatbotUrl("chatbot", payload, sessionId);
+      if (syncSeq !== chatbotSyncSeq) return;
+      chatbotLink.href = chatUrl;
+      if (chatbotUrlText) chatbotUrlText.textContent = chatUrl;
+      updateQrCode(chatUrl);
+      chatbotFrame.src = embedUrl;
       chatbotHint.textContent = `已帶入 ${state.selected.business_line} / ${payload.inputs.route_stage} 與 mock data。Dify 會讀取 inputs；第一句測試問題仍需在 Chatbot 送出。`;
       chatbotPanel.hidden = false;
       showToast("已開啟 Chatbot");
