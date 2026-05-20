@@ -935,6 +935,18 @@
     const mockProfileList = document.getElementById("mockProfileList");
     const toast = document.getElementById("toast");
     const QR_SAFE_URL_LENGTH = 1800;
+    const DIFY_URL_TEXT_LIMIT = 900;
+    const DIFY_URL_INPUT_KEYS = [
+      "business_line",
+      "service_id",
+      "user_type",
+      "route_stage",
+      "risk_level",
+      "approval_required",
+      "handoff_required",
+      "mock_data_available",
+      "mock_data_source"
+    ];
     let chatbotSyncSeq = 0;
 
     function badgeClass(item) {
@@ -1032,23 +1044,52 @@
       return String(value ?? "");
     }
 
+    function truncateForDifyUrl(value, maxLength = DIFY_URL_TEXT_LIMIT) {
+      const text = String(value ?? "");
+      if (text.length <= maxLength) return text;
+      return `${text.slice(0, maxLength)}\n...mock data 已截短，完整內容請以複製 payload 檢視。`;
+    }
+
+    function buildDifyUrlPayload(payload = buildPayload()) {
+      const compactSummary = truncateForDifyUrl(payload.inputs.mock_data_summary, 120);
+      const compactContract = truncateForDifyUrl(payload.inputs.mock_data_contract, 90);
+      const compactQuery = [
+        `【Dify 場景】外部客戶 / ${state.selected.title} / ${payload.inputs.route_stage} / ${payload.inputs.risk_level}`,
+        "Mock Data 使用規則：優先依 mock summary 回答；不可宣稱已查詢正式系統、帳務或案件；缺少欄位請說 mock data 未提供。",
+        compactSummary ? `mock summary：${compactSummary}` : "",
+        compactContract ? `contract：${compactContract}` : "",
+        `問題：${payload.raw_query}`
+      ].filter(Boolean).join("\n\n");
+      return {
+        ...payload,
+        query: compactQuery,
+        inputs: Object.fromEntries(Object.entries({
+          ...payload.inputs,
+          mock_data_summary: compactSummary,
+          mock_data_contract: compactContract
+        }).filter(([key, value]) => DIFY_URL_INPUT_KEYS.includes(key) && value !== undefined && value !== null && String(value) !== ""))
+      };
+    }
+
     async function buildChatbotUrl(mode = "chatbot", payload = buildPayload(), sessionId = createChatSessionId()) {
+      const urlPayload = buildDifyUrlPayload(payload);
       const params = new URLSearchParams();
       params.set("chat_session_id", sessionId);
       params.set("new_conversation", "1");
-      params.set("user", payload.user);
-      params.set("query", await encodeDifyInput(payload.query));
-      params.set("raw_query", await encodeDifyInput(payload.raw_query));
-      for (const [key, value] of Object.entries(payload.inputs)) {
+      params.set("user", urlPayload.user);
+      params.set("query", await encodeDifyInput(urlPayload.query));
+      params.set("raw_query", await encodeDifyInput(urlPayload.raw_query));
+      for (const [key, value] of Object.entries(urlPayload.inputs)) {
         params.set(key, await encodeDifyInput(typeof value === "boolean" ? String(value) : value));
       }
       return `${CHATBOT_ORIGIN}/${mode}/${CHATBOT_APP_ID}?${params.toString()}`;
     }
 
     function syncHashParams(payload) {
-      const params = new URLSearchParams(payload.inputs);
-      params.set("query", payload.query);
-      params.set("raw_query", payload.raw_query);
+      const urlPayload = buildDifyUrlPayload(payload);
+      const params = new URLSearchParams(urlPayload.inputs);
+      params.set("query", urlPayload.query);
+      params.set("raw_query", urlPayload.raw_query);
       window.location.hash = params.toString();
     }
 
