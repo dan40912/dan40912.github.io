@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>基金適配問答精靈 Demo｜好好證券 FundSwap</title>
+    <meta
+      name="description"
+      content="基金適配問答精靈 HTML Demo：用 5 步驟問答協助新手把投資需求轉成基金篩選條件。"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="assets/fund-fit-wizard.css" />
+    <link rel="stylesheet" href="assets/global.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="index.html" aria-label="好好證券 FundSwap UX Demo">
+        <img src="https://www.fundswap.com.tw/wp-content/uploads/2022/07/ic_logo_fav.png" alt="" />
+        <span>好好證券</span>
+      </a>
+      <nav aria-label="Demo navigation">
+        <a href="#wizard">問答精靈</a>
+        <a href="#result">適配結果</a>
+        <a href="04-new-find-funds.html">找基金 Demo</a>
+      </nav>
+      <a class="header-cta" href="#wizard">開始問答</a>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div>
+          <p class="eyebrow">FUND FIT WIZARD</p>
+          <h1>不用先懂基金，先說你想怎麼投資</h1>
+          <p>
+            基金適配問答精靈用 5 個問題把新手的模糊需求轉成可理解的篩選條件，再顯示適合觀察的基金類型與風險提醒。
+          </p>
+        </div>
+        <aside class="hero-card">
+          <span>教育型篩選輔助</span>
+          <strong>不是推薦買哪一檔</strong>
+          <p>結果只用來協助理解基金類型與風險，不構成投資建議或申購建議。</p>
+        </aside>
+      </section>
+
+      <section class="wizard-shell" id="wizard" aria-labelledby="wizardTitle">
+        <aside class="wizard-side">
+          <p class="eyebrow">5 STEP FLOW</p>
+          <h2 id="wizardTitle">基金適配問答精靈</h2>
+          <p>每一步只問一件事，避免新手一開始就被報酬率、波動度、配息率塞滿。</p>
+          <ol class="stepper" id="stepper" aria-label="問答進度"></ol>
+        </aside>
+
+        <article class="question-card" aria-live="polite">
+          <div class="question-topline">
+            <span id="stepLabel">STEP 1 / 5</span>
+            <button class="link-button" type="button" id="restartButton">重新開始</button>
+          </div>
+          <h2 id="questionTitle">你的投資目標是什麼？</h2>
+          <p id="questionHint">先不用想基金名稱，選最接近你現在需求的方向。</p>
+          <div class="option-grid" id="optionGrid"></div>
+          <div class="wizard-actions">
+            <button class="btn ghost" type="button" id="prevButton">上一步</button>
+            <button class="btn primary" type="button" id="nextButton">下一步</button>
+          </div>
+        </article>
+      </section>
+
+      <section class="result-section" id="result" aria-labelledby="resultTitle" hidden>
+        <div class="result-hero">
+          <div>
+            <p class="eyebrow">SCREENING RESULT</p>
+            <h2 id="resultTitle">你的基金觀察方向</h2>
+            <p id="resultSummary">完成問答後，這裡會顯示使用者風格與適合觀察的基金類型。</p>
+          </div>
+          <button class="btn primary" type="button" id="editAnswers">調整答案</button>
+        </div>
+
+        <div class="insight-grid">
+          <article class="insight-card">
+            <span>使用者風格</span>
+            <strong id="styleName">-</strong>
+            <p id="styleCopy">-</p>
+          </article>
+          <article class="insight-card">
+            <span>適合觀察的基金類型</span>
+            <strong id="fundTypes">-</strong>
+            <p>這不是購買建議，而是把你的回答轉成較合理的篩選範圍。</p>
+          </article>
+          <article class="insight-card warning">
+            <span>先注意</span>
+            <strong id="riskFocus">-</strong>
+            <p>任何基金都可能虧損，請把風險理解放在報酬想像之前。</p>
+          </article>
+        </div>
+
+        <div class="criteria-strip" id="criteriaStrip" aria-label="篩選條件摘要"></div>
+
+        <div class="section-title">
+          <div>
+            <p class="eyebrow">MOCK FUNDS</p>
+            <h2>適合觀察的基金候選</h2>
+          </div>
+          <span class="pill" id="fundCount">0 檔</span>
+        </div>
+        <div class="fund-grid" id="fundGrid"></div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>本 Demo 僅為基金篩選體驗設計展示，非投資建議。所有基金資料皆為 mock data，不構成基金推薦或任何申購、贖回、轉換之招攬。</p>
+    </footer>
+
+    <script src="assets/fund-fit-wizard.js"></script>
+    <script src="assets/global.js"></script>
+  </body>
+</html>

@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Arena | 投資世界觀競技場</title>
+    <meta
+      name="description"
+      content="Arena 是基金內容與研究理解平台，讓投資人追蹤基金背後的人、投資世界觀、風險紀律與市場觀點。"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="arena.css" />
+  </head>
+  <body>
+    <header class="arena-header">
+      <a href="#top" class="arena-brand" aria-label="Arena">
+        <span class="brand-sigil">A</span>
+        <span>Arena</span>
+      </a>
+      <nav aria-label="Arena navigation">
+        <a href="#worldviews">世界觀</a>
+        <a href="#teams">基金團隊</a>
+        <a href="#journal">Journal</a>
+        <a href="#risk">風險透明</a>
+      </nav>
+      <div class="header-actions">
+        <button class="ghost-btn" type="button" data-open-drawer="watchlist">觀察書架</button>
+        <a class="primary-btn small" href="#lens">選擇視角</a>
+      </div>
+    </header>
+
+    <main id="top">
+      <section class="hero-section" aria-labelledby="heroTitle">
+        <div class="hero-media" aria-hidden="true">
+          <img
+            src="https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=1800&q=82"
+            alt=""
+            width="1800"
+            height="1200"
+          />
+          <div class="hero-grain"></div>
+        </div>
+        <div class="hero-content">
+          <p class="eyebrow">INSIDE THE FUND</p>
+          <h1 id="heroTitle">追蹤基金背後的人與投資世界觀</h1>
+          <p>
+            Arena 不把基金拍成廣告。這裡紀錄基金團隊如何研究、如何爭辯、如何承認錯誤，也讓你看清楚一支基金最怕什麼。
+          </p>
+          <div class="hero-actions">
+            <a class="primary-btn" href="#worldviews">探索投資世界觀</a>
+            <a class="secondary-btn" href="#film">觀看基金團隊影片</a>
+          </div>
+          <div class="hero-proof" aria-label="平台定位">
+            <span>非投顧建議</span>
+            <span>風險前置</span>
+            <span>團隊追蹤</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="lens-section" id="lens" aria-labelledby="lensTitle">
+        <div class="section-kicker">
+          <p class="eyebrow">CHOOSE YOUR LENS</p>
+          <h2 id="lensTitle">先選你要用哪種鏡頭看基金</h2>
+          <p>這不是風險屬性測驗，只是調整內容排序與解讀方式。Arena 不會因此替你判斷該買哪一檔基金。</p>
+        </div>
+        <div class="persona-grid" id="personaGrid"></div>
+      </section>
+
+      <section class="lens-output" aria-live="polite">
+        <div>
+          <p class="eyebrow">CURRENT LENS</p>
+          <h2 id="lensOutputTitle">長期型會先看持續能力</h2>
+          <p id="lensOutputCopy">長期投資者不是不看報酬，而是更在意這套策略能不能被持續執行。</p>
+        </div>
+        <div class="metric-strip" id="metricStrip"></div>
+      </section>
+
+      <section class="worldview-section" id="worldviews" aria-labelledby="worldviewTitle">
+        <div class="section-kicker">
+          <p class="eyebrow">WORLDVIEWS</p>
+          <h2 id="worldviewTitle">基金不只是類別，是一套看世界的方法</h2>
+        </div>
+        <div class="worldview-grid">
+          <article class="world-card large">
+            <img
+              src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=82"
+              alt=""
+              width="1200"
+              height="800"
+              loading="lazy"
+            />
+            <div>
+              <span>AI 生產力</span>
+              <h3>企業願不願意繼續為效率付錢？</h3>
+              <p>追蹤半導體、軟體與資本支出，不把 AI 當成口號。</p>
+            </div>
+          </article>
+          <article class="world-card">
+            <span>高股息現金流</span>
+            <h3>配息來源比配息率更重要</h3>
+            <p>看配息穩定性、淨值變化與本金配息風險。</p>
+          </article>
+          <article class="world-card">
+            <span>債券收益</span>
+            <h3>降息故事背後仍有波動</h3>
+            <p>追蹤存續期間、信用風險與匯率影響。</p>
+          </article>
+          <article class="world-card">
+            <span>退休長期配置</span>
+            <h3>一支基金能不能放進長期計畫</h3>
+            <p>看 TISA、費用、定期投入與長期穩定度。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="film-section" id="film" aria-labelledby="filmTitle">
+        <div class="film-banner">
+          <img
+            src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&w=1800&q=82"
+            alt=""
+            width="1800"
+            height="1200"
+            loading="lazy"
+          />
+          <div class="film-overlay">
+            <p class="eyebrow">ARENA ORIGINALS · 3 MIN WATCH</p>
+            <h2 id="filmTitle">Inside the Fund: How This Team Reads the Market</h2>
+            <p>不是問經理人現在買什麼，而是問：如果判斷錯了，你們怎麼面對？</p>
+            <div class="film-actions">
+              <button class="primary-btn" type="button" data-open-drawer="film">播放章節</button>
+              <a class="secondary-btn" href="#risk">先看風險</a>
+            </div>
+          </div>
+          <div class="chapter-bar" aria-label="影片章節">
+            <span style="--w: 16%">市場觀點</span>
+            <span style="--w: 18%">團隊討論</span>
+            <span style="--w: 22%">風險控管</span>
+            <span style="--w: 20%">持股邏輯</span>
+            <span style="--w: 24%">錯誤反思</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="teams-section" id="teams" aria-labelledby="teamTitle">
+        <div class="section-kicker">
+          <p class="eyebrow">FUND EPISODES</p>
+          <h2 id="teamTitle">追蹤團隊，不只追蹤績效</h2>
+        </div>
+        <div class="fund-grid" id="fundGrid"></div>
+      </section>
+
+      <section class="journal-section" id="journal" aria-labelledby="journalTitle">
+        <aside class="journal-toc">
+          <p class="eyebrow">JOURNAL</p>
+          <a href="#journalTitle">本月我們在看什麼</a>
+          <a href="#portfolio">持股代表什麼</a>
+          <a href="#risk">最擔心什麼</a>
+          <a href="#feed">市場觀點 Feed</a>
+        </aside>
+        <article class="journal-article">
+          <p class="eyebrow">MONTHLY NOTE · DATA DATE 2026/05</p>
+          <h2 id="journalTitle">本月觀察：AI 資本支出正在改變哪些產業假設？</h2>
+          <p class="lede">
+            這篇 Journal 不告訴你「現在該不該買」，而是拆解團隊正在驗證的三個假設：需求是否真實、估值是否合理、如果錯了代價多大。
+          </p>
+          <blockquote>
+            好的投資想法，必須經得起反對。若一個題材只能在樂觀情境下成立，它還不夠好。
+          </blockquote>
+          <div class="journal-columns">
+            <div>
+              <h3>本月修正了什麼</h3>
+              <p>團隊降低了單一供應鏈復甦速度的假設，改用訂單能見度與庫存週期交叉驗證。</p>
+            </div>
+            <div>
+              <h3>投資人應該知道的風險</h3>
+              <p>AI 題材可能同時面臨估值過高、資本支出延後與匯率波動。高成長不等於低風險。</p>
+            </div>
+          </div>
+        </article>
+        <aside class="journal-facts">
+          <h3>Key facts</h3>
+          <dl>
+            <div><dt>閱讀時間</dt><dd>6 分鐘</dd></div>
+            <div><dt>內容性質</dt><dd>教育與資訊</dd></div>
+            <div><dt>交易 CTA</dt><dd>不顯示</dd></div>
+          </dl>
+          <p>本內容不構成基金申購、贖回或轉換建議。</p>
+        </aside>
+      </section>
+
+      <section class="portfolio-section" id="portfolio" aria-labelledby="portfolioTitle">
+        <div class="section-kicker">
+          <p class="eyebrow">PORTFOLIO MAP</p>
+          <h2 id="portfolioTitle">持股不是明牌，是基金對世界的判斷紀錄</h2>
+        </div>
+        <div class="portfolio-layout">
+          <div class="bubble-map" aria-label="持股主題分布">
+            <span class="bubble b1">半導體<br />32%</span>
+            <span class="bubble b2">雲端軟體<br />18%</span>
+            <span class="bubble b3">自動化<br />15%</span>
+            <span class="bubble b4">現金<br />7%</span>
+          </div>
+          <div class="portfolio-copy">
+            <h3>Why it matters</h3>
+            <p>這組持股代表團隊相信企業仍會為生產力改善投入資本，但如果資本支出延後，策略就需要重新檢查。</p>
+            <ul>
+              <li>主要假設：AI 導入會延續企業軟硬體支出。</li>
+              <li>失效條件：庫存去化拉長或企業削減資本支出。</li>
+              <li>觀察指標：訂單能見度、毛利率、雲端用量。</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="risk-section" id="risk" aria-labelledby="riskTitle">
+        <div class="risk-copy">
+          <p class="eyebrow">WHAT COULD GO WRONG?</p>
+          <h2 id="riskTitle">風險不藏在頁尾，風險就是研究的一部分</h2>
+          <p>這支基金的風險不是「會不會跌」，而是跌的時候你是否知道原因，並且能不能承受。</p>
+        </div>
+        <div class="risk-grid">
+          <article>
+            <span>MDD</span>
+            <strong>-28.4%</strong>
+            <p>過去最慘曾經跌多少。保守型使用者應先看這裡。</p>
+          </article>
+          <article>
+            <span>波動</span>
+            <strong>中高</strong>
+            <p>持有期間可能看到明顯上下震盪，不適合短期用錢。</p>
+          </article>
+          <article>
+            <span>集中度</span>
+            <strong>42%</strong>
+            <p>前十大持股占比較高，題材反轉時影響會更明顯。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="feed-section" id="feed" aria-labelledby="feedTitle">
+        <div class="section-kicker">
+          <p class="eyebrow">MARKET FEED</p>
+          <h2 id="feedTitle">安全但有趣的互動：追蹤思考，不追喊單</h2>
+        </div>
+        <div class="feed-grid">
+          <article class="feed-card">
+            <span>Market Note</span>
+            <h3>利率預期變化，可能影響長天期債券基金波動。</h3>
+            <button type="button">了解存續期間風險</button>
+          </article>
+          <article class="feed-card">
+            <span>Risk Poll</span>
+            <h3>你現在最擔心哪個風險？</h3>
+            <div class="poll-list">
+              <button type="button">利率</button>
+              <button type="button">匯率</button>
+              <button type="button">估值</button>
+            </div>
+          </article>
+          <article class="feed-card">
+            <span>Journal Drop</span>
+            <h3>你追蹤的基金團隊發布本月 Journal。</h3>
+            <button type="button">閱讀本月反思</button>
+          </article>
+        </div>
+      </section>
+
+      <section class="closing-cta">
+        <p class="eyebrow">ARENA PRINCIPLE</p>
+        <h2>不讓使用者追漲跌，讓使用者追蹤思考。</h2>
+        <div>
+          <button class="primary-btn" type="button" data-open-drawer="watchlist">建立觀察書架</button>
+          <a class="secondary-btn" href="#journal">閱讀 Journal</a>
+        </div>
+      </section>
+    </main>
+
+    <footer class="arena-footer">
+      <p>Arena content is for education and information only. It does not constitute investment advice, fund recommendation, subscription, redemption, or switching advice.</p>
+      <p>基金投資涉及市場、匯率、利率與流動性等風險，過去績效不代表未來表現。投資前請詳閱公開說明書及投資人須知。</p>
+    </footer>
+
+    <div class="drawer" id="drawer" aria-hidden="true">
+      <button class="drawer-backdrop" type="button" data-close-drawer aria-label="關閉"></button>
+      <section class="drawer-panel" role="dialog" aria-modal="true" aria-labelledby="drawerTitle">
+        <button class="drawer-close" type="button" data-close-drawer aria-label="關閉">×</button>
+        <p class="eyebrow" id="drawerEyebrow">ARENA</p>
+        <h2 id="drawerTitle">觀察書架</h2>
+        <div id="drawerBody"></div>
+      </section>
+    </div>
+
+    <script src="arena.js"></script>
+  </body>
+</html>

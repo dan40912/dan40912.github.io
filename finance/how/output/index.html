@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>找基金 | 好好證券 FundSwap</title>
+    <meta
+      name="description"
+      content="FundSwap 好好證券用清楚的投資情境、風險說明與基金候選清單，幫你看懂每檔基金在做什麼，再決定下一步。"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="https://www.fundswap.com.tw/trade/" aria-label="好好證券 FundSwap">
+        <img
+          src="https://www.fundswap.com.tw/wp-content/uploads/2022/07/ic_logo_fav.png"
+          alt=""
+          class="brand-mark"
+        />
+        <span class="brand-name">好好證券</span>
+      </a>
+      <nav class="nav-links" aria-label="主要導覽">
+        <div class="nav-item">
+          <button class="nav-trigger active" type="button">找基金</button>
+          <div class="dropdown-menu wide" aria-label="找基金選單">
+            <div>
+              <a class="dropdown-heading" href="https://www.fundswap.com.tw/trade/funds/">基金搜尋</a>
+              <a href="https://www.fundswap.com.tw/trade/funds/?fundsIndex=1&exchangeInTradable=true">快速交換基金</a>
+              <a href="https://www.fundswap.com.tw/trade/funds/?filterType=dividend&tradable=true&s=-dividendAnnualRateOfReturn&page=1&dividendFrequency=半年配息|季配息|年配息|月配息|未固定配息">配息基金</a>
+              <a href="https://www.fundswap.com.tw/trade/funds/?fundsIndex=1&filterType=rateOfReturn&tradable=true&s=-rateOfReturn3Months&page=1&topics=TISA適格(退休)&tradingCurrency=美元%7C新台幣%7C歐元">TISA 基金(退休)</a>
+              <a href="https://www.fundswap.com.tw/trade/funds/?fundsIndex=2&filterType=rateOfReturn&tradable=true&s=-rateOfReturn3Months&page=1">基金照妖鏡</a>
+            </div>
+            <div>
+              <a class="dropdown-heading" href="https://www.fundswap.com.tw/trade/">投資資訊統計</a>
+              <a href="https://www.fundswap.com.tw/trade?parent=excellent&ref=ETF">ETF 專區</a>
+              <a href="https://www.fundswap.com.tw/trade?parent=excellent&ref=stock">買好股</a>
+              <a href="https://www.fundswap.com.tw/trade?parent=excellent&ref=bond">選好債</a>
+              <a href="https://www.fundswap.com.tw/trade?parent=fundBrand&ref=brand">基金品牌</a>
+              <a href="https://www.fundswap.com.tw/trade?parent=ranking&ref=top">國人持有</a>
+              <a href="https://www.fundswap.com.tw/trade?parent=ranking&ref=excellent">獲獎基金</a>
+              <a href="https://www.fundswap.com.tw/trade?parent=parentGlobal&ref=global">全球布局</a>
+              <a href="https://www.fundswap.com.tw/trade?parent=parentIndustry&ref=industry">產業動態</a>
+            </div>
+          </div>
+        </div>
+        <div class="nav-item">
+          <button class="nav-trigger" type="button">優惠 <span>hot</span></button>
+          <div class="dropdown-menu" aria-label="優惠選單">
+            <a class="dropdown-heading" href="https://www.fundswap.com.tw/campaign/">最新活動</a>
+            <a href="https://www.fundswap.com.tw/retirement/">TISA 專案(退休)</a>
+            <a href="https://www.fundswap.com.tw/events/px-10percent/">電支雞享10%回饋</a>
+            <a href="https://www.fundswap.com.tw/campaign/campaign-double-gift-account/?coupon-fs888">這 mo 好康</a>
+            <a href="https://www.fundswap.com.tw/campaign/sip-0-fee">一「定」免費</a>
+            <a href="https://www.fundswap.com.tw/campaign/">......更多</a>
+          </div>
+        </div>
+        <div class="nav-item">
+          <button class="nav-trigger" type="button">教學/FAQ</button>
+          <div class="dropdown-menu wide" aria-label="教學與 FAQ 選單">
+            <div>
+              <a class="dropdown-heading" href="https://www.fundswap.com.tw/posts-index/categories/fund-services/">懶人包</a>
+              <a href="https://www.fundswap.com.tw/faqs/%e2%80%bb%e9%96%8b%e6%88%b6%e6%95%99%e5%ad%b8-%e7%b6%b2%e8%b7%af%e9%8a%80%e8%a1%8c%e6%99%b6%e7%89%87%e9%87%91%e8%9e%8d%e5%8d%a1/">5 分鐘線上開戶</a>
+              <a href="https://www.fundswap.com.tw/faqs/%e7%94%b3%e8%ab%8b%e9%96%8b%e6%88%b6%ef%bc%8c%e6%89%a3%e6%ac%be%e9%87%91%e8%9e%8d%e6%a9%9f%e6%a7%8b%e6%9c%89%e5%93%aa%e4%ba%9b%ef%bc%9f/">綁定台幣扣款</a>
+              <a href="https://www.fundswap.com.tw/faqs/%e7%b6%b2%e9%a0%81%e7%a7%92%e8%ae%8a-app-%e5%9c%96%e7%a4%ba-iphone%e7%af%87/">手機桌面 APP 圖示</a>
+              <a href="https://www.fundswap.com.tw/posts-index/fund-news/pxfund-tutorial/">電支雞懶人包</a>
+            </div>
+            <div>
+              <a class="dropdown-heading" href="https://www.fundswap.com.tw/faqs/">常見問題</a>
+              <a href="https://www.fundswap.com.tw/faqs/%e5%9f%ba%e9%87%91%e7%94%b3%e8%b3%bc-%e8%b4%96%e5%9b%9e%e5%be%8c%ef%bc%8c%e9%a0%90%e4%bc%b0%e5%a4%9a%e4%b9%85%e5%85%a5%e5%b8%b3%ef%bc%9f%e6%b7%a8%e5%80%bc%e9%81%a9%e7%94%a8%ef%bc%9f%e5%a6%82%e4%bd%95/">單筆申購、贖回</a>
+              <a href="https://www.fundswap.com.tw/faqs/%e5%a6%82%e4%bd%95%e8%a8%ad%e5%ae%9a%e5%ae%9a%e6%9c%9f%e5%ae%9a%e9%a1%8d%e5%a5%91%e7%b4%84%ef%bc%9f/">定期定額投資</a>
+              <a href="https://www.fundswap.com.tw/faqs/%e4%bb%80%e9%ba%bc%e6%98%af%e5%9f%ba%e9%87%91%e4%ba%a4%e6%8f%9b%ef%bc%9f%e4%ba%a4%e6%98%93%e7%89%b9%e8%89%b2%ef%bc%9f/">基金交換特色</a>
+              <a href="https://www.fundswap.com.tw/faqs/%e6%94%b6%e8%b2%bb-%e5%8c%af%e7%8e%87-%e5%88%a9%e7%8e%87%e7%89%8c%e5%91%8a/">牌告收費標準</a>
+              <a href="https://www.fundswap.com.tw/faqs/">......更多</a>
+            </div>
+          </div>
+        </div>
+        <div class="nav-item">
+          <button class="nav-trigger" type="button">投資分析</button>
+          <div class="dropdown-menu" aria-label="投資分析選單">
+            <a class="dropdown-heading" href="https://www.fundswap.com.tw/posts-index/">知識庫</a>
+            <a href="https://www.fundswap.com.tw/posts-index/categories/fund-services/">服務介紹</a>
+            <a href="https://www.fundswap.com.tw/posts-index/categories/fund-house-view/">投信觀點</a>
+            <a href="https://www.fundswap.com.tw/posts-index/categories/fund-knowledge/">基金知識</a>
+            <a href="https://www.fundswap.com.tw/posts-index/categories/retirement-planning/">退休理財</a>
+          </div>
+        </div>
+        <div class="nav-item">
+          <button class="nav-trigger" type="button">客服</button>
+          <div class="dropdown-menu" aria-label="客服選單">
+            <a class="dropdown-heading" href="https://www.fundswap.com.tw/aboutfundswap/">關於我們</a>
+            <a href="https://www.fundswap.com.tw/aboutfundswap/">認識好好</a>
+            <a href="https://www.fundswap.com.tw/trade/announcements/">公告訊息</a>
+            <a href="https://www.fundswap.com.tw/faqs/%e9%9c%80%e5%8d%94%e5%8a%a9%ef%bc%8c%e5%a6%82%e4%bd%95%e6%89%be%e5%88%b0%e5%a5%bd%e5%a5%bd%e5%ae%a2%e6%9c%8d%ef%bc%9f/">聯絡客服</a>
+          </div>
+        </div>
+      </nav>
+      <label class="search" aria-label="搜尋基金">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="m21 21-4.3-4.3m1.3-5.2a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0Z" />
+        </svg>
+        <input type="search" placeholder="4,223 檔基金" />
+      </label>
+      <div class="header-actions">
+        <div class="nav-item utility-nav">
+          <button class="nav-trigger" type="button">庫存/紀錄</button>
+          <div class="dropdown-menu right" aria-label="庫存與交易紀錄選單">
+            <a class="dropdown-heading" href="https://www.fundswap.com.tw/trade/inventory/funds/">我的基金</a>
+            <a href="https://www.fundswap.com.tw/trade/inventory/funds/">基金庫存</a>
+            <a href="https://www.fundswap.com.tw/trade/transactions/">交易紀錄</a>
+            <a href="https://www.fundswap.com.tw/trade/transactions/?status=pending,canceled">交易委託中</a>
+            <a href="https://www.fundswap.com.tw/trade/transactions/sip/">定期定額契約</a>
+            <a href="https://www.fundswap.com.tw/trade/member-center/statements/">月對帳單</a>
+          </div>
+        </div>
+        <div class="nav-item utility-nav">
+          <button class="nav-trigger" type="button">信託分戶帳(錢包)</button>
+          <div class="dropdown-menu right" aria-label="信託分戶帳選單">
+            <a class="dropdown-heading" href="https://www.fundswap.com.tw/trade/member-center/wallet/">我的錢包</a>
+            <a href="https://www.fundswap.com.tw/trade/member-center/wallet/">帳戶餘額</a>
+            <a href="https://www.fundswap.com.tw/trade/member-center/ledger/">交易紀錄</a>
+          </div>
+        </div>
+        <a class="btn ghost" href="https://www.fundswap.com.tw/trade/login">登入</a>
+        <a class="btn primary" href="https://www.fundswap.com.tw/trade/signup">開戶(含 TISA)</a>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="breadcrumbs">市場精選 / <strong>基金照妖鏡</strong></div>
+        <div class="hero-grid">
+          <div class="hero-copy">
+            <p class="eyebrow">基金照妖鏡，共 200 筆候選</p>
+            <h1>先選你是哪種投資人</h1>
+            <p>
+              同一檔基金，保守型、積極型、長期型看到的重點不一樣。先選你的狀態，照妖鏡會換一套判斷邏輯給你看。
+            </p>
+            <div class="hero-actions">
+              <a href="#entry-cards" class="btn primary large">選我的投資人格</a>
+              <button class="btn soft large" data-open-panel="profile">我真的不知道我是誰</button>
+            </div>
+          </div>
+          <aside class="promo-card" aria-label="迎新限定優惠">
+            <img
+              src="https://fs-static-web-assets.s3.ap-northeast-1.amazonaws.com/images/banner/fee-free-gift-chicken.png"
+              alt=""
+            />
+            <div>
+              <strong>第一次開始，也可以先小步試</strong>
+              <span>完成任一基金交易，即可取得申購免手續費優惠</span>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="control-bar" aria-label="基金篩選與排序">
+        <div class="tabs" role="tablist" aria-label="排序方式">
+          <button class="tab active" data-sort="cp">報酬率</button>
+          <button class="tab" data-sort="nav">最新淨值</button>
+          <button class="tab" data-sort="dividend">配息</button>
+          <button class="tab" data-sort="swap">換入資訊</button>
+        </div>
+        <div class="filters">
+          <label><input type="checkbox" data-filter="tradable" checked /> 有開放交易</label>
+          <label><input type="checkbox" data-filter="swap" /> 能快速交換</label>
+          <label><input type="checkbox" data-filter="tisa" /> TISA適格</label>
+          <button class="btn ghost compact" data-open-panel="filters">篩選</button>
+        </div>
+      </section>
+
+      <section class="entry-section" id="entry-cards" aria-labelledby="entryTitle">
+        <div class="section-title">
+          <div>
+            <p class="eyebrow">第一步：選你現在的投資狀態</p>
+            <h2 id="entryTitle">你比較像哪一種人？</h2>
+          </div>
+          <span class="summary-pill">可以隨時切換，沒有人格鑑定壓力</span>
+        </div>
+        <div class="entry-grid" id="entryGrid"></div>
+      </section>
+
+      <section class="strategy-panel" id="strategyPanel" aria-labelledby="strategyTitle">
+        <div class="strategy-copy">
+          <p class="eyebrow">第二步：照妖鏡會改看這些依據</p>
+          <h2 id="strategyTitle">保守型會先看最大回撤，不先看誰跑最快</h2>
+          <p id="strategyIntro">
+            因為你不是來參加基金百米賽跑，你是想知道跌下來時自己會不會想關掉 App。
+          </p>
+        </div>
+        <div class="strategy-menu" id="strategyMenu"></div>
+      </section>
+
+      <section class="guidance-grid" aria-label="問答式與投資人格入口">
+        <article class="quiz-panel">
+          <div class="section-title">
+            <div>
+              <p class="eyebrow">不確定就回答 3 題</p>
+              <h2>先把不適合你的基金排除掉</h2>
+            </div>
+            <button class="text-link" id="resetQuiz">重選一次</button>
+          </div>
+          <div class="quiz-list" id="quizList"></div>
+        </article>
+        <aside class="persona-panel">
+          <p class="eyebrow">目前比較適合你</p>
+          <h2 id="personaTitle">穩健規劃型</h2>
+          <p id="personaCopy">你想要看得懂、睡得著，也希望資產慢慢往上走。</p>
+          <div class="persona-meter" aria-label="風險等級">
+            <span></span><span></span><span></span><span></span><span></span>
+          </div>
+          <button class="btn primary large" id="personaCta">看我的候選基金</button>
+        </aside>
+      </section>
+
+      <section class="insight-grid">
+        <article class="mirror-panel">
+          <div class="section-title">
+            <div>
+              <p class="eyebrow">基金照妖鏡</p>
+              <h2>把報酬和波動放在同一張圖看</h2>
+            </div>
+            <button class="text-link" data-open-panel="mirror">這張圖怎麼看？</button>
+          </div>
+          <div class="chart" aria-label="報酬率與波動度散佈圖">
+            <div class="quadrant">報酬較高、波動較低</div>
+            <span class="axis y">報酬率(%)</span>
+            <span class="axis x">波動度(標準差%)</span>
+            <button class="dot highlight" style="--x: 78%; --y: 18%" data-fund="0" aria-label="野村台灣運籌基金"></button>
+            <button class="dot teal" style="--x: 75%; --y: 23%" data-fund="1" aria-label="野村鴻運基金"></button>
+            <button class="dot purple" style="--x: 64%; --y: 30%" data-fund="2" aria-label="統一大龍印基金"></button>
+            <button class="dot green" style="--x: 57%; --y: 36%" data-fund="4" aria-label="安聯台灣科技基金"></button>
+            <i style="--x: 40%; --y: 52%"></i>
+            <i style="--x: 44%; --y: 46%"></i>
+            <i style="--x: 50%; --y: 58%"></i>
+            <i style="--x: 55%; --y: 48%"></i>
+            <i style="--x: 62%; --y: 42%"></i>
+            <i style="--x: 69%; --y: 38%"></i>
+            <i style="--x: 72%; --y: 32%"></i>
+            <i style="--x: 34%; --y: 66%"></i>
+          </div>
+          <div class="mirror-note">
+            <span>用過去報酬和波動，先找出值得研究的候選</span>
+            <span>不是保證獲利，只是幫你少走冤枉路</span>
+          </div>
+        </article>
+
+        <aside class="recommendation-panel">
+          <p class="eyebrow">依你的選擇推薦</p>
+          <h2 id="recommendTitle">先從穩健成長候選開始</h2>
+          <div class="recommend-list" id="recommendList"></div>
+        </aside>
+      </section>
+
+      <section class="fund-section" id="top-funds">
+        <div class="section-title">
+          <div>
+            <p class="eyebrow">基金候選清單</p>
+            <h2 id="fundListTitle">先看懂這些基金，再決定要不要開始</h2>
+          </div>
+          <div class="summary-pill"><strong id="resultCount">10</strong> 檔符合條件</div>
+        </div>
+        <div class="fund-list" id="fundList"></div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-brand">
+        <img
+          src="https://www.fundswap.com.tw/trade/funds/_nuxt/logo_h_ec_white.mJOzXLdB.svg"
+          alt="好好證券 FundSwap"
+        />
+        <a href="https://lin.ee/zCMpQQe" class="line-button">手機撥打 LINE 客服</a>
+      </div>
+      <div class="footer-content">
+        <p>證券商許可執照：110 年金管證總字第 0038 號</p>
+        <p>營業地址：新北市板橋區中山路 1 段 156-1 號 2 樓之 1</p>
+        <nav aria-label="頁尾連結">
+          <a href="https://www.fundswap.com.tw/privacy-policy/">隱私權保護政策</a>
+          <a href="https://www.fundswap.com.tw/security-terms-and-conditions/">資訊安全政策</a>
+          <a href="https://www.fundswap.com.tw/personal-protection/">個資告知事項</a>
+          <a href="https://www.fundswap.com.tw/data_sharing_policy/">資料共享隱私權政策聲明</a>
+        </nav>
+      </div>
+      <p class="risk">
+        提醒你：基金會漲也會跌，過去績效不代表未來一定相同。下單前，請確認自己能接受的波動，並閱讀基金公開說明書。
+      </p>
+    </footer>
+
+    <div class="side-panel" id="sidePanel" aria-hidden="true">
+      <div class="panel-backdrop" data-close-panel></div>
+      <section class="panel-card" role="dialog" aria-modal="true" aria-labelledby="panelTitle">
+        <button class="panel-close" data-close-panel aria-label="關閉">×</button>
+        <p class="eyebrow">FundSwap</p>
+        <h2 id="panelTitle">先用目的來篩選</h2>
+        <p id="panelCopy">
+          選一個最接近你現在狀態的方向，我們會先把比較適合研究的基金排在前面。
+        </p>
+        <div class="panel-options">
+          <label><input type="radio" name="panelGoal" checked /> 想穩穩累積，不想太刺激</label>
+          <label><input type="radio" name="panelGoal" /> 想找成長機會，但知道會波動</label>
+          <label><input type="radio" name="panelGoal" /> 第一次買，想從好懂的開始</label>
+        </div>
+        <button class="btn primary large" data-close-panel>套用我的方向</button>
+      </section>
+    </div>
+
+    <script type="module" src="app.js?v=mirror-flow-20260528"></script>
+  </body>
+</html>

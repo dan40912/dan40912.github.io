@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>新版找基金 Demo｜好好證券 FundSwap</title>
+    <meta
+      name="description"
+      content="新版找基金 HTML Demo：用搜尋、快速標籤、進階篩選與比較功能，協助使用者更快找到適合自己的基金。"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="assets/find-funds.css" />
+    <link rel="stylesheet" href="assets/global.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="index.html" aria-label="好好證券 FundSwap UX Demo">
+        <img src="https://www.fundswap.com.tw/wp-content/uploads/2022/07/ic_logo_fav.png" alt="" />
+        <span>好好證券</span>
+      </a>
+      <nav aria-label="Demo navigation">
+        <a href="#finder">找基金</a>
+        <a href="#filters">進階篩選</a>
+        <a href="#results">基金列表</a>
+      </nav>
+      <a class="header-cta" href="#comparisonBar">比較清單</a>
+    </header>
+
+    <main>
+      <section class="hero" id="finder">
+        <div>
+          <p class="eyebrow">FIND FUNDS DEMO</p>
+          <h1>先說你在找什麼，再看基金名單</h1>
+          <p>
+            新版「找基金」把搜尋、標籤、風險與決策提示放在同一個工作台，讓使用者不用在幾百檔基金裡盲目排序。
+          </p>
+        </div>
+        <aside class="hero-card">
+          <span>決策輔助版列表</span>
+          <strong>搜尋 + 篩選 + 比較</strong>
+          <p>每檔基金都補上一句「為什麼適合你」與「主要風險」，降低只看報酬率的誤判。</p>
+        </aside>
+      </section>
+
+      <section class="finder-shell" aria-label="基金搜尋與篩選">
+        <div class="search-panel">
+          <label for="fundSearch">搜尋基金名稱、類型或關鍵字</label>
+          <div class="search-row">
+            <input id="fundSearch" type="search" placeholder="例如：科技、配息、TISA、債券" autocomplete="off" />
+            <button class="btn primary" type="button" id="clearSearch">清除</button>
+          </div>
+          <div class="quick-chips" id="quickChips" aria-label="快速篩選"></div>
+        </div>
+
+        <aside class="summary-card" aria-live="polite">
+          <span>目前找到</span>
+          <strong id="resultCount">0 檔基金</strong>
+          <p id="summaryText">先用上方搜尋或快速標籤縮小範圍。</p>
+        </aside>
+      </section>
+
+      <section class="filter-panel" id="filters" aria-labelledby="filterTitle">
+        <div class="section-title">
+          <div>
+            <p class="eyebrow">ADVANCED FILTER</p>
+            <h2 id="filterTitle">進階篩選</h2>
+          </div>
+          <button class="link-button" type="button" id="resetFilters">重設全部</button>
+        </div>
+        <div class="filter-grid">
+          <label>
+            基金類型
+            <select id="typeFilter">
+              <option value="">全部類型</option>
+            </select>
+          </label>
+          <label>
+            區域
+            <select id="regionFilter">
+              <option value="">全部區域</option>
+            </select>
+          </label>
+          <label>
+            風險等級
+            <select id="riskFilter">
+              <option value="">全部風險</option>
+              <option value="1-2">RR1-RR2</option>
+              <option value="3">RR3</option>
+              <option value="4-5">RR4-RR5</option>
+            </select>
+          </label>
+          <label>
+            幣別
+            <select id="currencyFilter">
+              <option value="">全部幣別</option>
+            </select>
+          </label>
+          <label>
+            配息頻率
+            <select id="dividendFilter">
+              <option value="">全部頻率</option>
+            </select>
+          </label>
+        </div>
+      </section>
+
+      <section class="results-section" id="results" aria-labelledby="resultsTitle">
+        <div class="results-toolbar">
+          <div>
+            <p class="eyebrow">RESULTS</p>
+            <h2 id="resultsTitle">基金候選</h2>
+          </div>
+          <div class="toolbar-actions">
+            <label>
+              排序
+              <select id="sortSelect">
+                <option value="cp-desc">CP值高到低</option>
+                <option value="return-desc">1年報酬高到低</option>
+                <option value="volatility-asc">波動度低到高</option>
+              </select>
+            </label>
+            <div class="view-toggle" aria-label="檢視模式">
+              <button class="active" type="button" data-view="cards">卡片</button>
+              <button type="button" data-view="list">列表</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="fund-results cards" id="fundResults"></div>
+        <p class="empty-state" id="emptyState" hidden>目前沒有符合條件的基金。請放寬篩選條件或清除關鍵字。</p>
+      </section>
+    </main>
+
+    <aside class="comparison-bar" id="comparisonBar" aria-live="polite">
+      <div>
+        <span>已加入比較</span>
+        <strong id="compareCount">0 / 3</strong>
+      </div>
+      <div class="compare-items" id="compareItems"></div>
+      <button class="btn primary" type="button" id="compareButton" disabled>開始比較</button>
+    </aside>
+
+    <footer class="site-footer">
+      <p>本 Demo 僅為基金篩選體驗設計展示，非投資建議。所有基金資料皆為 mock data，不構成基金推薦或任何申購、贖回、轉換之招攬。</p>
+    </footer>
+
+    <script src="assets/find-funds.js"></script>
+    <script src="assets/global.js"></script>
+  </body>
+</html>
