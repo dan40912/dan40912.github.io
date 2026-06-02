@@ -23,8 +23,8 @@
             <div class="fundswap-mega-menu">
               <a href="11-find-funds-final.html">基金搜尋</a>
               <a href="#mirror">基金照妖鏡</a>
-              <a href="#guide">首次導覽</a>
-              <a href="#mirror">四象限比較</a>
+              <a href="#mirror">照妖鏡解讀</a>
+              <a href="11-find-funds-final.html?compare=DQ09,LG21,AL01,AL46,CS04#fundList">基金比較</a>
               <a href="#heatmap">產業熱力圖</a>
             </div>
           </div>
@@ -51,7 +51,7 @@
           <div class="fundswap-nav-item">
             <button type="button">教學</button>
             <div class="fundswap-mega-menu">
-              <a href="#guide">照妖鏡怎麼看</a>
+              <a href="#mirror">照妖鏡怎麼看</a>
               <a href="#mirror">CP 值是什麼</a>
               <a href="#mirror">波動度解釋</a>
               <a href="11-find-funds-final.html#learn">基金入門</a>
@@ -61,14 +61,14 @@
             <button type="button">投資分析</button>
             <div class="fundswap-mega-menu fundswap-mega-menu--analysis">
               <a href="#mirror">報酬率 × 波動度</a>
-              <a href="#mirror">同產業比較</a>
+              <a href="11-find-funds-final.html?compare=DQ09,LG21,AL01,AL46,CS04#fundList">同產業比較</a>
               <a href="#heatmap">TradingView 熱力圖</a>
               <a href="11-find-funds-final.html#calculator">錯過上車點試算</a>
             </div>
           </div>
           <a class="fundswap-nav-link" href="11-find-funds-final.html#support">客服</a>
         </nav>
-        <a class="fundswap-login-btn" href="#mirror">開始比較</a>
+        <a class="fundswap-login-btn" href="11-find-funds-final.html?compare=DQ09,LG21,AL01,AL46,CS04#fundList">開始比較</a>
       </div>
     </header>
 
@@ -80,28 +80,6 @@
         <span>/</span>
         <strong>基金照妖鏡</strong>
       </nav>
-
-      <section class="final-hero">
-        <div>
-          <p class="eyebrow">CP VALUE MIRROR REDESIGN</p>
-          <h1>右上角不是最好，左上角才是高 CP 值候選</h1>
-          <p>報酬越高越好，但波動越高代表風險越高。新版照妖鏡先把四象限翻成人話，再加入 S&P 500、NASDAQ 100 與產業熱力圖，讓使用者知道自己看的點到底好在哪裡。</p>
-        </div>
-        <aside class="diagnosis-panel">
-          <span>設計判斷</span>
-          <strong>四象限不是問題，問題是沒有解讀橋樑。</strong>
-          <p>圖表應回答：這個點代表什麼、適合誰、風險在哪、下一步該看什麼。</p>
-        </aside>
-      </section>
-
-      <section class="guide-panel" id="guide" aria-labelledby="guideTitle">
-        <div>
-          <p class="eyebrow">FIRST VISIT GUIDE</p>
-          <h2 id="guideTitle">第一次進入照妖鏡，先說清楚怎麼看</h2>
-          <p>正式版可用 Cookie 判斷首次進入者，自動顯示導覽；看過後下次不再打擾。</p>
-        </div>
-        <button type="button" id="openGuide">重新觀看導覽</button>
-      </section>
 
       <section class="mirror-board" id="mirror" aria-labelledby="mirrorTitle">
         <article class="quadrant-panel">
@@ -139,8 +117,8 @@
             <div><span>主要風險</span><strong id="riskText">科技題材集中</strong></div>
           </div>
           <div class="interpret-actions">
-            <button type="button">加入比較</button>
-            <button type="button" class="ghost">看最大回撤</button>
+            <a class="compare-link-btn" data-mirror-compare-link href="11-find-funds-final.html?compare=DQ09,LG21,AL01,AL46,CS04#fundList">加入比較</a>
+            <a class="compare-link-btn ghost" data-mirror-compare-link href="11-find-funds-final.html?compare=DQ09,LG21,AL01,AL46,CS04#fundList">看最大回撤</a>
           </div>
         </aside>
       </section>
@@ -153,29 +131,24 @@
             <p>點選市場後，下方會切換對應的 TradingView Heatmap。使用者可以先看整體市場熱度，再判斷基金績效是不是來自產業行情。</p>
           </div>
         </div>
-        <div class="tv-market-picker" id="tvMarketPicker" aria-label="TradingView 市場選擇"></div>
-        <div class="tradingview-embed" id="tradingviewHeatmapWidget" aria-label="TradingView 產業熱力圖">
-          <div class="tradingview-widget-container">
-            <div class="tradingview-widget-container__widget"></div>
+        <div class="industry-picker" id="industryPicker" aria-label="產業選擇"></div>
+        <div class="tradingview-panel" aria-live="polite">
+          <div class="tv-toolbar">
+            <div>
+              <strong id="heatmapTitle">資訊科技</strong>
+              <span id="heatmapSubtitle">AI、半導體、雲端與軟體族群</span>
+            </div>
+            <div class="tv-tabs">
+              <button type="button" class="active">1D</button>
+              <button type="button">1W</button>
+              <button type="button">1M</button>
+              <button type="button">YTD</button>
+            </div>
           </div>
+          <div class="tv-heatmap" id="tradingviewHeatmap"></div>
         </div>
-        <p class="note" id="tvHeatmapNote">目前顯示 S&P 500 產業熱力圖。若科技板塊整體大漲，科技基金績效也可能受到整體產業行情推動。</p>
       </section>
     </main>
-
-    <dialog class="guide-dialog" id="guideDialog">
-      <div class="dialog-head">
-        <h2>照妖鏡如何看？</h2>
-        <button type="button" id="closeGuide" aria-label="關閉">×</button>
-      </div>
-      <ol>
-        <li>先看橫軸：越右邊，波動越高，代表起伏越大。</li>
-        <li>再看縱軸：越上面，過去一年報酬越高。</li>
-        <li>不要以為右上角最好，右上角是高報酬但高波動。</li>
-        <li>對多數人來說，左上角才是值得優先研究的高 CP 值候選。</li>
-        <li>最後看它是否跑贏 S&P 500、NASDAQ 100，以及同產業基金。</li>
-      </ol>
-    </dialog>
 
     <footer class="site-footer">
       <p>本 Demo 僅為基金篩選體驗設計展示，非投資建議。歷史績效、CP 值、大盤基準與產業熱力圖皆為教育示意，不構成基金推薦或獲利保證。</p>

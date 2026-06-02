@@ -3,11 +3,8 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <title>FundSwap UX Demo｜首頁入口</title>
-    <meta
-      name="description"
-      content="FundSwap UX Demo 首頁，整理基金藏鏡人、基金搜尋、基金照妖鏡與 AI 機器人四個展示入口。"
-    />
+    <title>FundSwap UX Demo</title>
+    <meta name="description" content="FundSwap UX Demo 四個頁面入口。" />
     <meta name="robots" content="noindex, nofollow" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -16,63 +13,22 @@
     <style>
       .home-shell {
         min-height: 100vh;
-        background:
-          linear-gradient(180deg, rgba(255, 243, 238, 0.72) 0%, rgba(245, 245, 245, 0) 42%),
-          var(--gray-200);
+        background: var(--gray-200);
+      }
+
+      .site-header {
+        grid-template-columns: auto 1fr;
+      }
+
+      .site-header nav,
+      .header-cta {
+        display: none;
       }
 
       .home-main {
         max-width: 1120px;
         margin: 0 auto;
-        padding: clamp(24px, 5vw, 56px) 16px 48px;
-      }
-
-      .home-hero {
-        display: grid;
-        grid-template-columns: minmax(0, 1fr) minmax(260px, 340px);
-        gap: 28px;
-        align-items: end;
-        margin-bottom: 18px;
-        border: 1px solid var(--gray-300);
-        border-radius: var(--radius);
-        background: #fff;
-        padding: clamp(28px, 5vw, 48px);
-        box-shadow: 0 1px 0 rgba(51, 51, 51, 0.02);
-      }
-
-      .home-hero h1 {
-        max-width: 780px;
-        margin: 0 0 12px;
-        color: var(--gray-900);
-        font-size: clamp(34px, 5vw, 52px);
-        line-height: 1.16;
-      }
-
-      .home-hero p {
-        max-width: 720px;
-        margin: 0;
-        color: var(--gray-700);
-        font-size: 17px;
-      }
-
-      .home-note {
-        border: 1px solid var(--primary-200);
-        border-radius: var(--radius);
-        background: #fffaf7;
-        padding: 18px;
-      }
-
-      .home-note strong {
-        display: block;
-        margin-bottom: 8px;
-        color: var(--gray-900);
-        font-size: 18px;
-      }
-
-      .home-note span {
-        color: var(--gray-700);
-        font-size: 14px;
-        line-height: 1.6;
+        padding: clamp(28px, 6vw, 72px) 16px;
       }
 
       .entry-grid {
@@ -89,7 +45,7 @@
         border: 1px solid var(--gray-300);
         border-radius: var(--radius);
         background: #fff;
-        padding: 20px;
+        padding: 24px;
         text-decoration: none;
         transition: transform 0.16s ease, border-color 0.16s ease, box-shadow 0.16s ease;
       }
@@ -102,22 +58,10 @@
         outline: 0;
       }
 
-      .entry-card__index {
-        display: inline-flex;
-        width: fit-content;
-        align-items: center;
-        border-radius: 4px;
-        background: var(--primary-100);
-        color: var(--primary-700);
-        padding: 4px 8px;
-        font-size: 12px;
-        font-weight: 800;
-      }
-
       .entry-card h2 {
-        margin: 18px 0 8px;
+        margin: 0 0 10px;
         color: var(--gray-900);
-        font-size: 22px;
+        font-size: 24px;
         line-height: 1.28;
       }
 
@@ -129,15 +73,9 @@
 
       .entry-card__action {
         display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        margin-top: 24px;
+        margin-top: 28px;
         color: var(--primary-700);
         font-weight: 800;
-      }
-
-      .portfolio-footer {
-        max-width: 1120px;
       }
 
       @media (max-width: 1040px) {
@@ -146,18 +84,13 @@
         }
       }
 
-      @media (max-width: 760px) {
-        .home-hero {
-          grid-template-columns: 1fr;
-          padding: 22px;
-        }
-
+      @media (max-width: 720px) {
         .entry-grid {
           grid-template-columns: 1fr;
         }
 
         .entry-card {
-          min-height: 190px;
+          min-height: 180px;
         }
       }
     </style>
@@ -168,72 +101,45 @@
         <img src="https://www.fundswap.com.tw/wp-content/uploads/2022/07/ic_logo_fav.png" alt="" />
         <span>FundSwap UX Demo</span>
       </a>
-      <nav aria-label="Demo 導覽">
-        <a href="10-fund-hidden-mentor.html">10 藏鏡人</a>
-        <a href="11-find-funds-final.html">11 找基金</a>
-        <a href="12-fund-mirror-final.html">12 照妖鏡</a>
-        <a href="10-fund-hidden-mentor.html#chatbot">AI 機器人</a>
-      </nav>
+      <nav aria-label="Demo 導覽"></nav>
       <a class="header-cta" href="11-find-funds-final.html">開始瀏覽</a>
     </header>
 
     <main class="home-main">
-      <section class="home-hero" aria-labelledby="homeTitle">
-        <div>
-          <p class="eyebrow">FUNDSWAP DEMO HUB</p>
-          <h1 id="homeTitle">四個入口，快速查看基金體驗設計</h1>
-          <p>
-            這個首頁集中整理目前的三個主要 HTML 頁面，並加上一個 AI 機器人入口，讓展示時可以直接切換到需要說明的功能。
-          </p>
-        </div>
-        <aside class="home-note">
-          <strong>展示順序建議</strong>
-          <span>先從基金藏鏡人建立使用者情境，再進入找基金、照妖鏡比較，最後用 AI 機器人補足互動導覽。</span>
-        </aside>
-      </section>
-
       <section class="entry-grid" aria-label="Demo 頁面入口">
         <a class="entry-card" href="10-fund-hidden-mentor.html">
           <div>
-            <span class="entry-card__index">10</span>
             <h2>基金藏鏡人</h2>
-            <p>用六種投資人格切入，協助新手先理解自己的偏好，再找到適合觀察的基金方向。</p>
+            <p>用投資人格協助使用者找到適合觀察的基金方向。</p>
           </div>
-          <span class="entry-card__action">前往頁面 →</span>
+          <span class="entry-card__action">前往頁面</span>
         </a>
 
         <a class="entry-card" href="11-find-funds-final.html">
           <div>
-            <span class="entry-card__index">11</span>
             <h2>找基金頁</h2>
-            <p>整合 AI 搜尋、基金列表、品牌分類、比較與試算工具，呈現更完整的基金探索流程。</p>
+            <p>整合搜尋、比較、試算與基金探索流程。</p>
           </div>
-          <span class="entry-card__action">前往頁面 →</span>
+          <span class="entry-card__action">前往頁面</span>
         </a>
 
         <a class="entry-card" href="12-fund-mirror-final.html">
           <div>
-            <span class="entry-card__index">12</span>
             <h2>基金照妖鏡</h2>
-            <p>用報酬率、波動度、同類比較與市場熱力圖，幫使用者更快判斷基金表現。</p>
+            <p>用報酬、波動、基準與熱力圖輔助判斷基金表現。</p>
           </div>
-          <span class="entry-card__action">前往頁面 →</span>
+          <span class="entry-card__action">前往頁面</span>
         </a>
 
         <a class="entry-card" href="10-fund-hidden-mentor.html#chatbot">
           <div>
-            <span class="entry-card__index">AI</span>
             <h2>AI 機器人</h2>
-            <p>導向藏鏡人頁面的 Dify 機器人區塊，讓使用者直接用對話詢問基金與投資方向。</p>
+            <p>直接進入 Dify 機器人區塊，使用對話詢問基金問題。</p>
           </div>
-          <span class="entry-card__action">開啟機器人 →</span>
+          <span class="entry-card__action">開啟機器人</span>
         </a>
       </section>
     </main>
-
-    <footer class="portfolio-footer">
-      <p>Demo 僅供作品展示與流程說明使用，頁面資料與互動內容以原型呈現。</p>
-    </footer>
 
     <script src="assets/global.js"></script>
   </body>

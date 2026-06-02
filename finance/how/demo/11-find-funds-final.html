@@ -25,7 +25,7 @@
               <a href="#comparison">基金比較</a>
               <a href="#calculator">試算工具</a>
               <a href="12-fund-mirror-final.html">基金照妖鏡</a>
-              <a href="#aiSearch">AI 搜尋</a>
+              <a href="#fundList">基金列表</a>
             </div>
           </div>
           <div class="fundswap-nav-item">
@@ -68,7 +68,7 @@
           </div>
           <a class="fundswap-nav-link" href="#support">客服</a>
         </nav>
-        <a class="fundswap-login-btn" href="#aiSearch">AI 搜尋</a>
+        <a class="fundswap-login-btn" href="#fundList">基金比較</a>
       </div>
     </header>
 
@@ -83,53 +83,14 @@
 
       <section class="final-hero" id="finder">
         <div>
-          <p class="eyebrow">FIND FUNDS AS DECISION TOOL</p>
-          <h1>基金搜尋，應該是找基金的主頁面</h1>
-          <p>保留原本資料完整、排序與篩選的優點，但把第一層改成「我想解決什麼問題」。使用者先用 AI 搜尋理解方向，再進入資料庫細篩與比較。</p>
+          <p class="eyebrow">SMART FUND FINDER</p>
+          <h1>從需求出發，找到真正適合的基金</h1>
+          <p>先說出你的投資目標、風險偏好與現金流需求，再用 AI 搜尋、篩選與比較，把基金清單收斂成可判斷的選項。</p>
           <div class="hero-actions">
-            <a class="btn primary" href="#aiSearch">用 AI 找基金</a>
+            <a class="btn primary" href="#fundList">查看基金列表</a>
             <a class="btn ghost" href="#calculator">試算錯過上車點</a>
           </div>
         </div>
-        <aside class="diagnosis-panel">
-          <span>設計判斷</span>
-          <strong>資料庫保留，但入口要變成決策工具。</strong>
-          <p>進階用戶仍可排序篩選；新手先看目的、風險、比較與市場資訊，避免大海撈針。</p>
-        </aside>
-      </section>
-
-      <section class="split-nav-panel" aria-labelledby="splitTitle">
-        <div class="section-heading">
-          <div>
-            <p class="eyebrow">MENU RESTRUCTURE</p>
-            <h2 id="splitTitle">把臃腫 Menu 拆開，讓每個入口有明確任務</h2>
-          </div>
-        </div>
-        <div class="six-nav">
-          <article><strong>找基金</strong><p>基金搜尋、快速交換、配息、TISA、照妖鏡。</p></article>
-          <article><strong>投資資訊</strong><p>市場精選、全球布局、產業動態、新聞。</p></article>
-          <article><strong>投信品牌介紹</strong><p>基金公司、投信觀點、管理團隊。</p></article>
-          <article><strong>教學</strong><p>開戶、扣款、定期定額、基金交換。</p></article>
-          <article><strong>投資分析</strong><p>照妖鏡、CP 值、比較、試算工具。</p></article>
-          <article><strong>客服</strong><p>FAQ、交易問題、補件、費率牌告。</p></article>
-        </div>
-      </section>
-
-      <section class="ai-search-panel" id="aiSearch" aria-labelledby="aiTitle">
-        <div class="ai-search-copy">
-          <p class="eyebrow">AI SEARCH</p>
-          <h2 id="aiTitle">把「我想要什麼」翻成基金篩選條件</h2>
-          <p>AI 不是推薦買哪檔，而是幫使用者整理搜尋語意：目標、可承受波動、持有時間、配息需求與適合先觀察的欄位。</p>
-          <div class="query-box">
-            <input id="aiQuery" type="search" value="我想找長期持有、波動不要太高、可以定期定額的基金" />
-            <button type="button" id="runAiSearch">產生篩選條件</button>
-          </div>
-        </div>
-        <aside class="ai-result" id="aiResult">
-          <span>AI 篩選摘要</span>
-          <strong>適合先看：平衡型 / 全球配置 / TISA 候選</strong>
-          <p>優先欄位：風險等級、波動度、1 年與 3 年績效、費用、是否支援定期定額。</p>
-        </aside>
       </section>
 
       <section class="calculator-panel" id="calculator" aria-labelledby="calcTitle">
@@ -164,27 +125,13 @@
         </aside>
       </section>
 
-      <section class="market-exposure" id="market" aria-labelledby="marketTitle">
-        <div class="section-heading">
-          <div>
-            <p class="eyebrow">MARKET CONTEXT</p>
-            <h2 id="marketTitle">把新聞與市場情報放回找基金流程</h2>
-          </div>
-        </div>
-        <div class="market-grid">
-          <article><span>市場精選</span><strong>科技股動能轉強</strong><p>若你正在看科技基金，先確認是否只是短期題材帶動。</p></article>
-          <article><span>投信觀點</span><strong>降息循環下的債券配置</strong><p>債券基金不能只看配息，也要看利率與匯率。</p></article>
-          <article><span>基金怎麼選</span><strong>高配息不等於高總報酬</strong><p>配息型基金應同時看淨值、總報酬與費用。</p></article>
-        </div>
-      </section>
-
       <section class="fund-workbench" aria-labelledby="fundTitle">
         <div class="section-heading">
           <div>
             <p class="eyebrow">DATABASE + DECISION LAYER</p>
             <h2 id="fundTitle">資料完整，但每檔都要回答「為什麼值得看」</h2>
           </div>
-          <span id="selectedCount">已選 0 / 3</span>
+          <span id="selectedCount">已選 0 / 5</span>
         </div>
         <div class="fund-table" id="fundList"></div>
       </section>
@@ -193,19 +140,19 @@
     <aside class="compare-tray" id="compareTray" aria-live="polite">
       <div>
         <strong id="trayTitle">已選 0 檔基金</strong>
-        <span id="trayCopy">選任兩檔基金後，立即彈窗提醒比較。</span>
+        <span id="trayCopy">最多可選 5 檔基金，選滿後即可查看績效比較。</span>
       </div>
       <button type="button" id="trayButton" disabled>查看比較</button>
     </aside>
 
     <dialog class="compare-dialog" id="compareDialog">
       <div class="dialog-head">
-        <h2>已選擇 2 檔基金，要立刻比較嗎？</h2>
+        <h2>基金比較</h2>
         <button type="button" id="dialogClose" aria-label="關閉">×</button>
       </div>
       <div class="compare-chart" id="compareChart"></div>
       <div class="dialog-actions">
-        <button type="button" id="dialogCompare">看完整比較</button>
+        <button type="button" id="dialogCompare">關閉比較</button>
         <button type="button" class="ghost" id="dialogLater">稍後再看</button>
       </div>
     </dialog>
