@@ -154,14 +154,10 @@
           </div>
         </div>
         <div class="tv-market-picker" id="tvMarketPicker" aria-label="TradingView 市場選擇"></div>
-        <div class="tradingview-embed">
-          <iframe
-            id="tradingviewHeatmapFrame"
-            title="TradingView 產業熱力圖"
-            src="https://www.tradingview.com/heatmap/stock/#%7B%22dataSource%22%3A%22SPX500%22%2C%22blockColor%22%3A%22change%22%2C%22blockSize%22%3A%22market_cap_basic%22%2C%22grouping%22%3A%22sector%22%7D"
-            loading="lazy"
-            referrerpolicy="origin"
-          ></iframe>
+        <div class="tradingview-embed" id="tradingviewHeatmapWidget" aria-label="TradingView 產業熱力圖">
+          <div class="tradingview-widget-container">
+            <div class="tradingview-widget-container__widget"></div>
+          </div>
         </div>
         <p class="note" id="tvHeatmapNote">目前顯示 S&P 500 產業熱力圖。若科技板塊整體大漲，科技基金績效也可能受到整體產業行情推動。</p>
       </section>
@@ -189,6 +185,7 @@
     <script src="assets/global.js"></script>
     <script>
       window.goodFundAssistantConfig = {
+        chatUrl: "https://dify.startpray.online/chat/fpIBKDhsB32PXBL9",
         title: "好好基金小幫手",
         subtitle: "幫你看懂 CP 值、波動與大盤基準",
         prompts: [

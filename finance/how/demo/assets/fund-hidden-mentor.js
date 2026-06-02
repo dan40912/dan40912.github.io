@@ -180,7 +180,9 @@ function renderMentors() {
             class="portrait-wrap"
             data-src="${mentor.image}"
             style="--portrait-url: url('${mentor.image}'); --portrait-fallback: ${mentor.fallback};"
-          ></div>
+          >
+            <img src="${mentor.image}" alt="${mentor.name}，${mentor.type}" loading="lazy" />
+          </div>
           <div class="mentor-copy">
             <span class="mentor-tag">${mentor.type}</span>
             <h3>${mentor.name}</h3>

@@ -184,16 +184,54 @@ function initMirrorPage() {
   });
 
   const picker = document.querySelector("#tvMarketPicker");
-  const frame = document.querySelector("#tradingviewHeatmapFrame");
+  const widget = document.querySelector("#tradingviewHeatmapWidget");
   const note = document.querySelector("#tvHeatmapNote");
 
-  function heatmapUrl(item) {
-    return `https://www.tradingview.com/heatmap/stock/#${encodeURIComponent(JSON.stringify(item.config))}`;
+  function renderTradingViewWidget(item) {
+    if (!widget) return;
+    widget.classList.remove("is-loaded", "is-fallback");
+    widget.innerHTML = `
+      <div class="tradingview-widget-container">
+        <div class="tradingview-widget-container__widget"></div>
+        <div class="tradingview-fallback">
+          <strong>TradingView 熱力圖載入中</strong>
+          <span>如果外部 widget 被網路阻擋，可以另開 TradingView 查看。</span>
+          <a href="https://www.tradingview.com/heatmap/stock/" target="_blank" rel="noreferrer">另開熱力圖</a>
+        </div>
+      </div>
+    `;
+
+    const container = widget.querySelector(".tradingview-widget-container");
+    const script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src = "https://s3.tradingview.com/external-embedding/embed-widget-stock-heatmap.js";
+    script.async = true;
+    script.onload = () => {
+      widget.classList.add("is-loaded");
+    };
+    script.onerror = () => {
+      widget.classList.add("is-fallback");
+    };
+    script.textContent = JSON.stringify({
+      ...item.config,
+      locale: "zh_TW",
+      symbolUrl: "",
+      colorTheme: "light",
+      exchanges: [],
+      hasTopBar: false,
+      isDataSetEnabled: false,
+      isZoomEnabled: true,
+      hasSymbolTooltip: true,
+      isMonoSize: false,
+      width: "100%",
+      height: "100%",
+    });
+    container.appendChild(script);
   }
 
   function setTradingViewHeatmap(id) {
     const item = tradingViewHeatmaps.find((heatmap) => heatmap.id === id) || tradingViewHeatmaps[0];
-    frame.src = heatmapUrl(item);
+    renderTradingViewWidget(item);
     note.textContent = item.note;
     picker.querySelectorAll("[data-tv-market]").forEach((button) => {
       button.classList.toggle("active", button.dataset.tvMarket === item.id);

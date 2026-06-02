@@ -1,26 +1,24 @@
 (function () {
   const config = {
-    baseUrl: "https://dify.startpray.online",
-    token: "5dc04e07-b71b-4817-9ab8-4bd3604b4f62",
+    chatUrl: "https://dify.startpray.online/chat/fpIBKDhsB32PXBL9",
     title: "好好基金小幫手",
-    subtitle: "先問需求，再把基金資料翻成可比較的方向",
+    subtitle: "可以詢問基金挑選、比較與投資方向",
     prompts: [
-      "我是新手，想低波動，該先看哪類基金？",
-      "我想月配息，但怕配息陷阱，要看什麼？",
-      "AI / 科技基金漲很多，怎麼判斷風險？",
-      "照妖鏡右上角高報酬高波動，代表適合我嗎？"
-    ]
+      "我適合哪一類基金？",
+      "怎麼比較基金 CP 值？",
+      "新手如何開始定期定額？",
+      "幫我理解基金照妖鏡",
+    ],
   };
 
   const pageConfig = window.goodFundAssistantConfig || {};
   const merged = { ...config, ...pageConfig };
-  const baseUrl = String(merged.baseUrl || "").replace(/\/$/, "");
-  const chatbotUrl = `${baseUrl}/chatbot/${encodeURIComponent(merged.token)}`;
+  const chatUrl = String(merged.chatUrl || config.chatUrl);
 
   function buildPromptLinks() {
     return (merged.prompts || [])
       .map((prompt) => {
-        const href = `${chatbotUrl}?q=${encodeURIComponent(prompt)}`;
+        const href = `${chatUrl}?q=${encodeURIComponent(prompt)}`;
         return `<a href="${href}" target="fundswapDifyFrame" rel="noreferrer">${prompt}</a>`;
       })
       .join("");
@@ -48,14 +46,14 @@
           class="fundswap-dify-frame"
           name="fundswapDifyFrame"
           title="${merged.title}"
-          src="${chatbotUrl}"
+          src="${chatUrl}"
           loading="lazy"
           referrerpolicy="origin"
           allow="microphone"
         ></iframe>
         <div class="fundswap-dify-fallback">
-          若尚未看到聊天視窗，請先確認 Dify app 已發佈。也可以
-          <a href="${chatbotUrl}" target="_blank" rel="noreferrer">另開小幫手</a>。
+          若尚未看到聊天視窗，可以
+          <a href="${chatUrl}" target="_blank" rel="noreferrer">另開小幫手</a>。
         </div>
       </div>
       <button class="fundswap-dify-trigger" type="button" aria-label="開啟好好基金小幫手" aria-expanded="false">

@@ -3,243 +3,236 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <title>好好證券基金平台 UX Demo 作品集</title>
+    <title>FundSwap UX Demo｜首頁入口</title>
     <meta
       name="description"
-      content="好好證券 FundSwap 找基金與基金照妖鏡改版作品集，包含頁面分析、設計複盤、新版 Demo 與創新功能方案。"
+      content="FundSwap UX Demo 首頁，整理基金藏鏡人、基金搜尋、基金照妖鏡與 AI 機器人四個展示入口。"
     />
+    <meta name="robots" content="noindex, nofollow" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="assets/global.css" />
+    <style>
+      .home-shell {
+        min-height: 100vh;
+        background:
+          linear-gradient(180deg, rgba(255, 243, 238, 0.72) 0%, rgba(245, 245, 245, 0) 42%),
+          var(--gray-200);
+      }
+
+      .home-main {
+        max-width: 1120px;
+        margin: 0 auto;
+        padding: clamp(24px, 5vw, 56px) 16px 48px;
+      }
+
+      .home-hero {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(260px, 340px);
+        gap: 28px;
+        align-items: end;
+        margin-bottom: 18px;
+        border: 1px solid var(--gray-300);
+        border-radius: var(--radius);
+        background: #fff;
+        padding: clamp(28px, 5vw, 48px);
+        box-shadow: 0 1px 0 rgba(51, 51, 51, 0.02);
+      }
+
+      .home-hero h1 {
+        max-width: 780px;
+        margin: 0 0 12px;
+        color: var(--gray-900);
+        font-size: clamp(34px, 5vw, 52px);
+        line-height: 1.16;
+      }
+
+      .home-hero p {
+        max-width: 720px;
+        margin: 0;
+        color: var(--gray-700);
+        font-size: 17px;
+      }
+
+      .home-note {
+        border: 1px solid var(--primary-200);
+        border-radius: var(--radius);
+        background: #fffaf7;
+        padding: 18px;
+      }
+
+      .home-note strong {
+        display: block;
+        margin-bottom: 8px;
+        color: var(--gray-900);
+        font-size: 18px;
+      }
+
+      .home-note span {
+        color: var(--gray-700);
+        font-size: 14px;
+        line-height: 1.6;
+      }
+
+      .entry-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 14px;
+      }
+
+      .entry-card {
+        display: flex;
+        min-height: 220px;
+        flex-direction: column;
+        justify-content: space-between;
+        border: 1px solid var(--gray-300);
+        border-radius: var(--radius);
+        background: #fff;
+        padding: 20px;
+        text-decoration: none;
+        transition: transform 0.16s ease, border-color 0.16s ease, box-shadow 0.16s ease;
+      }
+
+      .entry-card:hover,
+      .entry-card:focus-visible {
+        transform: translateY(-2px);
+        border-color: var(--primary-200);
+        box-shadow: var(--shadow);
+        outline: 0;
+      }
+
+      .entry-card__index {
+        display: inline-flex;
+        width: fit-content;
+        align-items: center;
+        border-radius: 4px;
+        background: var(--primary-100);
+        color: var(--primary-700);
+        padding: 4px 8px;
+        font-size: 12px;
+        font-weight: 800;
+      }
+
+      .entry-card h2 {
+        margin: 18px 0 8px;
+        color: var(--gray-900);
+        font-size: 22px;
+        line-height: 1.28;
+      }
+
+      .entry-card p {
+        margin: 0;
+        color: var(--gray-700);
+        line-height: 1.6;
+      }
+
+      .entry-card__action {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 24px;
+        color: var(--primary-700);
+        font-weight: 800;
+      }
+
+      .portfolio-footer {
+        max-width: 1120px;
+      }
+
+      @media (max-width: 1040px) {
+        .entry-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+
+      @media (max-width: 760px) {
+        .home-hero {
+          grid-template-columns: 1fr;
+          padding: 22px;
+        }
+
+        .entry-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .entry-card {
+          min-height: 190px;
+        }
+      }
+    </style>
   </head>
-  <body class="portfolio-page">
+  <body class="portfolio-page home-shell">
     <header class="site-header">
-      <a class="brand" href="index.html" aria-label="好好證券 FundSwap UX Demo">
+      <a class="brand" href="index.html" aria-label="FundSwap UX Demo 首頁">
         <img src="https://www.fundswap.com.tw/wp-content/uploads/2022/07/ic_logo_fav.png" alt="" />
-        <span>好好證券 UX Demo</span>
+        <span>FundSwap UX Demo</span>
       </a>
-      <nav aria-label="作品集導覽">
-        <a href="#background">任務背景</a>
-        <a href="#modules">三大模組</a>
-        <a href="#demos">Demo 連結</a>
-        <a href="#viewpoint">產品觀點</a>
+      <nav aria-label="Demo 導覽">
+        <a href="10-fund-hidden-mentor.html">10 藏鏡人</a>
+        <a href="11-find-funds-final.html">11 找基金</a>
+        <a href="12-fund-mirror-final.html">12 照妖鏡</a>
+        <a href="10-fund-hidden-mentor.html#chatbot">AI 機器人</a>
       </nav>
-      <a class="header-cta" href="#demos">查看作品</a>
+      <a class="header-cta" href="11-find-funds-final.html">開始瀏覽</a>
     </header>
 
-    <main>
-      <section class="portfolio-hero" id="background">
+    <main class="home-main">
+      <section class="home-hero" aria-labelledby="homeTitle">
         <div>
-          <p class="eyebrow">FUNDSWAP INTERVIEW PORTFOLIO</p>
-          <h1>從基金資料網站，改成能幫使用者做判斷的基金探索體驗</h1>
+          <p class="eyebrow">FUNDSWAP DEMO HUB</p>
+          <h1 id="homeTitle">四個入口，快速查看基金體驗設計</h1>
           <p>
-            這份作品集回應面試題目中的三個核心模組：分析「找基金」與「基金照妖鏡」現況、複盤基金照妖鏡的產品邏輯，並提出能幫投資者更快找到適配基金的創新功能。
+            這個首頁集中整理目前的三個主要 HTML 頁面，並加上一個 AI 機器人入口，讓展示時可以直接切換到需要說明的功能。
           </p>
         </div>
-        <aside class="hero-verdict">
-          <span>核心觀點</span>
-          <strong>問題不是資料不夠，而是缺少把資料轉成投資決策的路徑。</strong>
-          <p>我的設計取捨是保留 FundSwap 原本品牌、配色與金融專業感，只重構入口、篩選、比較與決策輔助層。</p>
+        <aside class="home-note">
+          <strong>展示順序建議</strong>
+          <span>先從基金藏鏡人建立使用者情境，再進入找基金、照妖鏡比較，最後用 AI 機器人補足互動導覽。</span>
         </aside>
       </section>
 
-      <section class="portfolio-section">
-        <div class="section-title">
-          <p class="eyebrow">FINAL SUBMISSION PACKAGE</p>
-          <h2>提交給好好證券的最終檔案</h2>
-        </div>
-        <div class="demo-list">
-          <a href="FundSwap_UX_Portfolio_Presentation.pptx">
-            <strong>精美簡報｜FundSwap_UX_Portfolio_Presentation.pptx</strong>
-            <span>10 頁作品集簡報，包含封面、Outline、多 Agent 設計邏輯、Demo 對照與結論。</span>
-          </a>
-          <a href="fund-mirror-2-product-blueprint.md">
-            <strong>產品藍圖｜基金照妖鏡 2.0</strong>
-            <span>完整整理 Wireframe、IA、User Journey、區塊文案、CTA、Conversion Flow、KPI 與面試說明稿。</span>
-          </a>
-          <a href="README.md">
-            <strong>README｜專案說明與開啟方式</strong>
-            <span>說明專案目的、Demo 清單、設計重點與如何對應面試題目。</span>
-          </a>
-          <a href="07-requirement-mapping.html">
-            <strong>作業要求對照｜Requirement Mapping</strong>
-            <span>逐條確認任務 1、任務 2、任務 3、專業性、獨立性與完整性。</span>
-          </a>
-        </div>
-      </section>
+      <section class="entry-grid" aria-label="Demo 頁面入口">
+        <a class="entry-card" href="10-fund-hidden-mentor.html">
+          <div>
+            <span class="entry-card__index">10</span>
+            <h2>基金藏鏡人</h2>
+            <p>用六種投資人格切入，協助新手先理解自己的偏好，再找到適合觀察的基金方向。</p>
+          </div>
+          <span class="entry-card__action">前往頁面 →</span>
+        </a>
 
-      <section class="portfolio-section">
-        <div class="section-title">
-          <p class="eyebrow">PRESENTATION FLOW</p>
-          <h2>5-8 分鐘展示路徑</h2>
-        </div>
-        <div class="demo-list">
-          <a href="01-audit-report.html">
-            <strong>1 分鐘｜先講問題</strong>
-            <span>找基金像資料庫、基金照妖鏡有視覺化亮點但缺少解讀。</span>
-          </a>
-          <a href="03-new-fund-mirror.html">
-            <strong>2 分鐘｜展示核心改版</strong>
-            <span>先選投資需求，再用四象限與基金卡說明適合觀察的原因。</span>
-          </a>
-          <a href="08-fund-mirror-2.html">
-            <strong>2 分鐘｜展示基金照妖鏡 2.0</strong>
-            <span>用六種投資人格、團隊信任與歷史模擬，重做 B2C 基金探索路徑。</span>
-          </a>
-          <a href="10-fund-hidden-mentor.html">
-            <strong>2 分鐘｜展示基金藏鏡人 2.0</strong>
-            <span>用真實攝影風格人格導師、打字機互動與 Dify 容器，補上新手入口。</span>
-          </a>
-          <a href="04-new-find-funds.html">
-            <strong>1.5 分鐘｜展示列表效率</strong>
-            <span>搜尋、標籤、進階篩選、排序與比較，把大量基金收斂成候選。</span>
-          </a>
-          <a href="11-find-funds-final.html">
-            <strong>2 分鐘｜展示找基金最終版</strong>
-            <span>AI 搜尋、FOMO 試算、比較彈窗、拆分導航、SEO 麵包屑與市場情報整合。</span>
-          </a>
-          <a href="12-fund-mirror-final.html">
-            <strong>2 分鐘｜展示照妖鏡最終版</strong>
-            <span>首次導覽、大盤基準、反直覺象限解釋、解讀卡與產業熱力圖。</span>
-          </a>
-          <a href="09-find-funds-landing.html">
-            <strong>1 分鐘｜展示市場精選原頁加強版</strong>
-            <span>直接沿用 trade 頁版型與素材，加入 Dify 區、比較提醒、比較圖表與拆分導航。</span>
-          </a>
-          <a href="05-fund-fit-wizard.html">
-            <strong>1.5 分鐘｜展示新手入口</strong>
-            <span>問答精靈把模糊需求轉成基金篩選條件，降低選擇焦慮。</span>
-          </a>
-          <a href="06-fund-arena.html">
-            <strong>1 分鐘｜展示資深比較</strong>
-            <span>Fund Arena 用雷達圖、分數條與情境卡比較 2-3 檔基金。</span>
-          </a>
-        </div>
-      </section>
+        <a class="entry-card" href="11-find-funds-final.html">
+          <div>
+            <span class="entry-card__index">11</span>
+            <h2>找基金頁</h2>
+            <p>整合 AI 搜尋、基金列表、品牌分類、比較與試算工具，呈現更完整的基金探索流程。</p>
+          </div>
+          <span class="entry-card__action">前往頁面 →</span>
+        </a>
 
-      <section class="portfolio-section">
-        <div class="section-title">
-          <p class="eyebrow">HOW I READ THE TASK</p>
-          <h2>我如何理解好好證券的核心需求</h2>
-        </div>
-        <div class="insight-grid">
-          <article>
-            <span>01</span>
-            <h3>資訊完整不是終點</h3>
-            <p>基金投資者不是缺報酬率、配息、風險等級，而是不知道這些欄位應該先看哪個，以及怎麼轉成自己的選擇。</p>
-          </article>
-          <article>
-            <span>02</span>
-            <h3>新手需要入口，資深用戶需要比較</h3>
-            <p>同一批基金資料要用兩種方式服務：新手先用問答與人格降低焦慮，資深用戶則用 Arena 深入比較差異。</p>
-          </article>
-          <article>
-            <span>03</span>
-            <h3>合規語氣要前置</h3>
-            <p>Demo 避免「推薦買哪檔」語氣，改用「適合觀察」「篩選輔助」「情境比較」，降低金融行銷風險。</p>
-          </article>
-        </div>
-      </section>
+        <a class="entry-card" href="12-fund-mirror-final.html">
+          <div>
+            <span class="entry-card__index">12</span>
+            <h2>基金照妖鏡</h2>
+            <p>用報酬率、波動度、同類比較與市場熱力圖，幫使用者更快判斷基金表現。</p>
+          </div>
+          <span class="entry-card__action">前往頁面 →</span>
+        </a>
 
-      <section class="portfolio-section" id="modules">
-        <div class="section-title">
-          <p class="eyebrow">THREE DELIVERABLE MODULES</p>
-          <h2>三大任務模組入口</h2>
-        </div>
-        <div class="module-grid">
-          <a class="module-card" href="01-audit-report.html">
-            <span>模組一</span>
-            <h3>頁面優劣分析</h3>
-            <p>分析找基金與基金照妖鏡的 UI、資訊效率、操作路徑、視覺化表達與金融決策輔助性。</p>
-          </a>
-          <a class="module-card" href="03-new-fund-mirror.html">
-            <span>模組二</span>
-            <h3>基金照妖鏡設計複盤與新版 Demo</h3>
-            <p>保留散點圖，但不讓散點圖成為第一步；先選投資需求，再看四象限與候選基金。</p>
-          </a>
-          <a class="module-card" href="05-fund-fit-wizard.html">
-            <span>模組三</span>
-            <h3>創新功能方案</h3>
-            <p>用問答精靈與 Fund Arena，分別服務新手的選擇焦慮與資深投資者的深度比較需求。</p>
-          </a>
-        </div>
-      </section>
-
-      <section class="portfolio-section" id="demos">
-        <div class="section-title">
-          <p class="eyebrow">DEMO PAGES</p>
-          <h2>可展示 Demo 頁面連結</h2>
-        </div>
-        <div class="demo-list">
-          <a href="01-audit-report.html">
-            <strong>01｜頁面優劣分析報告</strong>
-            <span>找基金與基金照妖鏡現況診斷</span>
-          </a>
-          <a href="03-new-fund-mirror.html">
-            <strong>03｜新版基金照妖鏡</strong>
-            <span>先選投資需求，再看報酬與波動四象限</span>
-          </a>
-          <a href="08-fund-mirror-2.html">
-            <strong>08｜基金照妖鏡 2.0</strong>
-            <span>照出投資本性：六種人格、候選基金、團隊信任、歷史模擬與小幫手</span>
-          </a>
-          <a href="10-fund-hidden-mentor.html">
-            <strong>10｜基金藏鏡人 2.0</strong>
-            <span>六位投資人格導師、人像卡片、打字機互動與 Dify chatbot 容器</span>
-          </a>
-          <a href="11-find-funds-final.html">
-            <strong>11｜找基金最終版</strong>
-            <span>針對資料庫感、比較弱、導航臃腫、CTA 過早與麵包屑混亂重設計</span>
-          </a>
-          <a href="12-fund-mirror-final.html">
-            <strong>12｜基金照妖鏡最終版</strong>
-            <span>針對四象限反直覺、缺少大盤基準、缺少解讀橋樑與產業脈絡重設計</span>
-          </a>
-          <a href="04-new-find-funds.html">
-            <strong>04｜新版找基金列表頁</strong>
-            <span>搜尋、快速標籤、進階篩選、排序與比較</span>
-          </a>
-          <a href="09-find-funds-landing.html">
-            <strong>09｜市場精選頁複製加強版</strong>
-            <span>沿用 FundSwap trade 頁圖片與列表骨架，加入 Dify chatbot、比較彈窗與圖表比較</span>
-          </a>
-          <a href="05-fund-fit-wizard.html">
-            <strong>05｜基金適配問答精靈</strong>
-            <span>5 步驟問答把需求轉成基金篩選條件</span>
-          </a>
-          <a href="06-fund-arena.html">
-            <strong>06｜Fund Arena 基金比較場</strong>
-            <span>2-3 檔基金的情境比較、雷達圖與分數條</span>
-          </a>
-          <a href="07-requirement-mapping.html">
-            <strong>07｜作業要求對照檢查</strong>
-            <span>逐條確認三大任務、專業性、獨立性與完整性是否符合題目</span>
-          </a>
-        </div>
-      </section>
-
-      <section class="portfolio-section" id="viewpoint">
-        <div class="section-title">
-          <p class="eyebrow">PRODUCT POINT OF VIEW</p>
-          <h2>我的產品觀點摘要</h2>
-        </div>
-        <div class="viewpoint-card">
-          <p>
-            我不會把 FundSwap 改成另一個品牌，也不會把金融頁面做成花俏的 AI 產品。這次重構的方向是：保留原本品牌信任感，把「找基金」從資料庫升級為決策工具，把「基金照妖鏡」從單一圖表升級為投資需求導向的篩選流程。
-          </p>
-          <ul>
-            <li>新手先問需求，不先看滿版基金名稱。</li>
-            <li>報酬與風險要被翻成可判斷的語言。</li>
-            <li>比較頁不做勝負排名，而是說明適合情境。</li>
-            <li>CTA 不急著推交易，先接住比較、理解與猶豫。</li>
-          </ul>
-        </div>
+        <a class="entry-card" href="10-fund-hidden-mentor.html#chatbot">
+          <div>
+            <span class="entry-card__index">AI</span>
+            <h2>AI 機器人</h2>
+            <p>導向藏鏡人頁面的 Dify 機器人區塊，讓使用者直接用對話詢問基金與投資方向。</p>
+          </div>
+          <span class="entry-card__action">開啟機器人 →</span>
+        </a>
       </section>
     </main>
 
     <footer class="portfolio-footer">
-      <p>本 Demo 僅為基金篩選體驗設計展示，非投資建議。所有基金資料皆為 mock data，不構成基金推薦或任何申購、贖回、轉換之招攬。</p>
+      <p>Demo 僅供作品展示與流程說明使用，頁面資料與互動內容以原型呈現。</p>
     </footer>
 
     <script src="assets/global.js"></script>

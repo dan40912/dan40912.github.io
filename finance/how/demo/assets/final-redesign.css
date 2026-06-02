@@ -518,14 +518,42 @@ p { color: var(--gray-700); }
   overflow: hidden;
   border: 1px solid var(--gray-300);
   border-radius: var(--radius);
-  background: #111814;
+  background: #fff;
 }
-.tradingview-embed iframe {
-  display: block;
+.tradingview-widget-container,
+.tradingview-widget-container__widget {
   width: 100%;
   height: min(72vh, 680px);
   min-height: 520px;
-  border: 0;
+}
+.tradingview-widget-container {
+  position: relative;
+}
+.tradingview-fallback {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  gap: 8px;
+  padding: 24px;
+  background: #fff;
+  text-align: center;
+}
+.tradingview-embed.is-loaded .tradingview-fallback {
+  display: none;
+}
+.tradingview-fallback strong {
+  color: var(--gray-900);
+  font-size: 20px;
+}
+.tradingview-fallback span {
+  color: var(--gray-700);
+}
+.tradingview-fallback a {
+  color: var(--primary-700);
+  font-weight: 900;
+  text-decoration: underline;
+  text-decoration-color: var(--primary-500);
 }
 .note { margin: 12px 0 0; }
 .guide-dialog ol { margin: 18px; padding-left: 22px; color: var(--gray-800); }
