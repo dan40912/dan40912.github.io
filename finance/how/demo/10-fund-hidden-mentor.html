@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>基金藏鏡人 2.0｜FundSwap UX Demo</title>
+    <meta
+      name="description"
+      content="FundSwap 基金藏鏡人 2.0 Demo：在基金照妖鏡之外，透過六種投資人格、真實攝影風格人物卡、打字機互動與 Dify chatbot 容器，引導新手找到適合觀察的基金方向。"
+    />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="googlebot" content="noindex, nofollow" />
+    <link rel="stylesheet" href="assets/fund-hidden-mentor.css" />
+    <link rel="stylesheet" href="assets/global.css" />
+    <link rel="stylesheet" href="assets/fundswap-header.css" />
+    <link rel="stylesheet" href="assets/dify-floating-chat.css" />
+  </head>
+  <body class="mentor-page">
+    <header class="fundswap-header">
+      <div class="fundswap-header__inner">
+        <a class="fundswap-header__logo" href="index.html" aria-label="FundSwap Demo 首頁">
+          <img src="https://www.fundswap.com.tw/trade/_nuxt/img/logo_web.42d235c.svg" alt="FundSwap" />
+        </a>
+        <nav class="fundswap-header__nav" aria-label="依任務拆分的 FundSwap 主選單">
+          <div class="fundswap-nav-item">
+            <button type="button">找基金</button>
+            <div class="fundswap-mega-menu">
+              <a href="11-find-funds-final.html">基金搜尋</a>
+              <a href="11-find-funds-final.html#comparison">基金比較</a>
+              <a href="#personas">基金藏鏡人</a>
+              <a href="12-fund-mirror-final.html">基金照妖鏡</a>
+              <a href="11-find-funds-final.html#aiSearch">AI 搜尋</a>
+            </div>
+          </div>
+          <div class="fundswap-nav-item">
+            <button type="button">投資資訊</button>
+            <div class="fundswap-mega-menu">
+              <a href="11-find-funds-final.html#market">市場精選</a>
+              <a href="12-fund-mirror-final.html#heatmap">市場熱力</a>
+              <a href="11-find-funds-final.html#market">全球布局</a>
+              <a href="11-find-funds-final.html#market">產業動態</a>
+            </div>
+          </div>
+          <div class="fundswap-nav-item">
+            <button type="button">投信品牌介紹</button>
+            <div class="fundswap-mega-menu fundswap-mega-menu--wide">
+              <a href="11-find-funds-final.html#brands">野村投信</a>
+              <a href="11-find-funds-final.html#brands">貝萊德 BlackRock</a>
+              <a href="11-find-funds-final.html#brands">安聯投信</a>
+              <a href="11-find-funds-final.html#brands">摩根 J.P. Morgan</a>
+              <a href="11-find-funds-final.html#brands">富達 Fidelity</a>
+              <a href="11-find-funds-final.html#brands">更多投信品牌</a>
+            </div>
+          </div>
+          <div class="fundswap-nav-item">
+            <button type="button">教學</button>
+            <div class="fundswap-mega-menu">
+              <a href="11-find-funds-final.html#learn">基金怎麼選</a>
+              <a href="12-fund-mirror-final.html#guide">照妖鏡怎麼看</a>
+              <a href="#flow">藏鏡人流程</a>
+              <a href="11-find-funds-final.html#learn">定期定額</a>
+            </div>
+          </div>
+          <div class="fundswap-nav-item">
+            <button type="button">投資分析</button>
+            <div class="fundswap-mega-menu fundswap-mega-menu--analysis">
+              <a href="#personas">投資人格</a>
+              <a href="#chatbot">Dify 導師</a>
+              <a href="12-fund-mirror-final.html#mirror">CP 值解讀</a>
+              <a href="12-fund-mirror-final.html#heatmap">產業熱力圖</a>
+            </div>
+          </div>
+          <a class="fundswap-nav-link" href="11-find-funds-final.html#support">客服</a>
+        </nav>
+        <a class="fundswap-login-btn" href="#personas">開始尋找</a>
+      </div>
+    </header>
+
+    <main>
+      <section class="mentor-hero">
+        <div class="hero-copy">
+          <p class="eyebrow">FUND HIDDEN MENTOR 2.0</p>
+          <h1>基金藏鏡人</h1>
+          <p>照妖鏡幫你看透基金背後的秘密，藏鏡人幫你找到適合自己的投資方式。</p>
+          <a class="hero-cta" href="#personas">開始尋找我的藏鏡人</a>
+        </div>
+        <aside class="hero-note">
+          <span>我的投資風格</span>
+          <strong id="heroStyleTitle">穩定現金流型</strong>
+          <p id="heroStyleCopy">你的投資風格偏向穩健配置，在追求資產成長的同時，也重視風險控管與長期穩定性。</p>
+          <a href="#personas">重新分析風格</a>
+        </aside>
+      </section>
+
+      <section class="persona-section" id="personas" aria-labelledby="personaTitle">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">PERSONA MENTORS</p>
+            <h2 id="personaTitle">選一位最像你現在需求的藏鏡人</h2>
+          </div>
+          <span class="asset-note">選擇後，藏鏡人會用你的投資語言說明下一步</span>
+        </div>
+        <div class="mentor-grid" id="mentorGrid"></div>
+      </section>
+
+      <section class="speech-stage" aria-live="polite">
+        <div class="speech-card">
+          <p class="eyebrow">藏鏡人正在說</p>
+          <h2 id="activePersonaTitle">收租公｜穩定現金流</h2>
+          <p id="typewriterText" class="typewriter"></p>
+        </div>
+        <div class="recommend-card">
+          <p class="eyebrow">推薦觀察方向</p>
+          <div id="recommendList"></div>
+          <a class="hero-cta secondary" href="03-new-fund-mirror.html">前往基金照妖鏡</a>
+        </div>
+      </section>
+
+      <section class="mirror-console" aria-labelledby="consoleTitle">
+        <aside class="scroll-guide">
+          <span>如何使用照妖鏡</span>
+          <strong>?</strong>
+        </aside>
+        <article class="mirror-chart-card">
+          <p class="eyebrow">基金照妖鏡</p>
+          <h2 id="consoleTitle">一眼看穿風險，找出高 CP 值基金</h2>
+          <div class="scatter-plot" aria-label="報酬率與波動度示意圖">
+            <span class="axis-label top">高報酬低波動</span>
+            <span class="axis-label bottom">基金照妖鏡</span>
+            <span class="axis-label middle">波動度（標準差%）</span>
+            <span class="dot d1"></span>
+            <span class="dot d2"></span>
+            <span class="dot d3"></span>
+            <span class="dot d4"></span>
+            <span class="dot d5"></span>
+            <span class="dot d6"></span>
+          </div>
+        </article>
+        <article class="ranking-card">
+          <div class="section-heading compact">
+            <div>
+              <p class="eyebrow">指標優先順序</p>
+              <h2>同類型基金 CP 值排名</h2>
+            </div>
+            <a href="03-new-fund-mirror.html">照妖鏡如何用？</a>
+          </div>
+          <div class="metric-tabs">
+            <button type="button" class="active">報酬率</button>
+            <button type="button">最新淨值</button>
+            <button type="button">配息率</button>
+            <button type="button">夏普值</button>
+            <button type="button">波動度</button>
+            <button type="button">最大回撤</button>
+          </div>
+          <div class="rank-list">
+            <article>
+              <span>1</span>
+              <div>
+                <strong>統一新亞洲科技能源基金</strong>
+                <p>CP 值 9.34｜近 1 年 +240.99%</p>
+              </div>
+              <button type="button">比較</button>
+            </article>
+            <article>
+              <span>2</span>
+              <div>
+                <strong>野村台灣運籌基金</strong>
+                <p>CP 值 8.92｜近 1 年 +312.68%</p>
+              </div>
+              <button type="button">比較</button>
+            </article>
+          </div>
+        </article>
+        <aside class="mentor-chat-panel">
+          <div class="chat-mentor-head">
+            <span class="mini-avatar">鏡</span>
+            <div>
+              <strong>藏鏡人導師</strong>
+              <p>線上</p>
+            </div>
+          </div>
+          <div class="chat-bubble">你好，我是你的藏鏡人導師！有任何基金相關問題，都可以問我。</div>
+          <button type="button">這檔基金適合我嗎？</button>
+          <button type="button">如何挑選基金？</button>
+          <button type="button">市場最近走勢如何？</button>
+          <label>
+            <input type="text" placeholder="請輸入你的問題..." />
+            <span>➜</span>
+          </label>
+        </aside>
+      </section>
+
+      <section class="industry-heatmap-section" id="industryHeatmap" aria-labelledby="industryHeatmapTitle">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">SECTOR HEATMAP</p>
+            <h2 id="industryHeatmapTitle">產業熱力圖</h2>
+            <p>先選一個產業視角，看看整體市場是順風還是逆風，再判斷基金績效是不是來自產業行情。</p>
+          </div>
+          <span class="asset-note">TradingView 風格產業視覺</span>
+        </div>
+        <div class="industry-picker" id="industryPicker" aria-label="產業選擇"></div>
+        <div class="tradingview-panel" aria-live="polite">
+          <div class="tv-toolbar">
+            <div>
+              <strong id="heatmapTitle">資訊科技</strong>
+              <span id="heatmapSubtitle">AI、半導體、雲端與軟體族群</span>
+            </div>
+            <div class="tv-tabs">
+              <button type="button" class="active">1D</button>
+              <button type="button">1W</button>
+              <button type="button">1M</button>
+              <button type="button">YTD</button>
+            </div>
+          </div>
+          <div class="tv-heatmap" id="tradingviewHeatmap"></div>
+        </div>
+      </section>
+
+      <section class="chatbot-section" id="chatbot" aria-labelledby="chatbotTitle">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">DIFY CHATBOT</p>
+            <h2 id="chatbotTitle">藏鏡人導師</h2>
+          </div>
+          <span class="asset-note">延續你選擇的投資人格，回答基金篩選問題</span>
+        </div>
+        <div id="persona-chatbot-container">
+          <iframe
+            class="persona-dify-frame"
+            title="好好基金小幫手"
+            src="https://dify.startpray.online/chatbot/5dc04e07-b71b-4817-9ab8-4bd3604b4f62"
+            loading="lazy"
+            referrerpolicy="origin"
+            allow="microphone"
+          ></iframe>
+        </div>
+      </section>
+
+      <section class="flow-section" id="flow" aria-labelledby="flowTitle">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">EXPECTED RESULT</p>
+            <h2 id="flowTitle">完整轉換路徑</h2>
+          </div>
+        </div>
+        <div class="flow-grid">
+          <article><span>01</span><strong>進入頁面</strong><p>先看到基金藏鏡人，而不是直接看基金資料表。</p></article>
+          <article><span>02</span><strong>選擇藏鏡人</strong><p>人物卡放大，其餘卡片收斂，降低選擇焦慮。</p></article>
+          <article><span>03</span><strong>人物開始說話</strong><p>打字機效果用 40ms 逐字說明需求、基金方向與風險。</p></article>
+          <article><span>04</span><strong>Chatbot 啟動</strong><p>使用者用對話問基金問題，Dify 負責教育與篩選輔助。</p></article>
+          <article><span>05</span><strong>推薦基金方向</strong><p>不是直接推薦買哪檔，而是導向適合觀察的基金類型。</p></article>
+          <article><span>06</span><strong>導向照妖鏡</strong><p>再用 CP 值、波動與報酬進入比較與申購流程。</p></article>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>本 Demo 僅為基金篩選體驗設計展示，非投資建議。人物與推薦方向僅作為教育與篩選輔助，不構成基金推薦、申購招攬或獲利保證。</p>
+    </footer>
+
+    <script src="assets/fund-hidden-mentor.js"></script>
+    <script src="assets/global.js"></script>
+    <script>
+      window.goodFundAssistantConfig = {
+        title: "好好基金小幫手",
+        subtitle: "依你的藏鏡人人格，整理適合觀察的基金方向",
+        prompts: [
+          "我像哪一種藏鏡人？",
+          "收租公適合先看哪些配息指標？",
+          "道士追 AI 基金時，最大風險在哪？",
+          "農夫定期定額要怎麼挑基金？"
+        ]
+      };
+    </script>
+    <script src="assets/dify-floating-chat.js"></script>
+  </body>
+</html>

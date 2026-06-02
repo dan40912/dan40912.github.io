@@ -1,0 +1,221 @@
+:root {
+  --fundswap-orange: #ff9664;
+  --fundswap-orange-dark: #ff7e40;
+  --fundswap-orange-soft: #fff3ee;
+  --fundswap-line: #ebebeb;
+  --fundswap-white: #ffffff;
+  --fundswap-title: #262626;
+  --fundswap-text: #333333;
+  --fundswap-muted: #666666;
+  --fundswap-shadow: 0 8px 20px rgba(51, 51, 51, 0.08);
+}
+
+.fundswap-header {
+  position: sticky;
+  top: 0;
+  z-index: 80;
+  border-bottom: 1px solid var(--fundswap-line);
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(10px);
+}
+
+.fundswap-header * {
+  box-sizing: border-box;
+}
+
+.fundswap-header__inner {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 24px;
+  align-items: center;
+  max-width: 1280px;
+  min-height: 64px;
+  margin: 0 auto;
+  padding: 0 18px;
+}
+
+.fundswap-header__logo {
+  display: inline-flex;
+  align-items: center;
+  line-height: 1;
+}
+
+.fundswap-header__logo img {
+  display: block;
+  width: 129px;
+  height: auto;
+}
+
+.fundswap-header__nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.fundswap-nav-item {
+  position: relative;
+}
+
+.fundswap-nav-item > button,
+.fundswap-nav-link,
+.fundswap-login-btn {
+  display: inline-flex;
+  min-height: 38px;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  padding: 0 10px;
+  color: var(--fundswap-title);
+  font: inherit;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.fundswap-nav-item > button:hover,
+.fundswap-nav-item > button:focus-visible,
+.fundswap-nav-link:hover,
+.fundswap-nav-link:focus-visible {
+  color: var(--fundswap-orange-dark);
+  outline: 0;
+}
+
+.fundswap-login-btn {
+  border: 1px solid var(--fundswap-orange);
+  background: var(--fundswap-orange);
+  color: #fff;
+  padding: 0 18px;
+}
+
+.fundswap-login-btn:hover,
+.fundswap-login-btn:focus-visible {
+  border-color: var(--fundswap-orange-dark);
+  background: var(--fundswap-orange-dark);
+  color: #fff;
+  outline: 0;
+}
+
+.fundswap-mega-menu {
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 50%;
+  display: none;
+  width: 260px;
+  transform: translateX(-50%);
+  border: 1px solid var(--fundswap-line);
+  border-radius: 8px;
+  background: var(--fundswap-white);
+  box-shadow: var(--fundswap-shadow);
+  padding: 10px;
+}
+
+.fundswap-nav-item:hover .fundswap-mega-menu,
+.fundswap-nav-item:focus-within .fundswap-mega-menu {
+  display: grid;
+}
+
+.fundswap-mega-menu::before {
+  position: absolute;
+  top: -10px;
+  right: 0;
+  left: 0;
+  height: 10px;
+  content: "";
+}
+
+.fundswap-mega-menu a {
+  border-radius: 4px;
+  padding: 9px 10px;
+  color: var(--fundswap-muted);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.35;
+  text-decoration: none;
+}
+
+.fundswap-mega-menu a:hover,
+.fundswap-mega-menu a:focus-visible {
+  background: var(--fundswap-orange-soft);
+  color: var(--fundswap-orange-dark);
+  outline: 0;
+}
+
+.fundswap-mega-menu--wide {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  width: 430px;
+}
+
+.fundswap-mega-menu--analysis {
+  width: 300px;
+}
+
+.fundswap-menu-note {
+  grid-column: 1 / -1;
+  margin: 2px 0 4px;
+  border-bottom: 1px solid var(--fundswap-line);
+  padding: 0 10px 9px;
+  color: #999;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+@media (max-width: 1080px) {
+  .fundswap-header__inner {
+    grid-template-columns: auto auto;
+    justify-content: space-between;
+  }
+
+  .fundswap-header__nav {
+    grid-column: 1 / -1;
+    justify-content: flex-start;
+    overflow-x: auto;
+    padding-bottom: 10px;
+    scrollbar-width: none;
+  }
+
+  .fundswap-header__nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  .fundswap-mega-menu {
+    left: 0;
+    transform: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .fundswap-header__inner {
+    gap: 10px;
+    min-height: 56px;
+    padding: 8px 14px 0;
+  }
+
+  .fundswap-header__logo img {
+    width: 116px;
+  }
+
+  .fundswap-login-btn {
+    min-height: 34px;
+    padding: 0 14px;
+  }
+
+  .fundswap-nav-item > button,
+  .fundswap-nav-link {
+    min-height: 34px;
+    padding: 0 8px;
+    font-size: 14px;
+  }
+
+  .fundswap-mega-menu,
+  .fundswap-mega-menu--wide,
+  .fundswap-mega-menu--analysis {
+    width: min(86vw, 320px);
+  }
+}
