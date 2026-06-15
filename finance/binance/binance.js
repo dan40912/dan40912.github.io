@@ -1,138 +1,54 @@
 (function () {
-            const cards = Array.from(document.querySelectorAll('#focus .focus-card[data-filter]'));
-            const rows = Array.from(document.querySelectorAll('#proof-snapshot tbody tr[data-categories]'));
-            const filterButtons = Array.from(document.querySelectorAll('.proof-filter-btn[data-filter]'));
-            const proofToolbar = document.querySelector('.proof-toolbar');
-            const proofSnapshot = document.getElementById('proof-snapshot');
-            const modal = document.getElementById('proof-modal');
-            const modalClose = document.getElementById('proof-modal-close');
-            const modalTitle = document.getElementById('proof-modal-title');
-            const modalDescription = document.getElementById('proof-modal-description');
-            const modalPreview = document.getElementById('proof-modal-preview');
+    const modal = document.getElementById('proof-modal');
+    const modalClose = document.getElementById('proof-modal-close');
+    const modalTitle = document.getElementById('proof-modal-title');
+    const modalDescription = document.getElementById('proof-modal-description');
+    const modalPreview = document.getElementById('proof-modal-preview');
+    const triggers = Array.from(document.querySelectorAll('.screenshot-trigger'));
 
-            if (!cards.length || !rows.length || !modal || !modalClose || !modalTitle || !modalDescription || !modalPreview) return;
+    if (!modal || !modalClose || !modalTitle || !modalDescription || !modalPreview || !triggers.length) return;
 
-            const setActiveCard = (targetFilter) => {
-                cards.forEach((card) => {
-                    const active = card.dataset.filter === targetFilter;
-                    card.classList.toggle('is-active', active);
-                    card.setAttribute('aria-pressed', active ? 'true' : 'false');
-                });
-                filterButtons.forEach((button) => {
-                    const active = button.dataset.filter === targetFilter;
-                    button.classList.toggle('is-active', active);
-                    button.setAttribute('aria-pressed', active ? 'true' : 'false');
-                });
-            };
+    const openModal = (button) => {
+        const media = button.closest('.case-media');
+        const image = media?.querySelector('img');
+        const src = image?.getAttribute('src');
 
-            const applyFilter = (filter) => {
-                if (filter === 'all') {
-                    rows.forEach((row) => { row.hidden = false; });
-                    proofToolbar?.classList.add('is-hidden');
-                    setActiveCard('all');
-                    return;
-                }
-                rows.forEach((row) => {
-                    const categories = (row.dataset.categories || '').split(/\s+/).filter(Boolean);
-                    row.hidden = !categories.includes(filter);
-                });
-                proofToolbar?.classList.remove('is-hidden');
-                setActiveCard(filter);
-            };
+        if (!src) return;
 
-            const jumpToProofTable = () => {
-                proofSnapshot?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            };
+        modalTitle.textContent = button.dataset.modalTitle || image.alt || 'Evidence preview';
+        modalDescription.textContent = button.dataset.modalText || image.alt || 'Product artifact image';
+        modalPreview.innerHTML = '';
 
-            const openModal = (button) => {
-                const title = button.dataset.modalTitle || '截圖預覽';
-                const text = button.dataset.modalText || '請在這裡補上實際圖片或預設文字。';
-                const previewImage = button.closest('.screenshot-cell')?.querySelector('.screenshot-preview img');
-                const src = previewImage?.getAttribute('src') || '';
-                const hasRealImage = Boolean(src && src !== 'XXX');
+        const largeImage = document.createElement('img');
+        largeImage.src = src;
+        largeImage.alt = image.alt || modalTitle.textContent;
+        modalPreview.appendChild(largeImage);
 
-                modalTitle.textContent = title;
-                modalDescription.textContent = text;
-                modalPreview.innerHTML = '';
+        modal.classList.add('is-open');
+        modal.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+    };
 
-                if (hasRealImage) {
-                    const img = document.createElement('img');
-                    img.src = src;
-                    img.alt = title;
+    const closeModal = () => {
+        modal.classList.remove('is-open');
+        modal.setAttribute('aria-hidden', 'true');
+        modalPreview.innerHTML = '';
+        document.body.style.overflow = '';
+    };
 
-                    const titleEl = document.createElement('div');
-                    titleEl.className = 'placeholder-title';
-                    titleEl.textContent = title;
+    triggers.forEach((button) => {
+        button.addEventListener('click', () => openModal(button));
+    });
 
-                    const textEl = document.createElement('div');
-                    textEl.className = 'placeholder-text';
-                    textEl.textContent = text;
+    modal.addEventListener('click', (event) => {
+        if (event.target === modal) closeModal();
+    });
 
-                    modalPreview.appendChild(img);
-                    modalPreview.appendChild(titleEl);
-                    modalPreview.appendChild(textEl);
-                } else {
-                    const titleEl = document.createElement('div');
-                    titleEl.className = 'placeholder-title';
-                    titleEl.textContent = title;
+    modalClose.addEventListener('click', closeModal);
 
-                    const textEl = document.createElement('div');
-                    textEl.className = 'placeholder-text';
-                    textEl.textContent = text;
-
-                    const noteEl = document.createElement('div');
-                    noteEl.className = 'placeholder-text';
-                    noteEl.textContent = '這一列目前使用靜態占位圖，請把表格中的 img src 改成實際圖片路徑後再顯示大圖。';
-
-                    modalPreview.appendChild(titleEl);
-                    modalPreview.appendChild(textEl);
-                    modalPreview.appendChild(noteEl);
-                }
-
-                modal.classList.add('is-open');
-                modal.setAttribute('aria-hidden', 'false');
-                document.body.style.overflow = 'hidden';
-            };
-
-            const closeModal = () => {
-                modal.classList.remove('is-open');
-                modal.setAttribute('aria-hidden', 'true');
-                document.body.style.overflow = '';
-            };
-
-            cards.forEach((card) => {
-                card.addEventListener('click', () => {
-                    applyFilter(card.dataset.filter);
-                    jumpToProofTable();
-                });
-                card.addEventListener('keydown', (event) => {
-                    if (event.key === 'Enter' || event.key === ' ') {
-                        event.preventDefault();
-                        applyFilter(card.dataset.filter);
-                        jumpToProofTable();
-                    }
-                });
-            });
-
-            filterButtons.forEach((button) => {
-                button.addEventListener('click', () => applyFilter(button.dataset.filter));
-            });
-
-            document.querySelectorAll('.screenshot-trigger').forEach((button) => {
-                button.addEventListener('click', () => openModal(button));
-            });
-
-            modal.addEventListener('click', (event) => {
-                if (event.target === modal) closeModal();
-            });
-
-            modalClose.addEventListener('click', closeModal);
-            document.addEventListener('keydown', (event) => {
-                if (event.key === 'Escape' && modal.classList.contains('is-open')) closeModal();
-            });
-
-            rows.forEach((row) => { row.hidden = false; });
-            proofToolbar?.classList.add('is-hidden');
-            setActiveCard('all');
-        })();
-    
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && modal.classList.contains('is-open')) {
+            closeModal();
+        }
+    });
+})();

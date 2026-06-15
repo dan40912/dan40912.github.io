@@ -206,6 +206,12 @@ COMMON_CONTACT_EN = [
     "Medium: medium.com/@dan40912",
 ]
 
+BINANCE_CONTACT_EN = [
+    "Email: dan40912@gmail.com",
+    "LinkedIn: www.linkedin.com/in/%E6%96%B0%E6%8D%B7-%E5%90%B3-630779107",
+    "Medium: medium.com/@dan40912",
+]
+
 COMMON_CONTACT_ZH = [
     "Email：dan40912@gmail.com",
     "LinkedIn：www.linkedin.com/in/新捷-吳-630779107",
@@ -217,11 +223,125 @@ DATA = {}
 
 DATA.update(
     {
+        "jay-wu-binance-en.pdf": {
+            "font": "Helvetica",
+            "name": "Jay Wu",
+            "title": "Product Manager | Financial Products, KYC, Compliance & Payment Infrastructure",
+            "summary": "Product Manager with 10 years of experience delivering regulated financial products across trading platforms, KYC onboarding, payment infrastructure, compliance operations, and growth initiatives. Experienced in leading cross-functional projects involving engineering, compliance, operations, finance, and external vendors to launch scalable solutions that improve customer onboarding, payment success rates, operational efficiency, and regulatory compliance. Background includes CFD brokerage operations, trading platforms, payment integrations, regulatory reporting, CRM workflows, copy trading systems, and cross-border financial services across APAC markets.",
+            "labels": {
+                "proof": "Key Achievements",
+                "snapshot": "Resume Snapshot",
+                "experience": "Professional Experience",
+                "projects": "Selected Projects",
+                "skills": "Core Skills",
+                "contact": "Contact",
+            },
+            "proof": [
+                "Led payment infrastructure and integration initiatives across regulated financial platforms.",
+                "Delivered KYC onboarding and compliance workflow improvements to streamline customer verification and operational processes.",
+                "Supported regulatory reporting initiatives across multiple jurisdictions, including ASIC reporting requirements.",
+                "Coordinated product delivery across engineering, compliance, operations, finance, and external vendor teams.",
+                "Managed trading platform initiatives covering MT4, MT5, copy trading, payment infrastructure, and customer onboarding workflows.",
+            ],
+            "snapshot": [
+                ("Target roles", "Financial Product Manager / Compliance Product Manager / KYC Product Manager / Payment Product Manager"),
+                ("Domain fit", "KYC, AML, compliance workflows, trading platforms, payment infrastructure, regulatory reporting, copy trading"),
+                ("Education", "Bachelor's Degree, University of Taipei"),
+                ("Languages", "Native Chinese | Professional working English (Intermediate)"),
+                ("Work preference", "Remote, Hybrid, or On-site | Taiwan-based and open to global collaboration"),
+            ],
+            "experience": [
+                {
+                    "title": "Product Manager, Trading Platform Operations",
+                    "meta": "Australian CFD Brokerage | Aug 2024 - Present | Taiwan",
+                    "bullets": [
+                        "Own product initiatives across trading platforms, KYC onboarding, payment infrastructure, CRM workflows, and regulatory operations supporting global brokerage services.",
+                        "Lead stablecoin payment integration projects and third-party payment provider onboarding, expanding global payment coverage and improving funding flexibility.",
+                        "Optimize KYC onboarding and payment workflows through collaboration with compliance, operations, and engineering teams, reducing manual processes and improving customer experience.",
+                        "Manage product coordination across MT4, MT5, proprietary trading platforms, payment systems, and customer onboarding journeys.",
+                        "Improve finance-focused website SEO performance by 3x, contributing to increased organic acquisition and customer growth.",
+                    ],
+                },
+                {
+                    "title": "SEO Program Manager",
+                    "meta": "B2B Growth Systems | 2023 - 2024 | Cross-region",
+                    "bullets": [
+                        "Managed SEO programs for 20+ industrial brands across multiple regions.",
+                        "Established scalable content and technical SEO processes aligned with CRM and sales operations.",
+                        "Integrated SEO performance tracking with Zoho CRM, supporting lead generation and commercial outcomes.",
+                    ],
+                },
+                {
+                    "title": "Product Manager / System Integration PM",
+                    "meta": "Custom POS & Information Systems | 2021 - 2023 | Taipei",
+                    "bullets": [
+                        "Led end-to-end system integration projects involving e-invoice platforms, payment gateways, POS systems, ERP systems, and third-party APIs.",
+                        "Defined business requirements, data mappings, migration rules, exception handling, and operational workflows.",
+                        "Delivered customer implementations, user training, launch support, and vendor coordination for multiple enterprise clients.",
+                    ],
+                },
+            ],
+            "projects": [
+                {
+                    "title": "Trading Platform & Payment Infrastructure",
+                    "meta": "Financial product infrastructure",
+                    "summary": "Led cross-functional initiatives covering payment routing, stablecoin funding solutions, trading platform operations, and customer funding experiences.",
+                    "bullets": [
+                        "Coordinated platform improvements across MT4, MT5, proprietary systems, finance operations, and external payment providers.",
+                        "Improved funding flexibility through stablecoin rails and third-party payment provider onboarding.",
+                    ],
+                },
+                {
+                    "title": "Copy Trading Platform Operations",
+                    "meta": "TradingCup platform operations",
+                    "summary": "Supported copy trading platform growth, VIP signal-provider management, platform optimization, and issue-resolution initiatives.",
+                    "bullets": [
+                        "Improved operational stability and customer experience through systematic issue management and process improvements.",
+                        "Supported feature promotion and user-growth efforts for active copy traders.",
+                    ],
+                },
+                {
+                    "title": "Regulatory Reporting & Compliance",
+                    "meta": "ASIC, Jordan, Spain, and France requirements",
+                    "summary": "Supported regulatory reporting initiatives across Australia and international jurisdictions.",
+                    "bullets": [
+                        "Coordinated reporting requirements, trade data preparation, issue investigation, and stakeholder communication.",
+                        "Prepared report data for the in-house platform, MT4, and MT5.",
+                    ],
+                },
+                {
+                    "title": "KYC & Customer Onboarding Optimization",
+                    "meta": "Compliance workflow and customer journey",
+                    "summary": "Improved customer onboarding journeys through KYC workflow enhancements and operational process optimization.",
+                    "bullets": [
+                        "Worked closely with compliance, operations, support, and engineering teams to improve approval efficiency and customer conversion.",
+                        "Reduced manual coordination by clarifying checkpoints, ownership, and workflow rules.",
+                    ],
+                },
+                {
+                    "title": "Additional Product & Growth Projects",
+                    "meta": "Wagas POS / CRM / online ordering and IoT channel expansion",
+                    "summary": "Delivered adjacent system-integration and growth projects across CRM, POS, online ordering, IoT product launch, and APAC channel expansion.",
+                    "bullets": [
+                        "Built Wagas POS, CRM, and online ordering workflows, reducing customer-service calls by 10,000 per year and supporting 10K+ orders.",
+                        "Coordinated an IoT product launch across Shanghai, Kaohsiung, and Shenzhen; expanded channels including COSTCO, MOMO, Taobao, and Shanghai TV shopping.",
+                    ],
+                },
+            ],
+            "skills": [
+                ("Financial Products & Compliance", "KYC / AML; Customer Onboarding; Compliance Workflows; Regulatory Reporting; Trading Platforms (MT4 / MT5); Copy Trading Systems; Payment Infrastructure; Stablecoin Payment Rails"),
+                ("Product Management", "Product Strategy; Roadmap Planning; PRD Development; KPI Tracking; Stakeholder Management; Product Delivery"),
+                ("System Integration", "API Integration; Payment Gateway Integration; Data Mapping; CRM Systems; POS / ERP Integration; Workflow Automation"),
+                ("Growth & Operations", "SEO; CRM Funnel Optimization; Cross-functional Coordination; Process Improvement; Data-driven Decision Making"),
+            ],
+            "contact": BINANCE_CONTACT_EN,
+            "note": "This version positions Jay Wu as a Financial Product Manager for Binance, OKX, Bybit, HashKey, and similar roles, with emphasis on KYC, compliance, trading platforms, payment infrastructure, and regulatory reporting.",
+        },
         "jay-wu-overview-en.pdf": {
             "font": "Helvetica",
             "name": "Jay Wu",
             "title": "Product Manager | Finance, Retail Tech, and Growth Systems",
-            "summary": "10 years of cross-industry product and operations integration, turning complex workflows into executable specs and measurable outcomes across engineering, operations, support, finance, marketing, and external partners.",
+            "summary": "Product Manager with 10 years of experience turning operational complexity into launch-ready product workflows across fintech, retail systems, and growth programs. Strong in system integration, cross-functional delivery, workflow design, and measurable business outcomes.",
             "labels": {
                 "proof": "Key Proof",
                 "snapshot": "Resume Snapshot",
@@ -231,42 +351,45 @@ DATA.update(
                 "contact": "Contact",
             },
             "proof": [
-                "3x SEO performance improvement on a finance site",
-                "USD 10K+ monthly fee savings through payment-flow optimization",
-                "20+ SEO programs managed across brands and regions",
-                "POS and website launch completed in 1 month",
+                "Improved finance-site SEO performance by 3x",
+                "Saved USD 10K+ per month through payment-flow optimization",
+                "Managed 20+ SEO and growth programs across brands and regions",
+                "Delivered POS and website go-live within 1 month",
             ],
             "snapshot": [
-                ("Role fit", "Product Manager / System Integration PM / Growth-oriented PM"),
+                ("Role fit", "Product Manager / System Integration PM / Growth Product Manager"),
                 ("Education", "Bachelor's Degree, University of Taipei"),
                 ("Languages", "Native Chinese | English for professional use (Intermediate)"),
-                ("Work preference", "Taipei, Hsinchu, Kaohsiung | On-site, Hybrid, Fully Remote"),
-                ("Collaboration", "Engineering, operations, support, finance, compliance, marketing, and external vendors; 10-15 people"),
+                ("Work preference", "Taipei, Taichung, Kaohsiung | On-site, Hybrid, Fully Remote"),
+                ("Collaboration", "Engineering, operations, support, finance, compliance, marketing, and external vendors; 10-15 stakeholders"),
             ],
             "experience": [
                 {
-                    "title": "Product Manager",
+                    "title": "Product Manager, Trading Platform Operations",
                     "meta": "Australian CFD brokerage | Aug 2024 - Present | Taiwan",
                     "bullets": [
-                        "Own coordination across MT4/MT5, in-house platforms, payment flow, KYC, and CRM.",
-                        "Improved finance-site SEO by 3x and supported acquisition plus conversion.",
-                        "Optimized deposit and withdrawal workflows and saved more than USD 10K per month in fees.",
+                        "Own product coordination across MT4/MT5, in-house platforms, payment routing, KYC checkpoints, CRM workflows, and operational issue handling.",
+                        "Integrated Binance stablecoin rails and multiple global payment providers to improve payment-flow resilience and routing options.",
+                        "Restructured payment and KYC workflows, saving more than USD 10K per month in fees while improving conversion and operational stability.",
+                        "Improved finance-site SEO performance by 3x, strengthening organic acquisition and global brand visibility.",
                     ],
                 },
                 {
                     "title": "SEO Program Manager",
                     "meta": "Cross-region | 2023 - 2024",
                     "bullets": [
-                        "Managed 20+ B2B SEO programs across machine-tool brands.",
-                        "Introduced AI content workflow and Zoho CRM funnel tracking.",
+                        "Managed SEO strategy and operating cadence across 20+ machine-tool brands, standardizing content operations and technical SEO execution.",
+                        "Introduced AI-assisted short-video and content workflows to improve output consistency and cross-team collaboration efficiency.",
+                        "Connected SEO execution with CRM funnel tracking and business-development follow-up, supporting 20 contracts per year.",
                     ],
                 },
                 {
                     "title": "Product Manager / System Integration PM",
-                    "meta": "Custom POS and information systems | 2019 - 2021 | Taichung",
+                    "meta": "Custom POS and information systems | 2021 - 2023 | Taipei",
                     "bullets": [
-                        "Planned POS, membership, API, and e-invoice integrations for live retail operations.",
-                        "Supported launch in a live retail environment within 1 month.",
+                        "Planned POS interfaces, membership flows, and in-store operating scenarios for live retail environments.",
+                        "Integrated e-invoice and third-party APIs, defining data flow, field mapping, migration logic, and edge cases.",
+                        "Delivered POS and website go-live within 1 month while supporting customer training and launch stabilization.",
                     ],
                 },
             ],
@@ -274,27 +397,27 @@ DATA.update(
                 {
                     "title": "Trading Platform Operations",
                     "meta": "Finance infrastructure",
-                    "summary": "Owned workflow priorities, cross-team coordination, and KPI governance around trading-platform operations.",
-                    "bullets": ["MT4/MT5 and in-house platform coordination", "Payment-flow redesign and issue handling"],
+                    "summary": "Owned workflow priorities, cross-team coordination, and KPI governance across trading-platform operations.",
+                    "bullets": ["MT4/MT5 and in-house platform coordination", "Payment-flow redesign, provider coordination, and issue handling"],
                 },
                 {
                     "title": "Shopping Mall POS Integration",
                     "meta": "Retail technology",
                     "summary": "Bridged business, development, and API partners to deliver POS and OMO workflow rollout.",
-                    "bullets": ["POS, membership, CRM, and invoice integration", "Launch planning for a live mall environment"],
+                    "bullets": ["POS, membership, CRM, and invoice integration", "Launch planning, migration, and training for live retail environments"],
                 },
                 {
                     "title": "SEO Growth Programs",
                     "meta": "Growth systems",
                     "summary": "Defined governance, content rhythm, and CRM integration across 20+ SEO programs.",
-                    "bullets": ["Multi-brand SEO operating system", "AI workflow and CRM-enabled funnel management"],
+                    "bullets": ["Multi-brand SEO operating model", "AI workflow and CRM-enabled funnel management"],
                 },
             ],
             "skills": [
-                ("Product Strategy", "Roadmap, PRD, prioritization, go-to-market"),
-                ("System Integration", "POS, API, CRM, ERP, payment gateway, e-invoice"),
-                ("Growth Systems", "SEO, CRM funnel, content ops, AI workflow"),
-                ("Cross-functional Delivery", "Vendor management, stakeholder alignment, launch execution"),
+                ("Product Strategy", "Roadmap planning, PRD, prioritization, go-to-market"),
+                ("System Integration", "POS, API, CRM, ERP, payment gateway, e-invoice, data flow"),
+                ("Growth Systems", "SEO, CRM funnel, content operations, AI workflow"),
+                ("Cross-functional Delivery", "Vendor management, stakeholder alignment, launch execution, issue handling"),
             ],
             "contact": COMMON_CONTACT_EN,
             "note": "Some 2019-2021 experience was delivered in parallel, project-based roles across different business models.",
