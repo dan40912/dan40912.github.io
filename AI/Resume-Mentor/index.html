@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Resume-Mentor｜陪你把自己的價值說清楚</title>
+  <meta name="description" content="不確定自己有多厲害？回答幾個簡單的問題，Resume-Mentor 會像 AI 顧問一樣訪談你，整理出一段專屬提示詞，貼給任何 AI 就能省下來回摸索的時間。" />
+  <link rel="stylesheet" href="assets/css/styles.css?v=20260618-static-skills" />
+</head>
+<body>
+  <main id="top">
+    <!-- Hero -->
+    <header class="wz-hero">
+      <div class="shell hero-shell">
+        <div class="hero-copy">
+          <div class="eyebrow">Skill-driven multi-agent prompt builder</div>
+          <h1>把你的經歷，交給一組 AI 顧問團審一次。</h1>
+          <p class="subtitle">
+            選情境、挑 agent，Resume-Mentor 會從你的 <strong>/skills</strong> 能力庫載入規則，
+            產生一段更懂履歷、面試與證據缺口的專屬 prompt。
+          </p>
+          <div class="hero-actions">
+            <button class="button hero-primary js-start-interview" type="button">開始 AI 面談</button>
+            <span>約 3 分鐘，不上傳檔案也能開始</span>
+          </div>
+        </div>
+      </div>
+      <div class="hero-bottom">
+        <div class="shell hero-bottom-inner">
+          <span>Goal</span>
+          <strong>讓每一次 AI 對話，都帶著你的職涯顧問團與最新 skill 規則。</strong>
+        </div>
+      </div>
+    </header>
+
+    <!-- 怎麼進行（三步） -->
+    <section class="wz-how">
+      <div class="shell">
+        <div class="section-head">
+          <h2>放輕鬆，只有三步</h2>
+          <p>沒有標準答案，憑直覺選就好；中途想改、想回頭，隨時都可以。</p>
+        </div>
+        <div class="grid-3">
+          <article class="card step">
+            <span class="num">1</span>
+            <h3>告訴我們你想準備什麼</h3>
+            <p>履歷、面試，還是個人網站？選一個現在最想搞定的就好。</p>
+          </article>
+          <article class="card step">
+            <span class="num">2</span>
+            <h3>像被顧問訪談一樣作答</h3>
+            <p>一次只問一題，每題都有小提示；按 Enter 或數字鍵就能快速作答。</p>
+          </article>
+          <article class="card step">
+            <span class="num">3</span>
+            <h3>拿到你的專屬提示詞</h3>
+            <p>一鍵複製，貼給 AI 就能用。想要更精準，回上一步調整再產生一次。</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- 結尾 CTA -->
+    <section id="start" class="final-cta">
+      <div class="shell">
+        <div class="section-head section-head-centered">
+          <h2>準備好了嗎？</h2>
+          <p>大約 3 分鐘，一次只問一題。慢慢來，這是為你一個人準備的。</p>
+        </div>
+        <div class="actions">
+          <button class="button js-start-interview" type="button">🚀 開始 AI 面談</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="shell">
+      Resume-Mentor — 履歷不是拿來寫的，是拿來挖掘的。我們只幫你說出真實的價值，不編造、不灌水。
+    </div>
+  </footer>
+
+  <!-- 全螢幕 AI 面談 overlay -->
+  <div id="wz-overlay" class="wz-overlay" role="dialog" aria-modal="true" aria-label="AI 面談" hidden>
+    <header class="wz-topbar">
+      <div class="wz-topbar-inner">
+        <div class="wz-progress"><div class="wz-progress-fill" id="wz-fill"></div></div>
+        <div class="wz-topbar-row">
+          <div class="wz-topbar-meta">
+            <span class="wz-step-count" id="wz-stepcount"></span>
+            <span class="wz-eta" id="wz-eta"></span>
+          </div>
+          <button class="wz-restart" id="wz-restart" type="button">↺ 重新開始</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="wz-stage" id="wz-stage">
+      <div class="wz-card" id="wz-card"></div>
+    </main>
+
+    <footer class="wz-footer" id="wz-footer">
+      <div class="wz-footer-inner">
+        <button class="button secondary wz-prev" id="wz-prev" type="button">← 上一步</button>
+        <button class="button wz-next" id="wz-next" type="button">下一步 →</button>
+      </div>
+    </footer>
+  </div>
+
+  <script src="assets/js/wizard-config.js?v=20260618-static-skills"></script>
+  <script src="assets/js/skill-loader.js?v=20260618-static-skills" defer></script>
+  <script src="assets/js/wizard.js?v=20260618-static-skills" defer></script>
+</body>
+</html>

@@ -998,4 +998,72 @@
                 font-size: 18px;
             }
         }
-    
+
+        /* ---- 新增：時間軸 / 為何 Binance / AI 工作方式 / 決策過程 ---- */
+
+        /* 時間軸的現職標記 */
+        #timeline .focus-card .label .proof-id {
+            margin-left: 8px;
+        }
+
+        /* 為何 Binance：4 欄能力要點 */
+        .claim-grid-4 {
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+        }
+
+        /* 收尾強調句（沿用 claim-item 黃色左邊框，底色加深一點點） */
+        .claim-hook {
+            margin-top: 18px;
+            background: var(--binance-yellow-soft);
+        }
+
+        /* B 段 KYC Prompt：等寬程式碼區塊，沿用頁面色系，不做終端機特效 */
+        .prompt-block {
+            margin: 14px 0 16px;
+            padding: 18px 20px;
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-left: 4px solid var(--binance-yellow);
+            border-radius: 8px;
+            color: #1f2937;
+            font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 13.5px;
+            line-height: 1.7;
+            white-space: pre;
+            overflow-x: auto;
+        }
+
+        /* 決策選項：CHOSEN / REJECTED 強調，沿用既有黃/灰 */
+        .opt-chosen {
+            border-left-color: var(--binance-yellow);
+            background: var(--binance-yellow-soft);
+        }
+
+        .opt-rejected {
+            border-left-color: #d1d5db;
+            background: #f9fafb;
+            opacity: 0.92;
+        }
+
+        .opt-chosen .proof-id {
+            margin-bottom: 8px;
+        }
+
+        .opt-rejected .proof-id {
+            margin-bottom: 8px;
+            background: #9ca3af;
+            color: #fff;
+        }
+
+        @media (max-width: 992px) {
+            .claim-grid-4 {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .claim-grid-4 {
+                grid-template-columns: 1fr;
+            }
+        }
+
