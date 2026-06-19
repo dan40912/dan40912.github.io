@@ -3,85 +3,149 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Resume-Mentor｜陪你把自己的價值說清楚</title>
-  <meta name="description" content="不確定自己有多厲害？回答幾個簡單的問題，Resume-Mentor 會像 AI 顧問一樣訪談你，整理出一段專屬提示詞，貼給任何 AI 就能省下來回摸索的時間。" />
-  <link rel="stylesheet" href="assets/css/styles.css?v=20260618-static-skills" />
+  <title>Resume-Mentor｜你的履歷顧問，幫你問對 AI</title>
+  <meta name="description" content="直接把履歷丟給 AI，常常只拿到罐頭建議。Resume-Mentor 讓 30 多位各有專長的顧問先審你的履歷，再幫你組出一段對的提示詞——貼給任何 AI，就能換到真正用得上的答案。" />
+  <link rel="stylesheet" href="assets/css/styles.css?v=20260620-zh8" />
+  <link rel="stylesheet" href="assets/css/council.css?v=20260620-zh8" />
 </head>
 <body>
+  <nav class="site-nav">
+    <div class="shell site-nav-inner">
+      <a class="site-brand" href="#top">Resume-Mentor</a>
+      <a class="site-gh" href="https://github.com/dan40912/Resume-Mentor" target="_blank" rel="noopener noreferrer">
+        <svg viewBox="0 0 16 16" width="18" height="18" aria-hidden="true" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        <span>Follow me on GitHub</span>
+      </a>
+    </div>
+  </nav>
   <main id="top">
-    <!-- Hero -->
     <header class="wz-hero">
       <div class="shell hero-shell">
         <div class="hero-copy">
-          <div class="eyebrow">Skill-driven multi-agent prompt builder</div>
-          <h1>把你的經歷，交給一組 AI 顧問團審一次。</h1>
+          <div class="eyebrow">Resume-Mentor · 履歷顧問</div>
+          <h1>
+            問對問題，<br />
+            AI 才幫得了你的履歷。
+          </h1>
           <p class="subtitle">
-            選情境、挑 agent，Resume-Mentor 會從你的 <strong>/skills</strong> 能力庫載入規則，
-            產生一段更懂履歷、面試與證據缺口的專屬 prompt。
+            把履歷丟給 ChatGPT，常常只拿到一堆罐頭建議。Resume-Mentor 讓 30 多位各有專長的顧問先審過你——
+            招募眼光、用人主管、ATS、商業價值……再幫你組成一段「對的提示詞」。貼給任何 AI，換到的就是真正用得上的答案。
           </p>
           <div class="hero-actions">
-            <button class="button hero-primary js-start-interview" type="button">開始 AI 面談</button>
-            <span>約 3 分鐘，不上傳檔案也能開始</span>
+            <button class="button hero-primary js-start-interview" type="button">開始</button>
+            <a class="button ghost" href="#rm-council">先看看顧問團</a>
+            <span>約 3–5 分鐘，不用上傳檔案也能開始。</span>
           </div>
-        </div>
-      </div>
-      <div class="hero-bottom">
-        <div class="shell hero-bottom-inner">
-          <span>Goal</span>
-          <strong>讓每一次 AI 對話，都帶著你的職涯顧問團與最新 skill 規則。</strong>
         </div>
       </div>
     </header>
 
-    <!-- 怎麼進行（三步） -->
-    <section class="wz-how">
+    <section class="wz-council" id="rm-council">
       <div class="shell">
         <div class="section-head">
-          <h2>放輕鬆，只有三步</h2>
-          <p>沒有標準答案，憑直覺選就好；中途想改、想回頭，隨時都可以。</p>
+          <h2>30 多位顧問，<br />各看一個你看不到的盲點。</h2>
+          <p>招募專員看你 10 秒，用人主管問你扛不扛得起，ATS 只認格式，毒舌挑刺者專找你最心虛那句。每位只負責一件事——合起來，就是一段問對問題的提示詞。</p>
         </div>
-        <div class="grid-3">
-          <article class="card step">
-            <span class="num">1</span>
-            <h3>告訴我們你想準備什麼</h3>
-            <p>履歷、面試，還是個人網站？選一個現在最想搞定的就好。</p>
-          </article>
-          <article class="card step">
-            <span class="num">2</span>
-            <h3>像被顧問訪談一樣作答</h3>
-            <p>一次只問一題，每題都有小提示；按 Enter 或數字鍵就能快速作答。</p>
-          </article>
-          <article class="card step">
-            <span class="num">3</span>
-            <h3>拿到你的專屬提示詞</h3>
-            <p>一鍵複製，貼給 AI 就能用。想要更精準，回上一步調整再產生一次。</p>
-          </article>
+      </div>
+      <div class="council-marquee" id="rm-mentor-council" aria-label="顧問團"></div>
+    </section>
+
+    <section class="wz-market">
+      <div class="shell">
+        <div class="section-head">
+          <h2>先說你要解決什麼，<br />顧問團自動就位。</h2>
+          <p>
+            找工作、轉職、升遷、海外、主管定位、創業轉職——選一個，
+            對應的顧問和提問流程就接手，幫你問對這次該問 AI 的問題。
+          </p>
         </div>
+        <div class="wz-goal-grid" id="rm-goals-gallery"></div>
       </div>
     </section>
 
-    <!-- 結尾 CTA -->
+    <section class="wz-skills">
+      <div class="shell">
+        <div class="section-head">
+          <h2>每位顧問怎麼審你，<br />全部攤開給你看。</h2>
+          <p>
+            不是好聽的名字而已。每位顧問在意什麼、會怎麼挑你、用什麼標準——
+            點開就看得到，沒有黑箱，你永遠知道提示詞裡放了什麼。
+          </p>
+        </div>
+        <div class="wz-skill-grid" id="rm-skill-gallery"></div>
+      </div>
+    </section>
+
+    <section class="wz-how">
+      <div class="shell">
+        <div class="section-head">
+          <h2>它怎麼運作。</h2>
+          <p>先把你問清楚，再幫你問對 AI。</p>
+        </div>
+        <div class="grid-4">
+          <article class="card step">
+            <span class="num">1</span>
+            <h3>選目標</h3>
+            <p>履歷、LinkedIn、面試還是升遷，先講一句你這次想解決什麼。</p>
+          </article>
+          <article class="card step">
+            <span class="num">2</span>
+            <h3>被反問</h3>
+            <p>顧問輪流追問，把你的成就、數字和證據一點一點挖出來。</p>
+          </article>
+          <article class="card step">
+            <span class="num">3</span>
+            <h3>被審視</h3>
+            <p>30 多位顧問各從自己的角度，挑出沒證據、太空泛的地方。</p>
+          </article>
+          <article class="card step">
+            <span class="num">4</span>
+            <h3>拿提示詞</h3>
+            <p>把這一切組成一段「對的提示詞」，貼給任何 AI 就能用。</p>
+          </article>
+        </div>
+
+        <div class="section-head section-head-offset">
+          <h2>你拿到的不是罐頭建議，<br />是一段為你客製的提示詞。</h2>
+          <p>貼給 ChatGPT、Claude 或任何 AI，換到真正用得上的回饋。</p>
+        </div>
+        <pre class="output-list"><code># 角色
+你是由招募專員、用人主管、ATS、商業價值官組成的履歷審查顧問團。
+# 任務
+逐條挑戰我的履歷：<span class="muted">找出沒證據、太空泛、撐不住面試的地方。</span>
+# 我會提供
+我的經歷與成果：<span class="muted">（貼在這裡）</span>
+# 輸出
+逐句修改建議 ＋ 缺少的證據清單 ＋ 優先順序。</code></pre>
+      </div>
+    </section>
+
     <section id="start" class="final-cta">
       <div class="shell">
         <div class="section-head section-head-centered">
-          <h2>準備好了嗎？</h2>
-          <p>大約 3 分鐘，一次只問一題。慢慢來，這是為你一個人準備的。</p>
+          <h2>準備好問對問題了嗎？</h2>
+          <p>大約 3–5 分鐘，一次只問一題。慢慢來，這是為你一個人準備的。</p>
         </div>
         <div class="actions">
-          <button class="button js-start-interview" type="button">🚀 開始 AI 面談</button>
+          <button class="button js-start-interview" type="button">開始</button>
+          <a class="button ghost" href="#rm-goals-gallery">先看可選目標</a>
         </div>
+        <p class="closing-line">你缺的不是 AI，<br />是一個會幫你問對問題的顧問。</p>
       </div>
     </section>
   </main>
 
   <footer>
-    <div class="shell">
-      Resume-Mentor — 履歷不是拿來寫的，是拿來挖掘的。我們只幫你說出真實的價值，不編造、不灌水。
+    <div class="shell footer-inner">
+      <span>Resume-Mentor — 幫你問對問題，把履歷交給對的顧問。不編造，不灌水。</span>
+      <a class="site-gh footer-gh" href="https://github.com/dan40912/Resume-Mentor" target="_blank" rel="noopener noreferrer">
+        <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        <span>Follow me on GitHub</span>
+      </a>
     </div>
   </footer>
 
-  <!-- 全螢幕 AI 面談 overlay -->
-  <div id="wz-overlay" class="wz-overlay" role="dialog" aria-modal="true" aria-label="AI 面談" hidden>
+  <div id="wz-overlay" class="wz-overlay" role="dialog" aria-modal="true" aria-label="職涯面談" hidden>
     <header class="wz-topbar">
       <div class="wz-topbar-inner">
         <div class="wz-progress"><div class="wz-progress-fill" id="wz-fill"></div></div>
@@ -90,7 +154,7 @@
             <span class="wz-step-count" id="wz-stepcount"></span>
             <span class="wz-eta" id="wz-eta"></span>
           </div>
-          <button class="wz-restart" id="wz-restart" type="button">↺ 重新開始</button>
+          <button class="wz-restart" id="wz-restart" type="button">重新開始</button>
         </div>
       </div>
     </header>
@@ -101,14 +165,17 @@
 
     <footer class="wz-footer" id="wz-footer">
       <div class="wz-footer-inner">
-        <button class="button secondary wz-prev" id="wz-prev" type="button">← 上一步</button>
-        <button class="button wz-next" id="wz-next" type="button">下一步 →</button>
+        <button class="button secondary wz-prev" id="wz-prev" type="button">上一步</button>
+        <button class="button wz-next" id="wz-next" type="button">下一步</button>
       </div>
     </footer>
   </div>
 
-  <script src="assets/js/wizard-config.js?v=20260618-static-skills"></script>
-  <script src="assets/js/skill-loader.js?v=20260618-static-skills" defer></script>
-  <script src="assets/js/wizard.js?v=20260618-static-skills" defer></script>
+  <script src="assets/js/wizard-config.js?v=20260620-zh8"></script>
+  <script src="assets/js/agent-silhouettes.js?v=20260620-zh8"></script>
+  <script src="assets/js/mentors-data.js?v=20260620-zh8"></script>
+  <script src="assets/js/mentor-council.js?v=20260620-zh8" defer></script>
+  <script src="assets/js/skill-loader.js?v=20260620-zh8" defer></script>
+  <script src="assets/js/wizard.js?v=20260620-zh8" defer></script>
 </body>
 </html>

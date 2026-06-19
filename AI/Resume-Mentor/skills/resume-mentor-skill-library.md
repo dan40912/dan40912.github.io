@@ -979,6 +979,150 @@ Success Criteria:
 
 **Success Criteria:** Output remains truthful, verifiable, and safe to use.
 
+### 61. LinkedIn Skills Skill
+
+**Category:** LinkedIn
+
+**Goal:** Optimize the LinkedIn skills section.
+
+**Input:** Current skills, target role, target industry.
+
+**Output:** LinkedIn skills list and ordering guidance.
+
+**Challenge Rules:** Do not add unproven skills.
+
+**Review Rules:** Check keyword fit, truthfulness, and support from evidence.
+
+**Success Criteria:** Skills match target search terms without keyword stuffing.
+
+### 62. LinkedIn Featured Skill
+
+**Category:** LinkedIn
+
+**Goal:** Choose the most credible Featured items for LinkedIn.
+
+**Input:** Projects, posts, articles, portfolio links, target role.
+
+**Output:** Featured section recommendations.
+
+**Challenge Rules:** Do not feature weak or irrelevant material.
+
+**Review Rules:** Check relevance, proof, and narrative fit.
+
+**Success Criteria:** Featured section reinforces the target positioning.
+
+### 63. LinkedIn Recruiter Search Skill
+
+**Category:** LinkedIn
+
+**Goal:** Improve LinkedIn discoverability for recruiters.
+
+**Input:** Profile text, headline, skills, target roles, industry language.
+
+**Output:** Search optimization recommendations.
+
+**Challenge Rules:** Do not keyword-stuff or misrepresent experience.
+
+**Review Rules:** Check natural keyword placement and profile completeness.
+
+**Success Criteria:** Recruiters can find the profile more easily.
+
+### 64. LinkedIn Content Positioning Skill
+
+**Category:** LinkedIn
+
+**Goal:** Define credible content themes for LinkedIn.
+
+**Input:** Career goals, expertise, proof points, audience.
+
+**Output:** 3-5 content pillars and posting angles.
+
+**Challenge Rules:** Avoid generic thought leadership.
+
+**Review Rules:** Check audience fit, proof, and repeatability.
+
+**Success Criteria:** User has clear, credible topics to post about.
+
+### 65. Referral Request Skill
+
+**Category:** Outreach
+
+**Goal:** Write referral requests that are specific, polite, and easy to act on.
+
+**Input:** Target role, referrer relationship, resume summary, reason for fit.
+
+**Output:** Referral request message.
+
+**Challenge Rules:** Do not pressure the referrer or assume they owe help.
+
+**Review Rules:** Check clarity, context, proof, and ease of forwarding.
+
+**Success Criteria:** Referrer can decide and act without extra work.
+
+### 66. Recommendation Letter Skill
+
+**Category:** Outreach
+
+**Goal:** Draft a recommendation letter or reference note grounded in real observation.
+
+**Input:** Recommender relationship, observed strengths, target purpose, concrete examples.
+
+**Output:** Recommendation letter draft.
+
+**Challenge Rules:** Do not invent personal observations or exaggerate familiarity.
+
+**Review Rules:** Check credibility, specificity, tone, and recipient fit.
+
+**Success Criteria:** The letter sounds authentic and useful.
+
+### 67. Assessment Design Skill
+
+**Category:** Assessment
+
+**Goal:** Design a role-relevant assessment or aptitude check.
+
+**Input:** Target role, desired competencies, evidence, constraints.
+
+**Output:** Assessment structure, questions, and scoring rubric.
+
+**Challenge Rules:** Do not create vague personality tests.
+
+**Review Rules:** Check role relevance, clarity, and measurability.
+
+**Success Criteria:** Assessment can distinguish real capability fairly.
+
+### 68. Bias Check Skill
+
+**Category:** Assessment
+
+**Goal:** Detect unfair or irrelevant bias in an assessment.
+
+**Input:** Assessment draft, target role, context.
+
+**Output:** Bias and fairness review.
+
+**Challenge Rules:** Flag proxies that do not relate to job performance.
+
+**Review Rules:** Check fairness, relevance, and clarity.
+
+**Success Criteria:** Assessment becomes more equitable and job-related.
+
+### 69. Role Targeting Skill
+
+**Category:** Career
+
+**Goal:** Pick realistic target roles and narrow the search.
+
+**Input:** Current experience, market context, career goals.
+
+**Output:** Role shortlist and priority order.
+
+**Challenge Rules:** Challenge unrealistic or too-broad targets.
+
+**Review Rules:** Check fit, stretch, and marketability.
+
+**Success Criteria:** User has a focused target-role plan.
+
 ## Top 30 Skills To Develop First
 
 ```text
