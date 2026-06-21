@@ -1,0 +1,4 @@
+interface:
+  display_name: "Market Scan"
+  short_description: "Analyze MNQ/MNQM6 chart context and score trade setups."
+  default_prompt: "Use this skill to scan MNQ/MNQM6 market structure, indicators, and key levels."

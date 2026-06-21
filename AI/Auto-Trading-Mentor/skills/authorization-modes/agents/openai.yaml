@@ -1,0 +1,4 @@
+interface:
+  display_name: "Authorization Modes"
+  short_description: "Define allowed trading automation levels."
+  default_prompt: "Use this skill to decide whether an automation may observe, analyze, notify, manage, or execute demo trades."

@@ -1,0 +1,5 @@
+interface:
+  display_name: "Order Execution"
+  short_description: "Check and execute demo trade actions."
+  default_prompt: "Use this skill before any Buy, Sell, Add, Reduce, or Close action."
+

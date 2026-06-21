@@ -1,0 +1,4 @@
+interface:
+  display_name: "Heartbeat Reporting"
+  short_description: "Write compact Chinese Trading Action Cards."
+  default_prompt: "Use this skill to produce the final Chinese Trading Action Card: 多單, 空單, 平倉, 減倉, WAIT, or MANUAL."

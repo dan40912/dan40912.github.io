@@ -1,0 +1,4 @@
+interface:
+  display_name: "Take Profit Stop Loss"
+  short_description: "Set trade targets, stops, and invalidation."
+  default_prompt: "Use this skill to define manual_stop, manual_take_profit, RR, and invalidation."

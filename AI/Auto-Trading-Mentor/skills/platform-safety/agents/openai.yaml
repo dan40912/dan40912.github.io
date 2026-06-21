@@ -1,0 +1,4 @@
+interface:
+  display_name: "Platform Safety"
+  short_description: "Block unsafe accounts and live execution."
+  default_prompt: "Use this skill to verify Demo/Replay/Paper status, symbol, account safety, and visible controls."

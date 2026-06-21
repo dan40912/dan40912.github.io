@@ -1,0 +1,18 @@
+.DS_Store
+
+# External reference repositories; kept out of this project history.
+external/
+
+# Local trading journals and reports may contain account/trade data.
+logs/journal/
+logs/reports/
+
+# Local or hosted-run exports may contain sensitive trading screen context.
+runs/*.json
+runs/*.jsonl
+runs/*.csv
+runs/*.png
+runs/*.jpg
+runs/*.jpeg
+runs/*.webp
+runs/screenshots/

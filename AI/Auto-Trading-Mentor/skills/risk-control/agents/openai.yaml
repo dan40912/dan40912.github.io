@@ -1,0 +1,5 @@
+interface:
+  display_name: "Risk Control"
+  short_description: "Apply trading risk guardrails."
+  default_prompt: "Use this skill to decide whether MNQ/MNQM6 trading is allowed under the risk rules."
+

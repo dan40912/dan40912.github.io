@@ -1,0 +1,1498 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI 交易 Prompt 產生器</title>
+  <meta name="description" content="選擇交易模式、風控邊界與 AI 角色團隊，產生可貼進 Codex、Claude 或 ChatGPT 的交易 Prompt。">
+  <link rel="icon" href="data:,">
+  <style>
+    :root {
+      --bg: #f6f8fb;
+      --panel: #ffffff;
+      --panel-2: #eef3f8;
+      --panel-3: #e6edf5;
+      --line: #d8e0ea;
+      --text: #102033;
+      --muted: #667488;
+      --soft: #34465d;
+      --blue: #2563eb;
+      --green: #00a878;
+      --red: #d92d20;
+      --amber: #b7791f;
+      --gold: #8a6a2b;
+      --radius: 12px;
+      --shadow: 0 18px 48px rgba(16, 32, 51, .12);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      overflow-x: hidden;
+    }
+
+    body {
+      margin: 0;
+      background: #ffffff;
+      color: var(--text);
+      font-family: "Noto Sans TC", Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.6;
+      letter-spacing: 0;
+      overflow-x: hidden;
+    }
+
+    body.wizard-open {
+      overflow: hidden;
+    }
+
+    button,
+    textarea,
+    input,
+    select {
+      font: inherit;
+    }
+
+    button {
+      color: inherit;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    h1,
+    h2,
+    h3,
+    p {
+      margin-top: 0;
+    }
+
+    h1,
+    h2,
+    h3 {
+      line-height: 1.1;
+      letter-spacing: -.01em;
+    }
+
+    .shell {
+      width: min(1120px, calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    .button {
+      min-height: 46px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--text);
+      border-radius: 999px;
+      padding: 0 22px;
+      background: var(--text);
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: 850;
+      cursor: pointer;
+      transition: border-color .18s ease, background .18s ease, color .18s ease, opacity .18s ease, transform .18s ease;
+    }
+
+    .button:hover {
+      opacity: .88;
+      transform: translateY(-1px);
+    }
+
+    .button.ghost,
+    .button.secondary {
+      border-color: var(--line);
+      background: transparent;
+      color: var(--text);
+    }
+
+    .button.ghost:hover,
+    .button.secondary:hover {
+      border-color: var(--blue);
+      opacity: 1;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 22px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+
+    .eyebrow::before {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: var(--green);
+      box-shadow: 0 0 18px rgba(0, 168, 120, .32);
+      content: "";
+    }
+
+    /* Landing layout */
+    .trade-hero {
+      min-height: 100svh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 58px 0 0;
+      border-bottom: 1px solid var(--line);
+      background:
+        radial-gradient(circle at 74% 18%, rgba(37, 99, 235, .12), transparent 30%),
+        linear-gradient(180deg, #ffffff 0%, #f7fafc 62%, #eef3f8 100%);
+      overflow: hidden;
+    }
+
+    .hero-header {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding: 0 0 24px;
+    }
+
+    .github-link {
+      min-height: 38px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, .72);
+      color: var(--text);
+      padding: 0 14px;
+      font-size: 13px;
+      font-weight: 850;
+      box-shadow: 0 12px 28px rgba(16, 32, 51, .08);
+      transition: border-color .18s ease, background .18s ease, transform .18s ease;
+    }
+
+    .github-link:hover {
+      border-color: rgba(0, 168, 120, .42);
+      background: rgba(255, 255, 255, .92);
+      transform: translateY(-1px);
+    }
+
+    .github-link svg {
+      width: 18px;
+      height: 18px;
+      flex: 0 0 auto;
+    }
+
+    .trade-hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, .9fr) minmax(420px, 1.1fr);
+      gap: 42px;
+      align-items: center;
+      padding-bottom: 30px;
+    }
+
+    .trade-hero h1 {
+      max-width: 760px;
+      margin-bottom: 20px;
+      font-size: clamp(42px, 6.1vw, 76px);
+      font-weight: 900;
+    }
+
+    .subtitle {
+      max-width: 650px;
+      margin: 0;
+      color: var(--soft);
+      font-size: 18px;
+    }
+
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-top: 32px;
+    }
+
+    .hero-primary {
+      min-height: 50px;
+      padding: 0 28px;
+    }
+
+    .hero-visual {
+      position: relative;
+      min-height: 570px;
+      isolation: isolate;
+    }
+
+    .hero-visual::before {
+      position: absolute;
+      inset: 0;
+      z-index: -2;
+      border-radius: 14px;
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, .94), rgba(246, 248, 251, .82)),
+        radial-gradient(circle at 48% 12%, rgba(37, 99, 235, .13), transparent 34%),
+        #ffffff;
+      content: "";
+    }
+
+    .hero-visual::after {
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background:
+        linear-gradient(rgba(16, 32, 51, .055) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(16, 32, 51, .05) 1px, transparent 1px),
+        linear-gradient(180deg, rgba(255, 255, 255, .08), rgba(255, 255, 255, .52));
+      background-size: 34px 34px, 34px 34px, auto;
+      content: "";
+    }
+
+    .hero-agent-wall {
+      position: absolute;
+      inset: 58px 12px 142px;
+      display: grid;
+      grid-template-columns: repeat(9, minmax(0, 1fr));
+      align-items: end;
+      gap: 2px;
+      overflow: visible;
+    }
+
+    .hero-agent {
+      position: relative;
+      min-width: 0;
+    }
+
+    .hero-agent img {
+      width: 100%;
+      max-height: 330px;
+      display: block;
+      object-fit: contain;
+      opacity: .82;
+      filter: drop-shadow(0 18px 26px rgba(16, 32, 51, .22));
+    }
+
+    .hero-agent:nth-child(1) img { transform: translateY(15px) scale(1.03); }
+    .hero-agent:nth-child(2) img { transform: translateY(-12px) scale(1.11); }
+    .hero-agent:nth-child(3) img { transform: translateY(4px) scale(1.06); }
+    .hero-agent:nth-child(4) img { transform: translateY(26px) scale(1.13); }
+    .hero-agent:nth-child(5) img { transform: translateY(-18px) scale(1.18); }
+    .hero-agent:nth-child(6) img { transform: translateY(20px) scale(1.12); }
+    .hero-agent:nth-child(7) img { transform: translateY(10px) scale(1.05); }
+    .hero-agent:nth-child(8) img { transform: translateY(34px) scale(1.2); }
+    .hero-agent:nth-child(9) img { transform: translateY(16px) scale(1.06); }
+
+    .hero-agent-caption {
+      position: absolute;
+      left: 18px;
+      right: 18px;
+      bottom: 18px;
+      z-index: 2;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: rgba(255, 255, 255, .9);
+      backdrop-filter: blur(10px);
+      padding: 18px;
+    }
+
+    .hero-agent-caption h2 {
+      margin: 0 0 8px;
+      font-size: clamp(24px, 2.7vw, 34px);
+    }
+
+    /* Overlay wizard */
+    .trade-wizard-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      background:
+        radial-gradient(circle at 78% 8%, rgba(37, 99, 235, .1), transparent 30%),
+        linear-gradient(180deg, #ffffff, var(--bg));
+      color: var(--text);
+    }
+
+    .trade-wizard-overlay[hidden] {
+      display: none;
+    }
+
+    .trade-topbar {
+      flex: 0 0 auto;
+      border-bottom: 1px solid var(--line);
+      background: rgba(255, 255, 255, .94);
+      backdrop-filter: blur(10px);
+    }
+
+    .trade-topbar-inner {
+      width: min(920px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 14px 0 12px;
+    }
+
+    .progress {
+      height: 3px;
+      border-radius: 999px;
+      background: var(--line);
+      overflow: hidden;
+    }
+
+    .progress span {
+      display: block;
+      height: 100%;
+      width: 25%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--gold), var(--green), var(--blue));
+      transition: width .22s ease;
+    }
+
+    .trade-topbar-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    .trade-step-meta {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: 8px 14px;
+      min-width: 0;
+    }
+
+    .trade-step-meta span {
+      color: var(--text);
+      font-size: 13px;
+      font-weight: 850;
+    }
+
+    .trade-step-meta strong {
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 650;
+    }
+
+    .trade-topbar-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .topbar-button {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: transparent;
+      color: var(--muted);
+      padding: 6px 13px;
+      font-size: 13px;
+      font-weight: 750;
+      cursor: pointer;
+    }
+
+    .topbar-button:hover {
+      border-color: var(--blue);
+      color: var(--blue);
+    }
+
+    .trade-stage {
+      flex: 1 1 auto;
+      overflow-y: auto;
+      padding: 34px 16px 46px;
+    }
+
+    .trade-stage-inner {
+      width: min(1020px, 100%);
+      margin: 0 auto;
+      display: grid;
+      gap: 18px;
+    }
+
+    .builder-shell {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 300px;
+      gap: 18px;
+      align-items: start;
+    }
+
+    .builder,
+    .summary,
+    .result-card,
+    .prompt-panel {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: var(--panel);
+      box-shadow: var(--shadow);
+    }
+
+    .builder {
+      min-height: 520px;
+      padding: 34px;
+    }
+
+    .builder-head {
+      display: grid;
+      gap: 12px;
+      margin-bottom: 22px;
+    }
+
+    .builder-head span {
+      display: none;
+    }
+
+    .builder-head h2 {
+      margin-bottom: 8px;
+      font-size: clamp(26px, 3.2vw, 34px);
+      font-weight: 900;
+    }
+
+    .builder-head p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .builder-head .progress {
+      display: none;
+    }
+
+    .step-panel {
+      display: none;
+    }
+
+    .step-panel.active {
+      display: block;
+    }
+
+    .choice-grid,
+    .risk-grid,
+    .role-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .choice,
+    .role-card,
+    .field,
+    .toggle-row {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: #ffffff;
+    }
+
+    .choice,
+    .role-card {
+      min-height: 126px;
+      padding: 15px 16px;
+      text-align: left;
+      cursor: pointer;
+      position: relative;
+      transition: border-color .18s ease, background .18s ease, box-shadow .18s ease;
+    }
+
+    .mode-choice {
+      min-height: 154px;
+      display: grid;
+      align-content: start;
+      gap: 9px;
+      padding: 18px;
+    }
+
+    .mode-choice-head {
+      display: flex !important;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      color: var(--text) !important;
+    }
+
+    .mode-choice-head small {
+      flex: 0 0 auto;
+      margin: 0;
+      border-radius: 999px;
+      background: #eef6ff;
+      color: var(--blue);
+      padding: 4px 9px;
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .mode-choice em {
+      display: block;
+      color: var(--soft);
+      font-size: 13px;
+      font-style: normal;
+      line-height: 1.45;
+    }
+
+    .role-card {
+      display: grid;
+      grid-template-columns: 84px minmax(0, 1fr);
+      align-items: center;
+      gap: 14px;
+      overflow: visible;
+    }
+
+    .role-card-figure {
+      width: 78px;
+      height: 108px;
+      object-fit: contain;
+      opacity: 1;
+      filter: drop-shadow(0 10px 14px rgba(16, 32, 51, .2));
+    }
+
+    .role-card-body {
+      min-width: 0;
+    }
+
+    .role-preview {
+      position: absolute;
+      left: 18px;
+      right: 18px;
+      bottom: calc(100% + 12px);
+      z-index: 30;
+      display: grid !important;
+      grid-template-columns: 118px minmax(0, 1fr);
+      align-items: center;
+      gap: 16px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: #ffffff;
+      color: var(--text) !important;
+      box-shadow: 0 22px 48px rgba(16, 32, 51, .22);
+      padding: 16px;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(0) scale(1);
+    }
+
+    .role-preview img {
+      width: 108px;
+      height: 148px;
+      object-fit: contain;
+      filter: drop-shadow(0 14px 22px rgba(16, 32, 51, .2));
+    }
+
+    .role-preview strong {
+      margin: 0 0 8px;
+      color: var(--text);
+      font-size: 18px;
+    }
+
+    .role-preview span {
+      color: var(--soft);
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+    .role-card:hover .role-preview,
+    .role-card:focus-visible .role-preview {
+      opacity: 1;
+    }
+
+    .choice:hover,
+    .role-card:hover {
+      border-color: var(--blue);
+      box-shadow: 0 10px 28px rgba(37, 99, 235, .1);
+    }
+
+    .choice.selected,
+    .role-card.selected {
+      border-color: var(--green);
+      background: #ecfdf5;
+      box-shadow: inset 0 0 0 1px rgba(0, 168, 120, .28);
+    }
+
+    .choice.blocked {
+      border-color: rgba(217, 45, 32, .34);
+      background: #fff1f0;
+    }
+
+    .choice strong,
+    .role-card strong {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--text);
+      font-size: 16px;
+    }
+
+    .choice span,
+    .role-card span {
+      display: block;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .choice small,
+    .role-card small {
+      display: inline-flex;
+      margin-top: 10px;
+      color: var(--green);
+      font-size: 12px;
+      font-weight: 850;
+    }
+
+    .choice.blocked small {
+      color: var(--red);
+    }
+
+    .choice.blocked .mode-choice-head small {
+      background: #fff1f0;
+      color: var(--red);
+    }
+
+    .hint-dot {
+      position: relative;
+      width: 24px;
+      height: 24px;
+      display: inline-grid;
+      place-items: center;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: #f8fafc;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 900;
+      cursor: help;
+    }
+
+    .mode-choice > .hint-dot {
+      position: absolute;
+      right: 14px;
+      bottom: 14px;
+    }
+
+    .hint-dot::after {
+      position: absolute;
+      right: 0;
+      bottom: calc(100% + 10px);
+      z-index: 20;
+      width: min(280px, 70vw);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #102033;
+      color: #ffffff;
+      padding: 10px 12px;
+      box-shadow: 0 16px 32px rgba(16, 32, 51, .18);
+      content: attr(data-hint);
+      font-size: 12px;
+      font-weight: 650;
+      line-height: 1.5;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(4px);
+      transition: opacity .16s ease, transform .16s ease;
+    }
+
+    .hint-dot:hover::after,
+    .hint-dot:focus-visible::after {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .field {
+      display: grid;
+      gap: 8px;
+      padding: 15px;
+    }
+
+    .field span {
+      color: var(--text);
+      font-weight: 850;
+    }
+
+    .field input,
+    .field select {
+      width: 100%;
+      min-height: 42px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #ffffff;
+      color: var(--text);
+      padding: 0 12px;
+      outline: none;
+    }
+
+    .field input:focus,
+    .field select:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, .12);
+    }
+
+    .field.invalid {
+      border-color: rgba(217, 45, 32, .55);
+      background: #fff7f7;
+    }
+
+    .field small {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .risk-table {
+      display: grid;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: #ffffff;
+      overflow: visible;
+    }
+
+    .risk-row {
+      display: grid;
+      grid-template-columns: minmax(118px, .72fr) minmax(180px, .9fr) minmax(220px, 1.25fr) 32px;
+      align-items: center;
+      gap: 14px;
+      min-height: 76px;
+      border: 0;
+      border-bottom: 1px solid var(--line);
+      border-radius: 0;
+      padding: 14px 16px;
+      background: #ffffff;
+    }
+
+    .risk-row:last-child {
+      border-bottom: 0;
+    }
+
+    .risk-row:hover {
+      background: #f8fafc;
+    }
+
+    .risk-label {
+      color: var(--text);
+      font-weight: 900;
+    }
+
+    .risk-control {
+      display: block;
+    }
+
+    .risk-copy {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .module-section {
+      margin-top: 20px;
+      border-top: 1px solid var(--line);
+      padding-top: 18px;
+    }
+
+    .section-title {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 12px;
+    }
+
+    .section-title strong {
+      color: var(--text);
+    }
+
+    .section-title span {
+      max-width: 520px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+      text-align: right;
+    }
+
+    .output-options {
+      display: grid;
+      gap: 12px;
+    }
+
+    .toggle-row {
+      min-height: 64px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 15px;
+    }
+
+    .output-card {
+      position: relative;
+      align-items: flex-start;
+      padding: 18px 52px 18px 18px;
+      transition: border-color .18s ease, background .18s ease, box-shadow .18s ease;
+    }
+
+    .output-card:hover {
+      border-color: var(--blue);
+      box-shadow: 0 10px 28px rgba(37, 99, 235, .1);
+    }
+
+    .toggle-row input {
+      width: 18px;
+      height: 18px;
+      flex: 0 0 auto;
+      margin-top: 4px;
+      accent-color: var(--green);
+    }
+
+    .toggle-row span {
+      color: var(--soft);
+    }
+
+    .output-card-body {
+      display: grid !important;
+      gap: 6px;
+      min-width: 0;
+    }
+
+    .output-card-body strong {
+      color: var(--text);
+      font-size: 17px;
+      line-height: 1.25;
+    }
+
+    .output-card-body span {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .output-card .hint-dot {
+      position: absolute;
+      right: 16px;
+      top: 18px;
+    }
+
+    .builder-actions {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin: 28px -34px -34px;
+      border-top: 1px solid var(--line);
+      border-radius: 0 0 18px 18px;
+      background: rgba(255, 255, 255, .94);
+      backdrop-filter: blur(10px);
+      padding: 16px 34px;
+    }
+
+    .summary {
+      position: sticky;
+      top: 16px;
+      padding: 18px;
+    }
+
+    .summary h3 {
+      margin-bottom: 14px;
+      font-size: 18px;
+    }
+
+    .summary dl {
+      display: grid;
+      gap: 10px;
+      margin: 0;
+    }
+
+    .summary dl div {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 10px;
+    }
+
+    dt {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    dd {
+      margin: 0;
+      color: var(--text);
+      font-weight: 850;
+      text-align: right;
+      font-size: 13px;
+    }
+
+    .readiness {
+      margin: 14px 0 0;
+      border: 1px solid rgba(183, 121, 31, .28);
+      border-radius: 10px;
+      background: #fffbeb;
+      color: #7a4b00;
+      padding: 11px;
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .results {
+      margin-top: 0;
+    }
+
+    .is-hidden {
+      display: none !important;
+    }
+
+    .results-head {
+      max-width: 760px;
+      margin-bottom: 16px;
+    }
+
+    .results-head h2 {
+      margin: 7px 0 9px;
+      font-size: 36px;
+    }
+
+    .results-head p {
+      color: var(--muted);
+      font-size: 17px;
+    }
+
+    .result-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 16px;
+    }
+
+    .result-card {
+      padding: 20px;
+    }
+
+    .result-card h3 {
+      margin-bottom: 12px;
+    }
+
+    .result-card ol {
+      margin: 0;
+      padding-left: 20px;
+      color: var(--soft);
+      line-height: 1.7;
+    }
+
+    .trading-card {
+      display: grid;
+      gap: 9px;
+    }
+
+    .trading-card div {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #f8fafc;
+      padding: 11px;
+      color: var(--soft);
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    .trading-card strong {
+      color: var(--text);
+    }
+
+    .result-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 16px 0;
+    }
+
+    .prompt-panel {
+      overflow: hidden;
+      background: #ffffff;
+    }
+
+    .prompt-panel textarea {
+      width: 100%;
+      min-height: 460px;
+      display: block;
+      border: 0;
+      background: #0f172a;
+      color: #e2e8f0;
+      padding: 16px;
+      resize: vertical;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .prompt-panel.is-collapsed textarea {
+      display: none;
+    }
+
+    @media (max-width: 980px) {
+      .trade-hero-grid,
+      .builder-shell,
+      .result-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .trade-hero {
+        min-height: auto;
+        padding-top: 58px;
+      }
+
+      .hero-visual {
+        min-height: 560px;
+      }
+
+      .summary {
+        position: static;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .shell {
+        width: min(100% - 28px, 1120px);
+      }
+
+      .hero-header {
+        justify-content: flex-start;
+        padding-bottom: 22px;
+      }
+
+      .github-link {
+        min-height: 36px;
+        padding: 0 12px;
+      }
+
+      .trade-hero {
+        padding-top: 34px;
+      }
+
+      .trade-hero h1 {
+        font-size: 38px;
+        line-height: 1.12;
+      }
+
+      .subtitle {
+        font-size: 16px;
+      }
+
+      .hero-actions,
+      .result-actions {
+        align-items: stretch;
+        width: 100%;
+      }
+
+      .button {
+        width: 100%;
+      }
+
+      .hero-visual {
+        min-height: 430px;
+      }
+
+      .hero-agent-wall {
+        grid-template-columns: repeat(9, minmax(0, 1fr));
+        gap: 0;
+        inset: 88px 8px 116px;
+        overflow: visible;
+      }
+
+      .hero-agent {
+        display: flex;
+        justify-content: center;
+      }
+
+      .hero-agent img {
+        width: clamp(42px, 14vw, 54px);
+        max-width: none;
+        max-height: 255px;
+        filter: drop-shadow(0 10px 16px rgba(16, 32, 51, .18));
+      }
+
+      .hero-agent:nth-child(1) img { transform: translateY(12px) scale(.98); }
+      .hero-agent:nth-child(2) img { transform: translateY(-7px) scale(1.08); }
+      .hero-agent:nth-child(3) img { transform: translateY(4px) scale(1); }
+      .hero-agent:nth-child(4) img { transform: translateY(18px) scale(1.08); }
+      .hero-agent:nth-child(5) img { transform: translateY(-12px) scale(1.14); }
+      .hero-agent:nth-child(6) img { transform: translateY(13px) scale(1.05); }
+      .hero-agent:nth-child(7) img { transform: translateY(7px) scale(1); }
+      .hero-agent:nth-child(8) img { transform: translateY(20px) scale(1.08); }
+      .hero-agent:nth-child(9) img { transform: translateY(12px) scale(1); }
+
+      .hero-agent-caption {
+        left: 14px;
+        right: 14px;
+        bottom: 14px;
+        padding: 15px;
+      }
+
+      .choice-grid,
+      .risk-grid,
+      .role-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .risk-row {
+        grid-template-columns: 1fr 32px;
+        gap: 8px 12px;
+      }
+
+      .risk-label,
+      .risk-control,
+      .risk-copy {
+        grid-column: 1 / 2;
+      }
+
+      .risk-row .hint-dot {
+        grid-column: 2 / 3;
+        grid-row: 1 / 2;
+        justify-self: end;
+      }
+
+      .mode-choice {
+        min-height: 0;
+      }
+
+      .trade-topbar-row {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .trade-topbar-actions,
+      .trade-topbar-actions .topbar-button {
+        width: 100%;
+      }
+
+      .trade-topbar-actions {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .builder {
+        padding: 24px 18px;
+      }
+
+      .role-card {
+        grid-template-columns: 58px minmax(0, 1fr);
+        gap: 12px;
+      }
+
+      .role-preview {
+        left: 10px;
+        right: 10px;
+        grid-template-columns: 82px minmax(0, 1fr);
+      }
+
+      .role-preview img {
+        width: 76px;
+        height: 108px;
+      }
+
+      .role-card-figure {
+        width: 54px;
+        height: 78px;
+      }
+
+      .builder-actions {
+        margin: 24px -18px -24px;
+        padding: 14px 18px;
+        flex-direction: column-reverse;
+      }
+
+      .section-title,
+      .summary dl div {
+        flex-direction: column;
+      }
+
+      .section-title span,
+      dd {
+        text-align: left;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header class="trade-hero">
+      <div class="shell hero-header">
+        <a class="github-link" href="https://github.com/dan40912/Auto-Trading-Prompt-Generator" target="_blank" rel="noopener noreferrer" aria-label="在 GitHub 開啟 dan40912 Auto-Trading-Prompt-Generator">
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="currentColor">
+            <path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.56v-2.16c-3.2.7-3.87-1.36-3.87-1.36-.52-1.33-1.28-1.68-1.28-1.68-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.76 2.7 1.25 3.36.96.1-.75.4-1.25.73-1.54-2.55-.29-5.23-1.28-5.23-5.68 0-1.25.45-2.28 1.18-3.08-.12-.29-.51-1.46.11-3.04 0 0 .97-.31 3.16 1.18A10.96 10.96 0 0 1 12 6.05c.98 0 1.96.13 2.88.39 2.19-1.49 3.15-1.18 3.15-1.18.63 1.58.24 2.75.12 3.04.74.8 1.18 1.83 1.18 3.08 0 4.41-2.69 5.38-5.25 5.67.41.36.78 1.07.78 2.16v3.2c0 .31.21.68.8.56A11.51 11.51 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5Z"/>
+          </svg>
+          <span>GitHub</span>
+        </a>
+      </div>
+      <div class="shell trade-hero-grid">
+        <div>
+          <div class="eyebrow">AI 交易 Prompt 產生器</div>
+          <h1>打造符合你交易規則的 AI Prompt</h1>
+          <div class="hero-actions">
+            <button class="button hero-primary js-open-wizard" type="button">開始建立交易 Prompt</button>
+          </div>
+        </div>
+
+        <aside class="hero-visual" aria-label="AI 交易導師團隊預覽">
+          <div class="hero-agent-wall">
+            <div class="hero-agent" aria-hidden="true">
+              <img src="assets/images/agents/master-policy-agent.png" alt="Master Policy Agent 剪影" loading="eager">
+            </div>
+            <div class="hero-agent" aria-hidden="true">
+              <img src="assets/images/agents/safety-agent.png" alt="Safety Agent 剪影" loading="eager">
+            </div>
+            <div class="hero-agent" aria-hidden="true">
+              <img src="assets/images/agents/authorization-agent.png" alt="Authorization Agent 剪影" loading="eager">
+            </div>
+            <div class="hero-agent" aria-hidden="true">
+              <img src="assets/images/agents/market-scan-agent.png" alt="Market Scan Agent 剪影" loading="eager">
+            </div>
+            <div class="hero-agent" aria-hidden="true">
+              <img src="assets/images/agents/risk-manager-agent.png" alt="Risk Manager Agent 剪影" loading="eager">
+            </div>
+            <div class="hero-agent" aria-hidden="true">
+              <img src="assets/images/agents/tp-sl-agent.png" alt="TP/SL Agent 剪影" loading="eager">
+            </div>
+            <div class="hero-agent" aria-hidden="true">
+              <img src="assets/images/agents/position-manager-agent.png" alt="Position Manager Agent 剪影" loading="eager">
+            </div>
+            <div class="hero-agent" aria-hidden="true">
+              <img src="assets/images/agents/execution-agent.png" alt="Execution Agent 剪影" loading="eager">
+            </div>
+            <div class="hero-agent" aria-hidden="true">
+              <img src="assets/images/agents/heartbeat-reporter-agent.png" alt="Heartbeat Reporter Agent 剪影" loading="eager">
+            </div>
+          </div>
+          <div class="hero-agent-caption">
+            <h2>選擇你的交易 AI 團隊</h2>
+          </div>
+        </aside>
+      </div>
+    </header>
+  </main>
+
+  <div class="trade-wizard-overlay" id="starter" role="dialog" aria-modal="true" aria-label="AI 交易 Prompt 設定流程" hidden>
+    <header class="trade-topbar">
+      <div class="trade-topbar-inner">
+        <div class="progress"><span id="progressBar"></span></div>
+        <div class="trade-topbar-row">
+          <div class="trade-step-meta">
+            <span id="stepBadge">第 1 / 4 步</span>
+            <strong>完成後產生可貼進 Claude / ChatGPT 的交易 Prompt</strong>
+          </div>
+          <div class="trade-topbar-actions">
+            <button class="topbar-button" id="restartWizardBtn" type="button">重新設定</button>
+            <button class="topbar-button" id="closeWizardBtn" type="button">關閉</button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="trade-stage" id="tradeStage">
+      <div class="trade-stage-inner">
+        <section class="builder-shell" id="builder">
+          <section class="builder">
+            <header class="builder-head">
+              <div>
+                <span>Step</span>
+                <h2 id="stepTitle">選擇使用情境</h2>
+                <p id="stepHint">先決定這份 AI 交易導師 Prompt 要用在 replay、paper、demo，或 live 觀察。</p>
+              </div>
+              <div class="progress"><span></span></div>
+            </header>
+
+            <section class="step-panel active" data-step="0">
+              <div class="choice-grid" id="modeChoices"></div>
+            </section>
+
+            <section class="step-panel" data-step="1">
+              <div class="risk-table" aria-label="風控邊界設定表">
+                <label class="risk-row field">
+                  <span class="risk-label">交易市場</span>
+                  <span class="risk-control">
+                    <select id="marketInput">
+                      <option selected>XAUUSD</option>
+                      <option>MNQ</option>
+                      <option>NQ</option>
+                      <option>MES</option>
+                      <option>ES</option>
+                      <option>BTC</option>
+                      <option>ETH</option>
+                      <option>Forex</option>
+                    </select>
+                  </span>
+                  <span class="risk-copy">Prompt 會用這個商品建立市場背景。</span>
+                  <span class="hint-dot" tabindex="0" aria-label="例如 MNQ 會讓 AI 優先檢查小那斯達克期貨的波動、口數與日內風控語境。" data-hint="例如 MNQ 會讓 AI 優先檢查小那斯達克期貨的波動、口數與日內風控語境。">?</span>
+                </label>
+                <label class="risk-row field">
+                  <span class="risk-label">Currency</span>
+                  <span class="risk-control">
+                    <select id="currencyInput">
+                      <option selected>USD</option>
+                      <option>JPY</option>
+                      <option>TWD</option>
+                      <option>GBP</option>
+                      <option>EUR</option>
+                      <option>AUD</option>
+                      <option>CAD</option>
+                      <option>CHF</option>
+                      <option>HKD</option>
+                      <option>SGD</option>
+                    </select>
+                  </span>
+                  <span class="risk-copy">所有虧損、盈利與風控金額都以這個幣別計算。</span>
+                  <span class="hint-dot" tabindex="0" aria-label="AI 每輪決策前必須先確認金額幣別，避免把不同貨幣的損益、停損或日損上限混用。" data-hint="AI 每輪決策前必須先確認金額幣別，避免把不同貨幣的損益、停損或日損上限混用。">?</span>
+                </label>
+                <label class="risk-row field">
+                  <span class="risk-label">單筆最大虧損</span>
+                  <span class="risk-control">
+                    <input id="maxTradeLossInput" type="number" min="1" step="10" value="1000">
+                  </span>
+                  <span class="risk-copy">任一 setup 超過此金額，必須 WAIT 或 MANUAL。</span>
+                  <span class="hint-dot" tabindex="0" aria-label="這是單一交易的最大容許虧損，不是建議值。AI 應先檢查停損距離與口數是否會超標。" data-hint="這是單一交易的最大容許虧損，不是建議值。AI 應先檢查停損距離與口數是否會超標。">?</span>
+                </label>
+                <label class="risk-row field">
+                  <span class="risk-label">每日最大虧損</span>
+                  <span class="risk-control">
+                    <input id="dailyLossInput" type="number" min="1" step="50" value="3000">
+                  </span>
+                  <span class="risk-copy">達到日損上限後，停止新增交易。</span>
+                  <span class="hint-dot" tabindex="0" aria-label="用來防止連續虧損後繼續交易。若日損接近上限，AI 應降低行動等級或要求人工確認。" data-hint="用來防止連續虧損後繼續交易。若日損接近上限，AI 應降低行動等級或要求人工確認。">?</span>
+                </label>
+                <label class="risk-row field">
+                  <span class="risk-label">最低風報比</span>
+                  <span class="risk-control">
+                    <input id="minimumRRInput" type="number" min="0.5" step="0.1" value="1">
+                  </span>
+                  <span class="risk-copy">低於最低 RR 時，不允許提出進場。</span>
+                  <span class="hint-dot" tabindex="0" aria-label="RR 是潛在獲利除以潛在虧損。若停損太遠或目標太近，AI 應判定 setup 不合格。" data-hint="RR 是潛在獲利除以潛在虧損。若停損太遠或目標太近，AI 應判定 setup 不合格。">?</span>
+                </label>
+                <label class="risk-row field">
+                  <span class="risk-label">最大口數</span>
+                  <span class="risk-control">
+                    <input id="maxContractsInput" type="number" min="1" step="1" value="4">
+                  </span>
+                  <span class="risk-copy">限制最大部位規模，避免越權放大風險。</span>
+                  <span class="hint-dot" tabindex="0" aria-label="AI 不得因為信心高就突破最大口數。若現有倉位已達上限，只能等待、減倉或人工處理。" data-hint="AI 不得因為信心高就突破最大口數。若現有倉位已達上限，只能等待、減倉或人工處理。">?</span>
+                </label>
+                <label class="risk-row field">
+                  <span class="risk-label">預期盈利目標</span>
+                  <span class="risk-control">
+                    <input id="profitTargetInput" type="number" min="1" step="50" value="3000">
+                  </span>
+                  <span class="risk-copy">達到目標後，AI 必須優先建議保護盈利、減少新風險或停止新增交易。</span>
+                  <span class="hint-dot" tabindex="0" aria-label="預期盈利目標不是授權加碼的理由。達標後應偏向鎖定收益、降低曝險或等待下一輪人工確認。" data-hint="預期盈利目標不是授權加碼的理由。達標後應偏向鎖定收益、降低曝險或等待下一輪人工確認。">?</span>
+                </label>
+                <label class="risk-row field">
+                  <span class="risk-label">加碼規則</span>
+                  <span class="risk-control">
+                    <select id="addRuleInput">
+                      <option value="禁止加碼">禁止加碼</option>
+                      <option value="只允許獲利後加碼，且不得移除原始停損">只允許獲利後加碼，且不得移除原始停損</option>
+                      <option value="需人工確認，AI 不得自動建議加碼">需人工確認，AI 不得自動建議加碼</option>
+                    </select>
+                  </span>
+                  <span class="risk-copy">限制攤平、情緒加碼與失控擴倉。</span>
+                  <span class="hint-dot" tabindex="0" aria-label="加碼是高風險行為。保守設定建議禁止加碼，或只允許獲利後且停損仍受控的加碼。" data-hint="加碼是高風險行為。保守設定建議禁止加碼，或只允許獲利後且停損仍受控的加碼。">?</span>
+                </label>
+              </div>
+            </section>
+
+            <section class="step-panel" data-step="2">
+              <div class="choice-grid" id="strategyChoices"></div>
+              <div class="module-section">
+                <div class="section-title">
+                  <strong>交易角色團隊</strong>
+                  <span>選擇要加入交易提示詞的 AI 角色，讓導師不只判斷方向，也負責檢查風控、結構與紀錄。</span>
+                </div>
+                <div class="role-grid" id="roleChoices"></div>
+              </div>
+            </section>
+
+            <section class="step-panel" data-step="3">
+              <div class="output-options">
+                <label class="toggle-row output-card">
+                  <input id="includeRunLogInput" type="checkbox" checked>
+                  <span class="output-card-body">
+                    <strong>加入交易紀錄欄位</strong>
+                    <span>讓 AI 每次判斷後留下原因、信心、是否被阻擋，方便你回放檢討。</span>
+                  </span>
+                  <span class="hint-dot" tabindex="0" aria-label="適合想改進策略或 Prompt 的使用者。累積紀錄後，可以回頭看 AI 常在哪些條件下等待、阻擋或需要人工處理。" data-hint="適合想改進策略或 Prompt 的使用者。累積紀錄後，可以回頭看 AI 常在哪些條件下等待、阻擋或需要人工處理。">?</span>
+                </label>
+                <label class="toggle-row output-card">
+                  <input id="includeFailureInput" type="checkbox" checked>
+                  <span class="output-card-body">
+                    <strong>加入安全停止規則</strong>
+                    <span>只要帳戶、商品、口數、持倉或授權不清楚，就要求人工確認。</span>
+                  </span>
+                  <span class="hint-dot" tabindex="0" aria-label="這是最重要的安全規則。它會要求 AI 在資訊不完整時停下來，而不是猜測或自行補完。" data-hint="這是最重要的安全規則。它會要求 AI 在資訊不完整時停下來，而不是猜測或自行補完。">?</span>
+                </label>
+                <label class="toggle-row output-card">
+                  <input id="includeFundedInput" type="checkbox">
+                  <span class="output-card-body">
+                    <strong>加入資金考核帳戶限制</strong>
+                    <span>如果你使用考核帳戶，加入每日重置、移動回撤與一致性限制。</span>
+                  </span>
+                  <span class="hint-dot" tabindex="0" aria-label="只有使用 funded account 或 prop firm 考核時才需要。一般回放、模擬、紙上交易可以先不勾。" data-hint="只有使用 funded account 或 prop firm 考核時才需要。一般回放、模擬、紙上交易可以先不勾。">?</span>
+                </label>
+              </div>
+            </section>
+
+            <footer class="builder-actions">
+              <button class="button ghost" id="backBtn" type="button">上一步</button>
+              <button class="button primary" id="nextBtn" type="button">下一步</button>
+            </footer>
+          </section>
+
+          <aside class="summary">
+            <h3>目前設定</h3>
+            <dl>
+              <div><dt>模式</dt><dd id="summaryMode">尚未選擇</dd></div>
+              <div><dt>市場</dt><dd id="summaryMarket">XAUUSD</dd></div>
+              <div><dt>Currency</dt><dd id="summaryCurrency">USD</dd></div>
+              <div><dt>單筆虧損</dt><dd id="summaryTradeLoss">1,000</dd></div>
+              <div><dt>每日虧損</dt><dd id="summaryDailyLoss">3,000</dd></div>
+              <div><dt>最低風報比</dt><dd id="summaryRR">1</dd></div>
+              <div><dt>最大口數</dt><dd id="summaryContracts">4</dd></div>
+              <div><dt>預期盈利</dt><dd id="summaryProfitTarget">3,000</dd></div>
+              <div><dt>加碼規則</dt><dd id="summaryAddRule">禁止加碼</dd></div>
+              <div><dt>策略</dt><dd id="summaryStrategy">尚未選擇</dd></div>
+              <div><dt>角色</dt><dd id="summaryRoles">Risk / Safety</dd></div>
+            </dl>
+            <p id="readiness" class="readiness">完成設定後，系統會產生可貼進 Claude / ChatGPT 的 Mentor Prompt。</p>
+          </aside>
+        </section>
+
+        <section class="results is-hidden" id="results">
+          <div class="results-head">
+            <span class="eyebrow">Prompt 已生成</span>
+            <h2>你的 AI 交易導師 Prompt 已生成</h2>
+            <p>複製後貼進 Claude / ChatGPT，即可用於 replay、demo 或 paper trading 的交易判斷與風控檢查。</p>
+          </div>
+
+          <div class="result-layout">
+            <section class="result-card">
+              <h3>交易行動卡</h3>
+              <div id="tradingCard" class="trading-card"></div>
+            </section>
+
+            <section class="result-card">
+              <h3>下一步</h3>
+              <ol>
+                <li>複製 Prompt 到 Codex / ChatGPT / Claude。</li>
+                <li>貼上你的圖表情境或交易計畫。</li>
+                <li>先用回放檢討、模擬帳戶或紙上交易測試。</li>
+                <li>累積 20 筆紀錄後，再評估是否進入實盤人工確認。</li>
+              </ol>
+            </section>
+          </div>
+
+          <div class="result-actions">
+            <button class="button primary" id="copyPromptBtn" type="button">複製 Prompt</button>
+            <button class="button ghost" id="downloadPromptBtn" type="button">下載 Markdown</button>
+            <button class="button ghost" id="togglePromptBtn" type="button">展開 Prompt</button>
+          </div>
+
+          <section class="prompt-panel is-collapsed" id="promptPanel">
+            <textarea id="promptOutput" spellcheck="false"></textarea>
+          </section>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <script src="assets/js/index.js?v=zh-output-cards-v1"></script>
+</body>
+</html>

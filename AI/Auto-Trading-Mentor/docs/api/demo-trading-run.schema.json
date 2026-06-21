@@ -1,0 +1,114 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.local/ai-trading/demo-trading-run.schema.json",
+  "title": "AI-Trading Demo Heartbeat Run Contract",
+  "description": "Internal structured contract for one MNQ/MNQM6 Demo, Replay, or Paper Trading heartbeat round. This is for validation and future run logs; the current heartbeat-reporting skill still emits XML.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "environment_status",
+    "authorization_mode",
+    "safety_result",
+    "market_scan_result",
+    "risk_result",
+    "execution_decision",
+    "action_taken",
+    "fill_status",
+    "manual_intervention_required",
+    "next_run_instruction"
+  ],
+  "properties": {
+    "environment_status": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["platform", "account_mode", "live_risk_detected", "symbol"],
+      "properties": {
+        "platform": { "type": "string" },
+        "account_mode": { "type": "string" },
+        "live_risk_detected": { "type": "boolean" },
+        "symbol": { "type": "string", "enum": ["MNQ", "MNQM6", "unclear"] }
+      }
+    },
+    "authorization_mode": {
+      "type": "string",
+      "enum": ["read_only", "demo_auto_execute", "live_ready_manual_confirm", "blocked", "unclear"]
+    },
+    "safety_result": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["execution_allowed", "close_exit_visible", "qty_status", "pnl_visible", "safety_reason"],
+      "properties": {
+        "execution_allowed": { "type": "boolean" },
+        "close_exit_visible": { "type": "boolean" },
+        "qty_status": { "type": "string", "enum": ["visible", "uncertain", "hidden"] },
+        "pnl_visible": { "type": "boolean" },
+        "safety_reason": { "type": "string" }
+      }
+    },
+    "market_scan_result": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["direction", "setup_score", "confidence", "reason"],
+      "properties": {
+        "direction": { "type": "string", "enum": ["Buy", "Sell", "Wait", "unclear"] },
+        "setup_score": { "type": "integer", "minimum": 0, "maximum": 100 },
+        "confidence": { "type": "integer", "minimum": 0, "maximum": 100 },
+        "reason": { "type": "string" }
+      }
+    },
+    "risk_result": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["execution_allowed", "new_entries_allowed", "add_allowed", "close_reduce_only", "risk_reason"],
+      "properties": {
+        "execution_allowed": { "type": "boolean" },
+        "new_entries_allowed": { "type": "boolean" },
+        "add_allowed": { "type": "boolean" },
+        "close_reduce_only": { "type": "boolean" },
+        "risk_reason": { "type": "string" }
+      }
+    },
+    "tp_sl_result": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "entry": { "type": ["number", "string", "null"] },
+        "manual_stop": { "type": ["number", "string", "null"] },
+        "manual_take_profit": { "type": ["number", "string", "null"] },
+        "rr": { "type": ["number", "null"] },
+        "invalidation": { "type": ["string", "null"] }
+      }
+    },
+    "position_result": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "position_status": { "type": "string" },
+        "position_size": { "type": ["number", "string", "null"] },
+        "open_pnl": { "type": ["number", "string", "null"] },
+        "position_risk_status": { "type": "string" }
+      }
+    },
+    "execution_decision": {
+      "type": "string",
+      "enum": ["Wait", "Buy", "Sell", "Add", "Reduce", "Close", "Manual Intervention"]
+    },
+    "action_taken": {
+      "type": "string",
+      "enum": ["None", "Buy", "Sell", "Add", "Reduce", "Close"]
+    },
+    "fill_status": {
+      "type": "string",
+      "enum": ["not_applicable", "confirmed", "unconfirmed", "failed", "unclear"]
+    },
+    "blocked_reason": {
+      "type": ["string", "null"]
+    },
+    "manual_intervention_required": {
+      "type": "boolean"
+    },
+    "next_run_instruction": {
+      "type": "string"
+    }
+  }
+}
