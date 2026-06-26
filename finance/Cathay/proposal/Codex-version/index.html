@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>國泰 AI 服務中台提案 | Codex Version</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="#top" aria-label="回到頁首">
+      <span class="brand-mark">C</span>
+      <span>國泰 AI 服務中台提案</span>
+    </a>
+    <nav aria-label="頁面導覽">
+      <a href="#review">Review</a>
+      <a href="#strategy">Strategy</a>
+      <a href="#swot">SWOT</a>
+      <a href="#competitors">Competitors</a>
+      <a href="#roadmap">Roadmap</a>
+      <a href="#deck">Deck</a>
+    </nav>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <p class="eyebrow">Codex-version · public-information proposal · 2026-06-26</p>
+      <h1>阿發下一階段，不該只追求更會回答，而是讓回答可以被信任、被檢查、被收斂。</h1>
+      <p class="lead">原始版本的主軸正確，但畫面與文字太滿，容易被看成 AI 生成頁。新版把提案收斂成一個判斷：國泰已有規模、模型與護欄，最值得新人切入的是「可引用、可停下、可審計」的 trust layer。</p>
+      <div class="hero-actions">
+        <a class="button" href="./cathay-ai-trust-proposal.pptx">下載 10 頁提案簡報</a>
+        <a class="button secondary" href="./review-plan.md">查看 Review 與改版計畫</a>
+      </div>
+    </section>
+
+    <section id="review" class="section">
+      <div class="section-title">
+        <p>01 · Review</p>
+        <h2>原專案可以保留的不是版型，是判斷力。</h2>
+      </div>
+      <div class="two-col">
+        <div>
+          <h3>目前最傷說服力的三件事</h3>
+          <ul class="plain-list">
+            <li><strong>資訊層級太平均。</strong>每個段落都像重點，主管或面試官很難在 30 秒內抓到主張。</li>
+            <li><strong>視覺語言偏 AI landing page。</strong>漸層、徽章、emoji、卡片過多，削弱金融提案應有的克制感。</li>
+            <li><strong>證據與推論混在一起。</strong>「公開資料顯示」與「我的推測」需要更清楚分層，才經得起 Claude 或主管追問。</li>
+          </ul>
+        </div>
+        <div class="quote">
+          <span>改版原則</span>
+          <p>少一點形容詞，多一點決策句；少一點大而全，多一點可交付物；把「我知道很多」改成「我知道先做哪一件」。</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="strategy" class="section tint">
+      <div class="section-title">
+        <p>02 · Strategy</p>
+        <h2>提案主軸：Trust Layer for Financial AI</h2>
+      </div>
+      <div class="strategy-grid">
+        <article>
+          <span>1</span>
+          <h3>每個回答有來源</h3>
+          <p>RAG 片段保留 metadata，前端顯示官網頁面、FAQ 條目或知識庫版本。目標不是讓答案變長，而是讓答案可以被查。</p>
+        </article>
+        <article>
+          <span>2</span>
+          <h3>不確定就停下</h3>
+          <p>用意圖信心、檢索命中與風險分類做閘門。低信心不硬答，直接轉真人或回既有驗證流程。</p>
+        </article>
+        <article>
+          <span>3</span>
+          <h3>內部看得到判斷</h3>
+          <p>客服、PM、法遵、資安看到同一筆對話的意圖、來源、風險、護欄命中與處置紀錄，形成可審計閉環。</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="swot" class="section">
+      <div class="section-title">
+        <p>03 · SWOT</p>
+        <h2>國泰的優勢在規模與平台，破口在透明度。</h2>
+      </div>
+      <div class="swot-grid">
+        <article>
+          <h3>Strengths</h3>
+          <ul>
+            <li>阿發已有長期服務量與跨子公司使用基礎。</li>
+            <li>GAIA 2.0、Model Hub、護欄與 Agent 架構提供平台底座。</li>
+            <li>既有真人客服與交易流程可承接高風險情境。</li>
+          </ul>
+        </article>
+        <article>
+          <h3>Weaknesses</h3>
+          <ul>
+            <li>對外看不到 citation、版本、風險分級與回滾邏輯。</li>
+            <li>GenAI 與個資/帳務/交易的邊界需要被產品化呈現。</li>
+            <li>多入口、多業別容易造成意圖與知識治理分散。</li>
+          </ul>
+        </article>
+        <article>
+          <h3>Opportunities</h3>
+          <ul>
+            <li>監理與企業客戶都會更重視可審計 AI。</li>
+            <li>把治理做成產品特色，可與一般智能客服拉開距離。</li>
+            <li>客服修正資料可回流成知識品質飛輪。</li>
+          </ul>
+        </article>
+        <article>
+          <h3>Threats</h3>
+          <ul>
+            <li>本地銀行智能客服覆蓋率高，單純問答難差異化。</li>
+            <li>DBS 等區域銀行已把虛擬助理推向交易與企業服務。</li>
+            <li>GenAI 風險包含幻覺、提示注入、檢索污染與工具濫用。</li>
+          </ul>
+        </article>
+      </div>
+      <p class="decision"><strong>策略選擇：</strong>主打 WO。用 trust layer 補透明度短板，把「尚未公開的治理細節」轉成可展示、可審核、可擴張的產品能力。</p>
+    </section>
+
+    <section id="competitors" class="section">
+      <div class="section-title">
+        <p>04 · Competitor Analysis</p>
+        <h2>競爭不是誰比較像人，而是誰能把高風險服務做得可控。</h2>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>對手</th>
+              <th>公開能力</th>
+              <th>對國泰的壓力</th>
+              <th>可反擊角度</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>DBS digibot / Joy</td>
+              <td>查詢、交易、貸款申請、企業客戶 24/7 GenAI 助理。</td>
+              <td>區域標竿已往交易與企業場景走。</td>
+              <td>國泰可用治理透明與本地金融場景深度建立信任差異。</td>
+            </tr>
+            <tr>
+              <td>HSBC</td>
+              <td>強調 responsible AI、風險管理與個人化服務。</td>
+              <td>國際品牌會把 AI governance 說成企業信任主軸。</td>
+              <td>國泰需要把治理從內部框架變成前台可見的產品語言。</td>
+            </tr>
+            <tr>
+              <td>中信小C</td>
+              <td>公開服務量與滿意度高，支援銀行、信用卡與產品諮詢。</td>
+              <td>本地流量與客服效率競爭強。</td>
+              <td>不要只比解答率，改比來源可追溯與高風險停損能力。</td>
+            </tr>
+            <tr>
+              <td>玉山小玉 / 台新 Rose</td>
+              <td>上線時間早，已有大量客服場景與自助化經驗。</td>
+              <td>智能客服已成金融基本配備。</td>
+              <td>用 citation-first、HITL console、治理報告做高階差異化。</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="roadmap" class="section tint">
+      <div class="section-title">
+        <p>05 · Roadmap</p>
+        <h2>90 天不求翻新系統，先做出可信任的切面。</h2>
+      </div>
+      <div class="timeline">
+        <article>
+          <span>0-30 days</span>
+          <h3>Learn</h3>
+          <p>讀懂阿發現況、GAIA 治理文件、客服真實失敗對話。輸出：問題分類、風險邊界、可驗證場景清單。</p>
+        </article>
+        <article>
+          <span>31-60 days</span>
+          <h3>Map</h3>
+          <p>畫出意圖、RAG、護欄、轉真人的端到端路徑。輸出：trust metrics、資料欄位、citation-first 原型。</p>
+        </article>
+        <article>
+          <span>61-90 days</span>
+          <h3>Propose</h3>
+          <p>提出 pilot 與 RACI，綁客服、法遵、資安、工程的驗收標準。輸出：Pilot PRD、儀表板草圖、審核節點。</p>
+        </article>
+      </div>
+      <div class="kpi-row">
+        <div><strong>90%+</strong><span>低風險回答附來源比例</span></div>
+        <div><strong>100%</strong><span>紅線測試回放通過</span></div>
+        <div><strong>-10% to -20%</strong><span>假設：客服查證時間下降</span></div>
+      </div>
+    </section>
+
+    <section id="deck" class="section final">
+      <div class="section-title">
+        <p>06 · Deliverables</p>
+        <h2>這個資料夾保留精簡後的網站、簡報與審核計畫。</h2>
+      </div>
+      <div class="deliverables">
+        <a href="./cathay-ai-trust-proposal.pptx">
+          <strong>cathay-ai-trust-proposal.pptx</strong>
+          <span>10 頁提案簡報：SWOT、Roadmap、競品分析、落地方案。</span>
+        </a>
+        <a href="./review-plan.md">
+          <strong>review-plan.md</strong>
+          <span>完整 Review、改版計畫、畫面精簡原則。</span>
+        </a>
+        <a href="./sources.md">
+          <strong>sources.md</strong>
+          <span>公開資料來源與使用方式。</span>
+        </a>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
