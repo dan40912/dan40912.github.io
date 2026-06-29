@@ -1,0 +1,62 @@
+<svg viewBox="0 0 960 620" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t3 d3">
+<title id="t3">Agent：全自動完成任務</title>
+<desc id="d3">三步驟第三步。Agent 給定目標後自己規劃、行動、觀察、修正，並用護欄、可觀測性、評估與回饋持續優化。</desc>
+<style>
+text{font-family:'Segoe UI','Noto Sans TC','PingFang TC',sans-serif;}
+.title{font-weight:700;fill:#1f2430;}
+.sub{fill:#8a92a6;}
+.lead{font-weight:700;fill:#1f2430;}
+.one{fill:#515767;}
+.card{fill:#f6f7f9;stroke:#e4e7ec;stroke-width:1.5;}
+.lbl{font-weight:700;fill:#1f2430;}
+.slbl{fill:#8a92a6;}
+.pill{fill:#f6f7f9;stroke:#e4e7ec;stroke-width:1.5;}
+.chip{fill:#eef1f5;stroke:#e4e7ec;stroke-width:1;}
+</style>
+<rect x="0" y="0" width="960" height="620" rx="20" fill="#ffffff" stroke="#e6e6ea"/>
+<rect x="24" y="20" width="912" height="68" rx="16" class="card"/>
+<circle cx="66" cy="54" r="20" fill="#e08234"/>
+<text x="66" y="62" text-anchor="middle" font-size="22" font-weight="700" fill="#fff">3</text>
+<text x="100" y="48" class="title" font-size="24">Agent 智能體</text>
+<text x="100" y="74" class="sub" font-size="13">AI Agent · 全自動完成任務</text>
+<text x="912" y="58" text-anchor="end" class="sub" font-size="13">打造專屬 AI 助理 · 3 / 3</text>
+<text x="480" y="130" text-anchor="middle" class="lead" font-size="30">全自動完成任務</text>
+<text x="480" y="160" text-anchor="middle" class="one" font-size="16">給它目標，它自己「規劃→行動→觀察→修正」跑完整個流程</text>
+<circle cx="210" cy="248" r="56" fill="#e08234" fill-opacity="0.12" stroke="#e08234" stroke-width="2"/>
+<text x="210" y="270" text-anchor="middle" font-size="54">🤖</text>
+<rect x="324" y="200" width="206" height="96" rx="14" class="card"/>
+<text x="356" y="256" text-anchor="middle" font-size="30">💻</text>
+<text x="384" y="240" class="lbl" font-size="15">Dify 介面平台</text>
+<text x="384" y="262" class="slbl" font-size="12">一站式 LLM 應用</text>
+<text x="650" y="196" text-anchor="middle" class="sub" font-size="12">使用者回饋</text>
+<rect x="572" y="206" width="156" height="38" rx="12" class="chip"/>
+<text x="650" y="231" text-anchor="middle" font-size="14" fill="#515767">👍 讚</text>
+<rect x="572" y="252" width="156" height="38" rx="12" class="chip"/>
+<text x="650" y="277" text-anchor="middle" font-size="14" fill="#515767">👎 踩</text>
+<text x="480" y="346" text-anchor="middle" class="sub" font-size="13">循環：規劃　▸　行動　▸　觀察　▸　修正　↺（自我反思 Self-Reflection）</text>
+<rect x="38" y="368" width="200" height="92" rx="14" class="card"/>
+<text x="70" y="420" text-anchor="middle" font-size="30">🛡️</text>
+<text x="98" y="406" class="lbl" font-size="15">護欄</text>
+<text x="98" y="428" class="slbl" font-size="12">Guardrails</text>
+<rect x="266" y="368" width="200" height="92" rx="14" class="card"/>
+<text x="298" y="420" text-anchor="middle" font-size="30">🔭</text>
+<text x="326" y="406" class="lbl" font-size="15">可觀測性</text>
+<text x="326" y="428" class="slbl" font-size="12">Observability</text>
+<rect x="494" y="368" width="200" height="92" rx="14" class="card"/>
+<text x="526" y="420" text-anchor="middle" font-size="30">✅</text>
+<text x="554" y="406" class="lbl" font-size="15">評估</text>
+<text x="554" y="428" class="slbl" font-size="12">Evaluation</text>
+<rect x="722" y="368" width="200" height="92" rx="14" class="card"/>
+<text x="754" y="420" text-anchor="middle" font-size="30">🔁</text>
+<text x="782" y="406" class="lbl" font-size="15">回饋優化</text>
+<text x="782" y="428" class="slbl" font-size="12">Feedback</text>
+<text x="480" y="500" text-anchor="middle" class="sub" font-size="13">重點：主動執行多步驟　·　自我反思修正　·　護欄＋可觀測確保穩定</text>
+<rect x="120" y="548" width="160" height="40" rx="20" class="pill"/>
+<text x="200" y="573" text-anchor="middle" font-size="15" fill="#515767">① LLM 思考</text>
+<text x="340" y="574" text-anchor="middle" font-size="18" fill="#8a92a6">▸</text>
+<rect x="400" y="548" width="160" height="40" rx="20" class="pill"/>
+<text x="480" y="573" text-anchor="middle" font-size="15" fill="#515767">② RAG 記憶</text>
+<text x="620" y="574" text-anchor="middle" font-size="18" fill="#8a92a6">▸</text>
+<rect x="680" y="548" width="160" height="40" rx="20" fill="#e08234"/>
+<text x="760" y="573" text-anchor="middle" font-size="15" font-weight="700" fill="#fff">③ Agent 行動</text>
+</svg>

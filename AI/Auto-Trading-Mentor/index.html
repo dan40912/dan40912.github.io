@@ -140,11 +140,11 @@
 
     /* Landing layout */
     .trade-hero {
-      min-height: 100svh;
+      min-height: auto;
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
-      padding: 58px 0 0;
+      justify-content: flex-start;
+      padding: 28px 0 38px;
       border-bottom: 1px solid var(--line);
       background:
         radial-gradient(circle at 74% 18%, rgba(37, 99, 235, .12), transparent 30%),
@@ -156,7 +156,7 @@
       display: flex;
       align-items: center;
       justify-content: flex-end;
-      padding: 0 0 24px;
+      padding: 0 0 12px;
     }
 
     .github-link {
@@ -189,16 +189,16 @@
 
     .trade-hero-grid {
       display: grid;
-      grid-template-columns: minmax(0, .9fr) minmax(420px, 1.1fr);
-      gap: 42px;
+      grid-template-columns: minmax(0, .92fr) minmax(390px, 1.08fr);
+      gap: 34px;
       align-items: center;
-      padding-bottom: 30px;
+      padding-bottom: 0;
     }
 
     .trade-hero h1 {
       max-width: 760px;
-      margin-bottom: 20px;
-      font-size: clamp(42px, 6.1vw, 76px);
+      margin-bottom: 16px;
+      font-size: clamp(40px, 5.4vw, 66px);
       font-weight: 900;
     }
 
@@ -214,7 +214,7 @@
       align-items: center;
       flex-wrap: wrap;
       gap: 16px;
-      margin-top: 32px;
+      margin-top: 22px;
     }
 
     .hero-primary {
@@ -224,7 +224,7 @@
 
     .hero-visual {
       position: relative;
-      min-height: 570px;
+      min-height: 470px;
       isolation: isolate;
     }
 
@@ -256,7 +256,7 @@
 
     .hero-agent-wall {
       position: absolute;
-      inset: 58px 12px 142px;
+      inset: 34px 10px 116px;
       display: grid;
       grid-template-columns: repeat(9, minmax(0, 1fr));
       align-items: end;
@@ -271,7 +271,7 @@
 
     .hero-agent img {
       width: 100%;
-      max-height: 330px;
+      max-height: 285px;
       display: block;
       object-fit: contain;
       opacity: .82;
@@ -298,12 +298,12 @@
       border-radius: 14px;
       background: rgba(255, 255, 255, .9);
       backdrop-filter: blur(10px);
-      padding: 18px;
+      padding: 14px 16px;
     }
 
     .hero-agent-caption h2 {
-      margin: 0 0 8px;
-      font-size: clamp(24px, 2.7vw, 34px);
+      margin: 0;
+      font-size: clamp(22px, 2.35vw, 30px);
     }
 
     /* Overlay wizard */
@@ -1030,11 +1030,12 @@
 
       .trade-hero {
         min-height: auto;
-        padding-top: 58px;
+        padding-top: 30px;
+        padding-bottom: 32px;
       }
 
       .hero-visual {
-        min-height: 560px;
+        min-height: 440px;
       }
 
       .summary {
@@ -1049,7 +1050,7 @@
 
       .hero-header {
         justify-content: flex-start;
-        padding-bottom: 22px;
+        padding-bottom: 14px;
       }
 
       .github-link {
@@ -1058,12 +1059,14 @@
       }
 
       .trade-hero {
-        padding-top: 34px;
+        padding-top: 22px;
+        padding-bottom: 24px;
       }
 
       .trade-hero h1 {
-        font-size: 38px;
-        line-height: 1.12;
+        font-size: 34px;
+        line-height: 1.08;
+        margin-bottom: 12px;
       }
 
       .subtitle {
@@ -1076,18 +1079,22 @@
         width: 100%;
       }
 
+      .hero-actions {
+        margin-top: 18px;
+      }
+
       .button {
         width: 100%;
       }
 
       .hero-visual {
-        min-height: 430px;
+        min-height: 350px;
       }
 
       .hero-agent-wall {
         grid-template-columns: repeat(9, minmax(0, 1fr));
         gap: 0;
-        inset: 88px 8px 116px;
+        inset: 54px 8px 96px;
         overflow: visible;
       }
 
@@ -1097,9 +1104,9 @@
       }
 
       .hero-agent img {
-        width: clamp(42px, 14vw, 54px);
+        width: clamp(38px, 13vw, 50px);
         max-width: none;
-        max-height: 255px;
+        max-height: 210px;
         filter: drop-shadow(0 10px 16px rgba(16, 32, 51, .18));
       }
 
@@ -1117,7 +1124,7 @@
         left: 14px;
         right: 14px;
         bottom: 14px;
-        padding: 15px;
+        padding: 12px 13px;
       }
 
       .choice-grid,

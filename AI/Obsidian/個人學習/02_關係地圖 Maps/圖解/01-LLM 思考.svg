@@ -1,0 +1,56 @@
+<svg viewBox="0 0 960 620" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t1 d1">
+<title id="t1">LLM：像大腦一樣思考</title>
+<desc id="d1">三步驟第一步。LLM 是核心思考引擎，能讀懂問題、規劃步驟並呼叫工具。</desc>
+<style>
+text{font-family:'Segoe UI','Noto Sans TC','PingFang TC',sans-serif;}
+.title{font-weight:700;fill:#1f2430;}
+.sub{fill:#8a92a6;}
+.lead{font-weight:700;fill:#1f2430;}
+.one{fill:#515767;}
+.card{fill:#f6f7f9;stroke:#e4e7ec;stroke-width:1.5;}
+.lbl{font-weight:700;fill:#1f2430;}
+.slbl{fill:#8a92a6;}
+.pill{fill:#f6f7f9;stroke:#e4e7ec;stroke-width:1.5;}
+</style>
+<rect x="0" y="0" width="960" height="620" rx="20" fill="#ffffff" stroke="#e6e6ea"/>
+<rect x="24" y="20" width="912" height="68" rx="16" class="card"/>
+<circle cx="66" cy="54" r="20" fill="#5b6cf0"/>
+<text x="66" y="62" text-anchor="middle" font-size="22" font-weight="700" fill="#fff">1</text>
+<text x="100" y="48" class="title" font-size="24">LLM 大型語言模型</text>
+<text x="100" y="74" class="sub" font-size="13">Large Language Model · 像大腦一樣思考</text>
+<text x="912" y="58" text-anchor="end" class="sub" font-size="13">打造專屬 AI 助理 · 1 / 3</text>
+<text x="480" y="130" text-anchor="middle" class="lead" font-size="30">像大腦一樣思考</text>
+<text x="480" y="160" text-anchor="middle" class="one" font-size="16">核心思考引擎：讀懂你的問題、拆解並規劃步驟</text>
+<rect x="118" y="206" width="176" height="60" rx="14" class="card"/>
+<text x="206" y="232" text-anchor="middle" font-size="13" fill="#515767">「PRAY COIN</text>
+<text x="206" y="251" text-anchor="middle" font-size="13" fill="#515767">怎麼運作？」</text>
+<path d="M294 244 L322 250 L294 258 Z" fill="#f6f7f9" stroke="#e4e7ec" stroke-width="1.5"/>
+<circle cx="480" cy="252" r="66" fill="#5b6cf0" fill-opacity="0.12" stroke="#5b6cf0" stroke-width="2"/>
+<text x="480" y="274" text-anchor="middle" font-size="62">🧠</text>
+<text x="480" y="344" text-anchor="middle" class="sub" font-size="13">它的「手」：需要時主動呼叫工具</text>
+<rect x="38" y="360" width="200" height="92" rx="14" class="card"/>
+<text x="70" y="412" text-anchor="middle" font-size="30">🔍</text>
+<text x="98" y="398" class="lbl" font-size="15">網路搜尋</text>
+<text x="98" y="420" class="slbl" font-size="12">Web Search</text>
+<rect x="266" y="360" width="200" height="92" rx="14" class="card"/>
+<text x="298" y="412" text-anchor="middle" font-size="30">🔌</text>
+<text x="326" y="398" class="lbl" font-size="15">工具呼叫</text>
+<text x="326" y="420" class="slbl" font-size="12">Tool Use · MCP</text>
+<rect x="494" y="360" width="200" height="92" rx="14" class="card"/>
+<text x="526" y="412" text-anchor="middle" font-size="30">🗄️</text>
+<text x="554" y="398" class="lbl" font-size="15">取用資料</text>
+<text x="554" y="420" class="slbl" font-size="12">Data</text>
+<rect x="722" y="360" width="200" height="92" rx="14" class="card"/>
+<text x="754" y="412" text-anchor="middle" font-size="30">✉️</text>
+<text x="782" y="398" class="lbl" font-size="15">發送 Email</text>
+<text x="782" y="420" class="slbl" font-size="12">Email</text>
+<text x="480" y="496" text-anchor="middle" class="sub" font-size="13">重點：理解與推理　·　規劃步驟　·　⚠️ 會犯錯，需查證（幻覺）</text>
+<rect x="120" y="548" width="160" height="40" rx="20" fill="#5b6cf0"/>
+<text x="200" y="573" text-anchor="middle" font-size="15" font-weight="700" fill="#fff">① LLM 思考</text>
+<text x="340" y="574" text-anchor="middle" font-size="18" fill="#8a92a6">▸</text>
+<rect x="400" y="548" width="160" height="40" rx="20" class="pill"/>
+<text x="480" y="573" text-anchor="middle" font-size="15" fill="#515767">② RAG 記憶</text>
+<text x="620" y="574" text-anchor="middle" font-size="18" fill="#8a92a6">▸</text>
+<rect x="680" y="548" width="160" height="40" rx="20" class="pill"/>
+<text x="760" y="573" text-anchor="middle" font-size="15" fill="#515767">③ Agent 行動</text>
+</svg>

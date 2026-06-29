@@ -1,0 +1,225 @@
+{
+  "main": {
+    "id": "172d62050b47b80f",
+    "type": "split",
+    "children": [
+      {
+        "id": "16db28572ccd559e",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "7619e170a9d6c754",
+            "type": "leaf",
+            "state": {
+              "type": "graph",
+              "state": {},
+              "icon": "lucide-git-fork",
+              "title": "關聯圖檢視"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "3a4c22b455b10b00",
+    "type": "split",
+    "children": [
+      {
+        "id": "f111ec902033c630",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "183e8568c8728033",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "檔案瀏覽器"
+            }
+          },
+          {
+            "id": "208e17d482644fae",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "搜尋"
+            }
+          },
+          {
+            "id": "f19f483d20e2bf6a",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "書籤"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "dae758a8308d371d",
+    "type": "split",
+    "children": [
+      {
+        "id": "1c1d044df2eda728",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "c6f8fc26cc9422ca",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "03_應用與工作流 Applications/Codex × Claude 串接與自動協作.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Codex × Claude 串接與自動協作 的反向連結"
+            }
+          },
+          {
+            "id": "60789253d263ea72",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "03_應用與工作流 Applications/Codex × Claude 串接與自動協作.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Codex × Claude 串接與自動協作 的對外連結"
+            }
+          },
+          {
+            "id": "f82eb44e81662356",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "標籤"
+            }
+          },
+          {
+            "id": "1f58b2cd3e054f4a",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "所有屬性"
+            }
+          },
+          {
+            "id": "bb738688e9a3b429",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "03_應用與工作流 Applications/Codex × Claude 串接與自動協作.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Codex × Claude 串接與自動協作 的大綱"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:開啟快速切換": false,
+      "graph:查看關聯圖": false,
+      "canvas:建立新畫布": false,
+      "daily-notes:開啟今天的每日筆記": false,
+      "templates:插入模板": false,
+      "command-palette:開啟命令面板": false,
+      "bases:建立新的 base": false
+    }
+  },
+  "active": "7619e170a9d6c754",
+  "lastOpenFiles": [
+    "01_核心概念 Concepts/Tool Use 工具呼叫.md",
+    "03_應用與工作流 Applications/工具與平台/🧰 AI 工具與平台總覽.md",
+    "03_應用與工作流 Applications/多 AI 協作與多 Agent 工作流.md",
+    "03_應用與工作流 Applications/工具與平台/OpenClaw 個人 AI 助理.md",
+    "03_應用與工作流 Applications/工具與平台/OpenClaw 個人 AI 助理.md.tmp.29820.f124bc9c445c",
+    "03_應用與工作流 Applications/工具與平台/Hermes Agent（Nous Research）.md",
+    "03_應用與工作流 Applications/工具與平台/Hermes Agent（Nous Research）.md.tmp.29820.2bfa3055eb90",
+    "03_應用與工作流 Applications/工具與平台/Ansible 自動化維運.md",
+    "03_應用與工作流 Applications/工具與平台/Ansible 自動化維運.md.tmp.29820.34214b662fbc",
+    "03_應用與工作流 Applications/工具與平台/n8n 工作流自動化.md",
+    "03_應用與工作流 Applications/工具與平台/n8n 工作流自動化.md.tmp.29820.ea511cf3a223",
+    "03_應用與工作流 Applications/工具與平台/Dify 完整介紹.md",
+    "03_應用與工作流 Applications/工具與平台/Dify 完整介紹.md.tmp.29820.49fa7aa6e702",
+    "03_應用與工作流 Applications/工具與平台/🧰 AI 工具與平台總覽.md.tmp.29820.f43520c3383d",
+    "03_應用與工作流 Applications/工具與平台",
+    "03_應用與工作流 Applications/工作流範式.md",
+    "04_每日快訊 Daily/2026-06-29.md",
+    "04_每日快訊 Daily/_關於-每日快訊.md",
+    "05_每週精選 Weekly/_關於-每週精選.md",
+    "01_核心概念 Concepts/Ansible 自動化.md",
+    "06_收件匣 Inbox/_關於-收件匣.md",
+    "99_範本 Templates/每日快訊範本.md",
+    "99_範本 Templates/每週精選範本.md",
+    "99_範本 Templates/概念筆記範本.md",
+    "99_範本 Templates/應用案例範本.md",
+    "03_應用與工作流 Applications/Codex × Claude 串接與自動協作.md",
+    "02_關係地圖 Maps/🖼️ 三步驟圖解總覽.md",
+    "00_首頁 Home/📂 全部筆記總覽.md",
+    "00_首頁 Home/🏠 知識庫首頁.md",
+    "01_核心概念 Concepts/Agent 代理.md",
+    "02_關係地圖 Maps/🖼️ 三步驟圖解總覽.md.tmp.41860.7c040347b461",
+    "02_關係地圖 Maps/圖解/00-全景系統圖.svg",
+    "02_關係地圖 Maps/圖解/00-全景系統圖.svg.tmp.41860.0d70e8fca120",
+    "02_關係地圖 Maps/圖解/03-Agent 行動.svg",
+    "02_關係地圖 Maps/圖解/02-RAG 記憶.svg",
+    "02_關係地圖 Maps/圖解/02-RAG 記憶.svg.tmp.41860.313aabf3d660",
+    "02_關係地圖 Maps/圖解/01-LLM 思考.svg",
+    "01_核心概念 Concepts/Self-Reflection 自我反思.md",
+    "01_核心概念 Concepts/Model Agnostic 模型無關.md",
+    "01_核心概念 Concepts/Cache 快取.md"
+  ]
+}
