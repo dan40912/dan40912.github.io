@@ -1,0 +1,15 @@
+{
+  "name": "羽毛球排場工具",
+  "short_name": "排場工具",
+  "description": "現場羽毛球排場、換人與計次工具",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f4f7f3",
+  "theme_color": "#1f8a54",
+  "lang": "zh-Hant",
+  "icons": [
+    { "src": "assets/icons/icon-192.svg", "sizes": "192x192", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "assets/icons/icon-512.svg", "sizes": "512x512", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}

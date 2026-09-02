@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>前端重構建議｜金融 AI Service Hub</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="./index.html"><span class="mark">AI</span><span><strong>金融 AI Service Hub</strong><span>Frontend Recommendations</span></span></a>
+    <nav class="nav" aria-label="主導覽">
+      <a href="./index.html">總覽</a><a href="./chatbot_system_design.html">系統架構</a><a href="./start_inputs_schema.html">START Schema</a><a href="./dify_workflow_design.html">Workflow</a><a href="./system_prompts.html">Prompts</a><a href="./qa_mock_scenario_matrix.html">QA</a><a class="active" href="./frontend_refactor_recommendations.html">前端建議</a>
+    </nav>
+  </header>
+  <main class="page">
+    <section class="hero">
+      <div class="hero-main">
+        <p class="eyebrow">Implementation Guide</p>
+        <h1>前端重構與落地建議</h1>
+        <p class="lead">以下建議不要求推翻現有 demo，而是把目前 HTML、FAQ、external KB 與 Dify DSL 對齊統一 schema、risk gate 與 answer contract。</p>
+      </div>
+      <aside class="toc">
+        <h2>本頁重點</h2>
+        <a href="#pages">頁面建議</a>
+        <a href="#data">應抽 JSON</a>
+        <a href="#payload">Payload Contract</a>
+        <a href="#qa">前端 QA</a>
+      </aside>
+    </section>
+
+    <section class="hint">
+      <strong>提示</strong>
+      重構優先順序：先讓 payload 穩定，再讓 Dify workflow 穩定，最後才整理視覺細節。金融 demo 最怕看起來漂亮但欄位與風險規則不同步。
+    </section>
+
+    <section id="pages" class="section">
+      <h2>頁面建議</h2>
+      <div class="grid two">
+        <article class="card">
+          <h3><code>index.html</code></h3>
+          <p>保留對內 / 對外入口與 mock overview。首頁不提供 risk_level、permission_level、approval_required 等手動切換。</p>
+          <div class="hint"><strong>HINT</strong>首頁只做分流，不做治理決策。</div>
+        </article>
+        <article class="card">
+          <h3><code>internal/index.html</code></h3>
+          <p>保留產業卡片、三路線 preset、FAQ、mock profile、payload 複製與 Chatbot 啟動。隱藏 user_type、audit_required、data_policy 等系統欄位。</p>
+        </article>
+        <article class="card">
+          <h3><code>external/index.html</code></h3>
+          <p>保留服務卡片、預設問題、轉真人、補充說明、查看進度。不得顯示 internal 欄位、審批細節或 audit log。</p>
+          <div class="warning"><strong>風險 HINT</strong>對外頁不能出現「主管審批」、「Permission Gate」、「Audit Log」。</div>
+        </article>
+        <article class="card">
+          <h3><code>internal/call-center/index.html</code></h3>
+          <p>保留案件列表、高風險卡控、主管批准、回覆客戶、Knowledge Candidate 與 Audit Log。risk label 統一成 normal / medium / high / danger / critical。</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="data" class="section">
+      <h2>應抽成 JSON 的資料</h2>
+      <div class="split">
+        <div>
+          <h3>Internal scenarios</h3>
+          <pre><code>{
+  "business_line": "life_insurance",
+  "title": "人壽",
+  "role": "insurance_agent",
+  "department": "life_insurance_service",
+  "faq_source": "/faqs/life_insurance.md",
+  "route_stages": ["status_lookup", "next_best_action", "risk_boundary"],
+  "mock_customer": {},
+  "presets": []
+}</code></pre>
+        </div>
+        <div>
+          <h3>External scenarios</h3>
+          <pre><code>{
+  "business_line": "credit_card",
+  "service_id": "credit_card_dispute",
+  "title": "信用卡爭議款",
+  "route_stages": ["self_service", "follow_up", "handoff_risk"],
+  "risk_level": "high",
+  "customer_visible_warning": "請不要提供 CVV、OTP 或完整卡號。",
+  "mock_customer": {},
+  "presets": []
+}</code></pre>
+        </div>
+      </div>
+      <h3>建議新增資料檔</h3>
+      <p><code>data/internal_scenarios.json</code>、<code>data/external_scenarios.json</code>、<code>data/business_lines.json</code>、<code>data/intent_taxonomy.json</code>、<code>data/risk_gate_rules.json</code>、<code>data/mock_data_contract.json</code>。</p>
+    </section>
+
+    <section id="payload" class="section">
+      <h2>前端 Payload Contract</h2>
+      <pre><code>{
+  "inputs": {
+    "user_type": "external_customer",
+    "channel": "customer_chatbot",
+    "business_line": "credit_card",
+    "service_id": "credit_card_dispute",
+    "route_stage": "handoff_risk",
+    "scenario_type": "suspected_fraud",
+    "risk_level": "danger",
+    "permission_level": "public",
+    "auth_status": "verification_required",
+    "service_relationship": "verification_required",
+    "approval_required": "false",
+    "audit_required": "true",
+    "handoff_required": "true",
+    "answer_contract": "customer_facing_short_reply",
+    "expected_sections": "我理解您的問題|建議處理方式|需要補充的資訊|下一步|是否建議轉真人|回饋",
+    "mock_data_available": "true",
+    "mock_data_source": "frontend_demo",
+    "mock_data_summary": "known_status=疑似盜刷",
+    "mock_data_contract": "對外只能提供安全下一步，不可宣稱正式查詢。",
+    "data_policy": "customer_safe_reply_no_internal_process",
+    "sensitive_data_policy": "never_request_password_otp_cvv_full_card_full_account_full_id"
+  },
+  "query": "我信用卡好像被盜刷。",
+  "response_mode": "streaming",
+  "user": "demo-customer-001"
+}</code></pre>
+    </section>
+
+    <section id="qa" class="section">
+      <h2>前端 QA</h2>
+      <ul class="checklist">
+        <li>Internal 與 External payload schema 一致，但顯示欄位不同。</li>
+        <li>External UI 不顯示 internal-only 欄位。</li>
+        <li>所有高風險 preset 都能帶出 <code>handoff_required=true</code>。</li>
+        <li>所有 mock data 顯示都標示 demo。</li>
+        <li>複製 payload 可直接交給 Dify 測試。</li>
+        <li>所有按鈕都有可見狀態變化，不存在假按鈕。</li>
+      </ul>
+    </section>
+  </main>
+</body>
+</html>

@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>金融 AI Service Hub 交付包</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="./index.html">
+      <span class="mark">AI</span>
+      <span><strong>金融 AI Service Hub</strong><span>Codex version HTML 交付包</span></span>
+    </a>
+    <nav class="nav" aria-label="主導覽">
+      <a class="active" href="./index.html">總覽</a>
+      <a href="./chatbot_system_design.html">系統架構</a>
+      <a href="./start_inputs_schema.html">START Schema</a>
+      <a href="./dify_workflow_design.html">Workflow</a>
+      <a href="./system_prompts.html">Prompts</a>
+      <a href="./qa_mock_scenario_matrix.html">QA</a>
+      <a href="./frontend_refactor_recommendations.html">前端建議</a>
+    </nav>
+  </header>
+
+  <main class="page">
+    <section class="hero">
+      <div class="hero-main">
+        <p class="eyebrow">可交付給工程、PM、法遵與 QA</p>
+        <h1>金融 Chatbot 系統方案 HTML 版</h1>
+        <p class="lead">這份交付包把原本的 Markdown 規格整理成可瀏覽的文件站。重點是讓 internal / external 分流、Dify workflow、START inputs、risk gate、prompt 與 QA 測試矩陣更好讀、可驗收。</p>
+        <div class="meta">
+          <span class="pill">繁體中文</span>
+          <span class="pill blue">靜態 HTML</span>
+          <span class="pill amber">Demo mock data only</span>
+          <span class="pill red">金融合規邊界</span>
+        </div>
+      </div>
+      <aside class="toc">
+        <h2>快速入口</h2>
+        <a href="./dify_workflow_design.html">查看 Dify workflow 視覺化節點</a>
+        <a href="./start_inputs_schema.html">查看 START input 欄位規格</a>
+        <a href="./system_prompts.html">複製對內 / 對外 System Prompt</a>
+        <a href="./qa_mock_scenario_matrix.html">查看 QA 測試矩陣</a>
+      </aside>
+    </section>
+
+    <section class="hint">
+      <strong>提示</strong>
+      這裡的所有 mock data 都只能用於 demo，不可被描述成正式核心系統查詢結果。任何正式金額、保單價值、理賠、核貸、帳務狀態都必須回到正式系統或真人專員確認。
+    </section>
+
+    <section class="grid">
+      <article class="card">
+        <h3>系統架構</h3>
+        <p>說明 internal / external 如何分流、知識庫如何切分、mock data 與 Audit Log / Case Summary 如何產生。</p>
+        <a class="btn primary" href="./chatbot_system_design.html">開啟架構頁</a>
+      </article>
+      <article class="card">
+        <h3>START Schema</h3>
+        <p>列出 Dify START node 所有 inputs、用途、範例值、必填性與對內/對外差異。</p>
+        <a class="btn primary" href="./start_inputs_schema.html">開啟欄位表</a>
+      </article>
+      <article class="card">
+        <h3>Dify Workflow</h3>
+        <p>用節點卡片呈現 START、Normalizer、Intent、Risk Gate、Permission Gate、Composer 與 Final Answer。</p>
+        <a class="btn primary" href="./dify_workflow_design.html">開啟流程圖</a>
+      </article>
+      <article class="card">
+        <h3>System Prompts</h3>
+        <p>提供完整對內與對外 System Prompt，包含固定輸出格式與金融禁止事項。</p>
+        <a class="btn primary" href="./system_prompts.html">開啟 Prompt</a>
+      </article>
+      <article class="card">
+        <h3>QA Matrix</h3>
+        <p>依 user_type 與 business_line 規劃測試，覆蓋高風險、敏感資料、轉真人與 audit log。</p>
+        <a class="btn primary" href="./qa_mock_scenario_matrix.html">開啟 QA</a>
+      </article>
+      <article class="card">
+        <h3>前端建議</h3>
+        <p>說明現有 HTML、FAQ、external KB 與 Dify DSL 應保留、隱藏、抽 JSON 與新增驗收項目。</p>
+        <a class="btn primary" href="./frontend_refactor_recommendations.html">開啟建議</a>
+      </article>
+    </section>
+
+    <section class="section">
+      <h2>交付包使用方式</h2>
+      <div class="split">
+        <div>
+          <h3>給 PM / 法遵</h3>
+          <ul class="checklist">
+            <li>先看系統架構頁，確認對內 / 對外邊界。</li>
+            <li>再看 Risk Gate 與禁止事項，確認金融安全規則。</li>
+            <li>最後看 QA Matrix，確認驗收案例是否覆蓋風險場景。</li>
+          </ul>
+        </div>
+        <div>
+          <h3>給工程 / Dify Designer</h3>
+          <ul class="checklist">
+            <li>先看 START Schema，對齊前端 payload 與 Dify variables。</li>
+            <li>再看 Workflow 頁，逐節點建立 Dify advanced-chat flow。</li>
+            <li>最後看 Prompt 與前端建議，套回現有 demo。</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">HTML files are generated for the codex-version package. Markdown originals remain available in the same folder.</footer>
+  </main>
+</body>
+</html>

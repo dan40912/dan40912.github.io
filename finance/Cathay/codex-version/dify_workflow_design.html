@@ -1,0 +1,349 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dify Workflow｜金融 AI Service Hub</title>
+  <link rel="stylesheet" href="./styles.css">
+  <link rel="stylesheet" href="./diagram.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="./index.html"><span class="mark">AI</span><span><strong>金融 AI Service Hub</strong><span>Dify Workflow Design</span></span></a>
+    <nav class="nav" aria-label="主導覽">
+      <a href="./index.html">總覽</a><a href="./chatbot_system_design.html">系統架構</a><a href="./start_inputs_schema.html">START Schema</a><a class="active" href="./dify_workflow_design.html">Workflow</a><a href="./system_prompts.html">Prompts</a><a href="./qa_mock_scenario_matrix.html">QA</a><a href="./frontend_refactor_recommendations.html">前端建議</a>
+    </nav>
+  </header>
+
+  <main class="page">
+    <section class="hero">
+      <div class="hero-main">
+        <p class="eyebrow">Workflow Blueprint</p>
+        <h1>Dify Advanced Chat Workflow</h1>
+        <p class="lead">流程採用「先正規化、再分類、先風險、後回答」的設計。對內多 Permission Gate 與 Audit Log；對外則隱藏內部治理，只輸出客戶可理解的安全步驟。</p>
+      </div>
+      <aside class="toc">
+        <h2>本頁重點</h2>
+        <a href="#visual">視覺化流程</a>
+        <a href="#node-details">節點說明</a>
+        <a href="#routing">Routing HINT</a>
+        <a href="#acceptance">驗收標準</a>
+      </aside>
+    </section>
+
+    <section class="hint">
+      <strong>提示</strong>
+      Dify 裡可以用 LLM node、Question Classifier、Knowledge Retrieval、If/Else 與 Answer node 組成。若 demo 時間有限，先落地 START、Risk Gate、Scenario Router、Internal / External Composer 與 Final Answer。
+    </section>
+
+    <section id="visual" class="section">
+      <h2>Dify Canvas 流程圖</h2>
+      <p>由左至右是主線；Scenario Router 之後依 <code>user_type</code> 分成對內、對外兩條，Risk Gate 命中高風險則直接進紅色交接區。<strong>滑鼠移到節點上會顯示該節點的 HINT</strong>（輸入輸出、路由、fallback），點一下節點可固定 HINT，再點一下取消。</p>
+      <div class="canvas-toolbar">
+        <div class="canvas-legend">
+          <span class="legend-item"><span class="legend-dot"></span>START / Answer</span>
+          <span class="legend-item"><span class="legend-dot llm"></span>LLM 節點</span>
+          <span class="legend-item"><span class="legend-dot gate"></span>Gate / Router</span>
+          <span class="legend-item"><span class="legend-dot answer"></span>Knowledge</span>
+          <span class="legend-item"><span class="legend-dot external"></span>交接 / 高風險</span>
+        </div>
+        <button type="button" class="btn" data-fit="#wf-canvas">縮放全覽</button>
+      </div>
+      <div class="canvas-wrap">
+        <div class="fit-stage">
+          <div class="flow-canvas" id="wf-canvas" style="width:1900px;height:770px">
+
+            <div class="zone internal" style="left:1236px;top:40px;width:416px;height:300px"><span class="zone-label">對內 · INTERNAL ONLY</span></div>
+            <div class="zone external" style="left:1236px;top:428px;width:216px;height:152px"><span class="zone-label">對外 · CUSTOMER</span></div>
+            <div class="zone handoff" style="left:1200px;top:588px;width:452px;height:150px"><span class="zone-label">外部交接邊界 · 只交去識別化摘要</span></div>
+
+            <div class="fnode answer" id="wf-start" style="left:20px;top:300px">
+              <div class="fnode-head"><span class="fnode-ico">S</span><span class="fnode-type">Start</span></div>
+              <strong class="fnode-title">START</strong>
+              <span class="fnode-sub">接收前端 payload 與使用者問題</span>
+              <div class="fnode-tip">
+                <h4>START</h4>
+                <div class="row"><span class="tip-tag">IN</span><code>user_type</code>、<code>business_line</code>、<code>route_stage</code>、<code>risk_level</code>…（見 START Schema）</div>
+                <div class="row"><span class="tip-tag">OUT</span>query + 全部 inputs</div>
+                <div class="row"><span class="tip-tag">FALLBACK</span>缺核心欄位仍往下走，由下游補預設值並標記缺漏</div>
+                <div class="row"><span class="tip-tag warn">HINT</span>不要讓 START 靠使用者文字猜風險，前端至少帶 user_type / business_line / route_stage / risk_level</div>
+              </div>
+            </div>
+
+            <div class="fnode llm" id="wf-norm" style="left:220px;top:300px">
+              <div class="fnode-head"><span class="fnode-ico">N</span><span class="fnode-type">LLM</span></div>
+              <strong class="fnode-title">Context Normalizer</strong>
+              <span class="fnode-sub">整理 user_type、mock data、缺漏欄位</span>
+              <div class="fnode-tip">
+                <h4>Context Normalizer</h4>
+                <div class="row"><span class="tip-tag">職責</span>只整理上下文、不回答問題；核對 user_type / business_line / route_stage 是否合法</div>
+                <div class="row"><span class="tip-tag">OUT</span><code>known_facts</code>、<code>missing_fields</code>、<code>normalization_warnings</code></div>
+                <div class="row"><span class="tip-tag">FALLBACK</span>user_type 無法辨識 → 預設 external_customer 安全輸出</div>
+                <div class="row"><span class="tip-tag warn">HINT</span>mock data 只能整理實際存在的欄位，不得說成正式核心系統查詢</div>
+              </div>
+            </div>
+
+            <div class="fnode llm" id="wf-intent" style="left:420px;top:300px">
+              <div class="fnode-head"><span class="fnode-ico">C</span><span class="fnode-type">Classifier</span></div>
+              <strong class="fnode-title">Intent Classifier</strong>
+              <span class="fnode-sub">20 個固定 intent taxonomy</span>
+              <div class="fnode-tip">
+                <h4>Intent Classifier</h4>
+                <div class="row"><span class="tip-tag">職責</span>從固定 taxonomy 選 intent：general_faq、fraud_or_scam、loan_status、human_handoff…</div>
+                <div class="row"><span class="tip-tag">OUT</span><code>intent</code>、<code>intent_confidence</code>、<code>retrieval_required</code>、<code>handoff_possible</code></div>
+                <div class="row"><span class="tip-tag">優先</span>要求真人 → human_handoff；詐騙 / 盜刷 / 正在轉帳 → 高風險 intent；明牌 / 保證收益 → investment_advice_boundary</div>
+                <div class="row"><span class="tip-tag">FALLBACK</span>低信心 → <code>insufficient_info</code></div>
+              </div>
+            </div>
+
+            <div class="fnode gate" id="wf-risk" style="left:620px;top:300px">
+              <div class="fnode-head"><span class="fnode-ico">R</span><span class="fnode-type">IF / Gate</span></div>
+              <strong class="fnode-title">Risk Gate</strong>
+              <span class="fnode-sub">保守上修風險，決定是否轉真人</span>
+              <div class="fnode-tip">
+                <h4>Risk Gate</h4>
+                <div class="row"><span class="tip-tag">職責</span>不因前端傳 normal 而忽略高風險文字，永遠可上修</div>
+                <div class="row"><span class="tip-tag">OUT</span><code>final_risk_level</code>、<code>handoff_required</code>、<code>blocked_content</code>、<code>safe_response_boundary</code></div>
+                <div class="row"><span class="tip-tag warn">必升高風險</span>OTP / CVV / 密碼 / 完整卡號、投資明牌、保證收益 / 理賠 / 核貸、詐騙 / 盜刷 / 正在轉帳、對內越權</div>
+                <div class="row"><span class="tip-tag">FALLBACK</span>無法判斷 → <code>medium</code>，要求補充非敏感資訊</div>
+              </div>
+            </div>
+
+            <div class="fnode knowledge" id="wf-kb" style="left:820px;top:300px">
+              <div class="fnode-head"><span class="fnode-ico">K</span><span class="fnode-type">Knowledge</span></div>
+              <strong class="fnode-title">Knowledge Retrieval</strong>
+              <span class="fnode-sub">只讀檢索 FAQ / KB，不外送資料</span>
+              <div class="fnode-tip">
+                <h4>Knowledge Retrieval</h4>
+                <div class="row"><span class="tip-tag">檢索順序</span>同 business_line FAQ → 同 intent KB → user_type 專用 KB → general_finance fallback</div>
+                <div class="row"><span class="tip-tag">OUT</span><code>retrieved_context</code>、<code>retrieved_sources</code>、<code>retrieval_status</code></div>
+                <div class="row"><span class="tip-tag warn">FALLBACK</span>無結果 → <code>no_reliable_context</code>，Final Answer 必須說明依據不足，不得編造</div>
+              </div>
+            </div>
+
+            <div class="fnode router" id="wf-router" style="left:1020px;top:300px">
+              <div class="fnode-head"><span class="fnode-ico">⑂</span><span class="fnode-type">Router</span></div>
+              <strong class="fnode-title">Scenario Router</strong>
+              <span class="fnode-sub">依 user_type / risk / permission 分流</span>
+              <div class="fnode-tip">
+                <h4>Scenario Router</h4>
+                <div class="row"><span class="tip-tag">路由</span>internal_employee → 對內線；external_customer → 對外線；handoff_required → 交接區；KB 缺口 → Knowledge Candidate</div>
+                <div class="row"><span class="tip-tag">OUT</span><code>target_composer</code>、<code>case_summary_required</code>、<code>audit_log_required</code></div>
+                <div class="row"><span class="tip-tag">FALLBACK</span>無法判斷 → External Composer 並限制回答</div>
+              </div>
+            </div>
+
+            <div class="fnode gate" id="wf-perm" style="left:1260px;top:80px">
+              <div class="fnode-head"><span class="fnode-ico">P</span><span class="fnode-type">IF / Gate</span></div>
+              <strong class="fnode-title">Permission Gate</strong>
+              <span class="fnode-sub">角色、部門、服務關係、資料範圍</span>
+              <div class="fnode-tip">
+                <h4>Permission Gate（對內）</h4>
+                <div class="row"><span class="tip-tag">職責</span>只處理 internal_employee；檢查角色 / 部門 / 服務關係、敏感欄位、是否繞過審批</div>
+                <div class="row"><span class="tip-tag">OUT</span><code>permission_status</code>、<code>masked_fields</code>、<code>denied_fields</code>、<code>required_approval_owner</code></div>
+                <div class="row"><span class="tip-tag warn">HINT</span>權限不足時不得提供明細，只輸出審批需求與安全摘要；External 不進此節點、也看不到結果</div>
+              </div>
+            </div>
+
+            <div class="fnode llm" id="wf-ic" style="left:1460px;top:80px">
+              <div class="fnode-head"><span class="fnode-ico">A</span><span class="fnode-type">LLM</span></div>
+              <strong class="fnode-title">Internal Composer</strong>
+              <span class="fnode-sub">Internal Use Only + 客戶可說版本</span>
+              <div class="fnode-tip">
+                <h4>Internal Answer Composer</h4>
+                <div class="row"><span class="tip-tag">職責</span>產生內部回答、mock 現況、下一步與「客戶可說版本」</div>
+                <div class="row"><span class="tip-tag">PROMPT</span>使用 System Prompts 頁的「對內 System Prompt」固定格式</div>
+                <div class="row"><span class="tip-tag">FALLBACK</span>缺權限資訊 → 只列待補欄位與審批建議</div>
+              </div>
+            </div>
+
+            <div class="fnode muted" id="wf-audit" style="left:1460px;top:224px">
+              <div class="fnode-head"><span class="fnode-ico">L</span><span class="fnode-type">Template</span></div>
+              <strong class="fnode-title">Audit Log Composer</strong>
+              <span class="fnode-sub">mock audit log，不含真實個資</span>
+              <div class="fnode-tip">
+                <h4>Audit Log Composer（對內）</h4>
+                <div class="row"><span class="tip-tag">職責</span>為 internal 產生 demo audit log：intent、risk、permission、data_scope、masked_fields</div>
+                <div class="row"><span class="tip-tag warn">禁止</span>真實個資、正式金額、完整帳號 / 卡號、身分證字號、密碼類資訊</div>
+                <div class="row"><span class="tip-tag">FALLBACK</span>缺欄位 → <code>unknown_demo_value</code> + <code>log_quality=incomplete</code></div>
+              </div>
+            </div>
+
+            <div class="fnode llm" id="wf-ec" style="left:1260px;top:460px">
+              <div class="fnode-head"><span class="fnode-ico">E</span><span class="fnode-type">LLM</span></div>
+              <strong class="fnode-title">External Composer</strong>
+              <span class="fnode-sub">客戶聽得懂的安全步驟</span>
+              <div class="fnode-tip">
+                <h4>External Answer Composer</h4>
+                <div class="row"><span class="tip-tag">職責</span>產生對外六段格式回答與需要補充的非敏感資訊</div>
+                <div class="row"><span class="tip-tag warn">禁止</span>揭露 Permission Gate、Audit Log、內部審批、模型風險分數；不得索取 OTP / CVV / 密碼 / 完整卡號</div>
+                <div class="row"><span class="tip-tag">FALLBACK</span>資訊不足 → 只追問非敏感必要資訊</div>
+              </div>
+            </div>
+
+            <div class="fnode externalnode" id="wf-handoff" style="left:1240px;top:616px">
+              <div class="fnode-head"><span class="fnode-ico">H</span><span class="fnode-type">Handoff</span></div>
+              <strong class="fnode-title">Handoff / Case Summary</strong>
+              <span class="fnode-sub">交給真人客服的去識別化摘要</span>
+              <div class="fnode-tip">
+                <h4>Handoff / Case Summary Composer</h4>
+                <div class="row"><span class="tip-tag">內容</span>問題摘要、已知 mock facts、風險原因、不可索取內容、建議下一步、客戶可見轉接理由</div>
+                <div class="row"><span class="tip-tag warn">邊界</span>只交出去識別化 / 已遮罩摘要；不含密碼、OTP、CVV、完整卡號 / 帳號 / 身分證字號；不揭露內部權限與 audit log</div>
+                <div class="row"><span class="tip-tag">觸發</span><code>handoff_required=true</code> 或 risk ∈ high / danger / critical</div>
+              </div>
+            </div>
+
+            <div class="fnode muted" id="wf-kc" style="left:820px;top:616px">
+              <div class="fnode-head"><span class="fnode-ico">Q</span><span class="fnode-type">LLM</span></div>
+              <strong class="fnode-title">Knowledge Candidate</strong>
+              <span class="fnode-sub">KB 缺口收錄評估，審核後回流</span>
+              <div class="fnode-tip">
+                <h4>Knowledge Candidate Evaluator</h4>
+                <div class="row"><span class="tip-tag">可收錄</span>FAQ 缺口、可泛化 SOP、安全提醒、補件流程、去識別化標準回覆</div>
+                <div class="row"><span class="tip-tag warn">不可收錄</span>個資、正式金額、案件特定結論、未審核投資建議、內部風控細節</div>
+                <div class="row"><span class="tip-tag">FALLBACK</span>高風險或個資過多 → <code>candidate_status=rejected</code></div>
+              </div>
+            </div>
+
+            <div class="fnode answer" id="wf-final" style="left:1700px;top:300px">
+              <div class="fnode-head"><span class="fnode-ico">✓</span><span class="fnode-type">Answer</span></div>
+              <strong class="fnode-title">Final Answer</strong>
+              <span class="fnode-sub">最後的對內 / 對外揭露檢查</span>
+              <div class="fnode-tip">
+                <h4>Final Answer</h4>
+                <div class="row"><span class="tip-tag">internal</span>必含 Internal Use Only，可附 mock Audit Log 與客戶可說版本</div>
+                <div class="row"><span class="tip-tag">external</span>不得揭露內部流程 / 權限 / audit log；高風險優先轉真人</div>
+                <div class="row"><span class="tip-tag warn">全部</span>mock data 只能說是 demo；不得保證收益 / 理賠 / 核貸；KB 無依據不得編造</div>
+                <div class="row"><span class="tip-tag">FALLBACK</span>「目前資訊不足，請補充非敏感資訊；涉及帳戶安全請立即轉真人客服。」</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <p class="canvas-note">節點位置對應 Dify advanced-chat canvas 的建議擺法；灰色虛線代表非同步 / 附加輸出，紅色代表交接邊界。</p>
+    </section>
+
+    <section id="node-details" class="section">
+      <h2>節點說明</h2>
+      <details open>
+        <summary>START</summary>
+        <div>
+          <p><strong>類型：</strong>Start</p>
+          <p><strong>Inputs：</strong>完整欄位見 <a href="./start_inputs_schema.html">START Schema</a>。</p>
+          <p><strong>Fallback：</strong>缺少核心欄位仍進入 Context Normalizer，由下游標記缺漏。</p>
+          <div class="hint"><strong>HINT</strong>不要讓 START node 靠使用者文字猜風險。前端至少要帶 <code>user_type</code>、<code>business_line</code>、<code>route_stage</code>、<code>risk_level</code>。</div>
+        </div>
+      </details>
+      <details>
+        <summary>Context Normalizer</summary>
+        <div>
+          <p><strong>類型：</strong>LLM</p>
+          <p><strong>Outputs：</strong><code>normalized_user_type</code>、<code>normalized_business_line</code>、<code>mock_context_available</code>、<code>known_facts</code>、<code>missing_fields</code>。</p>
+          <pre><code>請只整理上下文，不回答問題。若 mock_data_available=true，只能整理 mock data 實際存在的欄位；缺少的資料要列為 missing_fields。</code></pre>
+        </div>
+      </details>
+      <details>
+        <summary>Intent Classifier</summary>
+        <div>
+          <p><strong>類型：</strong>Question Classifier 或 LLM</p>
+          <p><strong>Outputs：</strong><code>intent</code>、<code>intent_confidence</code>、<code>retrieval_required</code>、<code>handoff_possible</code>。</p>
+          <div class="warning"><strong>風險 HINT</strong>使用者要求真人、疑似詐騙、盜刷、正在轉帳、不明資金、自傷風險要優先分類成高風險 intent。</div>
+        </div>
+      </details>
+      <details>
+        <summary>Risk Gate</summary>
+        <div>
+          <p><strong>類型：</strong>LLM 或 Rule-based Code Node</p>
+          <p><strong>Outputs：</strong><code>final_risk_level</code>、<code>handoff_required</code>、<code>approval_required</code>、<code>blocked_content</code>、<code>safe_response_boundary</code>。</p>
+          <pre><code>不得因前端傳 normal 而忽略高風險文字。OTP、CVV、密碼、完整卡號、投資明牌、保證收益、保證理賠、保證核貸、正在轉帳都要上修風險。</code></pre>
+        </div>
+      </details>
+      <details>
+        <summary>Permission Gate（對內）</summary>
+        <div>
+          <p><strong>類型：</strong>LLM 或 Rule-based Code Node</p>
+          <p><strong>Outputs：</strong><code>permission_status</code>、<code>allowed_data_scope</code>、<code>masked_fields</code>、<code>denied_fields</code>、<code>required_approval_owner</code>。</p>
+          <div class="hint"><strong>HINT</strong>只處理 internal_employee。External 不進這個節點，也不能看見這個節點的結果。</div>
+        </div>
+      </details>
+      <details>
+        <summary>Knowledge Retrieval</summary>
+        <div>
+          <p><strong>類型：</strong>Knowledge Retrieval</p>
+          <p><strong>檢索順序：</strong>同 business_line FAQ、同 intent KB、user_type 專用 KB、general_finance fallback。</p>
+          <p><strong>Fallback：</strong>無結果時輸出 <code>retrieval_status=no_reliable_context</code>，不得編造。</p>
+        </div>
+      </details>
+      <details>
+        <summary>Scenario Router 與 Composer</summary>
+        <div>
+          <p><strong>Routing：</strong><code>internal_employee</code> 走 Internal Answer Composer；<code>external_customer</code> 走 External Answer Composer；<code>handoff_required=true</code> 同時產生 Case Summary。</p>
+          <p><strong>Composer：</strong>套用 <a href="./system_prompts.html">System Prompts</a> 的固定輸出格式。</p>
+        </div>
+      </details>
+      <details>
+        <summary>Audit Log / Knowledge Candidate / Final Answer</summary>
+        <div>
+          <p><strong>Audit Log：</strong>只對 internal 產生 mock JSON，不含真實個資。</p>
+          <p><strong>Knowledge Candidate：</strong>只收錄可泛化、去識別化、已避開金融建議與內部風控細節的內容。</p>
+          <p><strong>Final Answer：</strong>做最後的對內/對外揭露檢查。</p>
+        </div>
+      </details>
+    </section>
+
+    <section id="routing" class="section">
+      <h2>Routing HINT</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>條件</th><th>路由</th><th>說明</th></tr></thead>
+          <tbody>
+            <tr><td><code>user_type=internal_employee</code></td><td>Permission Gate → Internal Composer</td><td>必須產生客戶可說版本與 mock Audit Log。</td></tr>
+            <tr><td><code>user_type=external_customer</code></td><td>External Composer</td><td>不得揭露內部權限、審批、audit log。</td></tr>
+            <tr><td><code>risk_level=danger/critical</code></td><td>Handoff / Case Summary</td><td>優先安全處理，不做一般 FAQ 式回答。</td></tr>
+            <tr><td><code>retrieval_status=no_reliable_context</code></td><td>Fallback</td><td>說明知識庫依據不足，不得編造。</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="acceptance" class="section">
+      <h2>Workflow 驗收標準</h2>
+      <ul class="checklist">
+        <li>START variables 與 START Schema 完全一致。</li>
+        <li>所有高風險 intent 都能被 Risk Gate 上修。</li>
+        <li>External Answer 不顯示 Permission Gate、Audit Log、內部審批。</li>
+        <li>Internal Answer 必須產生客戶可說版本與 mock Audit Log。</li>
+        <li>Knowledge Retrieval 無結果時不得編造。</li>
+        <li>Handoff required 時一定產生 case summary。</li>
+      </ul>
+    </section>
+  </main>
+
+  <script src="./diagram.js"></script>
+  <script>
+    renderFlow({
+      canvas: '#wf-canvas',
+      edges: [
+        { from: '#wf-start', to: '#wf-norm' },
+        { from: '#wf-norm', to: '#wf-intent' },
+        { from: '#wf-intent', to: '#wf-risk' },
+        { from: '#wf-risk', to: '#wf-kb', label: '一般 / 可控風險' },
+        { from: '#wf-kb', to: '#wf-router' },
+        { from: '#wf-risk', to: '#wf-handoff', cls: 'risk', label: 'danger / critical', fromSide: 'bottom', toSide: 'left', at: 0.45 },
+        { from: '#wf-router', to: '#wf-perm', cls: 'internal', label: 'internal_employee' },
+        { from: '#wf-perm', to: '#wf-ic', cls: 'internal', label: 'allowed / masked' },
+        { from: '#wf-ic', to: '#wf-audit', cls: 'internal', dashed: true, label: 'audit_required', fromSide: 'bottom', toSide: 'top' },
+        { from: '#wf-router', to: '#wf-ec', cls: 'external', label: 'external_customer' },
+        { from: '#wf-router', to: '#wf-handoff', cls: 'risk', label: 'handoff_required=true', fromSide: 'bottom', toSide: 'top' },
+        { from: '#wf-router', to: '#wf-kc', cls: 'loop', dashed: true, label: 'KB 缺口 / 新問題', fromSide: 'bottom', toSide: 'right' },
+        { from: '#wf-kc', to: '#wf-kb', cls: 'loop', dashed: true, label: '審核後回流 KB', fromSide: 'top', toSide: 'bottom' },
+        { from: '#wf-ic', to: '#wf-final' },
+        { from: '#wf-ec', to: '#wf-final' },
+        { from: '#wf-handoff', to: '#wf-final', cls: 'risk', label: '案件摘要' },
+        { from: '#wf-audit', to: '#wf-final', cls: 'loop', dashed: true, label: 'internal only 附加' }
+      ]
+    });
+  </script>
+</body>
+</html>

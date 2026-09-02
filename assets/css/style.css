@@ -302,7 +302,7 @@ h1, h2, h3, h4, h5, h6 {
 @media (max-width: 768px) {
     #hero.hero-focus-right {
         /* keep face framed on smaller screens by shifting focus right */
-        background-position: 66% center;
+        background-position: 79% center;
     }
 }
 
@@ -445,11 +445,18 @@ h1, h2, h3, h4, h5, h6 {
 
 #hero .social-links a {
   font-size: 24px;
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   color: #45505b;
   line-height: 1;
   margin-right: 20px;
   transition: 0.3s;
+}
+
+#hero .social-links a span {
+  font-size: 0.95rem;
+  font-weight: 600;
 }
 
 #hero .social-links a:hover {
@@ -1358,7 +1365,10 @@ section {
 
 #footer .social-links a {
   font-size: 18px;
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
   background: #0563bb;
   color: #fff;
   line-height: 1;
@@ -1369,6 +1379,18 @@ section {
   width: 36px;
   height: 36px;
   transition: 0.3s;
+}
+
+#footer .social-links a span {
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+#footer .social-links a.github {
+  width: auto;
+  min-width: 36px;
+  padding: 8px 12px;
+  border-radius: 999px;
 }
 
 #footer .social-links a:hover {
@@ -1418,6 +1440,7 @@ section {
 .info-card,
 .expertise-card,
 .project-card,
+.ai-project-card,
 .experience-card,
 .skill-panel,
 .contact-card,
@@ -1695,6 +1718,7 @@ section {
 
 .expertise-card:hover,
 .project-card:hover,
+.ai-project-card:hover,
 .experience-card:hover,
 .timeline-card:hover,
 .skill-panel:hover {
@@ -1915,6 +1939,105 @@ section {
 .impact-list li {
   margin-bottom: 4px;
   color: #2e404b;
+}
+
+.ai-workflow-section {
+  position: relative;
+}
+
+.ai-project-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.ai-project-card {
+  position: relative;
+  display: grid;
+  grid-template-columns: 58px minmax(0, 1fr);
+  gap: 18px;
+  padding: 24px;
+  overflow: hidden;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.ai-project-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-top: 4px solid transparent;
+  border-image: linear-gradient(90deg, #0f4c81, #08a87a) 1;
+  pointer-events: none;
+}
+
+.ai-project-card:hover {
+  border-color: #b8d3ea;
+}
+
+.ai-project-icon {
+  width: 58px;
+  height: 58px;
+  border-radius: 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 1.35rem;
+  background: linear-gradient(135deg, var(--pm-primary), var(--pm-accent));
+  box-shadow: 0 12px 22px rgba(15, 76, 129, 0.18);
+}
+
+.ai-project-content h3 {
+  margin-bottom: 8px;
+  color: var(--pm-text);
+  font-size: 1.22rem;
+}
+
+.ai-project-positioning {
+  margin-bottom: 12px;
+  color: #334450;
+  line-height: 1.65;
+}
+
+.ai-project-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.project-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 38px;
+  padding: 9px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--pm-primary);
+  background: var(--pm-primary);
+  color: #fff;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.project-action:hover,
+.project-action:focus {
+  background: #0b3a62;
+  border-color: #0b3a62;
+  color: #fff;
+}
+
+.project-action.secondary {
+  background: #eef5fc;
+  border-color: #cfe0f0;
+  color: var(--pm-primary);
+}
+
+.project-action.secondary:hover,
+.project-action.secondary:focus {
+  background: var(--pm-primary);
+  border-color: var(--pm-primary);
+  color: #fff;
 }
 
 .experience-card {
@@ -2196,6 +2319,10 @@ section {
   .featured-project-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+
+  .ai-project-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width: 767px) {
@@ -2270,6 +2397,16 @@ section {
 
   .featured-project-grid {
     grid-template-columns: 1fr;
+  }
+
+  .ai-project-card {
+    grid-template-columns: 1fr;
+    padding: 22px 20px;
+  }
+
+  .ai-project-icon {
+    width: 52px;
+    height: 52px;
   }
 
   .project-tabs {

@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>國泰阿發 · 信任閉環 POC 提案</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <header class="masthead">
+    <a class="masthead-title" href="#top">阿發 · 信任閉環 POC<small>Proposal · 2026-07</small></a>
+    <nav aria-label="頁面導覽">
+      <a href="#solution">方案</a>
+      <a href="#scope">POC 範圍</a>
+      <a href="#plan">90 天計畫</a>
+      <a href="#metrics">驗收</a>
+      <a href="#docs">文件</a>
+    </nav>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <p class="kicker">POC Proposal · 2026-07</p>
+      <h1>讓 AI 客服的每一句回答，有來源、有信心、有紀錄。</h1>
+      <p class="lead">阿發已經證明 AI 能回答問題。下一步是讓回答能被信任：來源可查、低信心自動轉真人、每筆對話留下可稽核的事件。本 POC 以一個低風險場景示範完整閉環，90 天內可驗證。</p>
+      <div class="hero-gaps">
+        <article>
+          <h3>風險靠人工分類</h3>
+          <p>目前由使用者選情境決定風險等級；上線後應由系統即時判斷意圖與信心。</p>
+        </article>
+        <article>
+          <h3>回答沒有來源</h3>
+          <p>客戶無法確認答案出處，客服修正也不會回流知識庫。</p>
+        </article>
+        <article>
+          <h3>沒有稽核紀錄</h3>
+          <p>轉真人與護欄命中沒有留下事件，法遵與資安無法回放。</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="solution" class="section">
+      <div class="section-head">
+        <span class="no">01 · 方案</span>
+        <h2>三個機制，補上三個缺口。</h2>
+      </div>
+      <div class="card-grid">
+        <article class="card">
+          <h3>風險 / 信心閘門</h3>
+          <p>意圖信心與檢索命中分數決定「回答」或「轉真人」。門檻可調、決策可回放，低信心不硬答。</p>
+        </article>
+        <article class="card">
+          <h3>Citation-first 回答卡</h3>
+          <p>回答附上來源頁面與知識版本；客服修正進入知識庫候選佇列，品質持續收斂。</p>
+        </article>
+        <article class="card">
+          <h3>審計事件流</h3>
+          <p>每筆對話落一筆事件：意圖、來源、風險、信心、護欄命中、處置。可查、可回放、可出報表。</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="scope" class="section">
+      <div class="section-head">
+        <span class="no">02 · POC 展示範圍</span>
+        <h2>Demo 已可操作，MVP 挑一個低風險場景走完閉環。</h2>
+      </div>
+      <div class="card-grid">
+        <a class="card link" href="../../external/index.html">
+          <h3>對外客戶端</h3>
+          <p>6 個服務情境、三級風險分級、三路線升級：自助排除 → 複雜狀況 → 轉真人。</p>
+        </a>
+        <a class="card link" href="../../internal/index.html">
+          <h3>對內工作台</h3>
+          <p>8 個業別、mock 客戶資料、可說 / 不可說邊界、真人交接入口。</p>
+        </a>
+        <a class="card link" href="../../mock-data-overview.html">
+          <h3>透明 Payload</h3>
+          <p>business_line、risk_level 等輸入全數攤開，可複製、可稽核。</p>
+        </a>
+      </div>
+      <p class="metric-note">MVP：信用卡常見問題或開戶 FAQ，三機制串成一條端到端路徑；審核視圖沿用對內工作台版型。不碰核心交易系統，GenAI 不處理個資、帳務與不可逆交易。</p>
+    </section>
+
+    <section id="plan" class="section">
+      <div class="section-head">
+        <span class="no">03 · 90 天計畫</span>
+        <h2>先量測、再閘門、後回流。</h2>
+      </div>
+      <div class="phases">
+        <article>
+          <span class="span">第 0–30 天</span>
+          <h3>量測</h3>
+          <p>不改回答行為，先讓每筆對話落審計事件。</p>
+          <p class="out">產出：基準數據 —— 多少回答有可追來源、多少落在高風險邊界。</p>
+        </article>
+        <article>
+          <span class="span">第 31–60 天</span>
+          <h3>閘門</h3>
+          <p>依基準數據設門檻，低信心與高風險轉真人；上線 citation 回答卡。</p>
+          <p class="out">產出：閘門命中率、誤攔率、轉真人量變化。</p>
+        </article>
+        <article>
+          <span class="span">第 61–90 天</span>
+          <h3>回流</h3>
+          <p>客服修正進入知識庫候選，每週產出 knowledge gap list。</p>
+          <p class="out">產出：Pilot 報告與擴大範圍建議。</p>
+        </article>
+      </div>
+      <p class="metric-note">門檻以第一個月的基準數據設定：過嚴塞爆真人客服，過鬆形同虛設。</p>
+    </section>
+
+    <section id="metrics" class="section">
+      <div class="section-head">
+        <span class="no">04 · 驗收</span>
+        <h2>每筆 pilot 對話，四件事可查：來源、信心、風險、處置。</h2>
+      </div>
+      <table class="metric-table">
+        <thead>
+          <tr>
+            <th>指標</th>
+            <th>定義與目標</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>審計事件覆蓋率</td>
+            <td>100%，硬性前提，缺一筆即為缺口。</td>
+          </tr>
+          <tr>
+            <td>紅線測試回放</td>
+            <td>高風險題庫 100% 不直接生成最終答案。</td>
+          </tr>
+          <tr>
+            <td>低風險回答附來源比例</td>
+            <td>目標區間依基準數據訂定（假設 85–95%）。</td>
+          </tr>
+          <tr>
+            <td>閘門品質</td>
+            <td>低信心轉真人的事後判定正確率。</td>
+          </tr>
+          <tr>
+            <td>回流速度</td>
+            <td>客服修正進入知識庫候選的中位天數（假設 7 天內）。</td>
+          </tr>
+          <tr>
+            <td>可讀性</td>
+            <td>客服 30 秒內從審核視圖看懂 AI 判斷依據。</td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="metric-note">標示「假設」的數字，以第 0–30 天量測結果修正。</p>
+    </section>
+
+    <section id="docs" class="section">
+      <div class="section-head">
+        <span class="no">05 · 文件</span>
+        <h2>診斷、來源與對照版本。</h2>
+      </div>
+      <div class="doc-grid">
+        <a href="./review-plan.md">
+          <strong>review-plan.md</strong>
+          <span>內部診斷紀錄：資產、缺口、方案與證據分層。</span>
+        </a>
+        <a href="./sources.md">
+          <strong>sources.md</strong>
+          <span>公開資料來源與推論標示。</span>
+        </a>
+        <a href="../../index.html">
+          <strong>原專案 demo</strong>
+          <span>external / internal 雙入口與 mock data 總覽。</span>
+        </a>
+        <a href="../Codex-version/index.html">
+          <strong>Codex-version</strong>
+          <span>平行對照提案（含 10 頁 PPTX）。</span>
+        </a>
+      </div>
+    </section>
+
+    <p class="colophon">公開資料判讀截至 2026-07-03；由 demo 推論之內容不代表國泰內部實況。</p>
+  </main>
+</body>
+</html>

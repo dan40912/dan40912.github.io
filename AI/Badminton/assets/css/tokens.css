@@ -1,0 +1,49 @@
+:root {
+  --bg: #f4f7f3;
+  --surface: #ffffff;
+  --surface-alt: #eef4ee;
+  --court-green: #1f8a54;
+  --court-green-dark: #16663e;
+  --court-green-soft: #e3f3e9;
+  --accent-a: #2563eb;
+  --accent-a-soft: #e6edfd;
+  --accent-b: #f59e0b;
+  --accent-b-soft: #fef3e0;
+  --status-playing: #1f8a54;
+  --status-ondeck: #2563eb;
+  --status-queued: #64748b;
+  --status-paused: #94a3b8;
+  --status-notarrived: #cbd5e1;
+  --warn: #eab308;
+  --warn-soft: #fef9e6;
+  --danger: #dc2626;
+  --danger-soft: #fdecec;
+  --text: #1a2b22;
+  --muted: #5b6b62;
+  --line: #dfe7e0;
+  --line-strong: #c3d0c8;
+  --radius: 14px;
+  --radius-sm: 8px;
+  --shadow: 0 2px 8px rgba(20, 40, 30, 0.08);
+  --shadow-lift: 0 8px 24px rgba(20, 40, 30, 0.16);
+  --touch-min: 44px;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --font-size-sm: 13px;
+  --font-size-base: 15px;
+  --font-size-lg: 18px;
+  --font-size-xl: 22px;
+  --transition-fast: 150ms ease;
+  --transition-base: 220ms ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --transition-fast: 0ms;
+    --transition-base: 0ms;
+  }
+}

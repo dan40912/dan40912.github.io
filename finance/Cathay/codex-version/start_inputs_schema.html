@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>START Inputs Schema｜金融 AI Service Hub</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="./index.html"><span class="mark">AI</span><span><strong>金融 AI Service Hub</strong><span>START Inputs Schema</span></span></a>
+    <nav class="nav" aria-label="主導覽">
+      <a href="./index.html">總覽</a><a href="./chatbot_system_design.html">系統架構</a><a class="active" href="./start_inputs_schema.html">START Schema</a><a href="./dify_workflow_design.html">Workflow</a><a href="./system_prompts.html">Prompts</a><a href="./qa_mock_scenario_matrix.html">QA</a><a href="./frontend_refactor_recommendations.html">前端建議</a>
+    </nav>
+  </header>
+  <main class="page">
+    <section class="hero">
+      <div class="hero-main">
+        <p class="eyebrow">Payload Contract</p>
+        <h1>Dify START Inputs Schema</h1>
+        <p class="lead">START node 需要完整接收前端 payload，讓 workflow 不靠自然語言猜 user_type、route_stage、risk_level 或 mock data 使用限制。</p>
+      </div>
+      <aside class="toc">
+        <h2>本頁重點</h2>
+        <a href="#table">欄位總表</a>
+        <a href="#auto">自動帶入</a>
+        <a href="#payload">Payload 範例</a>
+      </aside>
+    </section>
+
+    <section class="hint">
+      <strong>提示</strong>
+      布林值建議用字串 <code>"true"</code> / <code>"false"</code> 傳入，降低 Dify URL query、DSL 匯入與前端 JSON 型別不一致的風險。
+    </section>
+
+    <section id="table" class="section">
+      <h2>欄位總表</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>欄位</th><th>用途</th><th>範例值</th><th>必填</th><th>對內 / 對外差異</th></tr></thead>
+          <tbody>
+            <tr><td><code>user_type</code></td><td>分流 internal / external。</td><td><code>internal_employee</code>, <code>external_customer</code></td><td>是</td><td>前端固定帶入，不開放手動改。</td></tr>
+            <tr><td><code>user_role</code></td><td>員工或客戶角色。</td><td><code>customer_service</code>, <code>customer</code></td><td>對內是</td><td>對外不顯示內部角色。</td></tr>
+            <tr><td><code>department</code></td><td>員工部門。</td><td><code>call_center</code>, <code>compliance</code></td><td>對內是</td><td>對外留空。</td></tr>
+            <tr><td><code>channel</code></td><td>來源通路。</td><td><code>internal_workspace</code>, <code>customer_chatbot</code></td><td>是</td><td>由入口自動帶入。</td></tr>
+            <tr><td><code>business_line</code></td><td>金融業別。</td><td><code>banking</code>, <code>credit_card</code></td><td>是</td><td>對內由產業卡片選；對外由服務卡片或分類推論。</td></tr>
+            <tr><td><code>service_id</code></td><td>服務或情境代碼。</td><td><code>credit_card_dispute</code></td><td>是</td><td>用於追蹤該次 demo route。</td></tr>
+            <tr><td><code>route_stage</code></td><td>回答路線。</td><td><code>status_lookup</code>, <code>handoff_risk</code></td><td>是</td><td>對內與對外枚舉不同。</td></tr>
+            <tr><td><code>scenario_type</code></td><td>細分情境。</td><td><code>fraud_warning</code></td><td>建議</td><td>協助 intent classifier。</td></tr>
+            <tr><td><code>risk_level</code></td><td>初始風險。</td><td><code>normal</code>, <code>high</code>, <code>critical</code></td><td>是</td><td>Risk Gate 可上修，不可不安全地下修。</td></tr>
+            <tr><td><code>permission_level</code></td><td>權限層級。</td><td><code>public</code>, <code>case_owner</code></td><td>是</td><td>對外固定 <code>public</code>。</td></tr>
+            <tr><td><code>auth_status</code></td><td>驗證狀態。</td><td><code>verification_required</code>, <code>verified</code></td><td>是</td><td>正式資料需驗證，但 demo 不查正式系統。</td></tr>
+            <tr><td><code>service_relationship</code></td><td>服務關係。</td><td><code>case_owner</code>, <code>none</code></td><td>是</td><td>對內用於 Permission Gate。</td></tr>
+            <tr><td><code>approval_required</code></td><td>是否需審批。</td><td><code>true</code></td><td>是</td><td>對外不揭露審批細節。</td></tr>
+            <tr><td><code>audit_required</code></td><td>是否產生 audit log。</td><td><code>true</code></td><td>是</td><td>對內顯示 mock audit；對外不顯示。</td></tr>
+            <tr><td><code>handoff_required</code></td><td>是否需轉真人。</td><td><code>true</code></td><td>是</td><td>高風險或要求真人必須為 true。</td></tr>
+            <tr><td><code>faq_source</code></td><td>FAQ/KB 來源。</td><td><code>/faqs/credit_card.md</code></td><td>建議</td><td>用於引用依據。</td></tr>
+            <tr><td><code>answer_contract</code></td><td>回答格式契約。</td><td><code>internal_governed_reply</code></td><td>是</td><td>決定固定段落。</td></tr>
+            <tr><td><code>expected_sections</code></td><td>預期輸出段落。</td><td><code>問題理解|下一步</code></td><td>是</td><td>對內 11 段；對外 6 段。</td></tr>
+            <tr><td><code>mock_data_available</code></td><td>是否有 mock data。</td><td><code>true</code></td><td>是</td><td>有 mock profile 時自動 true。</td></tr>
+            <tr><td><code>mock_data_source</code></td><td>mock data 來源。</td><td><code>frontend_demo</code></td><td>是</td><td>不可填正式核心系統。</td></tr>
+            <tr><td><code>mock_data_summary</code></td><td>mock 摘要。</td><td><code>known_status=疑似盜刷</code></td><td>建議</td><td>給模型優先讀取。</td></tr>
+            <tr><td><code>mock_data_contract</code></td><td>mock 使用限制。</td><td><code>不可宣稱正式查詢</code></td><td>是</td><td>對內/對外原則一致。</td></tr>
+            <tr><td><code>mock_customer_profile</code></td><td>mock 客戶 profile JSON。</td><td><code>{"customer_id":"CUST-001"}</code></td><td>否</td><td>只能是假資料或遮罩資料。</td></tr>
+            <tr><td><code>data_policy</code></td><td>一般資料政策。</td><td><code>mock_only_no_core_system_lookup</code></td><td>是</td><td>對外強調不揭露內部流程。</td></tr>
+            <tr><td><code>sensitive_data_policy</code></td><td>敏感資料政策。</td><td><code>never_request_password_otp_cvv_full_card</code></td><td>是</td><td>對內/對外都必須遵守。</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="auto" class="section">
+      <h2>自動帶入與可操作欄位</h2>
+      <div class="split">
+        <div class="card">
+          <h3>前端自動帶入</h3>
+          <p><code>user_type</code>、<code>channel</code>、<code>audit_required</code>、<code>answer_contract</code>、<code>expected_sections</code>、<code>mock_data_contract</code>、<code>data_policy</code>、<code>sensitive_data_policy</code>。</p>
+        </div>
+        <div class="card">
+          <h3>使用者可選</h3>
+          <p>Internal 可選 <code>business_line</code>、<code>route_stage</code>、<code>scenario_type</code>。External 只選服務卡片或輸入問題，不直接調整風險或審批欄位。</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="payload" class="section">
+      <h2>Payload 範例</h2>
+      <details open>
+        <summary>對內 payload HINT</summary>
+        <div>
+          <pre><code>{
+  "inputs": {
+    "user_type": "internal_employee",
+    "business_line": "credit_card",
+    "route_stage": "risk_boundary",
+    "risk_level": "high",
+    "permission_level": "case_owner",
+    "service_relationship": "case_owner",
+    "approval_required": "true",
+    "audit_required": "true",
+    "handoff_required": "true",
+    "answer_contract": "internal_governed_reply",
+    "mock_data_source": "frontend_demo",
+    "mock_data_contract": "只能作為 demo mock data，不可宣稱正式核心系統查詢。"
+  },
+  "query": "客戶表示有非本人交易，請整理第一線可說版本。"
+}</code></pre>
+        </div>
+      </details>
+      <details>
+        <summary>對外 payload HINT</summary>
+        <div>
+          <pre><code>{
+  "inputs": {
+    "user_type": "external_customer",
+    "channel": "customer_chatbot",
+    "business_line": "loan",
+    "route_stage": "follow_up",
+    "risk_level": "medium",
+    "permission_level": "public",
+    "auth_status": "verification_required",
+    "answer_contract": "customer_facing_short_reply",
+    "mock_data_source": "frontend_demo",
+    "data_policy": "customer_safe_reply_no_internal_process"
+  },
+  "query": "我貸款補件還缺什麼？"
+}</code></pre>
+        </div>
+      </details>
+    </section>
+  </main>
+</body>
+</html>

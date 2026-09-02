@@ -1,0 +1,337 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>系統架構設計｜金融 AI Service Hub</title>
+  <link rel="stylesheet" href="./styles.css">
+  <link rel="stylesheet" href="./diagram.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="./index.html"><span class="mark">AI</span><span><strong>金融 AI Service Hub</strong><span>系統架構設計</span></span></a>
+    <nav class="nav" aria-label="主導覽">
+      <a href="./index.html">總覽</a><a class="active" href="./chatbot_system_design.html">系統架構</a><a href="./start_inputs_schema.html">START Schema</a><a href="./dify_workflow_design.html">Workflow</a><a href="./system_prompts.html">Prompts</a><a href="./qa_mock_scenario_matrix.html">QA</a><a href="./frontend_refactor_recommendations.html">前端建議</a>
+    </nav>
+  </header>
+  <main class="page">
+    <section class="hero">
+      <div class="hero-main">
+        <p class="eyebrow">Architecture</p>
+        <h1>Chatbot 系統架構設計</h1>
+        <p class="lead">這套架構把內部員工助手與外部客戶服務分開處理，但共用 business_line、intent taxonomy、risk gate、mock data contract 與 Dify workflow 核心節點。</p>
+      </div>
+      <aside class="toc">
+        <h2>本頁重點</h2>
+        <a href="#architecture">架構圖</a>
+        <a href="#routing">前端分流</a>
+        <a href="#fields">欄位設計</a>
+        <a href="#knowledge">知識庫與 mock data</a>
+        <a href="#intent">Intent taxonomy</a>
+        <a href="#risk">Risk gate</a>
+      </aside>
+    </section>
+
+    <section class="hint">
+      <strong>提示</strong>
+      對內可以看見權限、審批、audit log 與客戶可說版本；對外只能看見安全步驟、需要補充的非敏感資訊與轉真人建議。
+    </section>
+
+    <section id="architecture" class="section">
+      <h2>系統架構圖</h2>
+      <p>從上到下：使用者 → 前端入口 → START payload 契約 → Dify workflow → 四種輸出；知識庫由下方供 workflow 只讀檢索。<strong>滑鼠移到方塊上會顯示 HINT</strong>，點一下可固定。</p>
+      <div class="canvas-toolbar">
+        <div class="canvas-legend">
+          <span class="legend-item"><span class="legend-dot external"></span>使用者</span>
+          <span class="legend-item"><span class="legend-dot"></span>前端入口</span>
+          <span class="legend-item"><span class="legend-dot gate"></span>Payload 契約</span>
+          <span class="legend-item"><span class="legend-dot llm"></span>Dify Workflow</span>
+          <span class="legend-item"><span class="legend-dot answer"></span>知識庫 / 輸出</span>
+        </div>
+        <button type="button" class="btn" data-fit="#arch-canvas">縮放全覽</button>
+      </div>
+      <div class="canvas-wrap">
+        <div class="fit-stage">
+          <div class="flow-canvas" id="arch-canvas" style="width:1140px;height:790px">
+
+            <div class="fnode user" id="a-uext" style="left:120px;top:16px;width:200px">
+              <div class="fnode-head"><span class="fnode-ico">客</span><span class="fnode-type">User</span></div>
+              <strong class="fnode-title">外部客戶</strong>
+              <span class="fnode-sub">自助查詢、補件、轉真人</span>
+              <div class="fnode-tip">
+                <h4>外部客戶</h4>
+                <div class="row"><span class="tip-tag">可看到</span>服務卡片、預設問題、mock 摘要（標示為 demo）、轉真人狀態</div>
+                <div class="row"><span class="tip-tag warn">看不到</span>內部角色、審批、Permission Gate、Audit Log、模型分流規則</div>
+              </div>
+            </div>
+
+            <div class="fnode user" id="a-uint" style="left:430px;top:16px;width:200px">
+              <div class="fnode-head"><span class="fnode-ico">員</span><span class="fnode-type">User</span></div>
+              <strong class="fnode-title">內部員工</strong>
+              <span class="fnode-sub">RM、代理人、專員、客服</span>
+              <div class="fnode-tip">
+                <h4>內部員工</h4>
+                <div class="row"><span class="tip-tag">可看到</span>權限、風險判斷、mock 客戶現況、下一步、客戶可說版本、audit log</div>
+                <div class="row"><span class="tip-tag warn">限制</span>mock data 必須標示不是正式查詢；越權查詢會被 Permission Gate 擋下</div>
+              </div>
+            </div>
+
+            <div class="fnode user" id="a-uagent" style="left:740px;top:16px;width:200px">
+              <div class="fnode-head"><span class="fnode-ico">服</span><span class="fnode-type">User</span></div>
+              <strong class="fnode-title">客服 / 主管</strong>
+              <span class="fnode-sub">接手高風險案件與審批</span>
+              <div class="fnode-tip">
+                <h4>客服 / 主管</h4>
+                <div class="row"><span class="tip-tag">任務</span>接手高風險案件、審批、回覆、結案、審核 Knowledge Candidate</div>
+                <div class="row"><span class="tip-tag">入口</span><code>/internal/call-center/index.html</code>，由案件狀態帶入，不由客戶端設定</div>
+              </div>
+            </div>
+
+            <div class="fnode answer" id="a-eext" style="left:120px;top:136px;width:200px">
+              <div class="fnode-head"><span class="fnode-ico">E</span><span class="fnode-type">Entry</span></div>
+              <strong class="fnode-title">external/index.html</strong>
+              <span class="fnode-sub">6 情境卡、風險分級、轉真人</span>
+              <div class="fnode-tip">
+                <h4>對外入口</h4>
+                <div class="row"><span class="tip-tag">自動帶入</span><code>user_type=external_customer</code>、<code>channel=customer_chatbot</code>、<code>permission_level=public</code></div>
+                <div class="row"><span class="tip-tag">HINT</span>首頁只做分流，不讓使用者調整高風險參數</div>
+              </div>
+            </div>
+
+            <div class="fnode answer" id="a-eint" style="left:430px;top:136px;width:200px">
+              <div class="fnode-head"><span class="fnode-ico">I</span><span class="fnode-type">Entry</span></div>
+              <strong class="fnode-title">internal/index.html</strong>
+              <span class="fnode-sub">8 業別工作台、mock 客戶</span>
+              <div class="fnode-tip">
+                <h4>對內入口</h4>
+                <div class="row"><span class="tip-tag">自動帶入</span><code>user_type=internal_employee</code>、<code>channel=internal_workspace</code>、<code>audit_required=true</code></div>
+                <div class="row"><span class="tip-tag">UI 可選</span><code>business_line</code>、<code>route_stage</code>、<code>user_role</code>、<code>department</code>、<code>service_relationship</code></div>
+              </div>
+            </div>
+
+            <div class="fnode answer" id="a-ecc" style="left:740px;top:136px;width:200px">
+              <div class="fnode-head"><span class="fnode-ico">C</span><span class="fnode-type">Entry</span></div>
+              <strong class="fnode-title">call-center 工作台</strong>
+              <span class="fnode-sub">真人介入與案件交接</span>
+              <div class="fnode-tip">
+                <h4>Call Center 工作台</h4>
+                <div class="row"><span class="tip-tag">來源</span>接收 workflow 產生的 Case Summary（去識別化摘要）</div>
+                <div class="row"><span class="tip-tag warn">HINT</span>inputs 由案件狀態帶入，不由客戶端設定，避免客戶偽造內部參數</div>
+              </div>
+            </div>
+
+            <div class="fnode gate" id="a-start" style="left:120px;top:296px;width:760px">
+              <div class="fnode-head"><span class="fnode-ico">IN</span><span class="fnode-type">Payload Contract</span></div>
+              <strong class="fnode-title">Dify START Payload 契約</strong>
+              <span class="fnode-sub">user_type · channel · business_line · route_stage · risk_level · answer_contract · data_policy · mock_data_contract</span>
+              <div class="fnode-tip">
+                <h4>START Payload 契約</h4>
+                <div class="row"><span class="tip-tag">最小必填</span><code>user_type</code>、<code>channel</code>、<code>business_line</code>、<code>service_id</code>、<code>route_stage</code>、<code>risk_level</code>、<code>answer_contract</code>、<code>expected_sections</code>、<code>data_policy</code>、<code>sensitive_data_policy</code></div>
+                <div class="row"><span class="tip-tag warn">HINT</span><code>user_type</code>、<code>audit_required</code>、<code>data_policy</code> 等由系統自動帶入，不讓使用者手動設定</div>
+                <div class="row"><span class="tip-tag">文件</span>完整欄位見 START Schema 頁</div>
+              </div>
+            </div>
+
+            <div class="fnode llm" id="a-wf" style="left:120px;top:424px;width:760px">
+              <div class="fnode-head"><span class="fnode-ico">WF</span><span class="fnode-type">Dify Advanced-Chat</span></div>
+              <strong class="fnode-title">Dify Workflow</strong>
+              <span class="fnode-sub">正規化 → Intent → Risk Gate → Permission Gate（對內）→ 檢索 → 分流 → Composer → Final Answer　<a href="./dify_workflow_design.html">開啟節點圖 →</a></span>
+              <div class="fnode-tip">
+                <h4>Dify Workflow</h4>
+                <div class="row"><span class="tip-tag">原則</span>先正規化、再分類、先風險、後回答；風險永遠只升不降</div>
+                <div class="row"><span class="tip-tag">分流</span>internal 走 Permission Gate 與 Audit Log；external 隱藏內部治理</div>
+                <div class="row"><span class="tip-tag">文件</span>13 個節點的 input / output / prompt / fallback 見 Workflow 頁</div>
+              </div>
+            </div>
+
+            <div class="fnode knowledge" id="a-kbfaqs" style="left:80px;top:640px;width:180px">
+              <div class="fnode-head"><span class="fnode-ico">KB</span><span class="fnode-type">Knowledge</span></div>
+              <strong class="fnode-title">/faqs/*.md</strong>
+              <span class="fnode-sub">業別 FAQ，共用檢索</span>
+              <div class="fnode-tip">
+                <h4>/faqs</h4>
+                <div class="row"><span class="tip-tag">用途</span>業別 FAQ 與低風險 SOP，internal / external 共同檢索</div>
+                <div class="row"><span class="tip-tag warn">HINT</span>輸出時必須依 user_type 改寫成內部版或客戶可見版</div>
+              </div>
+            </div>
+
+            <div class="fnode knowledge" id="a-kbint" style="left:290px;top:640px;width:180px">
+              <div class="fnode-head"><span class="fnode-ico">KB</span><span class="fnode-type">Knowledge</span></div>
+              <strong class="fnode-title">/internal/*.md</strong>
+              <span class="fnode-sub">SOP、權限、法遵</span>
+              <div class="fnode-tip">
+                <h4>/internal KB</h4>
+                <div class="row"><span class="tip-tag">用途</span>內部權限、SOP、稽核、法遵、客戶可說版本</div>
+                <div class="row"><span class="tip-tag warn">HINT</span>內容不得出現在對外回答</div>
+              </div>
+            </div>
+
+            <div class="fnode knowledge" id="a-kbext" style="left:500px;top:640px;width:180px">
+              <div class="fnode-head"><span class="fnode-ico">KB</span><span class="fnode-type">Knowledge</span></div>
+              <strong class="fnode-title">/external/*.md</strong>
+              <span class="fnode-sub">客服流程、話術</span>
+              <div class="fnode-tip">
+                <h4>/external KB</h4>
+                <div class="row"><span class="tip-tag">用途</span>對外客服流程、自助步驟、轉真人規則、補充資訊話術</div>
+              </div>
+            </div>
+
+            <div class="fnode knowledge" id="a-kbdsl" style="left:710px;top:640px;width:180px">
+              <div class="fnode-head"><span class="fnode-ico">YML</span><span class="fnode-type">Config</span></div>
+              <strong class="fnode-title">dify-dsl/*.yml</strong>
+              <span class="fnode-sub">workflow、prompts</span>
+              <div class="fnode-tip">
+                <h4>dify-dsl</h4>
+                <div class="row"><span class="tip-tag">用途</span>workflow 定義、START variables、各節點 prompt</div>
+              </div>
+            </div>
+
+            <div class="fnode answer" id="a-ocust" style="left:920px;top:300px;width:200px">
+              <div class="fnode-head"><span class="fnode-ico">出</span><span class="fnode-type">Output</span></div>
+              <strong class="fnode-title">對外回覆</strong>
+              <span class="fnode-sub">客戶可理解的六段格式</span>
+              <div class="fnode-tip">
+                <h4>對外回覆</h4>
+                <div class="row"><span class="tip-tag">內容</span>安全步驟、需補充的非敏感資訊、轉真人建議</div>
+                <div class="row"><span class="tip-tag warn">禁止</span>索取 OTP / CVV / 密碼 / 完整卡號；揭露內部治理</div>
+              </div>
+            </div>
+
+            <div class="fnode llm" id="a-oint" style="left:920px;top:396px;width:200px">
+              <div class="fnode-head"><span class="fnode-ico">出</span><span class="fnode-type">Output</span></div>
+              <strong class="fnode-title">對內回覆 + Audit Log</strong>
+              <span class="fnode-sub">Internal Use Only</span>
+              <div class="fnode-tip">
+                <h4>對內回覆 + Audit Log</h4>
+                <div class="row"><span class="tip-tag">內容</span>內部回答、客戶可說版本、mock audit log（intent / risk / permission / masked_fields）</div>
+                <div class="row"><span class="tip-tag warn">禁止</span>audit log 含真實個資、正式金額、完整帳號</div>
+              </div>
+            </div>
+
+            <div class="fnode externalnode" id="a-ocase" style="left:920px;top:492px;width:200px">
+              <div class="fnode-head"><span class="fnode-ico">案</span><span class="fnode-type">Output</span></div>
+              <strong class="fnode-title">Case Summary</strong>
+              <span class="fnode-sub">轉真人客服的交接摘要</span>
+              <div class="fnode-tip">
+                <h4>Case Summary</h4>
+                <div class="row"><span class="tip-tag">內容</span>問題摘要、已確認資訊、不可要求的敏感資料、建議下一步、轉接原因、風險等級</div>
+                <div class="row"><span class="tip-tag warn">邊界</span>只交出去識別化 / 已遮罩摘要</div>
+              </div>
+            </div>
+
+            <div class="fnode muted" id="a-okc" style="left:920px;top:588px;width:200px">
+              <div class="fnode-head"><span class="fnode-ico">候</span><span class="fnode-type">Output</span></div>
+              <strong class="fnode-title">Knowledge Candidate</strong>
+              <span class="fnode-sub">審核後回流知識庫</span>
+              <div class="fnode-tip">
+                <h4>Knowledge Candidate</h4>
+                <div class="row"><span class="tip-tag">可收錄</span>FAQ 缺口、標準回覆、流程提醒、補件清單</div>
+                <div class="row"><span class="tip-tag warn">不可收錄</span>個資、正式金額、未審核投資建議、內部風控細節</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <p class="canvas-note">灰色虛線為非同步 / 回流路徑；紅色虛線為高風險案件的真人接手迴路。</p>
+    </section>
+
+    <section id="routing" class="section">
+      <h2>前端分流</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>入口</th><th>使用者</th><th>主要任務</th><th>自動帶入</th></tr></thead>
+          <tbody>
+            <tr><td><code>/internal/index.html</code></td><td>內部員工</td><td>查 SOP/FAQ、整理 mock 現況、下一步、客戶可說版本、審批與 audit log。</td><td><code>user_type=internal_employee</code><br><code>audit_required=true</code></td></tr>
+            <tr><td><code>/external/index.html</code></td><td>外部客戶</td><td>自助處理、追問補充資訊、轉真人、案件摘要。</td><td><code>user_type=external_customer</code><br><code>permission_level=public</code></td></tr>
+            <tr><td><code>/internal/call-center/index.html</code></td><td>客服 / 主管</td><td>接手高風險案件、審批、回覆、結案、Knowledge Candidate。</td><td>由案件狀態帶入，不由客戶端設定。</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="fields" class="section">
+      <h2>欄位設計</h2>
+      <div class="grid two">
+        <article class="card">
+          <h3>Internal 應保留</h3>
+          <p><code>business_line</code>、<code>route_stage</code>、<code>scenario_type</code>、<code>user_role</code>、<code>department</code>、<code>service_relationship</code>、<code>permission_level</code>、mock customer、FAQ source。</p>
+          <div class="hint"><strong>提示</strong>Internal 頁面可以顯示權限與風險判斷，但任何 mock data 都要明確標示不是正式查詢。</div>
+        </article>
+        <article class="card">
+          <h3>External 應保留</h3>
+          <p>服務卡片、客戶問題、預設問題、轉真人狀態、mock 摘要。不得顯示內部角色、審批、Permission Gate、Audit Log。</p>
+          <div class="warning"><strong>風險提醒</strong>External 頁不能出現「主管審批」、「模型分流」、「audit log」等內部術語。</div>
+        </article>
+      </div>
+      <h3>自動帶入欄位</h3>
+      <p><code>user_type</code>、<code>channel</code>、<code>audit_required</code>、<code>data_policy</code>、<code>sensitive_data_policy</code>、<code>answer_contract</code>、<code>expected_sections</code>、<code>mock_data_contract</code> 應由前端或系統自動帶入。</p>
+    </section>
+
+    <section id="knowledge" class="section">
+      <h2>知識庫與 Mock Data</h2>
+      <div class="grid">
+        <article class="card"><h3><code>/faqs/*.md</code></h3><p>共用業別 FAQ。輸出時依 user_type 改寫成內部版或客戶可見版。</p></article>
+        <article class="card"><h3><code>/internal/*.md</code></h3><p>內部 SOP、權限、稽核、法遵、客戶可說版本。</p></article>
+        <article class="card"><h3><code>/external/*.md</code></h3><p>對外客服流程、自助步驟、轉真人規則、補充資訊話術。</p></article>
+      </div>
+      <div class="hint"><strong>Mock data HINT</strong>只能用於情境摘要、已知事實、缺漏欄位與安全下一步；不可用於正式金額、正式帳務、正式保單價值、正式理賠或正式核貸結論。</div>
+    </section>
+
+    <section id="intent" class="section">
+      <h2>Intent Taxonomy</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>intent</th><th>定義</th><th>轉真人風險</th><th>HINT</th></tr></thead>
+          <tbody>
+            <tr><td><code>general_faq</code></td><td>一般金融或服務 FAQ。</td><td>低</td><td>可查 FAQ，但無依據不可編造。</td></tr>
+            <tr><td><code>identity_verification</code></td><td>身分驗證與驗證失敗。</td><td>高</td><td>不得協助繞過驗證。</td></tr>
+            <tr><td><code>fraud_or_scam</code></td><td>詐騙、盜刷、正在轉帳。</td><td>必須</td><td>先停損，再轉真人。</td></tr>
+            <tr><td><code>unknown_fund</code></td><td>不明資金或陌生款項。</td><td>必須</td><td>不可建議動用或轉出。</td></tr>
+            <tr><td><code>investment_advice_boundary</code></td><td>明牌、漲跌、保證收益。</td><td>中高</td><td>拒絕個別投資建議。</td></tr>
+            <tr><td><code>permission_audit</code></td><td>對內越權、大量資料、非服務關係。</td><td>必須</td><td>不得提供明細，需審批與 audit log。</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>完整 taxonomy 與測試案例請看 <a class="btn" href="./qa_mock_scenario_matrix.html">QA Matrix</a>。</p>
+    </section>
+
+    <section id="risk" class="section">
+      <h2>Risk Gate</h2>
+      <div class="grid">
+        <article class="card"><span class="pill">normal</span><h3>可直接回答</h3><p>一般 FAQ、低敏感流程，可依 KB 回答。</p></article>
+        <article class="card"><span class="pill amber">medium</span><h3>需要限制提醒</h3><p>需要驗證或正式系統確認，不給正式結論。</p></article>
+        <article class="card"><span class="pill red">high</span><h3>限制回答並建議人工</h3><p>正式金額、理賠、核貸、帳戶安全、客訴、越權查詢。</p></article>
+        <article class="card"><span class="pill red">danger</span><h3>優先安全處理</h3><p>詐騙、盜刷、不明資金、正在轉帳、自傷風險。</p></article>
+        <article class="card"><span class="pill red">critical</span><h3>立即轉真人</h3><p>資金正在流出、重大資安、人身安全風險。</p></article>
+      </div>
+    </section>
+  </main>
+
+  <script src="./diagram.js"></script>
+  <script>
+    renderFlow({
+      canvas: '#arch-canvas',
+      edges: [
+        { from: '#a-uext', to: '#a-eext', fromSide: 'bottom', toSide: 'top' },
+        { from: '#a-uint', to: '#a-eint', fromSide: 'bottom', toSide: 'top' },
+        { from: '#a-uagent', to: '#a-ecc', fromSide: 'bottom', toSide: 'top' },
+        { from: '#a-eext', to: '#a-start', cls: 'external', label: 'user_type=external_customer', fromSide: 'bottom', toSide: 'top', toAt: 0.13 },
+        { from: '#a-eint', to: '#a-start', cls: 'internal', label: 'user_type=internal_employee', fromSide: 'bottom', toSide: 'top', toAt: 0.54 },
+        { from: '#a-ecc', to: '#a-start', cls: 'amber', label: '由案件狀態帶入', fromSide: 'bottom', toSide: 'top', toAt: 0.93 },
+        { from: '#a-start', to: '#a-wf', label: '完整 payload・不靠自然語言猜參數', fromSide: 'bottom', toSide: 'top' },
+        { from: '#a-kbfaqs', to: '#a-wf', label: '只讀檢索', fromSide: 'top', toSide: 'bottom', toAt: 0.07 },
+        { from: '#a-kbint', to: '#a-wf', fromSide: 'top', toSide: 'bottom', toAt: 0.34 },
+        { from: '#a-kbext', to: '#a-wf', fromSide: 'top', toSide: 'bottom', toAt: 0.62 },
+        { from: '#a-kbdsl', to: '#a-wf', cls: 'loop', dashed: true, label: 'workflow / prompts', fromSide: 'top', toSide: 'bottom', toAt: 0.9 },
+        { from: '#a-wf', to: '#a-ocust', cls: 'external', label: '對外六段格式', fromAt: 0.2 },
+        { from: '#a-wf', to: '#a-oint', cls: 'internal', label: 'Internal Use Only', fromAt: 0.45 },
+        { from: '#a-wf', to: '#a-ocase', cls: 'risk', label: 'handoff_required', fromAt: 0.7 },
+        { from: '#a-wf', to: '#a-okc', cls: 'loop', dashed: true, label: 'KB 缺口', fromAt: 0.92 },
+        { from: '#a-ocase', to: '#a-ecc', cls: 'risk', dashed: true, label: '高風險案件真人接手', fromSide: 'right', toSide: 'right', d: 50 },
+        { from: '#a-okc', to: '#a-kbfaqs', cls: 'loop', dashed: true, label: '審核後回流知識庫', fromSide: 'left', toSide: 'top' }
+      ]
+    });
+  </script>
+</body>
+</html>
