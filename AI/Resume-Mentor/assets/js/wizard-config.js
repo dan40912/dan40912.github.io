@@ -5,6 +5,12 @@
  * 每個會進 prompt 的項目都有 promptZh / promptEn 雙語鏡像。
  */
 window.RM_CONFIG = {
+  /**
+   * 設定檔版本。任何會影響 answers 結構的改動（問題 id、選項 id、路線）都要 +1，
+   * 舊的 localStorage 進度會自動失效，避免殘留的無效 id 被寫進提示詞。
+   */
+  configVersion: 2,
+
   /* ---------- UI 文案（繁中） ---------- */
   ui: {
     brand: "Resume-Mentor",
@@ -41,7 +47,51 @@ window.RM_CONFIG = {
     otherPlaceholder: "請輸入…",
     step: "步驟",
     of: "/",
+    // 關閉 / 接續
+    close: "關閉",
+    closeAria: "關閉面談，回到首頁",
+    resumeTitle: "要接續上次的進度嗎？",
+    resumeBody: "偵測到你上次還沒完成的面談。可以從中斷的地方繼續，或重新開始一輪。",
+    resumeContinue: "接續上次",
+    resumeRestart: "重新開始",
+    // 結果頁區塊
+    sectionsTitle: "提示詞拆解 · 點一下看完整內容",
+    skillPackTitle: "顧問規則 · 點一下看真實內容",
   },
+
+  /**
+   * 提示詞骨架標題（enforcePromptArchitecture 用）。
+   * 跟著 promptLang 走，避免中文提示詞配英文標題。
+   */
+  promptSections: {
+    zh: {
+      goal: "目標",
+      context: "我的背景",
+      council: "顧問團",
+      task: "任務",
+      skills: "顧問規則參考",
+      inputs: "我會提供的資料",
+      output: "輸出格式",
+      guardrails: "底線規則",
+    },
+    en: {
+      goal: "Goal",
+      context: "Context",
+      council: "Agent Council",
+      task: "Task",
+      skills: "Skill Pack",
+      inputs: "Required Inputs",
+      output: "Output Format",
+      guardrails: "Guardrails",
+    },
+  },
+
+  /**
+   * 注入提示詞的 skill 數量上限。
+   * 全文注入會讓提示詞膨脹到數千 token 並稀釋指令，因此只取最相關的前幾個，
+   * 且每個 skill 只保留 Goal / Challenge Rules / Success Criteria。
+   */
+  skillPackLimit: 8,
 
   /* ---------- 每一步的小提示（友善 hint） ---------- */
   hints: {
@@ -624,78 +674,95 @@ window.RM_CONFIG = {
         pose: "hands-on-hips", persona: "插腰站著、打量你市場身價的獵頭。她只關心一件事：把你放到市場上，值多少錢。" },
     ],
     interview: [
-      { id: "google", name: "Google Interviewer", focusZh: "結構化思考、問題解決、clarity、evidence", focusEn: "structured thinking, problem solving, clarity, evidence",
+      { id: "google", name: "Google 面試官（Google Interviewer）", focusZh: "結構化思考、問題解決、clarity、evidence", focusEn: "structured thinking, problem solving, clarity, evidence",
         ruleZh: "要求 tradeoff、追問如何得知結果、追問規模與限制；重視結構化與協作。", ruleEn: "Ask for tradeoffs, how the candidate knows the outcome, scale and constraints; value structure and collaboration.",
         pose: "thinking", persona: "一手托著下巴、安靜聽你講完整套邏輯的考官。他在等一個破洞，只要結構不嚴謹，他就會找到。" },
-      { id: "amazon", name: "Amazon Bar Raiser", focusZh: "ownership、customer obsession、dive deep、deliver results", focusEn: "ownership, customer obsession, dive deep, deliver results",
+      { id: "amazon", name: "Amazon Bar Raiser 面試官（Amazon Bar Raiser）", focusZh: "ownership、customer obsession、dive deep、deliver results", focusEn: "ownership, customer obsession, dive deep, deliver results",
         ruleZh: "追問細節、挑戰模糊的 ownership、要求候選人說清楚個人到底做了什麼。", ruleEn: "Push for details, challenge vague ownership, demand exactly what the candidate personally did.",
         pose: "pointing", persona: "緊盯細節、手指直接戳向模糊地帶的關主。「我們」是誰？他要的是「我」做了什麼。" },
-      { id: "binance", name: "Binance Hiring Manager", focusZh: "速度、風險判斷、合規意識、模糊中 ownership", focusEn: "speed, risk judgment, compliance awareness, ownership under ambiguity",
+      { id: "binance", name: "幣安用人主管（Binance Hiring Manager）", focusZh: "速度、風險判斷、合規意識、模糊中 ownership", focusEn: "speed, risk judgment, compliance awareness, ownership under ambiguity",
         ruleZh: "追問如何處理快速變動環境、風險、控制與利害關係人壓力；重視 crypto／fintech／全球市場意識。", ruleEn: "Ask how the candidate handles fast-changing environments, risk, controls and stakeholder pressure; value crypto/fintech/global awareness.",
         pose: "hands-on-hips", persona: "插著腰、節奏比別人快半拍的主管。他活在一個規則一天會變三次的市場，要的是能在混亂中還站得穩的人。" },
-      { id: "startup", name: "Startup Founder", focusZh: "執行速度、資源運用、zero-to-one、實務決策", focusEn: "execution speed, resourcefulness, zero-to-one, practical decisions",
+      { id: "startup", name: "新創創辦人（Startup Founder）", focusZh: "執行速度、資源運用、zero-to-one、實務決策", focusEn: "execution speed, resourcefulness, zero-to-one, practical decisions",
         ruleZh: "追問在沒有資源時做了什麼、能否在沒有流程下運作。", ruleEn: "Ask what the candidate did without resources and whether they can operate without process.",
         pose: "arms-open", persona: "雙臂張開、什麼都自己捲起袖子做的創辦人。他不在乎你頭銜多大，只在乎沒人沒錢時你還能不能生出結果。" },
-      { id: "exec", name: "Executive Recruiter", focusZh: "市場定位、seniority fit、商業影響、executive communication", focusEn: "positioning, seniority fit, business impact, executive communication",
+      { id: "exec", name: "高階獵頭（Executive Recruiter）", focusZh: "市場定位、seniority fit、商業影響、executive communication", focusEn: "positioning, seniority fit, business impact, executive communication",
         ruleZh: "追問為何值得這個薪酬、有何差異化；以高階溝通標準檢視。", ruleEn: "Ask why the candidate is worth the compensation and what makes them differentiated; judge by executive communication standards.",
         pose: "leaning-crossed", persona: "微微側身、雙手交叉打量你的高階獵頭。他見過太多漂亮履歷，只想知道你跟其他候選人到底差在哪。" },
-      { id: "coach", name: "Interview Coach", focusZh: "把成就轉成面試故事", focusEn: "turning achievements into interview stories",
+      { id: "coach", name: "面試教練（Interview Coach）", focusZh: "把成就轉成面試故事", focusEn: "turning achievements into interview stories",
         ruleZh: "把候選人的真實成就整理成結構清楚、可在 2 分鐘內講完、抗追問的面試答案。", ruleEn: "Turn the candidate's real achievements into structured answers deliverable in under 2 minutes and resilient to follow-ups.",
         pose: "talking", persona: "耐心陪你練到順口的教練。他會一直追問「然後呢」，直到你的故事在壓力下也站得住。" },
-      { id: "devil", name: "Devil Advocate", focusZh: "挑錯、找漏洞、避免灌水", focusEn: "spot weak claims, find leaks, avoid hype",
+      { id: "devil", name: "毒舌挑刺者（Devil Advocate）", focusZh: "挑錯、找漏洞、避免灌水", focusEn: "spot weak claims, find leaks, avoid hype",
         ruleZh: "直接挑出最容易在追問時垮掉的說法，逼使用者用真實案例補強。", ruleEn: "Call out the claims most likely to collapse under follow-up and force the user to back them with real examples.",
         pose: "arms-crossed", persona: "雙手抱胸、不打算給你好臉色的最後一道關卡。他存在的意義就是先讓你難堪一次，總比正式面試時難堪好。" },
     ],
     linkedin: [
-      { id: "li-strategist", name: "LinkedIn Strategist", focusZh: "headline、about、experience 的主軸與定位", focusEn: "headline, about, and experience positioning",
+      { id: "li-strategist", name: "LinkedIn 策略顧問（LinkedIn Strategist）", focusZh: "headline、about、experience 的主軸與定位", focusEn: "headline, about, and experience positioning",
         ruleZh: "先釐清這個 LinkedIn 檔案要把誰吸引過來，再決定 headline、about、experience 的敘事順序與主張。", ruleEn: "Clarify who the profile should attract first, then decide the narrative order and claims for headline, about, and experience.",
         pose: "presenting", persona: "雙手向前攤開、先問「你想吸引誰」的策略顧問。沒想清楚對象之前，他不准你動手寫一個字。" },
-      { id: "li-search", name: "Recruiter Search Lens", focusZh: "搜尋可見度、關鍵字、可被找到", focusEn: "search visibility, keywords, findability",
+      { id: "li-search", name: "招募搜尋視角（Recruiter Search Lens）", focusZh: "搜尋可見度、關鍵字、可被找到", focusEn: "search visibility, keywords, findability",
         ruleZh: "檢查是否會被搜尋到：title、headline、skills、about 和經歷的關鍵字是否自然且可被搜尋。", ruleEn: "Check whether the profile can be found: title, headline, skills, about, and experience keywords must be natural and searchable.",
         pose: "hands-behind", persona: "雙手背在身後、用搜尋引擎的眼光打量你的檢查者。寫得再好，搜不到就等於不存在。" },
-      { id: "li-story", name: "Experience Story Editor", focusZh: "經歷敘事、證據順序、可讀性", focusEn: "experience narrative, evidence order, readability",
+      { id: "li-story", name: "經歷敘事編輯（Experience Story Editor）", focusZh: "經歷敘事、證據順序、可讀性", focusEn: "experience narrative, evidence order, readability",
         ruleZh: "把經歷改成適合 LinkedIn 的敘事方式：更像故事與影響，不是履歷逐條重複。", ruleEn: "Rewrite experience into LinkedIn-style narrative: more story and impact, not a line-by-line resume copy.",
         pose: "talking", persona: "說故事的編輯，受不了流水帳式的條列。她要的是「然後發生了什麼」，不是職責清單。" },
-      { id: "li-tone", name: "Tone Editor", focusZh: "語氣、個人品牌、可信度", focusEn: "tone, personal brand, credibility",
+      { id: "li-tone", name: "語氣編輯（Tone Editor）", focusZh: "語氣、個人品牌、可信度", focusEn: "tone, personal brand, credibility",
         ruleZh: "讓文字聽起來有個性但不浮誇，維持專業、可搜尋、可信的個人品牌語氣。", ruleEn: "Keep the writing distinctive but not inflated, with a professional, searchable, and credible personal brand voice.",
         pose: "thinking", persona: "一手扶著下巴反覆推敲用詞的語氣編輯。太誇張她會劃掉，太平淡她也會劃掉。" },
-      { id: "devil", name: "Devil Advocate", focusZh: "挑錯、找漏洞、避免灌水", focusEn: "spot weak claims, find leaks, avoid hype",
+      { id: "devil", name: "毒舌挑刺者（Devil Advocate）", focusZh: "挑錯、找漏洞、避免灌水", focusEn: "spot weak claims, find leaks, avoid hype",
         ruleZh: "把過度包裝、空泛定位與搜尋可見度上的漏洞直接指出來，不留模糊空間。", ruleEn: "Call out over-packaging, vague positioning, and discoverability leaks without leaving ambiguity.",
         pose: "pointing", persona: "一眼看穿包裝話術的挑刺者。「賦能」「驅動」這種空話，他會直接用手指劃掉。" },
     ],
     recommendation: [
-      { id: "referee", name: "Referee Voice", focusZh: "推薦人視角、口氣、權威感", focusEn: "recommender voice, tone, authority",
+      { id: "referee", name: "推薦人口吻（Referee Voice）", focusZh: "推薦人視角、口氣、權威感", focusEn: "recommender voice, tone, authority",
         ruleZh: "確保內容是推薦人真能說出口的話，並且語氣與關係強度一致。", ruleEn: "Ensure the content sounds like something the recommender could genuinely say, with tone aligned to the relationship strength.",
         pose: "talking", persona: "代替推薦人發聲的角色。她只說推薦人真的會說的話，語氣對不上關係深淺，她會先打回去。" },
-      { id: "credibility", name: "Credibility Checker", focusZh: "可證實性、具體事實、避免灌水", focusEn: "verifiability, concrete facts, anti-hype",
+      { id: "credibility", name: "可信度查核官（Credibility Checker）", focusZh: "可證實性、具體事實、避免灌水", focusEn: "verifiability, concrete facts, anti-hype",
         ruleZh: "檢查每個稱讚是否有具體事例或見證來源，避免把沒看過的事寫成肯定句。", ruleEn: "Check every praise statement for a concrete example or firsthand basis; do not turn hearsay into a certainty.",
         pose: "hands-behind", persona: "雙手背在身後逐句核對的查證者。每一句讚美都要有一個具體事件撐著，否則直接刪。" },
-      { id: "tone", name: "Tone Normalizer", focusZh: "正式度、親切度、信件節奏", focusEn: "formality, warmth, letter rhythm",
+      { id: "tone", name: "語氣調校師（Tone Normalizer）", focusZh: "正式度、親切度、信件節奏", focusEn: "formality, warmth, letter rhythm",
         ruleZh: "把內容調整成適合收件情境的語氣，必要時提供正式版與較口語版。", ruleEn: "Tune the content to the recipient context, and provide both a formal and a more conversational version when useful.",
         pose: "presenting", persona: "雙手攤開、在正式與親切之間找平衡的調音師。她在意的是這封信讀起來像不像真人寫的。" },
-      { id: "guardrail", name: "No-Fabrication Guardrail", focusZh: "不編造、不誇張", focusEn: "no fabrication, no exaggeration",
+      { id: "guardrail", name: "不編造把關者（No-Fabrication Guardrail）", focusZh: "不編造、不誇張", focusEn: "no fabrication, no exaggeration",
         ruleZh: "任何沒證據的說法都要降級成待補資訊，不可因為信件需要就補編內容。", ruleEn: "Downgrade unsupported claims to missing-input status; never invent details just to make the letter stronger.",
         pose: "arms-crossed", persona: "雙手抱胸、底線最硬的把關者。寧可這封信弱一點，也不准多寫一句編造的話。" },
-      { id: "devil", name: "Devil Advocate", focusZh: "挑錯、找漏洞、避免灌水", focusEn: "spot weak claims, find leaks, avoid hype",
+      { id: "devil", name: "毒舌挑刺者（Devil Advocate）", focusZh: "挑錯、找漏洞、避免灌水", focusEn: "spot weak claims, find leaks, avoid hype",
         ruleZh: "把不可信、過度誇張或角色不符的內容直接刪除或降級，不要因為要寫成一封信就放水。", ruleEn: "Remove or downgrade anything untrustworthy, exaggerated, or mismatched to the relationship; do not soften because it is a letter.",
         pose: "pointing", persona: "不留情面的最後一關。誇張的形容詞、不符身分的口氣，他會逐個指出來。" },
     ],
     assessment: [
-      { id: "assessment-designer", name: "Assessment Designer", focusZh: "題目結構、評分維度、流程設計", focusEn: "question structure, scoring dimensions, workflow design",
+      { id: "assessment-designer", name: "測驗設計師（Assessment Designer）", focusZh: "題目結構、評分維度、流程設計", focusEn: "question structure, scoring dimensions, workflow design",
         ruleZh: "把評估設計成和目標角色真的相關，而不是抽象人格測驗。", ruleEn: "Design the assessment around the actual target role, not around abstract personality tests.",
         pose: "presenting", persona: "雙手攤開設計流程的建築師。她拒絕做那種「你是哪種水果」的測驗，每一題都要連回真實職位。" },
-      { id: "bias-checker", name: "Bias Checker", focusZh: "公平性、題目偏誤、可接受性", focusEn: "fairness, bias, acceptability",
+      { id: "bias-checker", name: "偏誤檢查官（Bias Checker）", focusZh: "公平性、題目偏誤、可接受性", focusEn: "fairness, bias, acceptability",
         ruleZh: "檢查題目是否引入與工作無關的偏誤或不公平假設，必要時重寫。", ruleEn: "Check whether questions introduce job-irrelevant bias or unfair assumptions and rewrite them when needed.",
         pose: "hands-behind", persona: "雙手背在身後逐題審查的監督者。任何跟工作無關的假設，他都會打上問號重寫。" },
-      { id: "rolefit", name: "Role-fit Analyst", focusZh: "能力缺口、角色匹配、信心", focusEn: "capability gaps, role fit, confidence",
+      { id: "rolefit", name: "角色適配分析師（Role-fit Analyst）", focusZh: "能力缺口、角色匹配、信心", focusEn: "capability gaps, role fit, confidence",
         ruleZh: "把測驗結果連回目標角色，拆出強項、弱項與下一步優先補強方向。", ruleEn: "Tie the assessment back to the target role and break out strengths, gaps, and priority next steps.",
         pose: "thinking", persona: "一手托腮、把分數翻譯成行動的分析師。她在意的不是你考得好不好，是你接下來該補什麼。" },
-      { id: "framer", name: "Answer Framer", focusZh: "把答案整理成可練習的輸出", focusEn: "turn answers into practice-ready output",
+      { id: "framer", name: "答題框架教練（Answer Framer）", focusZh: "把答案整理成可練習的輸出", focusEn: "turn answers into practice-ready output",
         ruleZh: "把測驗題與回饋整理成可以反覆練習的問題、範例與行動建議。", ruleEn: "Turn the test into repeatable practice questions, examples, and action suggestions.",
         pose: "talking", persona: "把結果整理成練習題的教練。他不只告訴你問題在哪，還陪你練到下次不再卡住。" },
-      { id: "devil", name: "Devil Advocate", focusZh: "挑錯、找漏洞、避免誤導", focusEn: "spot weaknesses, find loopholes, avoid misleading output",
+      { id: "devil", name: "毒舌挑刺者（Devil Advocate）", focusZh: "挑錯、找漏洞、避免誤導", focusEn: "spot weaknesses, find loopholes, avoid misleading output",
         ruleZh: "把無關、過於主觀或可能誤導的測驗設計直接指出，避免把測驗做成不實用的心理占卜。", ruleEn: "Call out irrelevant, overly subjective, or misleading assessment design so the test does not turn into pseudo-psychology.",
         pose: "pointing", persona: "不買單空泛測驗的懷疑者。太主觀、太抽象的題目，他會直接指出來說「這跟工作沒關係」。" },
+    ],
+    website: [
+      { id: "portfolio", name: "作品集顧問（Portfolio Reviewer）", focusZh: "專案敘事、決策交代、成果可驗證", focusEn: "project narrative, decisions shown, verifiable outcomes",
+        ruleZh: "逐個檢視專案是否用「問題 → 我的決策 → 結果」講清楚；只有畫面沒有決策的專案要直接指出。", ruleEn: "Check each project for a clear \"problem → my decision → outcome\" arc; call out projects that show only visuals without decisions.",
+        pose: "presenting", persona: "只看得懂「你做了什麼決定」的評審。漂亮的截圖說服不了她，她要的是你當時為什麼那樣選。" },
+      { id: "gh-profile", name: "GitHub 檔案顧問（GitHub Profile Reviewer）", focusZh: "repo 選擇、README、commit 訊號", focusEn: "repo selection, README, commit signals",
+        ruleZh: "檢查置頂 repo、README 與 commit 紀錄能否撐起技術定位；沒人看得懂的專案要建議補說明或下架。", ruleEn: "Check whether pinned repos, READMEs, and commit history support the stated technical positioning; recommend documenting or unpinning what nobody can read.",
+        pose: "hands-behind", persona: "雙手背在身後點開你每個 repo 的技術審查者。README 寫不清楚，他就當這個專案不存在。" },
+      { id: "brand", name: "個人品牌顧問（Personal Brand）", focusZh: "一句話定位、全站語氣一致", focusEn: "one-line positioning, consistent voice",
+        ruleZh: "檢查首頁那句定位是否具體、可記憶，並與作品、經歷、社群檔案的語氣一致。", ruleEn: "Check whether the homepage positioning line is specific and memorable, and consistent with the work, experience, and social profiles.",
+        pose: "hands-on-hips", persona: "雙手插腰、只問「所以你是誰」的品牌顧問。講不出一句話定位，她不讓你往下做。" },
+      { id: "site-rewrite", name: "網站文案改寫手（Site Copy Editor）", focusZh: "把職責敘述改成網站文案", focusEn: "turn duty statements into site copy",
+        ruleZh: "根據使用者提供的證據，把履歷式的職責敘述改寫成具體、好讀、有影響力的網站文案，不得補上不存在的數字。", ruleEn: "Rewrite resume-style duty statements into concrete, readable, high-impact site copy using only the evidence provided; never add numbers that do not exist.",
+        pose: "talking", persona: "受不了網站上出現履歷腔的文案手。「負責…」開頭的句子，他一律重寫。" },
+      { id: "narrative", name: "敘事線顧問（Narrative Lead）", focusZh: "整站主線、章節順序、收尾行動", focusEn: "site-wide throughline, section order, closing action",
+        ruleZh: "檢查整個網站有沒有一條說得通的職涯主線，區塊順序是否服務這條線，結尾有沒有明確的下一步。", ruleEn: "Check whether the whole site carries one coherent career throughline, whether the section order serves it, and whether it closes with a clear next action.",
+        pose: "arms-open", persona: "站遠一點看整體的敘事顧問。單頁都不錯但拼不成一個故事時，她會要你重排順序。" },
     ],
     // 領域專家顧問（CV 與面試共用，使用者自由加選）。match 用於「推薦」標記，比對所選產業／職能。
     specialists: [
@@ -1124,6 +1191,81 @@ Question / Interviewer / Category / What this tests
         "Career Gap Analysis Skill",
         "Promotion Case Skill",
       ],
+      // 個人網站 / 作品集路線
+      portfolio: [
+        "Portfolio Review Skill",
+        "Project Section Optimization Skill",
+      ],
+      "gh-profile": [
+        "GitHub Profile Review Skill",
+        "Project Section Optimization Skill",
+      ],
+      brand: [
+        "Personal Brand Skill",
+        "Career Positioning Skill",
+      ],
+      "site-rewrite": [
+        "Resume Rewrite Skill",
+        "Bullet Compression Skill",
+      ],
+      narrative: [
+        "Career Positioning Skill",
+        "Resume Summary Skill",
+      ],
+      // 先前沒有對應 skill 的既有角色（選了不會帶入任何規則），一併補齊
+      exec: [
+        "Executive Resume Skill",
+        "Headhunter Pitch Skill",
+      ],
+      "li-strategist": [
+        "LinkedIn Headline Skill",
+        "LinkedIn About Skill",
+      ],
+      "li-search": [
+        "LinkedIn Recruiter Search Skill",
+        "LinkedIn Skills Skill",
+      ],
+      "li-story": [
+        "LinkedIn Experience Skill",
+        "LinkedIn Featured Skill",
+      ],
+      "li-tone": [
+        "LinkedIn Content Positioning Skill",
+        "Personal Brand Skill",
+      ],
+      referee: [
+        "Recommendation Letter Skill",
+        "Referral Request Skill",
+      ],
+      credibility: [
+        "Evidence Request Skill",
+        "Red Flag Detection Skill",
+      ],
+      tone: [
+        "Recommendation Letter Skill",
+        "Chinese Resume Polish Skill",
+      ],
+      guardrail: [
+        "No-Fabrication Guardrail Skill",
+        "Evidence Request Skill",
+      ],
+      "assessment-designer": [
+        "Assessment Design Skill",
+        "Role Targeting Skill",
+      ],
+      "bias-checker": [
+        "Bias Check Skill",
+        "No-Fabrication Guardrail Skill",
+      ],
+      rolefit: [
+        "Career Gap Analysis Skill",
+        "Career Roadmap Skill",
+      ],
+      framer: [
+        "STAR Answer Skill",
+        "Behavioral Interview Drill Skill",
+      ],
+      // 打氣路線刻意不掛 skill：那條路線要的是陪伴，不是審查規則。
     },
   },
 
@@ -1423,6 +1565,30 @@ Question / Interviewer / Category / What this tests
 **Challenge Rules:** Avoid generic thought leadership.
 **Review Rules:** Check audience fit, proof, and repeatability.
 **Success Criteria:** User has clear, credible topics to post about.`,
+    "Career Roadmap Skill": `**Goal:** Plan 3-year, 5-year, and 10-year career paths.
+**Input:** Current background, target role, long-term ambition.
+**Output:** Career roadmap.
+**Challenge Rules:** Avoid generic advice; tie every milestone to a concrete skill, project, or credential.
+**Review Rules:** Check specific skills, projects, credentials, and milestones.
+**Success Criteria:** User has an executable development plan.`,
+    "Chinese Resume Polish Skill": `**Goal:** Improve Chinese resume clarity, structure, and professional expression.
+**Input:** Chinese resume text, target role, target market.
+**Output:** Polished Chinese resume wording.
+**Challenge Rules:** Do not use vague formal language that hides impact.
+**Review Rules:** Check clarity, hierarchy, professional tone, and evidence visibility.
+**Success Criteria:** Resume reads clearly and persuasively in Chinese.`,
+    "Project Section Optimization Skill": `**Goal:** Turn projects into credible proof of ability.
+**Input:** Project description, role, tools, decisions, users, results, links.
+**Output:** Project section bullets or case summary.
+**Challenge Rules:** Do not list projects without explaining problem, action, decision, and result.
+**Review Rules:** Check relevance, ownership, complexity, technical or business depth, and proof.
+**Success Criteria:** Projects demonstrate ability rather than just activity.`,
+    "Cold Outreach Message Skill": `**Goal:** Write concise outreach messages for recruiters or employees.
+**Input:** Target person, target company, user background, ask, proof point.
+**Output:** Cold outreach message options.
+**Challenge Rules:** Do not write long messages or vague networking requests.
+**Review Rules:** Check specificity, politeness, low-friction ask, and relevance.
+**Success Criteria:** Recipient can understand and respond quickly.`,
     "Referral Request Skill": `**Goal:** Write referral requests that are specific, polite, and easy to act on.
 **Input:** Target role, referrer relationship, resume summary, reason for fit.
 **Output:** Referral request message.

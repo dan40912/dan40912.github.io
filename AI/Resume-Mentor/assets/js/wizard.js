@@ -11,10 +11,75 @@
   const SKILL_RULES = C.skillSelection || {};
 
   /* ---------- 狀態 ---------- */
-  let state = load() || { goal: null, promptLang: "zh", answers: {}, agents: [], stepIndex: 0 };
+  function blankState(promptLang) {
+    return { v: C.configVersion, goal: null, promptLang: promptLang || "zh", answers: {}, agents: [], stepIndex: 0 };
+  }
 
-  function save() { try { localStorage.setItem(STORE_KEY, JSON.stringify(state)); } catch (e) {} }
-  function load() { try { return JSON.parse(localStorage.getItem(STORE_KEY)); } catch (e) { return null; } }
+  let state = load() || blankState();
+  // 有沒有一份「上次沒做完」的進度，決定進 wizard 時要不要先問接續／重來
+  let hasResumableState = !!(state.goal && state.stepIndex > 0);
+
+  function save() {
+    try {
+      state.v = C.configVersion;
+      localStorage.setItem(STORE_KEY, JSON.stringify(state));
+    } catch (e) {}
+  }
+
+  /**
+   * 讀回進度。config 改版（configVersion 不符）就整份丟掉，
+   * 否則舊的問題／選項 id 會殘留，最後被 optText() 原封不動寫進提示詞。
+   */
+  function load() {
+    let raw;
+    try { raw = JSON.parse(localStorage.getItem(STORE_KEY)); } catch (e) { return null; }
+    if (!raw || typeof raw !== "object") return null;
+    if (raw.v !== C.configVersion) return null;
+    if (raw.goal && !C.goals.some((g) => g.id === raw.goal && !g.disabled)) return null;
+    return {
+      v: C.configVersion,
+      goal: raw.goal || null,
+      promptLang: raw.promptLang === "en" ? "en" : "zh",
+      answers: pruneAnswers(raw.goal, raw.answers),
+      agents: Array.isArray(raw.agents) ? raw.agents.filter((id) => knownAgentIds(raw.goal).has(id)) : [],
+      stepIndex: Number.isInteger(raw.stepIndex) && raw.stepIndex >= 0 ? raw.stepIndex : 0,
+    };
+  }
+
+  function knownAgentIds(goal) {
+    const ids = new Set();
+    (C.agents[goal] || []).forEach((a) => ids.add(a.id));
+    (C.agents.specialists || []).forEach((a) => ids.add(a.id));
+    return ids;
+  }
+
+  /** 只留下目前 config 仍然認得的答案，避免無效 id 進入提示詞。 */
+  function pruneAnswers(goal, answers) {
+    if (!answers || typeof answers !== "object" || !goal) return {};
+    const questions = new Map();
+    Object.values(C.shared || {}).forEach((q) => q && q.id && questions.set(q.id, q));
+    ((C[goal] && C[goal].questions) || []).forEach((q) => q && q.id && questions.set(q.id, q));
+
+    const clean = {};
+    Object.entries(answers).forEach(([key, value]) => {
+      if (key === "wireframe") {
+        if ((C.website.wireframes || []).some((w) => w.id === value)) clean[key] = value;
+        return;
+      }
+      if (key.endsWith("_other")) return; // 跟著它的主答案一起處理
+      const q = questions.get(key);
+      if (!q) return;
+      const valid = (id) => id === "__other__" ? !!q.allowOther : (q.options || []).some((o) => o.id === id);
+      if (q.type === "multi") {
+        const kept = (Array.isArray(value) ? value : []).filter(valid);
+        if (kept.length) clean[key] = kept;
+      } else if (valid(value)) {
+        clean[key] = value;
+        if (value === "__other__" && answers[key + "_other"]) clean[key + "_other"] = answers[key + "_other"];
+      }
+    });
+    return clean;
+  }
 
   /* ---------- 步驟組裝（依分支） ---------- */
   function buildSteps() {
@@ -43,14 +108,24 @@
       }
     }
     if (state.goal) {
-      if (state.goal !== "website" && state.goal !== "jobs") steps.push({ kind: "agents" });
+      // 每條啟用路線都要能挑顧問；jobs 尚未開放，沒有對應的 agent 群組。
+      if (C.agents[state.goal]) steps.push({ kind: "agents" });
       steps.push({ kind: "result" });
     }
     return steps;
   }
 
   /* ---------- DOM 小工具 ---------- */
-  function el(tag, cls, html) {
+  /** 一律用 textContent：提示詞內含使用者自由輸入的「其他」欄位，不能走 innerHTML。 */
+  function el(tag, cls, text) {
+    const n = document.createElement(tag);
+    if (cls) n.className = cls;
+    if (text != null) n.textContent = text;
+    return n;
+  }
+
+  /** 只給我們自己產生的 SVG 標記用（剪影），不接受任何使用者輸入。 */
+  function elHTML(tag, cls, html) {
     const n = document.createElement(tag);
     if (cls) n.className = cls;
     if (html != null) n.innerHTML = html;
@@ -63,10 +138,36 @@
     });
   }
 
+  /** 語氣選「嚴格」時自動加入毒舌角色 —— 但只在這條路線真的有這位顧問時。 */
+  function isForcedDevil(agentId) {
+    return agentId === "devil"
+      && state.answers.tone === "harsh"
+      && (C.agents[state.goal] || []).some((a) => a.id === "devil");
+  }
+
+  /**
+   * 使用者實際選到的顧問（含依語氣自動加入的）。
+   * 提示詞與 skill 選取都走這裡，避免兩邊各寫一份規則而不一致。
+   */
   function effectiveAgentIds() {
     const ids = state.agents.slice();
-    if (state.answers.tone === "harsh" && !ids.includes("devil")) ids.push("devil");
+    if (isForcedDevil("devil") && !ids.includes("devil")) ids.push("devil");
     return ids;
+  }
+
+  /**
+   * 顧問顯示名稱。設定檔存的是「Recruiter（招募專員）」這種雙語格式，
+   * 中文情境只取中文、英文情境只取英文，避免全站中英夾雜。
+   */
+  const HAS_CJK = /[㐀-鿿]/;
+  function displayName(agent, lang) {
+    const raw = String(agent.name || "");
+    const m = raw.match(/^(.*?)（(.+)）\s*$/);
+    if (!m) return raw;
+    const outside = m[1].trim();
+    const inside = m[2].trim();
+    if (lang === "en") return HAS_CJK.test(outside) ? inside : outside;
+    return HAS_CJK.test(outside) ? outside : inside;
   }
 
   function effectiveSkillAgentIds() {
@@ -120,29 +221,34 @@
     return Array.from(names);
   }
 
-  function skillReferenceSection() {
-    const names = selectedSkillNames();
-    if (!names.length) return "";
+  /**
+   * 從 skill 全文裡抽出真正會改變 AI 行為的三個欄位。
+   * Category / Input / Output / Review Rules 是給人看的樣板，全文注入只會稀釋指令，
+   * 所以不進提示詞（使用者仍可在結果頁點 skill 看完整原文）。
+   */
+  const SKILL_KEEP_FIELDS = ["Goal", "Challenge Rules", "Success Criteria"];
 
-    const blocks = names.map((name) => {
-      const skill = SKILLS.getSkill(name);
-      if (skill && skill.text) return skill.text;
-      return [
-        `### ${name}`,
-        `**Goal:** Apply this skill to the user's selected career goal.`,
-        `**Input:** User background, target role, selected agents, and available evidence.`,
-        `**Output:** Concrete, truthful, role-specific guidance.`,
-        `**Challenge Rules:** Do not invent missing facts; ask follow-up questions when evidence is missing.`,
-        `**Review Rules:** Check clarity, relevance, credibility, and actionability.`,
-        `**Success Criteria:** The user receives a usable next step without fabricated content.`,
-      ].join("\n");
+  function condenseSkill(name) {
+    const skill = SKILLS.getSkill(name);
+    const text = (skill && skill.text) || "";
+    const lines = [];
+    SKILL_KEEP_FIELDS.forEach((field) => {
+      const m = text.match(new RegExp(`\\*\\*${field}:\\*\\*\\s*(.+)`));
+      if (m) lines.push(`- ${field}: ${m[1].trim()}`);
     });
+    if (!lines.length) {
+      lines.push(`- Goal: Apply this skill to the user's selected career goal.`);
+      lines.push(`- Challenge Rules: Do not invent missing facts; ask follow-up questions when evidence is missing.`);
+      lines.push(`- Success Criteria: The user receives a usable next step without fabricated content.`);
+    }
+    return [`**${name}**`, ...lines].join("\n");
+  }
 
-    const note = SKILLS.sourceMode === "markdown"
-      ? "以下內容直接從 skills/*.md 讀入，會隨 skill 檔更新而改變。"
-      : "以下內容使用內建 skill registry；即使以純 HTML / file:// 開啟，也會注入完整 skill 規則。";
-
-    return [`## /skills 參考`, note, ...blocks].join("\n\n");
+  function skillReferenceSection() {
+    const limit = C.skillPackLimit || 8;
+    const names = selectedSkillNames().slice(0, limit);
+    if (!names.length) return "";
+    return names.map(condenseSkill).join("\n\n");
   }
 
   /* ---------- 殼層元素 ---------- */
@@ -156,6 +262,7 @@
   const prevBtn = document.getElementById("wz-prev");
   const nextBtn = document.getElementById("wz-next");
   const restartBtn = document.getElementById("wz-restart");
+  const closeBtn = document.getElementById("wz-close");
 
   let animating = false;
 
@@ -234,7 +341,20 @@
   }
 
   /* ---------- 進入面談 ---------- */
-  function openWizard(goalId) {
+  // 記住是誰打開 wizard 的，關閉時把焦點還回去
+  let lastTrigger = null;
+
+  function showWizard() {
+    overlay.hidden = false;
+    document.body.classList.add("wz-lock");
+    render();
+    if (stage) stage.scrollTop = 0;
+    focusFirst();
+  }
+
+  function openWizard(goalId, trigger) {
+    lastTrigger = trigger || document.activeElement || null;
+
     if (goalId && C.goals.some((g) => g.id === goalId && !g.disabled)) {
       if (state.goal !== goalId) {
         state.goal = goalId;
@@ -242,20 +362,61 @@
         state.agents = [];
       }
       state.stepIndex = 1;
+      hasResumableState = false;
+      showWizard();
+      return;
     }
-    overlay.hidden = false;
-    document.body.classList.add("wz-lock");
-    render();
-    if (stage) stage.scrollTop = 0;
+
+    // 沒指定路線 → 若上次還有未完成的進度，先問要接續還是重來，
+    // 不要把回訪者直接丟回上次的半成品（常常就是結果頁）。
+    if (hasResumableState) {
+      hasResumableState = false;
+      openModal({
+        title: UI.resumeTitle,
+        body: UI.resumeBody,
+        buttons: [
+          { label: UI.resumeRestart, secondary: true, onClick: () => { doRestart(); showWizard(); } },
+          { label: UI.resumeContinue, onClick: showWizard },
+        ],
+      });
+      return;
+    }
+    showWizard();
   }
 
-  function enterInterview() {
-    openWizard();
+  function closeWizard() {
+    overlay.hidden = true;
+    document.body.classList.remove("wz-lock");
+    save();
+    // 下次再打開時，如果還沒做完就該問要不要接續
+    hasResumableState = !!(state.goal && state.stepIndex > 0);
+    if (lastTrigger && typeof lastTrigger.focus === "function") lastTrigger.focus();
+    lastTrigger = null;
+  }
+
+  const FOCUSABLE = 'button:not([disabled]), a[href], input, textarea, select, [tabindex]:not([tabindex="-1"])';
+
+  function focusFirst() {
+    const target = card.querySelector(FOCUSABLE) || nextBtn;
+    if (target && typeof target.focus === "function") target.focus();
+  }
+
+  /** 把 Tab 圈在 overlay 內，避免焦點跑到底下已被遮住的首頁。 */
+  function trapFocus(e) {
+    if (e.key !== "Tab" || overlay.hidden) return;
+    if (document.querySelector(".wz-modal")) return; // modal 自己處理
+    const items = Array.from(overlay.querySelectorAll(FOCUSABLE)).filter((n) => n.offsetParent !== null);
+    if (!items.length) return;
+    const first = items[0];
+    const last = items[items.length - 1];
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
   }
 
   /* ---------- 重新開始 ---------- */
   function doRestart() {
-    state = { goal: null, promptLang: state.promptLang, answers: {}, agents: [], stepIndex: 0 };
+    state = blankState(state.promptLang);
+    hasResumableState = false;
     render();
   }
   function openRestartModal() {
@@ -294,7 +455,21 @@
     back.appendChild(box);
     back.onclick = (e) => { if (e.target === back) close(); };
     document.body.appendChild(back);
-    function close() { back.remove(); }
+
+    // modal 自己吃掉 Esc（onKey 在有 modal 時會略過，否則 Esc 會完全沒作用）
+    function onModalKey(e) {
+      if (e.key === "Escape") { e.preventDefault(); e.stopPropagation(); close(); }
+    }
+    document.addEventListener("keydown", onModalKey, true);
+
+    const firstBtn = row.querySelector("button");
+    if (firstBtn) firstBtn.focus();
+
+    function close() {
+      document.removeEventListener("keydown", onModalKey, true);
+      back.remove();
+      if (!overlay.hidden) focusFirst();
+    }
     return close;
   }
 
@@ -333,7 +508,9 @@
   }
   function onKey(e) {
     if (overlay.hidden) return;
+    if (e.key === "Tab") { trapFocus(e); return; }
     if (document.querySelector(".wz-modal")) return;
+    if (e.key === "Escape") { e.preventDefault(); closeWizard(); return; }
     const tag = ((e.target && e.target.tagName) || "").toLowerCase();
     if (tag === "input" || tag === "textarea") return;
     if (e.key === "Enter" || e.key === "ArrowRight") { e.preventDefault(); go(1); }
@@ -454,6 +631,10 @@
     "sp-startup": "28-startup-founder-agent", "sp-ops": "15-coo-agent",
     buddy: "01-career-architect-agent", warm: "10-interview-coach-agent", cheer: "28-startup-founder-agent",
     mirror: "05-evidence-agent", veteran: "13-executive-recruiter-agent",
+    // 個人網站 / 作品集路線
+    portfolio: "21-portfolio-agent", "gh-profile": "22-github-profile-agent",
+    brand: "20-personal-branding-agent", "site-rewrite": "07-resume-rewrite-agent",
+    narrative: "12-leadership-agent",
   };
 
   function renderAgentCard(grid, a, opts) {
@@ -470,11 +651,11 @@
       figure.appendChild(img);
       card.appendChild(figure);
     } else if (window.RM_SILHOUETTES && a.pose) {
-      const figure = el("div", "wz-agent-figure wz-agent-figure-svg", window.RM_SILHOUETTES.svg(a.pose));
+      const figure = elHTML("div", "wz-agent-figure wz-agent-figure-svg", window.RM_SILHOUETTES.svg(a.pose));
       card.appendChild(figure);
     }
     const text = el("div", "wz-agent-text");
-    text.appendChild(el("span", "wz-opt-label", a.name));
+    text.appendChild(el("span", "wz-opt-label", displayName(a, "zh")));
     text.appendChild(el("p", "wz-agent-focus", a.focusZh));
     if (a.persona) text.appendChild(el("p", "wz-agent-persona", a.persona));
     if (forced) text.appendChild(el("span", "wz-tag", "已依語氣自動加入"));
@@ -488,6 +669,17 @@
     };
     grid.appendChild(card);
   }
+
+  // 每條路線的「審查／模擬角色」群組標題（原本一律寫「履歷審查角色」）
+  const AGENT_GROUP_LABEL = {
+    cv: "履歷審查角色",
+    interview: "面試考官",
+    linkedin: "LinkedIn 顧問",
+    recommendation: "推薦文顧問",
+    assessment: "適性測驗顧問",
+    website: "個人網站顧問",
+    encourage: "挺你的人",
+  };
 
   function renderAgents(body) {
     const isEncourage = state.goal === "encourage";
@@ -512,7 +704,7 @@
     body.appendChild(tools);
 
     // 群組 1：審查 / 模擬角色
-    body.appendChild(el("h3", "wz-group", isEncourage ? "挺你的人" : (state.goal === "interview" ? "面試考官" : "履歷審查角色")));
+    body.appendChild(el("h3", "wz-group", AGENT_GROUP_LABEL[state.goal] || "審查角色"));
     const g1 = el("div", "wz-grid wz-grid-agents");
     (C.agents[state.goal] || []).forEach((a) => {
       const forced = state.goal === "cv" && state.answers.tone === "harsh" && a.id === "devil";
@@ -544,6 +736,7 @@
   function renderPromptSections(body, prompt) {
     const sections = parsePromptSections(prompt);
     if (!sections.length) return;
+    body.appendChild(el("h3", "wz-group", UI.sectionsTitle));
     const wrap = el("div", "wz-section-cards");
     sections.forEach((section) => {
       const card = el("button", "wz-section-card");
@@ -567,9 +760,9 @@
   function renderSkillPack(body) {
     const names = selectedSkillNames();
     if (!names.length) return;
-    body.appendChild(el("h3", "wz-group", "顧問規則 · 點一下看真實內容"));
+    body.appendChild(el("h3", "wz-group", UI.skillPackTitle));
     const wrap = el("div", "wz-skill-pack");
-    names.slice(0, 10).forEach((name) => {
+    names.slice(0, C.skillPackLimit || 8).forEach((name) => {
       const btn = el("button", "wz-skill-pill", name);
       btn.type = "button";
       btn.onclick = () => openSkillPreview(name);
@@ -614,7 +807,16 @@
     reBtn.onclick = openRestartModal;
     actions.appendChild(copyBtn);
     actions.appendChild(reBtn);
+    if (C.samples[state.goal]) {
+      const sampleBtn = el("button", "button secondary", UI.viewSample);
+      sampleBtn.onclick = openSampleModal;
+      actions.appendChild(sampleBtn);
+    }
     body.appendChild(actions);
+
+    // 拆解好的區塊 ＋ 這次真正用到的顧問規則
+    renderPromptSections(body, prompt);
+    renderSkillPack(body);
 
     const back = el("button", "wz-link-back", UI.backEdit);
     back.onclick = () => go(-1);
@@ -707,21 +909,20 @@
   }
 
   /* ---------- 角色區塊 ---------- */
-  function agentLines() {
-    let ids = state.agents.slice();
-    if (state.goal === "cv" && state.answers.tone === "harsh" && !ids.includes("devil")) ids.push("devil");
+  function chosenAgents() {
+    const ids = effectiveAgentIds();
     const review = C.agents[state.goal] || [];
     const specialists = C.agents.specialists || [];
     let chosenReview = review.filter((a) => ids.includes(a.id));
     if (!chosenReview.length) chosenReview = review; // 沒選審查角色 → 用整組
-    const chosenSpec = specialists.filter((a) => ids.includes(a.id));
-    const chosen = chosenReview.concat(chosenSpec);
-    return chosen
-      .map((a) => {
-        const name = isZh() ? a.name : a.name.replace(/（[^）]*）/g, "").trim();
-        const sep = isZh() ? "：" : ": ";
-        return `- ${name}${sep}${isZh() ? a.ruleZh : a.ruleEn}`;
-      })
+    return chosenReview.concat(specialists.filter((a) => ids.includes(a.id)));
+  }
+
+  function agentLines() {
+    const lang = state.promptLang;
+    const sep = isZh() ? "：" : ": ";
+    return chosenAgents()
+      .map((a) => `- ${displayName(a, lang)}${sep}${isZh() ? a.ruleZh : a.ruleEn}`)
       .join("\n");
   }
 
@@ -821,28 +1022,53 @@
     const inputs = get(["我會提供的資料", "What I will provide"]);
     const output = get(["輸出格式", "Output format"]);
 
+    // 標題跟著 promptLang 走，避免中文提示詞頂著一排英文段落標題。
+    const T = C.promptSections[state.promptLang] || C.promptSections.zh;
+
     return [
-      `# Goal`,
-      task || (isZh() ? "依照使用者選擇的職涯路線產出可執行建議。" : "Produce actionable guidance for the selected career route."),
+      `# ${T.goal}`,
+      goalStatement(),
       ``,
-      `# Context`,
+      `# ${T.context}`,
       context || (isZh() ? "使用者尚未提供完整背景。" : "The user has not provided complete background yet."),
       ``,
-      `# Agent Council`,
+      `# ${T.council}`,
       role || (isZh() ? "依目前路線使用預設多 Agent 顧問團。" : "Use the default multi-agent council for the selected route."),
       ``,
-      `# Skill Pack`,
+      `# ${T.task}`,
+      task || (isZh() ? "依照使用者選擇的職涯路線產出可執行建議。" : "Produce actionable guidance for the selected career route."),
+      ``,
+      `# ${T.skills}`,
       skills || (isZh() ? "使用目前路線的預設 skill pack；不得編造缺少的設定。" : "Use the default skill pack for the current route; do not fabricate missing settings."),
       ``,
-      `# Required Inputs`,
+      `# ${T.inputs}`,
       inputs || (isZh() ? "請使用者貼上真實履歷、LinkedIn、推薦文素材、職缺或背景資料。" : "Ask the user to paste real resume, LinkedIn, recommendation, job, or background material."),
       ``,
-      `# Output Format`,
+      `# ${T.output}`,
       output || (isZh() ? "請輸出結構化建議、缺口、追問與下一步。" : "Output structured guidance, gaps, follow-up questions, and next steps."),
       ``,
-      `# Guardrails`,
+      `# ${T.guardrails}`,
       guardrail,
     ].join("\n");
+  }
+
+  /**
+   * 目標區塊。原本這裡塞的是 Task 的內容，段落名稱與內容不符；
+   * 改成真的講「這次要解決什麼」＝ 路線 ＋ 想拿到的結果。
+   */
+  function goalStatement() {
+    const goal = C.goals.find((g) => g.id === state.goal);
+    const label = goal ? goal.label : state.goal;
+    const outcome = goalOutcomeText();
+    if (isZh()) {
+      return outcome
+        ? `我這次要處理的是「${label}」，最想拿到的結果是：${outcome}。`
+        : `我這次要處理的是「${label}」。`;
+    }
+    const enLabel = goal ? (goal.labelEn || label) : state.goal;
+    return outcome
+      ? `I am working on "${enLabel}". The outcome I want most: ${outcome}.`
+      : `I am working on "${enLabel}".`;
   }
 
   function buildCV() {
@@ -933,7 +1159,8 @@
     if (isZh()) {
       return [
         `# 角色`,
-        `你是一個由 LinkedIn Strategist、Recruiter Search Lens、Experience Story Editor 與 Tone Editor 組成的 LinkedIn 顧問團。`,
+        `你是一個 LinkedIn 顧問團，由以下角色組成，請各自從自己的視角檢視：`,
+        agentLines(),
         g,
         ``,
         `# 我的背景`,
@@ -960,7 +1187,8 @@
     }
     return [
       `# Role`,
-      `You are a LinkedIn advisory board made of LinkedIn Strategist, Recruiter Search Lens, Experience Story Editor, and Tone Editor.`,
+      `You are a LinkedIn advisory board made of the following roles; each reviews from its own perspective:`,
+      agentLines(),
       g,
       ``,
       `# My background`,
@@ -1001,7 +1229,8 @@
     if (isZh()) {
       return [
         `# 角色`,
-        `你是一個由 Referee Voice、Credibility Checker、Tone Normalizer、No-Fabrication Guardrail 組成的推薦文顧問團。`,
+        `你是一個推薦文顧問團，由以下角色組成，請各自從自己的視角檢視：`,
+        agentLines(),
         g,
         ``,
         `# 我的背景`,
@@ -1028,7 +1257,8 @@
     }
     return [
       `# Role`,
-      `You are a recommendation board made of Referee Voice, Credibility Checker, Tone Normalizer, and No-Fabrication Guardrail.`,
+      `You are a recommendation board made of the following roles; each reviews from its own perspective:`,
+      agentLines(),
       g,
       ``,
       `# My background`,
@@ -1069,7 +1299,8 @@
     if (isZh()) {
       return [
         `# 角色`,
-        `你是一個由 Assessment Designer、Bias Checker、Role-fit Analyst、Answer Framer 與 No-Fabrication Guardrail 組成的適性測驗顧問團。`,
+        `你是一個適性測驗顧問團，由以下角色組成，請各自從自己的視角檢視：`,
+        agentLines(),
         g,
         ``,
         `# 我的背景`,
@@ -1096,7 +1327,8 @@
     }
     return [
       `# Role`,
-      `You are an aptitude and role-fit advisory board made of Assessment Designer, Bias Checker, Role-fit Analyst, Answer Framer, and No-Fabrication Guardrail.`,
+      `You are an aptitude and role-fit advisory board made of the following roles; each reviews from its own perspective:`,
+      agentLines(),
       g,
       ``,
       `# My background`,
@@ -1212,7 +1444,8 @@
     if (isZh()) {
       return [
         `# 角色`,
-        `你是一位個人品牌網站策略師與文案。`,
+        `你是一個個人網站顧問團，由以下角色組成，請各自從自己的視角檢視：`,
+        agentLines(),
         g,
         ``,
         `# 我的背景`,
@@ -1235,7 +1468,8 @@
     }
     return [
       `# Role`,
-      `You are a personal-brand website strategist and copywriter.`,
+      `You are a personal-website advisory board made of the following roles; each reviews from its own perspective:`,
+      agentLines(),
       g,
       ``,
       `# My background`,
@@ -1274,7 +1508,7 @@
         if (disabled) {
           card.querySelector(".wz-goal-top").appendChild(el("span", "wz-goal-badge", "即將推出"));
         }
-        card.onclick = () => { if (!disabled) openWizard(g.id); };
+        card.onclick = () => { if (!disabled) openWizard(g.id, card); };
         goalWrap.appendChild(card);
       });
     }
@@ -1306,12 +1540,14 @@
   /* ---------- 啟動 ---------- */
   window.RM_openWizard = openWizard;
   window.RM_showSkillPreview = openSkillPreview;
+  window.RM_closeWizard = closeWizard;
   document.querySelectorAll(".js-start-interview").forEach((b) => {
-    b.addEventListener("click", (e) => { e.preventDefault(); openWizard(); });
+    b.addEventListener("click", (e) => { e.preventDefault(); openWizard(null, b); });
   });
   prevBtn.onclick = () => go(-1);
   nextBtn.onclick = () => go(1);
   restartBtn.onclick = openRestartModal;
+  if (closeBtn) closeBtn.onclick = closeWizard;
   document.addEventListener("keydown", onKey);
   (async function bootstrap() {
     if (window.RM_SKILL_READY && typeof window.RM_SKILL_READY.then === "function") {

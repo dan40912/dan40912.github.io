@@ -97,7 +97,8 @@
   }
 
   async function loadSource(source) {
-    const response = await fetch(source.path, { cache: "no-store" });
+    // 用預設快取策略：這兩份 md 每次載入都重抓沒有意義，內建 fallback 已能保底。
+    const response = await fetch(source.path);
     if (!response.ok) {
       throw new Error(`Failed to load ${source.path}: ${response.status} ${response.statusText}`);
     }

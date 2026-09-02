@@ -1,0 +1,9 @@
+{
+  "name": "resume-mentor",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Resume-Mentor — 靜態職涯提示詞產生器（無 build step，直接開 index.html 即可）",
+  "scripts": {
+    "test": "node scripts/validate-skills.js"
+  }
+}

@@ -5,8 +5,27 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Resume-Mentor｜你的履歷顧問，幫你問對 AI</title>
   <meta name="description" content="直接把履歷丟給 AI，常常只拿到罐頭建議。Resume-Mentor 讓 30 多位各有專長的顧問先審你的履歷，再幫你組出一段對的提示詞——貼給任何 AI，就能換到真正用得上的答案。" />
-  <link rel="stylesheet" href="assets/css/styles.css?v=20260620-zh8" />
-  <link rel="stylesheet" href="assets/css/council.css?v=20260620-zh8" />
+  <link rel="canonical" href="https://dan40912.github.io/AI/Resume-Mentor/" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Resume-Mentor" />
+  <meta property="og:title" content="Resume-Mentor｜你的履歷顧問，幫你問對 AI" />
+  <meta property="og:description" content="30 多位顧問先審你的履歷，再幫你組出一段對的提示詞——貼給任何 AI，就能換到真正用得上的答案。" />
+  <meta property="og:url" content="https://dan40912.github.io/AI/Resume-Mentor/" />
+  <meta property="og:image" content="https://dan40912.github.io/AI/Resume-Mentor/assets/images/landingpage0.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Resume-Mentor｜你的履歷顧問，幫你問對 AI" />
+  <meta name="twitter:description" content="30 多位顧問先審你的履歷，再幫你組出一段對的提示詞。" />
+  <meta name="twitter:image" content="https://dan40912.github.io/AI/Resume-Mentor/assets/images/landingpage0.png" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ctext y='26' font-size='26'%3E%F0%9F%A7%AD%3C/text%3E%3C/svg%3E" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700;800&display=swap" />
+
+  <!-- 註：以下 ?v= 是手動快取破壞。改任何 assets/css 或 assets/js 檔時，六處要一起改。 -->
+  <link rel="stylesheet" href="assets/css/styles.css?v=20260903" />
+  <link rel="stylesheet" href="assets/css/council.css?v=20260903" />
 </head>
 <body>
   <nav class="site-nav">
@@ -154,7 +173,10 @@
             <span class="wz-step-count" id="wz-stepcount"></span>
             <span class="wz-eta" id="wz-eta"></span>
           </div>
-          <button class="wz-restart" id="wz-restart" type="button">重新開始</button>
+          <div class="wz-topbar-actions">
+            <button class="wz-restart" id="wz-restart" type="button">重新開始</button>
+            <button class="wz-close" id="wz-close" type="button" aria-label="關閉面談，回到首頁">關閉</button>
+          </div>
         </div>
       </div>
     </header>
@@ -171,11 +193,12 @@
     </footer>
   </div>
 
-  <script src="assets/js/wizard-config.js?v=20260620-zh8"></script>
-  <script src="assets/js/agent-silhouettes.js?v=20260620-zh8"></script>
-  <script src="assets/js/mentors-data.js?v=20260620-zh8"></script>
-  <script src="assets/js/mentor-council.js?v=20260620-zh8" defer></script>
-  <script src="assets/js/skill-loader.js?v=20260620-zh8" defer></script>
-  <script src="assets/js/wizard.js?v=20260620-zh8" defer></script>
+  <!-- 全部 defer：defer script 依文件順序執行，RM_CONFIG 等相依關係不受影響。 -->
+  <script src="assets/js/wizard-config.js?v=20260903" defer></script>
+  <script src="assets/js/agent-silhouettes.js?v=20260903" defer></script>
+  <script src="assets/js/mentors-data.js?v=20260903" defer></script>
+  <script src="assets/js/mentor-council.js?v=20260903" defer></script>
+  <script src="assets/js/skill-loader.js?v=20260903" defer></script>
+  <script src="assets/js/wizard.js?v=20260903" defer></script>
 </body>
 </html>
