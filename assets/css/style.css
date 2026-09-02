@@ -1947,7 +1947,7 @@ section {
 
 .ai-project-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 24px;
 }
 
@@ -1985,6 +1985,21 @@ section {
   font-size: 1.35rem;
   background: linear-gradient(135deg, var(--pm-primary), var(--pm-accent));
   box-shadow: 0 12px 22px rgba(15, 76, 129, 0.18);
+}
+
+.ai-project-icon.has-image {
+  background: #fff;
+  border: 1px solid rgba(15, 76, 129, 0.12);
+  box-shadow: 0 10px 20px rgba(15, 76, 129, 0.12);
+  padding: 8px;
+  overflow: hidden;
+}
+
+.ai-project-icon.has-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
 }
 
 .ai-project-content h3 {

@@ -1,4 +1,0 @@
-interface:
-  display_name: "Position Management"
-  short_description: "Manage open MNQ/MNQM6 positions."
-  default_prompt: "Use this skill when a position is already open and must be managed."
