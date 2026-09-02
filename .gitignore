@@ -1,2 +1,8 @@
 .DS_Store
 project/Resume-Mentor/
+
+# AI/Auto-Trading-Prompt-Generator 由獨立 repo (dan40912/Auto-Trading-Prompt-Generator) 開發，
+# 主站只發佈可瀏覽的靜態頁面，其餘開發檔案（artifacts/docs/skills/tools/logs/runs 等）不進主 repo。
+AI/Auto-Trading-Prompt-Generator/*
+!AI/Auto-Trading-Prompt-Generator/index.html
+!AI/Auto-Trading-Prompt-Generator/assets/
