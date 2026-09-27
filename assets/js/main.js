@@ -311,10 +311,13 @@ if (typed) {
    */
   window.addEventListener('load', () => {
     AOS.init({
-      duration: 1000,
-      easing: 'ease-in-out',
+      // 450ms ease-out: entrances decelerate in, they don't accelerate.
+      duration: 450,
+      easing: 'ease-out',
       once: true,
-      mirror: false
+      mirror: false,
+      disable: () =>
+        window.matchMedia('(prefers-reduced-motion: reduce)').matches
     })
   });
 
@@ -365,3 +368,60 @@ document.addEventListener("DOMContentLoaded", function() {
         }, 1500); // 1 秒淡出後換圖
     }, 6000); // 每 6 秒切換一次
 });
+
+/**
+ * Reveal images as they scroll into view.
+ *
+ * Deliberately not AOS: this waits for each image to finish decoding before
+ * playing, so a lazy-loaded image never animates an empty box, and it staggers
+ * images that arrive together so a row resolves left to right.
+ */
+(function () {
+  const images = Array.from(
+    document.querySelectorAll('.project-image, .ai-project-icon img')
+  );
+  if (!images.length) return;
+
+  if (!('IntersectionObserver' in window)) return; // leave images visible
+
+  images.forEach((img) => img.classList.add('reveal-img'));
+
+  const show = (img, delay) => {
+    const run = () => {
+      img.style.transitionDelay = delay + 'ms';
+      img.classList.add('is-revealed');
+    };
+    if (img.complete && img.naturalWidth) {
+      run();
+    } else {
+      img.addEventListener('load', run, { once: true });
+      img.addEventListener(
+        'error',
+        () => img.classList.add('is-revealed'),
+        { once: true }
+      );
+    }
+  };
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      const arrived = entries.filter((entry) => entry.isIntersecting);
+      if (!arrived.length) return;
+
+      // Same row first, then left to right, so the stagger reads as one sweep.
+      arrived.sort((a, b) => {
+        const rowA = Math.round(a.boundingClientRect.top / 24);
+        const rowB = Math.round(b.boundingClientRect.top / 24);
+        return rowA - rowB || a.boundingClientRect.left - b.boundingClientRect.left;
+      });
+
+      arrived.forEach((entry, i) => {
+        show(entry.target, i * 60);
+        observer.unobserve(entry.target);
+      });
+    },
+    { rootMargin: '0px 0px 10% 0px', threshold: 0.01 }
+  );
+
+  images.forEach((img) => observer.observe(img));
+})();
