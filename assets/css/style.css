@@ -1890,14 +1890,8 @@ section {
   will-change: auto;
 }
 
-/* A 58px icon needs a far smaller blur than a 220px card image. */
-.ai-project-icon .reveal-img {
-  filter: blur(4px);
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .reveal-img,
-  .ai-project-icon .reveal-img {
+  .reveal-img {
     transform: none;
     filter: none;
     transition: opacity 0.2s linear;
