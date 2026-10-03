@@ -6,3 +6,6 @@ project/Resume-Mentor/
 AI/Auto-Trading-Prompt-Generator/*
 !AI/Auto-Trading-Prompt-Generator/index.html
 !AI/Auto-Trading-Prompt-Generator/assets/
+
+# Local dev caches (formatter, test runner) are never published.
+node_modules/

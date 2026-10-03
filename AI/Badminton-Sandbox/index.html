@@ -1,0 +1,573 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="theme-color" content="#f6f5ef" />
+    <meta
+      name="description"
+      content="四位角色，無限種配合。用逐球推演、回合重播與自動比賽探索羽球戰術。"
+    />
+    <title>RALLY LAB — 羽球沙盤推演</title>
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">跳到主要內容</a>
+    <div
+      id="welcome"
+      class="welcome"
+      hidden
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="welcomeTitle"
+    >
+      <button id="skipWelcome" class="text-button welcome-skip">
+        略過介紹 ↗
+      </button>
+      <div class="welcome-flight" aria-hidden="true">
+        <svg viewBox="0 0 140 180">
+          <path
+            d="M50 130 15 25Q70 1 125 25L90 130Z"
+            fill="#ddea98"
+            stroke="#183d31"
+            stroke-width="2"
+          />
+          <path
+            d="m30 19 26 111M50 12l13 118M70 9v121M90 12l-13 118M110 19l-26 111"
+            fill="none"
+            stroke="#183d31"
+            stroke-width="2"
+          />
+          <path
+            d="M50 130h40v20a20 20 0 0 1-40 0Z"
+            fill="#fffefa"
+            stroke="#183d31"
+            stroke-width="2"
+          />
+        </svg>
+      </div>
+      <div class="welcome-content">
+        <div class="eyebrow">WELCOME TO RALLY LAB</div>
+        <h1 id="welcomeTitle">讓下一拍，<br />多一種可能。</h1>
+        <p>
+          你的羽球戰術工作室。從四位球員開始，<br />把腦中的配合，一拍一拍打出來。
+        </p>
+        <ol class="welcome-steps">
+          <li>
+            <span>01</span>
+            <div>
+              <strong>組建你的陣容</strong>
+              <p>設定級數、性格、球風與人物外觀。</p>
+            </div>
+          </li>
+          <li>
+            <span>02</span>
+            <div>
+              <strong>選擇你的節奏</strong>
+              <p>逐球推演，或讓球員自動完成比賽。</p>
+            </div>
+          </li>
+          <li>
+            <span>03</span>
+            <div>
+              <strong>看懂每一拍</strong>
+              <p>暫停、回看，試試另一個戰術選擇。</p>
+            </div>
+          </li>
+        </ol>
+        <button class="button primary" id="beginWelcome">
+          開始組隊 <span>↗</span>
+        </button>
+      </div>
+    </div>
+    <div class="app-shell">
+      <header class="site-header">
+        <a class="brand" id="brandHome" href="#"
+          ><span class="brand-mark">↗</span>RALLY<span class="brand-light"
+            >LAB</span
+          ><i></i
+        ></a>
+        <nav class="steps" aria-label="推演步驟">
+          <button id="navSetup" aria-current="step">
+            <span>01</span> 組建陣容</button
+          ><b></b
+          ><button id="navCourt" disabled><span>02</span> 進入球場</button>
+        </nav>
+        <button class="icon-button" id="helpButton" aria-label="使用說明">
+          ?
+        </button>
+      </header>
+      <main id="main">
+        <section id="setupPage" aria-labelledby="setupHeading">
+          <div class="setup-hero">
+            <div>
+              <div class="eyebrow">
+                <i class="live-dot"></i> YOUR TEAM. YOUR NEXT MOVE.
+              </div>
+              <h1 id="setupHeading" tabindex="-1">
+                每一拍，<br />都有你的<span>想法。</span>
+              </h1>
+              <p class="hero-copy">
+                四個角色，無限種配合。<br />先組建陣容，再把戰術帶上球場。
+              </p>
+            </div>
+            <div class="hero-art" aria-hidden="true">
+              <i class="orbit"></i><i class="orbit second"></i
+              ><svg viewBox="0 0 180 220">
+                <g
+                  transform="rotate(22 90 110)"
+                  fill="none"
+                  stroke="#183d31"
+                  stroke-width="3"
+                >
+                  <path
+                    d="M67 159 25 38Q89 10 155 38L112 159Z"
+                    fill="#ddea98"
+                  />
+                  <path
+                    d="m42 32 32 130M65 25l18 133M90 23v133M115 26l-15 132M138 32l-31 130M49 110q41-13 82 0M59 140q31-9 63 0"
+                  />
+                  <path d="M68 159h44v21a22 22 0 0 1-44 0Z" fill="#fffefa" />
+                </g></svg
+              ><span>PLAY IT OUT.<br />THINK IT THROUGH.</span>
+            </div>
+          </div>
+          <div class="match-config">
+            <div>
+              <span class="section-index">01 /</span
+              ><strong>選擇你的對局</strong>
+            </div>
+            <div
+              class="segmented"
+              id="modeTabs"
+              role="group"
+              aria-label="比賽模式"
+            >
+              <button data-mode="men" aria-pressed="true">男雙</button
+              ><button data-mode="women" aria-pressed="false">女雙</button
+              ><button data-mode="mixed" aria-pressed="false">混雙</button>
+            </div>
+            <label
+              >每局分數
+              <select id="matchPoints">
+                <option value="21">21 分</option>
+                <option value="11">11 分・短局</option>
+              </select></label
+            ><label
+              >賽制
+              <select id="matchFormat">
+                <option value="1">一局決勝</option>
+                <option value="3">三局兩勝</option>
+              </select></label
+            >
+          </div>
+          <div class="roster-heading">
+            <div>
+              <span class="section-index">02 /</span
+              ><strong>認識你的四位球員</strong>
+            </div>
+            <span>點選角色，調整個性與外觀</span>
+          </div>
+          <div class="team-headings">
+            <div>
+              <i class="team-dot blue"></i> BLUE TEAM <span>藍隊 / 我方</span>
+            </div>
+            <b>VS</b>
+            <div>
+              <i class="team-dot coral"></i> CORAL TEAM <span>紅隊 / 對方</span>
+            </div>
+          </div>
+          <div class="roster" id="roster"></div>
+          <div class="setup-bottom">
+            <p>
+              <span>✳</span> 級數 1–18 級，參考台灣羽球推廣協會分級，預設 6 級。<br /><small
+                >性格決定冒險程度，球風決定選球傾向。</small
+              >
+            </p>
+            <button class="button primary enter-button" id="enterCourt">
+              陣容就緒，進入球場 <span>↗</span>
+            </button>
+          </div>
+          <p id="settingsNotice" class="muted" role="status"></p>
+        </section>
+        <section id="courtPage" hidden aria-labelledby="courtHeading">
+          <div class="court-heading">
+            <div>
+              <div class="eyebrow">THE COURT / LIVE SANDBOX</div>
+              <h1 id="courtHeading" tabindex="-1">把想法，打出來。</h1>
+            </div>
+            <button class="button subtle" id="editTeam">↖ 修改陣容</button>
+          </div>
+          <div class="scoreboard" id="scoreboard" aria-label="比賽比分"></div>
+          <div class="court-toolbar">
+            <div
+              class="segmented"
+              id="playModes"
+              role="group"
+              aria-label="推演方式"
+            >
+              <button data-play="manual" aria-pressed="true">逐球推演</button
+              ><button data-play="rally" aria-pressed="false">自動回合</button
+              ><button data-play="match" aria-pressed="false">
+                全自動比賽
+              </button>
+            </div>
+            <div class="toolbar-right">
+              <label for="speed">播放速度</label
+              ><select id="speed">
+                <option value="1">1×</option>
+                <option value="3">3×</option>
+                <option value="8">8×</option></select
+              ><button
+                class="icon-button"
+                id="courtSettings"
+                aria-label="球場與發球設定"
+              >
+                ☷
+              </button>
+            </div>
+          </div>
+          <div class="arena-layout">
+            <div>
+              <div class="arena">
+                <div class="arena-top">
+                  <span id="courtStatus">準備發球</span
+                  ><span>DOUBLES COURT / 6.10 × 13.40 M</span>
+                </div>
+                <canvas
+                  id="court"
+                  tabindex="0"
+                  aria-label="羽球場：可拖曳球員、點選落點；也可使用擊球者與落點按鈕操作"
+                ></canvas>
+                <div class="arena-bottom">
+                  <span id="courtHint">點選對方場地，決定下一拍落點</span
+                  ><span class="arena-toggles"
+                    ><button id="viewToggle" aria-pressed="false">
+                      視角 <span>戰術</span></button
+                    ><button id="soundToggle" aria-pressed="true">
+                      音效 <span>開</span></button
+                    ><button id="trailToggle" aria-pressed="true">
+                      軌跡 <span>開</span>
+                    </button></span
+                  >
+                </div>
+                <label
+                  class="elevation-control"
+                  id="elevationControl"
+                  title="視角高度：也可在球場空白處上下拖曳"
+                  hidden
+                  ><span>高</span
+                  ><input
+                    id="elevation"
+                    type="range"
+                    min="0"
+                    max="100"
+                    step="1"
+                    aria-label="視角高度"
+                  /><span>低</span></label
+                >
+                <div class="result-overlay" id="resultOverlay" hidden></div>
+              </div>
+              <div class="transport">
+                <button class="button primary" id="playButton">
+                  打出這一拍 <span>↗</span></button
+                ><button class="button" id="pauseButton" disabled>暫停</button
+                ><button
+                  class="icon-button"
+                  id="undoButton"
+                  aria-label="撤回上一拍"
+                  disabled
+                >
+                  ↶</button
+                ><button class="button subtle" id="replayButton" disabled>
+                  ↻ 重播回合</button
+                ><span id="transportStatus" role="status">由你決定下一拍</span>
+              </div>
+              <section class="timeline-panel" aria-label="逐拍時間軸">
+                <div class="panel-heading">
+                  <span>RALLY TIMELINE <span id="shotCount">/ 0 拍</span></span
+                  ><button class="text-button" id="returnLive" hidden>
+                    回到目前進度 ↗
+                  </button>
+                </div>
+                <div id="timeline" class="timeline"></div>
+                <div id="reviewBar" class="review-bar" hidden>
+                  <span>正在回看這一拍</span
+                  ><button class="text-button" id="forkButton">
+                    從此處重新推演 →
+                  </button>
+                </div>
+              </section>
+            </div>
+            <aside class="tactics-panel">
+              <div class="panel-heading">
+                <span>YOUR NEXT MOVE</span><i class="live-dot"></i>
+              </div>
+              <div class="current-player" id="currentPlayer"></div>
+              <div id="manualTools">
+                <fieldset>
+                  <legend><span>01</span> 誰來擊球？</legend>
+                  <div id="actorButtons" class="actor-buttons"></div>
+                </fieldset>
+                <fieldset>
+                  <legend><span>02</span> 打什麼球？</legend>
+                  <div id="shotButtons" class="shot-buttons"></div>
+                </fieldset>
+                <fieldset>
+                  <legend><span>03</span> 選擇落點</legend>
+                  <div id="targetButtons" class="target-grid"></div>
+                  <p id="targetLabel" class="muted">也可以直接點球場</p>
+                </fieldset>
+              </div>
+              <div id="autoTools" hidden>
+                <p id="autoDescription"></p>
+                <label class="check-row"
+                  ><input type="checkbox" id="pauseAtPoint" />
+                  得分後暫停，觀察戰術</label
+                >
+                <p class="auto-note">
+                  ✳ 球員依級數、性格與球風選球。隨時暫停，逐拍回看。
+                </p>
+              </div>
+              <div class="coach-note" aria-live="polite">
+                <span>COURTSIDE NOTES</span>
+                <h2 id="noteTitle">找到第一拍的節奏</h2>
+                <p id="noteText">
+                  短發球能限制接發者的進攻空間。選個落點，觀察雙方的下一步。
+                </p>
+              </div>
+              <div id="manualResult" class="manual-result" hidden>
+                <span>這個回合誰得分？</span>
+                <div>
+                  <button class="button blue-button" id="blueWin">藍隊</button
+                  ><button class="button coral-button" id="coralWin">
+                    紅隊
+                  </button>
+                </div>
+              </div>
+            </aside>
+          </div>
+          <details class="match-details">
+            <summary>
+              <span>比賽紀錄 <span id="recordCount">/ 0 回合</span></span
+              ><span>展開 ＋</span>
+            </summary>
+            <div id="matchRecords"></div>
+          </details>
+          <div class="session-actions">
+            <button class="text-button" id="exportButton">↓ 匯出完整推演</button
+            ><button class="text-button" id="restartButton">重新開賽 ↻</button
+            ><span>人物設定會保留</span>
+          </div>
+        </section>
+      </main>
+      <footer class="site-footer">
+        <span>RALLY LAB <small>／ 羽球戰術工作室</small></span
+        ><span>讓下一拍，多一種可能。</span
+        ><button class="text-button" id="modelInfo">關於推演模型 ↗</button>
+      </footer>
+    </div>
+    <dialog id="playerDialog" aria-labelledby="playerEditorTitle">
+      <form id="playerForm">
+        <div class="dialog-header">
+          <span class="eyebrow">PLAYER STUDIO</span
+          ><button
+            type="button"
+            class="icon-button"
+            data-close="playerDialog"
+            aria-label="關閉人物編輯"
+          >
+            ×
+          </button>
+        </div>
+        <div class="editor-layout">
+          <div class="editor-preview">
+            <div id="editorPortrait"></div>
+            <span id="editorTeamLabel"></span>
+            <p id="editorDescription"></p>
+          </div>
+          <div class="editor-fields">
+            <h2 id="playerEditorTitle">你的球員，你的風格。</h2>
+            <span class="field-label" id="pickerLabel">選擇角色</span>
+            <div
+              id="characterPicker"
+              class="character-picker"
+              role="group"
+              aria-labelledby="pickerLabel"
+            ></div>
+            <label for="playerName">姓名</label
+            ><input
+              id="playerName"
+              maxlength="16"
+              required
+              autocomplete="off"
+            /><label for="playerLevel"
+              >級數 <span id="levelDescription"></span
+            ></label>
+            <div class="level-stepper">
+              <button type="button" id="levelDown" aria-label="降低一級">
+                −</button
+              ><input
+                id="playerLevel"
+                type="number"
+                min="1"
+                max="18"
+                step="1"
+                required
+              /><button type="button" id="levelUp" aria-label="提高一級">
+                ＋
+              </button>
+            </div>
+            <p id="levelDetail" class="level-detail" aria-live="polite"></p>
+            <label for="playerPersonality">性格</label
+            ><select id="playerPersonality">
+              <option value="balanced">沉著均衡 · 攻守都有餘裕</option>
+              <option value="bold">積極冒險 · 主動創造機會</option>
+              <option value="patient">耐心穩健 · 減少失誤</option></select
+            ><label for="playerStyle">球風</label
+            ><select id="playerStyle">
+              <option value="allround">全面均衡</option>
+              <option value="attack">後場進攻</option>
+              <option value="net">網前控制</option>
+              <option value="defense">防守反擊</option>
+              <option value="drive">平抽快壓</option>
+            </select>
+            <details class="appearance-details" open>
+              <summary>角色外觀</summary>
+              <div class="appearance-grid">
+                <label
+                  >臉型<select id="faceShape">
+                    <option value="round">圓臉</option>
+                    <option value="oval">鵝蛋臉</option>
+                    <option value="angular">俐落臉型</option>
+                  </select></label
+                ><label
+                  >髮型<select id="hairStyle">
+                    <option value="crop">清爽短髮</option>
+                    <option value="sweep">側分短髮</option>
+                    <option value="bob">俐落短鮑伯</option>
+                    <option value="pony">運動馬尾</option>
+                  </select></label
+                ><label
+                  >膚色<select id="skinTone">
+                    <option value="light">淺膚色</option>
+                    <option value="warm">暖膚色</option>
+                    <option value="deep">深膚色</option>
+                  </select></label
+                ><label
+                  >配件<select id="accessory">
+                    <option value="none">無配件</option>
+                    <option value="band">運動頭帶</option>
+                    <option value="glasses">運動眼鏡</option>
+                  </select></label
+                >
+              </div>
+            </details>
+            <p id="playerError" class="field-error" role="alert"></p>
+          </div>
+        </div>
+        <div class="dialog-actions">
+          <button type="button" class="button" data-close="playerDialog">
+            取消</button
+          ><button type="submit" class="button primary">儲存人物 ↗</button>
+        </div>
+      </form>
+    </dialog>
+    <dialog id="settingsDialog" aria-labelledby="courtSettingsTitle">
+      <div class="dialog-header">
+        <h2 id="courtSettingsTitle">球場與發球設定</h2>
+        <button
+          class="icon-button"
+          data-close="settingsDialog"
+          aria-label="關閉球場設定"
+        >
+          ×
+        </button>
+      </div>
+      <p class="muted">發球設定在新回合開始前可修改。計分會自動安排左右區。</p>
+      <label for="serverSelect">發球者</label
+      ><select id="serverSelect"></select
+      ><label for="receiverSelect">接發球者</label
+      ><select id="receiverSelect"></select
+      ><label for="formationSelect">擊球後補位</label
+      ><select id="formationSelect">
+        <option value="auto">依球路建議補位</option>
+        <option value="hold">保持手動站位</option></select
+      ><label for="outcomeSetting">逐球推演結果</label
+      ><select id="outcomeSetting">
+        <option value="model">依級數與性格判定（下網、出界、得分）</option>
+        <option value="manual">只推演路線，由我判定得分</option></select
+      ><label for="motionSetting">動態效果</label
+      ><select id="motionSetting">
+        <option value="system">依系統設定</option>
+        <option value="reduce">簡化動態・逐拍呈現</option></select
+      ><button class="button primary" id="applyCourtSettings">套用設定</button>
+    </dialog>
+    <dialog id="infoDialog" aria-labelledby="infoTitle">
+      <div class="dialog-header">
+        <h2 id="infoTitle">使用說明</h2>
+        <button
+          class="icon-button"
+          data-close="infoDialog"
+          aria-label="關閉說明"
+        >
+          ×
+        </button>
+      </div>
+      <div id="infoContent"></div>
+    </dialog>
+    <dialog id="restartDialog" aria-labelledby="restartTitle">
+      <div class="dialog-header">
+        <h2 id="restartTitle">重新開賽？</h2>
+        <button
+          class="icon-button"
+          data-close="restartDialog"
+          aria-label="關閉重新開賽"
+        >
+          ×
+        </button>
+      </div>
+      <p>
+        這場比賽的比分與推演紀錄會清空，人物設定會保留。你可以先匯出目前紀錄。
+      </p>
+      <div class="dialog-actions">
+        <button class="button" data-close="restartDialog">繼續這場比賽</button
+        ><button class="button primary" id="confirmRestart">重新開賽 ↗</button>
+      </div>
+    </dialog>
+    <dialog id="exportDialog" aria-labelledby="exportTitle">
+      <div class="dialog-header">
+        <h2 id="exportTitle">把這場推演帶走。</h2>
+        <button
+          class="icon-button"
+          data-close="exportDialog"
+          aria-label="關閉匯出"
+        >
+          ×
+        </button>
+      </div>
+      <p id="exportSummary" class="muted"></p>
+      <p class="muted">
+        包含人物設定、比分與每一拍的球路及站位，可保存或分享。紀錄截至最近完成的一拍。
+      </p>
+      <details class="export-preview">
+        <summary>檢視完整紀錄</summary>
+        <label for="exportContent" class="sr-only">完整推演 JSON 紀錄</label
+        ><textarea id="exportContent" readonly spellcheck="false"></textarea>
+      </details>
+      <div class="dialog-actions">
+        <button class="button" id="copyExport">複製紀錄</button
+        ><a class="button primary" id="downloadExport" download>儲存 JSON ↓</a>
+      </div>
+    </dialog>
+    <div id="toast" class="toast" hidden role="status"></div>
+    <script type="module" src="app.js"></script>
+  </body>
+</html>
