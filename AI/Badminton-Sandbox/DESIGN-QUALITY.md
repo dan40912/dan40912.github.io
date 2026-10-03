@@ -1,4 +1,4 @@
-# Rally Lab — design and quality ledger
+# 羽球模擬器 — design and quality ledger
 
 ## Objective
 Rebuild both screens as a distinctive, polished badminton tactics experience, using apple-design principles and Awwwards / Webby / FWA award quality as the target. Award eligibility and jury decisions cannot be asserted by local testing.

@@ -148,14 +148,16 @@ test("every successful flight visibly clears the net across legal target depths"
       assert(trajectory(e, crossing).h >= 1.679999);
     }
 });
-test("smash flies fastest, clears slowest; three distinct hit sounds", async () => {
-  const { FLIGHT_MS, soundFor } = await import("../model.js");
-  const others = Object.keys(SHOTS).filter((k) => k !== "smash");
-  assert(others.every((k) => FLIGHT_MS[k] > FLIGHT_MS.smash));
+test("power shots fly fastest, clears slowest; three distinct hit sounds", async () => {
+  const { FLIGHT_MS, soundFor, POWER_SHOTS } = await import("../model.js");
+  const others = Object.keys(SHOTS).filter((k) => !POWER_SHOTS.includes(k));
+  const slowestPower = Math.max(...POWER_SHOTS.map((k) => FLIGHT_MS[k]));
+  assert(others.every((k) => FLIGHT_MS[k] > slowestPower));
+  assert(FLIGHT_MS.jumpSmash < FLIGHT_MS.smash);
   assert(FLIGHT_MS.lift > FLIGHT_MS.drive);
-  assert.equal(soundFor("smash"), "smash");
+  for (const k of POWER_SHOTS) assert.equal(soundFor(k), "smash");
   for (const k of ["lift", "high", "flick"]) assert.equal(soundFor(k), "clear");
-  for (const k of ["net", "drive", "drop", "short", "block", "push"])
+  for (const k of ["net", "drive", "drop", "short", "block", "push", "cut", "cross"])
     assert.equal(soundFor(k), "touch");
 });
 test("pre-shot odds follow level, so edited levels change the simulation", async () => {

@@ -1,3 +1,12 @@
+import {
+  presetStats,
+  skillFor,
+  edge,
+  SKILLS,
+  skillFits,
+  METER_FULL,
+  gainMomentum,
+} from "./abilities.js";
 export const clone = (value) => JSON.parse(JSON.stringify(value));
 export const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
 export const team = (i) => (i < 2 ? 0 : 1);
@@ -54,7 +63,40 @@ export const SHOTS = {
     icon: "⌁",
     note: "卸掉來球速度，送回網前，再準備下一拍。",
   },
+  cut: {
+    label: "切吊",
+    icon: "⌄",
+    note: "切削後場球，又快又短地落在前場，逼對手急停上網。",
+  },
+  cross: {
+    label: "勾對角",
+    icon: "⤧",
+    note: "網前手腕一勾，球落到對角網前，調動對手橫向移動。",
+  },
+  stick: {
+    label: "點殺",
+    icon: "↓",
+    note: "角度陡、落點近的殺球，力量稍輕但更準、更難回。",
+  },
+  slice: {
+    label: "劈殺",
+    icon: "↙",
+    note: "切劈拍面打出斜線殺球，速度稍慢但方向難判斷。",
+  },
+  jumpSmash: {
+    label: "跳殺",
+    icon: "⇘",
+    note: "騰空起跳全力下壓，最快也最冒險的一拍。",
+  },
+  kill: {
+    label: "撲球",
+    icon: "⤓",
+    note: "網前高點直接下撲，只在對方回球過高時出手。",
+  },
 };
+// Smash family: steep power shots that share the smash sound and impact effects.
+export const SMASHES = ["smash", "jumpSmash", "stick", "slice"];
+export const POWER_SHOTS = [...SMASHES, "kill"];
 export const PERSONALITIES = {
   balanced: "沉著均衡",
   bold: "積極冒險",
@@ -108,14 +150,14 @@ export const baseError = (level) => 0.32 * Math.exp(-0.163 * (level - 1));
 export const paceOf = (level) => 0.35 + (0.65 * (level - 1)) / 17;
 // Character pool: identity (name, gender, look) plus a suggested play profile.
 export const ROSTER = [
-  { id: "ze", name: "阿澤", gender: "男", level: 6, personality: "bold", style: "attack", face: "angular", hair: "crop", skin: "warm", accessory: "none" },
-  { id: "yu", name: "小宇", gender: "男", level: 6, personality: "patient", style: "net", face: "round", hair: "crop", skin: "light", accessory: "glasses" },
-  { id: "kai", name: "阿凱", gender: "男", level: 6, personality: "balanced", style: "drive", face: "oval", hair: "sweep", skin: "deep", accessory: "band" },
-  { id: "xiang", name: "大翔", gender: "男", level: 6, personality: "patient", style: "defense", face: "angular", hair: "sweep", skin: "light", accessory: "none" },
-  { id: "qing", name: "小晴", gender: "女", level: 6, personality: "patient", style: "net", face: "round", hair: "bob", skin: "light", accessory: "none" },
-  { id: "you", name: "小悠", gender: "女", level: 6, personality: "patient", style: "defense", face: "oval", hair: "pony", skin: "warm", accessory: "glasses" },
-  { id: "han", name: "若涵", gender: "女", level: 6, personality: "bold", style: "attack", face: "angular", hair: "pony", skin: "light", accessory: "band" },
-  { id: "qian", name: "芊芊", gender: "女", level: 6, personality: "balanced", style: "drive", face: "round", hair: "bob", skin: "deep", accessory: "none" },
+  { id: "ze", name: "Jay", gender: "男", level: 6, racket: "zf2", personality: "bold", style: "attack", face: "angular", hair: "crop", skin: "warm", accessory: "none" },
+  { id: "yu", name: "Curt", gender: "男", level: 6, racket: "ax77pro", personality: "patient", style: "net", face: "round", hair: "crop", skin: "light", accessory: "glasses" },
+  { id: "kai", name: "Leo", gender: "男", level: 6, racket: "zspeed", personality: "balanced", style: "drive", face: "oval", hair: "sweep", skin: "deep", accessory: "band" },
+  { id: "xiang", name: "KK", gender: "男", level: 6, racket: "ax88dpro", personality: "patient", style: "defense", face: "angular", hair: "sweep", skin: "light", accessory: "none" },
+  { id: "qing", name: "Rena", gender: "女", level: 6, racket: "tkf", personality: "patient", style: "net", face: "round", hair: "bob", skin: "light", accessory: "none" },
+  { id: "you", name: "Mia", gender: "女", level: 6, racket: "bs12", personality: "patient", style: "defense", face: "oval", hair: "pony", skin: "warm", accessory: "glasses" },
+  { id: "han", name: "Ivy", gender: "女", level: 6, racket: "ax99pro", personality: "bold", style: "attack", face: "angular", hair: "pony", skin: "light", accessory: "band" },
+  { id: "qian", name: "Nora", gender: "女", level: 6, racket: "ars90k", personality: "balanced", style: "drive", face: "round", hair: "bob", skin: "deep", accessory: "none" },
 ];
 // Slot order is blue 1, blue 2, coral 1, coral 2; mixed pairs a man and a woman.
 export function slotGender(mode, i) {
@@ -130,7 +172,11 @@ export function defaults(mode = "men") {
     const g = slotGender(mode, i),
       id = mode === "mixed" ? pick[g][[0, 0, 2, 2][i]] : pick[g][used[g]++];
     const { id: _id, ...profile } = ROSTER.find((c) => c.id === id);
-    return { ...profile };
+    return {
+      ...profile,
+      stats: presetStats(profile.style, profile.level),
+      skill: skillFor(profile.style),
+    };
   });
 }
 export function seeded(seed = 20261003) {
@@ -160,6 +206,8 @@ export function createMatch(config = { points: 21, bestOf: 1 }) {
     positions: [],
     origin: { x: 0, z: 0 },
     nextActor: 0,
+    meter: [0, 0, 0, 0],
+    pressure: null,
     config: clone(config),
   });
 }
@@ -179,6 +227,7 @@ export function setupServe(
   s.turn = t;
   s.phase = "serve";
   s.total = 0;
+  s.pressure = null;
   s.nextActor = server;
   s.positions[server] = { x: x * 0.75, z: z * 2.45 };
   s.positions[mate(server)] = { x: -x * 0.6, z: z * 4.4 };
@@ -237,7 +286,21 @@ export function actors(s) {
 export function shotKeys(s) {
   return s.phase === "serve"
     ? ["short", "flick", "high"]
-    : ["lift", "smash", "drop", "net", "drive", "push", "block"];
+    : [
+        "lift",
+        "drop",
+        "cut",
+        "net",
+        "cross",
+        "block",
+        "drive",
+        "push",
+        "smash",
+        "stick",
+        "slice",
+        "jumpSmash",
+        "kill",
+      ];
 }
 export function targetPresets(s, shot) {
   if (s.phase === "serve") {
@@ -311,7 +374,8 @@ function weighted(items, random) {
 export function choosePlan(s, profiles, random) {
   const actor = s.nextActor,
     p = profiles[actor];
-  let shot;
+  let shot,
+    skill = false;
   if (s.phase === "serve")
     shot = weighted(
       [
@@ -321,27 +385,58 @@ export function choosePlan(s, profiles, random) {
       ],
       random,
     );
+  else if (s.pressure === actor)
+    // Just survived a would-be winner: only a scrambling lift or block is on.
+    shot = weighted(
+      [
+        ["lift", 3],
+        ["block", 2],
+      ],
+      random,
+    );
   else {
     const depth = Math.abs(s.origin.z),
+      back = depth > 3,
+      front = depth < 2.2,
       w = {
         lift: 2,
-        smash: depth > 3 ? 4 : 0,
-        drop: depth > 3 ? 3 : 0,
-        net: depth < 2 ? 4 : 0,
+        smash: back ? 3.2 : 0,
+        stick: back ? 1.4 : 0,
+        slice: back ? 1 : 0,
+        jumpSmash: depth > 3.5 ? 0.9 : 0,
+        drop: back ? 2 : 0,
+        cut: back ? 1.3 : 0,
+        net: front ? 3.2 : 0,
+        cross: front ? 1.4 : 0,
+        kill: front ? 1.1 : 0,
         drive: depth < 4 ? 3 : 1,
         push: 2,
         block: depth < 4 ? 2 : 1,
       };
-    const favorite = {
-      attack: "smash",
-      net: "net",
-      defense: "lift",
-      drive: "drive",
+    const favorites = {
+      attack: ["smash", "jumpSmash", "stick"],
+      net: ["net", "cross", "kill"],
+      defense: ["lift", "block"],
+      drive: ["drive", "push"],
     }[p.style];
-    if (favorite && w[favorite]) w[favorite] *= 3;
-    if (p.personality === "bold") w.smash *= 1.8;
+    favorites?.forEach((k) => w[k] && (w[k] *= 2.4));
+    if (p.personality === "bold") SMASHES.forEach((k) => (w[k] *= 1.7));
     if (p.personality === "patient") w.lift *= 1.8;
     shot = weighted(Object.entries(w), random);
+    // A full meter: decide whether to unleash the signature skill now.
+    const sk = SKILLS[p.skill];
+    if (sk?.type === "active" && (s.meter?.[actor] ?? 0) >= METER_FULL) {
+      const eager =
+        { bold: 0.85, balanced: 0.6, patient: 0.4 }[p.personality] ?? 0.6;
+      const candidates = (sk.shots || [shot]).filter(
+        (k) => w[k] > 0 || k === sk.force,
+      );
+      if (candidates.length && random() < eager && (!sk.force || depth > 3)) {
+        shot =
+          sk.force || weighted(candidates.map((k) => [k, w[k] || 1]), random);
+        skill = true;
+      }
+    }
   }
   let target;
   if (s.phase === "serve") {
@@ -350,63 +445,102 @@ export function choosePlan(s, profiles, random) {
       x: (r.x0 + r.x1) / 2 + (random() - 0.5) * 1.8,
       z: -sign(actor) * (shot === "short" ? 2.13 : 5.65),
     };
-  } else
+  } else {
+    const deep = shot === "lift",
+      shortShot = ["drop", "net", "block", "cut", "cross"].includes(shot),
+      x =
+        shot === "cross"
+          ? (s.origin.x >= 0 ? -1 : 1) * (1.6 + random() * 0.9)
+          : (random() - 0.5) * 5.3;
     target = {
-      x: (random() - 0.5) * 5.3,
+      x,
       z:
         -sign(actor) *
-        (shot === "lift"
-          ? 6.05
-          : ["drop", "net", "block"].includes(shot)
-            ? 0.7
-            : 3.3),
+        (deep ? 6.05 : shortShot ? 0.7 : shot === "stick" ? 2.6 : 3.3),
     };
-  return { actor, shot, target };
+  }
+  return { actor, shot, target, skill };
 }
-const ATTACKING = ["smash", "drive", "push"],
+const ATTACKING = [...POWER_SHOTS, "drive", "push"],
+  NET_SHOTS = ["net", "block", "short", "cut", "cross", "kill", "drop"],
   STYLE_SHOTS = {
-    attack: ["smash", "drop"],
-    net: ["net", "block", "short"],
+    attack: [...SMASHES, "drop", "cut"],
+    net: ["net", "block", "cross", "kill"],
     drive: ["drive", "push"],
     defense: ["lift", "block"],
+  },
+  // Extra risk and reward of each special shot on top of the base formula.
+  SHOT_MOD = {
+    smash: { error: 0.025, win: 0.05 },
+    jumpSmash: { error: 0.055, win: 0.11 },
+    stick: { error: 0.012, win: 0.07 },
+    slice: { error: 0.03, win: 0.06, deceive: 0.2 },
+    kill: { error: 0.03, win: 0.12 },
+    cut: { error: 0.02, win: 0.025, deceive: 0.12 },
+    cross: { error: 0.025, win: 0.02, deceive: 0.25 },
   };
 // Risk and reward move together: a bold player misses more but finishes more;
 // a patient player keeps the rally alive but rarely ends it outright.
-function oddsFor(s, actor, shot, p, d, distance) {
-  const fatigue = Math.max(0, s.total - 18) * 0.004,
+// Stats tilt the odds toward a player's strengths (see abilities.js).
+function oddsFor(s, actor, shot, p, d, distance, skill = null) {
+  const control = edge(p, "control"),
+    fatigue = Math.max(0, s.total - 18) * 0.004 * (1 - control * 0.5),
     attacking = ATTACKING.includes(shot),
     signature = STYLE_SHOTS[p.style]?.includes(shot),
+    mod = SHOT_MOD[shot] || { error: 0, win: 0 },
     // A stronger opponent forces more errors; an easy one lets the hitter relax.
     pressure = clamp(0.55 + d.level / 26, 0.55, 1.25),
-    error = clamp(
-      baseError(p.level) * pressure +
-        (p.personality === "bold"
-          ? 0.03
-          : p.personality === "patient"
-            ? -0.025
-            : 0) +
-        (shot === "smash" ? 0.025 * (1 - p.level / 24) : 0) -
-        (signature ? 0.012 : 0) +
-        fatigue,
-      0.008,
-      0.6,
-    ),
-    // Higher-level receivers cover ground better, so distance hurts them less.
-    reach = clamp(1.35 - d.level / 24, 0.6, 1.3),
-    win = clamp(
-      0.02 +
-        (p.level - d.level) * 0.011 +
-        distance * 0.016 * reach +
-        (shot === "smash" ? 0.05 : 0) +
-        (p.personality === "bold" && attacking ? 0.045 : 0) -
-        (p.personality === "patient" ? 0.02 : 0) +
-        (signature ? 0.022 : 0) +
-        (p.style === "allround" ? 0.008 : 0) -
-        (d.style === "defense" ? 0.018 : 0),
-      0.003,
-      0.45,
-    );
-  return { error, win };
+    scrambling = s.pressure === actor,
+    bonus = skill ? SKILLS[skill].bonus : null;
+  let error =
+    baseError(p.level) * pressure * (1 - control * 0.25) +
+    (p.personality === "bold"
+      ? 0.03
+      : p.personality === "patient"
+        ? -0.025
+        : 0) +
+    mod.error * (1 - p.level / 24) -
+    (signature ? 0.012 : 0) -
+    (NET_SHOTS.includes(shot) ? edge(p, "net") * 0.008 : 0) +
+    (scrambling ? 0.06 : 0) +
+    fatigue;
+  // Higher-level and faster receivers cover ground better.
+  const reach =
+    clamp(1.35 - d.level / 24, 0.6, 1.3) *
+    (1 - edge(d, "speed") * 0.18) *
+    (1 + (mod.deceive || 0));
+  let win =
+    0.02 +
+    (p.level - d.level) * 0.011 +
+    distance * 0.016 * reach +
+    mod.win +
+    (POWER_SHOTS.includes(shot) || ["drive", "push"].includes(shot)
+      ? edge(p, "power") * 0.035
+      : 0) +
+    (NET_SHOTS.includes(shot) && shot !== "short" ? edge(p, "net") * 0.022 : 0) -
+    (attacking ? edge(d, "defense") * 0.015 : 0) +
+    (p.personality === "bold" && attacking ? 0.045 : 0) -
+    (p.personality === "patient" ? 0.02 : 0) +
+    (signature ? 0.022 : 0) +
+    (p.style === "allround" ? 0.008 : 0);
+  if (scrambling) win *= 0.4;
+  if (bonus) {
+    error = error * (bonus.errorScale ?? 1) + bonus.error;
+    win += bonus.win;
+  }
+  return { error: clamp(error, 0.008, 0.6), win: clamp(win, 0.003, 0.6) };
+}
+// Chance the receiver scrambles back a shot that would otherwise win the point.
+function saveChance(p, d, shot) {
+  return clamp(
+    (0.05 +
+      edge(d, "defense") * 0.05 +
+      edge(d, "speed") * 0.03 +
+      (d.level - p.level) * 0.008) *
+      (SMASHES.includes(shot) ? 0.8 : 1),
+    0.01,
+    0.25,
+  );
 }
 export function receiverFor(s, actor, target) {
   if (s.phase === "serve") return s.receiver;
@@ -416,7 +550,7 @@ export function receiverFor(s, actor, target) {
   return far(opponents[0]) <= far(opponents[1]) ? opponents[0] : opponents[1];
 }
 // Pre-shot odds for the UI, from the same formula the simulation samples.
-export function shotOdds(s, { actor, shot, target }, profiles) {
+export function shotOdds(s, { actor, shot, target, skill = false }, profiles) {
   const receiver = receiverFor(s, actor, target),
     distance = Math.hypot(
       s.positions[receiver].x - target.x,
@@ -429,12 +563,21 @@ export function shotOdds(s, { actor, shot, target }, profiles) {
       profiles[actor],
       profiles[receiver],
       distance,
+      skill && skillFits(profiles[actor].skill, shot)
+        ? profiles[actor].skill
+        : null,
     );
   return { error, win, receiver, distance };
 }
 // Flight time in milliseconds: a smash crosses the court far faster than a clear.
 export const FLIGHT_MS = {
-  smash: 520,
+  jumpSmash: 300,
+  smash: 340,
+  stick: 360,
+  kill: 330,
+  slice: 420,
+  cut: 820,
+  cross: 1050,
   drive: 700,
   push: 760,
   block: 900,
@@ -447,7 +590,13 @@ export const FLIGHT_MS = {
 };
 // Top-level (level 18) initial shuttle speed in km/h for each shot.
 export const PRO_KMH = {
+  jumpSmash: 380,
   smash: 340,
+  stick: 290,
+  slice: 260,
+  kill: 200,
+  cut: 150,
+  cross: 40,
   drive: 210,
   push: 170,
   lift: 230,
@@ -458,13 +607,19 @@ export const PRO_KMH = {
   net: 45,
   short: 55,
 };
-export const shotSpeed = (shot, level) =>
-  Math.round((PRO_KMH[shot] ?? 100) * paceOf(level));
+// Power stat adds or takes up to ~10% of pace; a skill can add more.
+export const shotSpeed = (shot, level, profile = null, skill = null) =>
+  Math.round(
+    (PRO_KMH[shot] ?? 100) *
+      paceOf(level) *
+      (1 + edge(profile, "power") * 0.08) *
+      (skill ? (SKILLS[skill]?.bonus.pace ?? 1) : 1),
+  );
 // Animation flight time: FLIGHT_MS is a level-6 hitter; faster hitters fly shorter.
 export const flightMs = (shot, level = 6) =>
   Math.round((FLIGHT_MS[shot] ?? 1000) * (paceOf(6) / paceOf(level)) ** 0.55);
 export const soundFor = (shot) =>
-  shot === "smash"
+  POWER_SHOTS.includes(shot)
     ? "smash"
     : ["lift", "high", "flick"].includes(shot)
       ? "clear"
@@ -475,8 +630,22 @@ export function makeShot(
   profiles,
   { random = Math.random, simulate = false, formation = "auto" } = {},
 ) {
-  const { actor, shot, target } = plan,
+  const { actor, target } = plan,
     s = clone(input);
+  s.meter ||= [0, 0, 0, 0];
+  let shot = plan.shot,
+    skill = null,
+    skillUser = null;
+  if (plan.skill) {
+    const key = profiles[actor].skill,
+      sk = SKILLS[key];
+    if (!sk || sk.type !== "active") throw Error("這位球員的絕技會自動發動");
+    if (s.meter[actor] < METER_FULL) throw Error("氣勢還沒集滿");
+    if (sk.force) shot = sk.force;
+    if (!skillFits(key, shot)) throw Error(`${sk.name}只能搭配特定球路`);
+    skill = key;
+    skillUser = actor;
+  }
   if (!actors(s).includes(actor)) throw Error("請選擇這一拍可擊球的球員");
   if (!shotKeys(s).includes(shot)) throw Error("球路不適用於目前回合");
   if (!legalTarget(s, target)) throw Error("請選擇對方有效區域的落點");
@@ -494,7 +663,7 @@ export function makeShot(
     actual = clone(target),
     winner = null;
   if (simulate) {
-    const { error, win } = oddsFor(s, actor, shot, p, d, distance),
+    const { error, win } = oddsFor(s, actor, shot, p, d, distance, skill),
       r = random();
     if (r < error) {
       outcome = random() < 0.45 ? "net" : "out";
@@ -505,6 +674,17 @@ export function makeShot(
     } else if (r < error + win) {
       outcome = "winner";
       winner = team(actor);
+      // Wall: a full-meter defender always digs out the would-be winner.
+      const wall =
+        d.skill === "wall" && s.meter[receiver] >= METER_FULL && !skill;
+      if (wall || random() < saveChance(p, d, shot)) {
+        outcome = "save";
+        winner = null;
+        if (wall) {
+          skill = "wall";
+          skillUser = receiver;
+        }
+      }
     }
   }
   const contact = clone(s.positions);
@@ -518,15 +698,16 @@ export function makeShot(
       const left = contact[actor].x <= contact[partner].x;
       after.positions[actor] = { x: left ? -1.45 : 1.45, z: z * 3.8 };
       after.positions[partner] = { x: left ? 1.45 : -1.45, z: z * 3.8 };
-    } else if (["smash", "drop"].includes(shot)) {
+    } else if ([...POWER_SHOTS, "drop", "cut"].includes(shot)) {
       after.positions[actor] = { x: clamp(from.x, -2.4, 2.4), z: z * 4.8 };
       after.positions[partner] = { x: target.x * 0.4, z: z * 1.4 };
-    } else if (["short", "net", "block"].includes(shot)) {
+    } else if (["short", "net", "block", "cross"].includes(shot)) {
       after.positions[actor] = { x: clamp(from.x, -2.3, 2.3), z: z * 1.35 };
       after.positions[partner] = { x: -target.x * 0.3, z: z * 4.4 };
     }
   }
-  if (outcome === "return") after.positions[receiver] = clone(target);
+  if (outcome === "return" || outcome === "save")
+    after.positions[receiver] = clone(target);
   else if (outcome === "winner") {
     const start = s.positions[receiver];
     after.positions[receiver] = {
@@ -539,6 +720,8 @@ export function makeShot(
   after.phase = "rally";
   after.total++;
   after.nextActor = receiver;
+  after.pressure = outcome === "save" ? receiver : null;
+  gainMomentum(after, { actor, receiver, outcome, skill, skillUser });
   if (winner !== null)
     after = awardPoint(
       after,
@@ -555,6 +738,9 @@ export function makeShot(
     receiver,
     outcome,
     winner,
+    skill,
+    skillUser,
+    speed: shotSpeed(shot, p.level, p, skill),
     before: clone(input),
     contact,
     after,
@@ -563,14 +749,25 @@ export function makeShot(
 export function trajectory(event, t) {
   t = clamp(t, 0, 1);
   const high = ["lift", "flick", "high"].includes(event.shot),
-    start = event.shot === "smash" ? 2.65 : event.shot === "drop" ? 2.15 : 1.1;
+    START = {
+      smash: 2.65,
+      jumpSmash: 3.05,
+      stick: 2.75,
+      slice: 2.5,
+      kill: 2.0,
+      drop: 2.15,
+      cut: 2.3,
+    },
+    start = START[event.shot] ?? 1.1;
   let arc = high
     ? 4.1
-    : ["short", "net", "block"].includes(event.shot)
+    : ["short", "net", "block", "cross"].includes(event.shot)
       ? 1.15
-      : event.shot === "drop"
-        ? 0.65
-        : 0.6;
+      : event.shot === "kill"
+        ? 0.15
+        : ["drop", "cut"].includes(event.shot)
+          ? 0.65
+          : 0.6;
   const crossing = -event.from.z / (event.actual.z - event.from.z);
   // A completed return must visibly clear the net; a failed net shot must not.
   if (event.outcome !== "net" && crossing > 0 && crossing < 1) {
@@ -585,4 +782,22 @@ export function trajectory(event, t) {
     z: event.from.z + (event.actual.z - event.from.z) * t,
     h,
   };
+}
+
+// "GAME POINT" / "MATCH POINT" for the team one rally from taking the game.
+export function pointLabel(s) {
+  if (!s || s.phase === "ended") return null;
+  const goal = s.config.points,
+    cap = goal === 21 ? 30 : 15,
+    need = Math.ceil(s.config.bestOf / 2);
+  for (const t of [0, 1]) {
+    const next = s.score[t] + 1,
+      wins = next >= cap || (next >= goal && next - s.score[1 - t] >= 2);
+    if (wins)
+      return {
+        team: t,
+        label: s.wins[t] + 1 >= need ? "MATCH POINT" : "GAME POINT",
+      };
+  }
+  return null;
 }

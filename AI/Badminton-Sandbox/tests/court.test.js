@@ -29,6 +29,8 @@ function canvasFixture() {
       drawImage() {
         faces++;
       },
+      createLinearGradient: () => ({ addColorStop() {} }),
+      createRadialGradient: () => ({ addColorStop() {} }),
       ellipse(x, y, rx, ry) {
         assert([x, y, rx, ry].every(Number.isFinite));
         assert(rx >= 0 && ry >= 0);
@@ -178,4 +180,27 @@ test("a saved camera view loads safely while the court is still hidden", () => {
   f.show();
   r.resize();
   r.render(createMatch(), defaults());
+});
+test("smash impact effects draw finite geometry and expire", () => {
+  const f = canvasFixture(),
+    r = new CourtRenderer(f.canvas),
+    s = createMatch(),
+    profiles = defaults();
+  globalThis.performance ??= { now: () => Date.now() };
+  f.show();
+  r.resize();
+  for (const view of ["tactical", "camera"]) {
+    r.setView(view, 0.4);
+    const t0 = 1000;
+    r.effects.clear();
+    r.effects.spawn("flash", { x: 1, z: 4, h: 2.6 }, t0);
+    r.effects.spawn("impact", { x: 1, z: 4, h: 2.6, dir: -1.2, power: 1.15 }, t0);
+    r.effects.spawn("shout", { x: 1, z: 4, h: 2.6, text: "SMASH!", sub: "184 km/h" }, t0);
+    r.effects.spawn("splash", { x: -1, z: -5, power: 1.1 }, t0);
+    r.effects.shake(6, 170, t0);
+    for (const dt of [0, 40, 120, 300, 500])
+      r.render(s, profiles, { time: t0 + dt });
+    assert(f.ellipses() > 0);
+    assert.equal(r.effects.busy(t0 + 2000), false);
+  }
 });

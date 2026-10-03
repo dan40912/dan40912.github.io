@@ -1,6 +1,7 @@
 import { clamp, sign, serveRegion, trajectory } from "./model.js";
 import { portrait, TEAM_COLORS } from "./characters.js";
-const C = 0.56;
+import { Effects, speedWedges } from "./effects.js";
+import { racketOf } from "./abilities.js";
 // Camera rigs (metres, radians) along one elevation track the user can drag:
 // 0 = courtside seat, 0.7 = TV broadcast, 1 = high stand.
 const RIGS = [
@@ -25,8 +26,10 @@ export class CourtRenderer {
     this.height = 0;
     this.scale = 1;
     this.faces = new Map();
+    this.effects = new Effects(this);
     this.dirty = true;
     this.view = "tactical";
+    this.C = 0.56;
     this.elevation = ELEVATION.broadcast;
     this.focal = 1;
     this.bx = 0;
@@ -49,6 +52,10 @@ export class CourtRenderer {
     this.angle = clamp((r.width - 440) / 500, 0, 1) * 0.6;
     this.cos = Math.cos(this.angle);
     this.sin = Math.sin(this.angle);
+    // Tall phone canvases tilt the frontal court up so it fills the height and
+    // the far half stays large enough to tap.
+    this.C = r.height > r.width * 1.15 ? 0.74 : 0.56;
+    const C = this.C;
     this.scale = Math.min(
       (r.width - 45) / (8.1 * this.cos + 14.4 * this.sin),
       (r.height - 90) / ((13.4 * this.cos + 6.1 * this.sin) * C + 1.8),
@@ -124,7 +131,7 @@ export class CourtRenderer {
     }
     return {
       x: this.cx + (x * this.cos + z * this.sin) * this.scale,
-      y: this.cy + (z * this.cos - x * this.sin - h) * this.scale * C,
+      y: this.cy + (z * this.cos - x * this.sin - h) * this.scale * this.C,
     };
   }
   // Pixels per metre at a court position, so sprites shrink with distance.
@@ -165,7 +172,7 @@ export class CourtRenderer {
       return { x: dir.x * t, z: cz + dir.z * t };
     }
     const x = (clientX - r.left - this.cx) / this.scale;
-    const z = (clientY - r.top - this.cy) / (this.scale * C);
+    const z = (clientY - r.top - this.cy) / (this.scale * this.C);
     return { x: x * this.cos - z * this.sin, z: x * this.sin + z * this.cos };
   }
   face(profile, index, expression) {
@@ -383,7 +390,7 @@ export class CourtRenderer {
     c.save();
     c.translate(q.x, q.y);
     c.rotate(-Math.PI / 2);
-    c.fillText("RALLY LAB / TACTICAL CLUB", 0, 0);
+    c.fillText("羽球模擬器 / TACTICAL CLUB", 0, 0);
     c.restore();
     q = this.project(0, 7.3);
     c.font = "8px system-ui";
@@ -448,7 +455,14 @@ export class CourtRenderer {
     p,
     i,
     profile,
-    { selected = false, expression = "ready", swing = 0, moving = 0 } = {},
+    {
+      selected = false,
+      expression = "ready",
+      swing = 0,
+      moving = 0,
+      charged = false,
+      dive = 0,
+    } = {},
   ) {
     const c = this.ctx,
       base = this.project(p.x, p.z),
@@ -466,6 +480,10 @@ export class CourtRenderer {
         profile.skin
       ];
     this.ellipse(base.x + 2, base.y + 2, size * 0.48, size * 0.16, "#183d3127");
+    if (charged) {
+      // A full momentum meter glows gold under the player's feet.
+      this.ellipse(base.x, base.y, size * 0.7, size * 0.28, "#f2d35a40", "#e0b532", 2.5);
+    }
     if (selected)
       this.ellipse(
         base.x,
@@ -478,6 +496,11 @@ export class CourtRenderer {
       );
     c.save();
     c.translate(base.x, base.y);
+    // Diving save: the whole body tips toward the shuttle and drops low.
+    if (dive) {
+      c.translate(0, size * 0.18 * Math.abs(dive));
+      c.rotate(dive * 0.9);
+    }
     const bounce = moving ? Math.sin(moving) * 1.7 : 0;
     c.translate(0, bounce);
     c.lineCap = "round";
@@ -542,19 +565,13 @@ export class CourtRenderer {
       hand[0] + Math.cos(swingAngle) * size * 0.29,
       hand[1] + Math.sin(swingAngle) * size * 0.29,
     ];
-    limb(hand, end, "#dce9d1", 1.6);
+    const [frame, accent] = racketOf(profile).colors;
+    limb(hand, end, accent, 2);
     c.save();
     c.translate(...end);
     c.rotate(swingAngle + Math.PI / 2);
-    this.ellipse(
-      0,
-      -size * 0.09,
-      size * 0.105,
-      size * 0.16,
-      "#eaf0dc55",
-      "#f0f3e8",
-      1.3,
-    );
+    this.ellipse(0, -size * 0.09, size * 0.105, size * 0.16, "#eaf0dc55", outline, 2.6);
+    this.ellipse(0, -size * 0.09, size * 0.105, size * 0.16, null, frame, 1.5);
     c.restore();
     c.fillStyle = "#f5f3e4";
     c.font = `700 ${Math.max(8, size * 0.21)}px system-ui`;
@@ -604,6 +621,7 @@ export class CourtRenderer {
       c.lineWidth = (event.shot === "smash" ? 4.5 : 2.5) * k;
       c.lineCap = "round";
       c.stroke();
+      if (event.shot === "smash") speedWedges(c, q, a, 1.1);
     }
     c.save();
     c.translate(q.x, q.y);
@@ -639,12 +657,17 @@ export class CourtRenderer {
       time = 0,
       previewShot = null,
       reduceMotion = false,
+      tension = 0,
     } = {},
   ) {
     if (!this.width || this.canvas.getBoundingClientRect().width < 50) return;
     const c = this.ctx;
     c.clearRect(0, 0, this.width, this.height);
+    const jolt = reduceMotion ? { x: 0, y: 0 } : this.effects.offset(time);
+    c.save();
+    c.translate(jolt.x, jolt.y);
     this.drawCourt(state);
+    if (tension > 0) this.effects.tension(tension, reduceMotion ? 0 : time);
     if (showTrail)
       trail
         .filter((e) => e.kind === "shot")
@@ -717,7 +740,8 @@ export class CourtRenderer {
       draw: () => {
         let expression = "ready",
           swing = 0,
-          moving = 0;
+          moving = 0,
+          dive = 0;
         if (animation) {
           const e = animation.event;
           if (e.actor === i) {
@@ -734,6 +758,12 @@ export class CourtRenderer {
             after = e.after.positions[i];
           if (Math.hypot(before.x - after.x, before.z - after.z) > 0.4)
             moving = progress * 22;
+          if (e.outcome === "save" && e.receiver === i && progress > cut) {
+            const lean = clamp((progress - 0.55) / 0.3, 0, 1),
+              side = Math.sign(e.actual.x - before.x) || 1;
+            dive = lean * side;
+            expression = "focus";
+          }
         } else if (state.phase === "ended") {
           expression = (i < 2 ? 0 : 1) === state.winner ? "happy" : "sad";
         }
@@ -742,6 +772,8 @@ export class CourtRenderer {
           expression,
           swing: reduceMotion ? 0 : swing,
           moving: reduceMotion ? 0 : moving,
+          dive: reduceMotion ? 0 : dive,
+          charged: (state.meter?.[i] ?? 0) >= 100,
         });
       },
     }));
@@ -762,5 +794,7 @@ export class CourtRenderer {
         h: state.phase === "serve" ? 0.9 : 0.25,
       });
     else this.drawBall({ ...state.origin, h: 0.1 });
+    this.effects.draw(time);
+    c.restore();
   }
 }

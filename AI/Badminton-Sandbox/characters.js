@@ -1,3 +1,4 @@
+import { racketOf } from "./abilities.js";
 export const TEAM_COLORS = ["#4782a5", "#4782a5", "#c56b57", "#c56b57"];
 export const escapeHTML = (s) =>
   String(s).replace(
@@ -7,17 +8,15 @@ export const escapeHTML = (s) =>
         c
       ],
   );
-export function portrait(
-  p,
-  index,
-  { expression = "ready", faceOnly = false } = {},
-) {
+export function portrait(p, index, opts = {}) {
+  const { expression = "ready", faceOnly = false } = opts;
   const skin =
       { light: "#f4d2ba", warm: "#dca77f", deep: "#a66c4d" }[p.skin] ||
       "#dca77f",
     hair = ["#253b38", "#403b32", "#273d36", "#594236"][index],
     jersey = TEAM_COLORS[index],
-    outline = "#243b35";
+    outline = "#243b35",
+    [frame, accent] = racketOf(p).colors;
   const face =
     p.face === "angular"
       ? "M53 70Q50 36 100 35Q150 36 147 70L143 112 124 138 100 148 76 138 57 112Z"
@@ -60,7 +59,8 @@ export function portrait(
       : p.accessory === "glasses"
         ? '<g fill="none" stroke="#304f44" stroke-width="2.5"><rect x="63" y="89" width="32" height="23" rx="8"/><rect x="105" y="89" width="32" height="23" rx="8"/><path d="M95 97h10M54 95h9M137 95h9"/></g>'
         : "";
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${faceOnly ? "35 17 130 140" : "0 0 200 240"}" aria-hidden="true"><g stroke-linejoin="round">${!faceOnly ? `<ellipse cx="100" cy="225" rx="57" ry="7" fill="#183d310b"/><path d="M57 173Q43 183 40 215L65 219 73 182M143 173q14 10 17 42l-25 4-8-37" fill="${skin}" stroke="${outline}" stroke-width="2.3"/><path d="M61 161 82 152h36l21 9 8 59H53Z" fill="${jersey}" stroke="${outline}" stroke-width="2.5"/><path d="m61 167 17 8M139 167l-17 8" stroke="#fffefa" stroke-width="7"/><path d="M86 144v15q14 17 28 0v-15" fill="${skin}" stroke="${outline}" stroke-width="2"/><path d="M82 156q18 28 36 0" fill="none" stroke="#fffefa" stroke-width="4"/><path d="m87 194 19-15M95 180h12v12" fill="none" stroke="#eef2dd" stroke-width="3"/><path d="M150 183l12-35" stroke="${outline}" stroke-width="3"/><ellipse cx="166" cy="133" rx="13" ry="19" transform="rotate(20 166 133)" fill="#fffefa55" stroke="${outline}" stroke-width="2"/><path d="M159 119l12 27M155 128l21 7" stroke="#869d8c" stroke-width="1"/>` : ""}${back}<ellipse cx="51" cy="94" rx="9" ry="13" fill="${skin}" stroke="${outline}" stroke-width="2"/><ellipse cx="149" cy="94" rx="9" ry="13" fill="${skin}" stroke="${outline}" stroke-width="2"/><path d="${face}" fill="${skin}" stroke="${outline}" stroke-width="2.5"/><ellipse cx="67" cy="114" rx="9" ry="4" fill="#d4777540"/><ellipse cx="133" cy="114" rx="9" ry="4" fill="#d4777540"/><path d="${fringe}" fill="${hair}" stroke="${outline}" stroke-width="2.3"/><path d="M72 43q10-11 25-11" fill="none" stroke="#fffefa18" stroke-width="4" stroke-linecap="round"/><path d="${brows}" fill="none" stroke="${outline}" stroke-width="3" stroke-linecap="round"/>${eyes}<path d="m100 105-3 8h5" fill="none" stroke="#99624b" stroke-width="1.5" stroke-linecap="round"/>${mouth}${accessory}${focused ? '<path d="M142 80q-5 8 0 11q5-3 0-11Z" fill="#b9dce6" stroke="#507e8b" stroke-width="1"/>' : ""}</g></svg>`;
+  const head = `${back}<ellipse cx="51" cy="94" rx="9" ry="13" fill="${skin}" stroke="${outline}" stroke-width="2"/><ellipse cx="149" cy="94" rx="9" ry="13" fill="${skin}" stroke="${outline}" stroke-width="2"/><path d="${face}" fill="${skin}" stroke="${outline}" stroke-width="2.5"/><ellipse cx="67" cy="114" rx="9" ry="4" fill="#d4777540"/><ellipse cx="133" cy="114" rx="9" ry="4" fill="#d4777540"/><path d="${fringe}" fill="${hair}" stroke="${outline}" stroke-width="2.3"/><path d="M72 43q10-11 25-11" fill="none" stroke="#fffefa18" stroke-width="4" stroke-linecap="round"/><path d="${brows}" fill="none" stroke="${outline}" stroke-width="3" stroke-linecap="round"/>${eyes}<path d="m100 105-3 8h5" fill="none" stroke="#99624b" stroke-width="1.5" stroke-linecap="round"/>${mouth}${accessory}${focused ? '<path d="M142 80q-5 8 0 11q5-3 0-11Z" fill="#b9dce6" stroke="#507e8b" stroke-width="1"/>' : ""}`;
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${faceOnly ? "35 17 130 140" : "0 0 200 240"}" aria-hidden="true"><g stroke-linejoin="round">${!faceOnly ? `<ellipse cx="100" cy="225" rx="57" ry="7" fill="#183d310b"/><path d="M57 173Q43 183 40 215L65 219 73 182M143 173q14 10 17 42l-25 4-8-37" fill="${skin}" stroke="${outline}" stroke-width="2.3"/><path d="M61 161 82 152h36l21 9 8 59H53Z" fill="${jersey}" stroke="${outline}" stroke-width="2.5"/><path d="m61 167 17 8M139 167l-17 8" stroke="#fffefa" stroke-width="7"/><path d="M86 144v15q14 17 28 0v-15" fill="${skin}" stroke="${outline}" stroke-width="2"/><path d="M82 156q18 28 36 0" fill="none" stroke="#fffefa" stroke-width="4"/><path d="m87 194 19-15M95 180h12v12" fill="none" stroke="#eef2dd" stroke-width="3"/><path d="M150 183l12-35" stroke="${outline}" stroke-width="4.5" stroke-linecap="round"/><path d="M150 183l12-35" stroke="${accent}" stroke-width="2.4" stroke-linecap="round"/><ellipse cx="166" cy="133" rx="13" ry="19" transform="rotate(20 166 133)" fill="#fffefa55" stroke="${outline}" stroke-width="4.6"/><ellipse cx="166" cy="133" rx="13" ry="19" transform="rotate(20 166 133)" fill="none" stroke="${frame}" stroke-width="2.8"/><path d="M159 119l12 27M155 128l21 7" stroke="#869d8c" stroke-width="1"/>` : ""}${head}</g></svg>`;
 }
 export function describe(p) {
   const descriptions = {
@@ -72,3 +72,4 @@ export function describe(p) {
   };
   return descriptions[p.style];
 }
+

@@ -8,7 +8,7 @@
       name="description"
       content="四位角色，無限種配合。用逐球推演、回合重播與自動比賽探索羽球戰術。"
     />
-    <title>RALLY LAB — 羽球沙盤推演</title>
+    <title>羽球模擬器 — 羽球沙盤推演</title>
     <link rel="icon" href="favicon.svg" type="image/svg+xml" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -54,7 +54,7 @@
         </svg>
       </div>
       <div class="welcome-content">
-        <div class="eyebrow">WELCOME TO RALLY LAB</div>
+        <div class="eyebrow">歡迎來到羽球模擬器</div>
         <h1 id="welcomeTitle">讓下一拍，<br />多一種可能。</h1>
         <p>
           你的羽球戰術工作室。從四位球員開始，<br />把腦中的配合，一拍一拍打出來。
@@ -90,8 +90,8 @@
     <div class="app-shell">
       <header class="site-header">
         <a class="brand" id="brandHome" href="#"
-          ><span class="brand-mark">↗</span>RALLY<span class="brand-light"
-            >LAB</span
+          ><span class="brand-mark">↗</span>羽球<span class="brand-light"
+            >模擬器</span
           ><i></i
         ></a>
         <nav class="steps" aria-label="推演步驟">
@@ -195,6 +195,12 @@
               陣容就緒，進入球場 <span>↗</span>
             </button>
           </div>
+          <div class="lineup-prompt" id="setupLineupPrompt" hidden>
+            <p>
+              <strong>陣容已變更。</strong>要保留目前比分繼續打，還是用新陣容重新開賽並重新安排發球？
+            </p>
+            <button class="button" id="setupRestart">以新陣容重新開賽 ↻</button>
+          </div>
           <p id="settingsNotice" class="muted" role="status"></p>
         </section>
         <section id="courtPage" hidden aria-labelledby="courtHeading">
@@ -204,6 +210,13 @@
               <h1 id="courtHeading" tabindex="-1">把想法，打出來。</h1>
             </div>
             <button class="button subtle" id="editTeam">↖ 修改陣容</button>
+          </div>
+          <div class="lineup-prompt court-prompt" id="courtLineupPrompt" hidden>
+            <p>
+              <strong>陣容已變更。</strong>新設定會從下一拍套用；也可以清空比分，用新陣容重新開賽。
+            </p>
+            <button class="button" id="courtRestart">重新開賽並安排 ↻</button
+            ><button class="text-button" id="keepLineup">保留比分繼續</button>
           </div>
           <div class="scoreboard" id="scoreboard" aria-label="比賽比分"></div>
           <div class="court-toolbar">
@@ -273,6 +286,20 @@
                     aria-label="視角高度"
                   /><span>低</span></label
                 >
+                <div class="tension-hud" aria-live="polite">
+                  <span id="pointBanner" class="point-banner" hidden></span
+                  ><span id="rallyCount" class="rally-count" hidden></span>
+                </div>
+                <div class="cutin" id="cutin" hidden aria-hidden="true">
+                  <div class="cutin-lines"></div>
+                  <div class="cutin-panel">
+                    <div class="cutin-face" id="cutinFace"></div>
+                    <div class="cutin-text">
+                      <span id="cutinWho"></span
+                      ><strong id="cutinName"></strong>
+                    </div>
+                  </div>
+                </div>
                 <div class="result-overlay" id="resultOverlay" hidden></div>
               </div>
               <div class="transport">
@@ -311,6 +338,20 @@
                 <span>YOUR NEXT MOVE</span><i class="live-dot"></i>
               </div>
               <div class="current-player" id="currentPlayer"></div>
+              <div class="skill-box" id="skillBox">
+                <div class="meter-row">
+                  <span class="meter-label">氣勢</span>
+                  <div class="meter"><i id="meterFill"></i></div>
+                  <span id="meterValue" class="meter-value">0</span>
+                </div>
+                <button
+                  type="button"
+                  class="skill-button"
+                  id="skillButton"
+                  aria-pressed="false"
+                  disabled
+                ></button>
+              </div>
               <div id="manualTools">
                 <fieldset>
                   <legend><span>01</span> 誰來擊球？</legend>
@@ -361,6 +402,13 @@
             </summary>
             <div id="matchRecords"></div>
           </details>
+          <details class="match-details analysis-panel" id="analysisPanel">
+            <summary>
+              <span>賽後分析 <span class="summary-sub">精彩回顧・得分來源・對位測試</span></span
+              ><span>展開 ＋</span>
+            </summary>
+            <div id="analysis"></div>
+          </details>
           <div class="session-actions">
             <button class="text-button" id="exportButton">↓ 匯出完整推演</button
             ><button class="text-button" id="restartButton">重新開賽 ↻</button
@@ -369,7 +417,7 @@
         </section>
       </main>
       <footer class="site-footer">
-        <span>RALLY LAB <small>／ 羽球戰術工作室</small></span
+        <span>羽球模擬器 <small>／ 羽球戰術工作室</small></span
         ><span>讓下一拍，多一種可能。</span
         ><button class="text-button" id="modelInfo">關於推演模型 ↗</button>
       </footer>
@@ -439,6 +487,37 @@
               <option value="defense">防守反擊</option>
               <option value="drive">平抽快壓</option>
             </select>
+            <div class="ability-block">
+              <div class="ability-head">
+                <span class="field-label">能力分配</span
+                ><span id="statBudget" class="stat-budget"></span>
+              </div>
+              <div class="ability-layout">
+                <div id="editorRadar" class="radar"></div>
+                <div id="statRows" class="stat-rows"></div>
+              </div>
+              <button type="button" class="text-button" id="statPreset">
+                依球風重新分配 ↺
+              </button>
+            </div>
+            <span class="field-label" id="racketLabel">球拍</span>
+            <div
+              id="racketPicker"
+              class="racket-picker"
+              role="radiogroup"
+              aria-labelledby="racketLabel"
+            ></div>
+            <p id="racketNote" class="level-detail"></p>
+            <label for="playerSkill">絕技</label
+            ><select id="playerSkill"></select
+            ><input
+              id="playerSkillName"
+              maxlength="10"
+              autocomplete="off"
+              placeholder="自訂招式名稱（選填）"
+              aria-label="自訂招式名稱"
+            />
+            <p id="skillNote" class="level-detail"></p>
             <details class="appearance-details" open>
               <summary>角色外觀</summary>
               <div class="appearance-grid">
@@ -474,7 +553,9 @@
           </div>
         </div>
         <div class="dialog-actions">
-          <button type="button" class="button" data-close="playerDialog">
+          <button type="button" class="button subtle" id="shareCard">
+            分享球員卡</button
+          ><button type="button" class="button" data-close="playerDialog">
             取消</button
           ><button type="submit" class="button primary">儲存人物 ↗</button>
         </div>
@@ -537,10 +618,68 @@
       <p>
         這場比賽的比分與推演紀錄會清空，人物設定會保留。你可以先匯出目前紀錄。
       </p>
+      <label class="check-row"
+        ><input type="checkbox" id="arrangeAfterRestart" checked />
+        開賽後安排發球與接發順序</label
+      >
       <div class="dialog-actions">
         <button class="button" data-close="restartDialog">繼續這場比賽</button
         ><button class="button primary" id="confirmRestart">重新開賽 ↗</button>
       </div>
+    </dialog>
+    <dialog id="settleDialog" class="settle-dialog" aria-labelledby="settleTitle">
+      <div class="dialog-header">
+        <span class="eyebrow">MATCH REPORT</span>
+        <button
+          class="icon-button"
+          data-close="settleDialog"
+          aria-label="關閉結算表"
+        >
+          ×
+        </button>
+      </div>
+      <h2 id="settleTitle"></h2>
+      <div id="settleGames" class="settle-games"></div>
+      <div id="settleMvp" class="settle-mvp"></div>
+      <div class="settle-table-wrap">
+        <table class="settle-table">
+          <thead>
+            <tr>
+              <th scope="col">球員</th>
+              <th scope="col">得分率</th>
+              <th scope="col">失誤率</th>
+              <th scope="col">主動／被動</th>
+              <th scope="col">絕技出現率</th>
+            </tr>
+          </thead>
+          <tbody id="settleRows"></tbody>
+        </table>
+      </div>
+      <p class="settle-note">
+        得分率、失誤率以出手數計算；主動／被動只算發球以外的回合球；絕技出現率是發動絕技的回合佔全場回合的比例。
+      </p>
+      <div class="dialog-actions">
+        <button class="button" id="settleAnalysis">精彩回顧與分析 ↓</button
+        ><button class="button" id="settleAgain">同陣容再來一場 ↻</button
+        ><button class="button primary" data-close="settleDialog">完成</button>
+      </div>
+    </dialog>
+    <dialog id="importDialog" aria-labelledby="importTitle">
+      <div class="dialog-header">
+        <h2 id="importTitle">收到一張球員卡</h2>
+        <button
+          class="icon-button"
+          data-close="importDialog"
+          aria-label="關閉球員卡"
+        >
+          ×
+        </button>
+      </div>
+      <div class="import-card" id="importCard"></div>
+      <p class="muted">
+        要讓這位球員替換哪個位置？級數、能力與絕技會一起帶入。
+      </p>
+      <div class="import-slots" id="importSlots"></div>
     </dialog>
     <dialog id="exportDialog" aria-labelledby="exportTitle">
       <div class="dialog-header">
