@@ -98,11 +98,14 @@ export class Effects {
     c.beginPath();
     for (let i = 0; i <= spikes * 2; i++) {
       const a = (i / (spikes * 2)) * Math.PI * 2 + e.dir,
-        rad = i % 2 ? core * (0.42 + rand() * 0.12) : core * (0.85 + rand() * 0.45);
-      i ? c.lineTo(Math.cos(a) * rad, Math.sin(a) * rad) : c.moveTo(Math.cos(a) * rad, Math.sin(a) * rad);
+        rad =
+          i % 2 ? core * (0.42 + rand() * 0.12) : core * (0.85 + rand() * 0.45);
+      i
+        ? c.lineTo(Math.cos(a) * rad, Math.sin(a) * rad)
+        : c.moveTo(Math.cos(a) * rad, Math.sin(a) * rad);
     }
     c.closePath();
-    c.fillStyle = e.gold ? "#f6d65a" : PAPER;
+    c.fillStyle = e.color || (e.gold ? "#f6d65a" : PAPER);
     c.fill();
     c.lineWidth = 2.2;
     c.strokeStyle = INK;
@@ -138,7 +141,9 @@ export class Effects {
       const a = (i / (spikes * 2)) * Math.PI * 2,
         up = Math.sin(a) < 0 ? 1.6 : 0.8,
         rad = (i % 2 ? 0.45 : 1 + rand() * 0.6 * up) * size * grow;
-      i ? c.lineTo(Math.cos(a) * rad, Math.sin(a) * rad) : c.moveTo(Math.cos(a) * rad, Math.sin(a) * rad);
+      i
+        ? c.lineTo(Math.cos(a) * rad, Math.sin(a) * rad)
+        : c.moveTo(Math.cos(a) * rad, Math.sin(a) * rad);
     }
     c.closePath();
     c.fillStyle = PAPER;
@@ -152,7 +157,12 @@ export class Effects {
   shout(e, t) {
     const c = this.r.ctx,
       q = this.r.project(e.x, e.z, e.h),
-      pop = t < 0.18 ? 0.6 + 0.6 * ease(t / 0.18) : t < 0.3 ? 1.2 - (t - 0.18) * 1.6 : 1,
+      pop =
+        t < 0.18
+          ? 0.6 + 0.6 * ease(t / 0.18)
+          : t < 0.3
+            ? 1.2 - (t - 0.18) * 1.6
+            : 1,
       fade = t < 0.7 ? 1 : 1 - (t - 0.7) / 0.3,
       big = Math.max(18, Math.min(34, this.r.width / 24)) * (e.big ? 1.5 : 1);
     c.save();
@@ -166,7 +176,7 @@ export class Effects {
     c.lineWidth = 6;
     c.strokeStyle = INK;
     c.strokeText(e.text, 0, 0);
-    c.fillStyle = e.gold ? "#f6d65a" : PAPER;
+    c.fillStyle = e.color || (e.gold ? "#f6d65a" : PAPER);
     c.fillText(e.text, 0, 0);
     if (e.sub) {
       c.font = `800 ${big * 0.42}px "DM Sans", system-ui`;
@@ -196,9 +206,15 @@ Effects.prototype.tension = function (level, now) {
       inner = reach * (0.78 - level * 0.16 + rand() * 0.12),
       wdt = 0.006 + rand() * 0.01;
     c.beginPath();
-    c.moveTo(cx + Math.cos(a - wdt) * reach * 1.1, cy + Math.sin(a - wdt) * reach * 1.1);
+    c.moveTo(
+      cx + Math.cos(a - wdt) * reach * 1.1,
+      cy + Math.sin(a - wdt) * reach * 1.1,
+    );
     c.lineTo(cx + Math.cos(a) * inner, cy + Math.sin(a) * inner);
-    c.lineTo(cx + Math.cos(a + wdt) * reach * 1.1, cy + Math.sin(a + wdt) * reach * 1.1);
+    c.lineTo(
+      cx + Math.cos(a + wdt) * reach * 1.1,
+      cy + Math.sin(a + wdt) * reach * 1.1,
+    );
     c.closePath();
     c.fill();
   }

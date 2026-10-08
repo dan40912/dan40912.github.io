@@ -1,4 +1,4 @@
-import { SHOTS, team } from "./model.js";
+import { SHOTS, team } from "./model.js?v=20261008-targets";
 
 // Describe observed geometry, without presenting simulated outcomes as certainty.
 export function shotContext(
@@ -33,5 +33,5 @@ export function shotContext(
     state.phase === "serve"
       ? "發球須由指定接發者接球。"
       : "距離只描述站位，不等於必然得分。";
-  return `${geometry}${qualification}${SHOTS[shot].note}`;
+  return `${event?.weakReturn ? "這記進攻造成弱回球，對方下一拍處於被動，可繼續施壓。" : ""}${geometry}${qualification}${SHOTS[shot].note}`;
 }

@@ -2375,6 +2375,11 @@ h1[tabindex="-1"]:focus {
   overflow: hidden;
   background: var(--blue-light);
 }
+.character-picker small {
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 400;
+}
 .character-picker .picker-face svg {
   width: 100%;
   height: 100%;
@@ -3035,7 +3040,11 @@ h1[tabindex="-1"]:focus {
 .cutin-lines {
   position: absolute;
   inset: -40%;
-  background: repeating-conic-gradient(from 0deg, #16241f 0deg 1.2deg, transparent 1.2deg 6deg);
+  background: repeating-conic-gradient(
+    from 0deg,
+    #16241f 0deg 1.2deg,
+    transparent 1.2deg 6deg
+  );
   -webkit-mask: radial-gradient(circle, transparent 18%, #000 52%);
   mask: radial-gradient(circle, transparent 18%, #000 52%);
   opacity: 0;
@@ -3676,3 +3685,176 @@ h1[tabindex="-1"]:focus {
     width: 100%;
   }
 }
+
+/* Court stays in sight while thumb controls scroll below it. */
+.skill-workshop {
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  margin-top: 16px;
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+}
+.editor-layout > * {min-width:0}
+#playerDialog select {width:100%;max-width:100%;min-width:0}
+#workshopPreview,#specialtyPreview {overflow-wrap:anywhere}
+.skill-workshop legend {
+  padding: 0 8px;
+  font-weight: 700;
+}
+.skill-workshop p {
+  font-size: 13px;
+  line-height: 1.7;
+  margin: 0;
+}
+#skillDemo {
+  width: 100%;
+  height: 140px;
+  border-radius: 12px;
+  margin-top: 6px;
+}
+#moreShots {
+  display: none;
+}
+#quickSkill {
+  display: none;
+}
+@media (max-width: 820px) {
+  #courtPage {
+    padding-bottom: 90px;
+  }
+  .arena {
+    position: sticky;
+    top: 8px;
+    z-index: 5;
+    scroll-margin-top: 8px;
+    box-shadow: 0 5px 20px #183d3118;
+  }
+  #court {
+    height: clamp(250px, 36dvh, 340px);
+    min-height: 250px;
+  }
+  .transport {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: 0;
+    padding: 10px 16px calc(10px + env(safe-area-inset-bottom));
+    z-index: 8;
+  }
+  #shotButtons:not(.all-shots) button:not(.recommended-shot) {
+    display: none;
+  }
+  #moreShots {
+    display: block;
+    width: 100%;
+    margin-top: 8px;
+    min-height: 44px;
+  }
+  #shotButtons button,
+  #targetButtons button,
+  #actorButtons button {
+    min-height: 44px;
+    font-size: 13px;
+  }
+  .court-playing .tactics-panel {
+    visibility: hidden;
+    pointer-events: none;
+  }
+  .court-playing #court {
+    height: clamp(340px, 60dvh, 520px);
+  }
+  #quickSkill {
+    display: block;
+    font-size: 12px;
+    min-height: 44px;
+    padding: 8px;
+    white-space: nowrap;
+  }
+  .transport #replayButton {
+    display: none;
+  }
+  .tactics-panel {
+    scroll-margin-top: 360px;
+  }
+  .coach-note p {
+    font-size: 13px;
+    line-height: 1.8;
+  }
+  .skill-workshop select {
+    min-height: 48px;
+  }
+}
+
+/* Keep the ability chart in flow, so it never covers player tags or copy. */
+.card-radar { position:static; width:100%; height:auto; margin-top:12px; display:flex; align-items:center; gap:8px; border-top:1px solid var(--line); padding-top:8px; }
+.card-radar svg { width:144px; height:144px; flex-shrink:0; }
+.player-desc { padding-right:0; }
+.player-tags span { white-space:normal; word-break:normal; overflow-wrap:normal; }
+.radar-caption { font-size:10px; line-height:1.7; color:var(--muted); font-weight:400; }
+.stat-name small { display:block; font-size:10px; font-weight:400; line-height:1.5; color:var(--muted); margin-top:3px; }
+.ability-impact { font-size:12px; line-height:1.7; padding:12px; border-radius:12px; background:var(--blue-light); }
+@media(max-width:540px) { .card-radar { flex-direction:column; gap:0; } .radar-caption { text-align:center; } }
+
+.player-tags { flex-wrap:wrap; }
+.player-tags span { flex-shrink:0; max-width:100%; }
+/* Character roster keeps the paper / sports palette and the existing studio. */
+#roster { display:block; }
+.team-setup { display:grid; grid-template-columns:1fr 1fr; gap:28px; }
+.team-panel { --team-accent:var(--blue); border-top:4px solid var(--team-accent); padding-top:16px; }
+.team-panel.coral-team { --team-accent:var(--coral); }
+.team-panel h2 { font-size:18px; letter-spacing:.09em; color:var(--team-accent); }
+.team-slots { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+.team-slot { border:1px solid #243b3526; border-radius:18px; background:#fffefa; overflow:hidden; transition:box-shadow .2s; }
+.team-slot.selected,.team-slot.drop-target { box-shadow:0 0 0 3px var(--team-accent); }
+.slot-select { display:flex; flex-direction:column; align-items:center; width:100%; padding:16px 12px; background:transparent; border:0; cursor:pointer; }
+.slot-label { align-self:flex-start; font-size:12px; letter-spacing:.08em; }
+.slot-face { display:block; height:140px; }
+.slot-face svg { height:100%; width:130px; }
+.slot-select strong { font-size:25px; }
+.slot-select small { font-size:12px; line-height:1.7; }
+.slot-actions { display:flex; justify-content:center; border-top:1px solid #243b3517; }
+.slot-actions button { border:0; background:transparent; padding:12px 8px; font-size:12px; cursor:pointer; }
+.empty-slot { min-height:187px; display:flex; flex-direction:column; justify-content:center; font-size:44px; color:#6b7c72; }
+.character-roster-heading { display:flex; align-items:center; justify-content:space-between; margin:52px 0 32px; gap:20px; }
+.character-roster-heading h2 { font-size:32px; margin:8px 0; }
+.character-roster-heading p { font-size:13px; line-height:1.8; color:#65786d; }
+.character-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:40px 20px; }
+.character-card { position:relative; display:flex; flex-direction:column; text-align:left; border:1px solid #243b351b; border-radius:18px; padding:18px; background:linear-gradient(155deg,color-mix(in srgb,var(--character-accent) 14%,#fffefa),#fffefa 65%); box-shadow:0 8px 24px #243b3509; cursor:pointer; transition:transform .2s,box-shadow .2s; color:#243b35; }
+.character-card:hover { transform:translateY(-5px); box-shadow:0 12px 28px #243b3517; }
+.character-codename { font-size:11px; letter-spacing:.15em; color:var(--character-accent); font-weight:800; }
+.character-portrait { display:block; height:164px; margin-top:-30px; margin-bottom:8px; align-self:center; }
+.character-portrait svg { height:190px; width:165px; filter:drop-shadow(0 7px 5px #243b3510); }
+.character-name { font-size:27px; font-weight:800; display:flex; justify-content:space-between; align-items:center; gap:5px; }
+.character-name small { font-size:10px; font-weight:500; white-space:nowrap; }
+.character-archetype { font-size:13px; margin-top:4px; font-weight:700; }
+.character-strengths { font-size:11px; color:#64776c; margin:8px 0 14px; }
+.character-skill { font-size:11px; padding-top:12px; border-top:1px solid #243b3517; }
+.in-team { position:absolute; top:14px; right:12px; font-size:9px; border:1px solid #243b3526; border-radius:20px; padding:3px 5px; background:#fffefa; }
+dialog.character-detail { position:fixed; inset:0 0 0 auto; width:min(460px,95vw); max-width:none; height:100dvh; max-height:100dvh; margin:0; border:0; border-radius:22px 0 0 22px; padding:28px; overflow-y:auto; background:var(--paper,#f6f3e9); }
+.detail-top { display:flex; justify-content:space-between; align-items:center; }
+.detail-top button { border:0; padding:10px; background:transparent; cursor:pointer; }
+.detail-portrait { height:220px; text-align:center; background:radial-gradient(ellipse,color-mix(in srgb,var(--character-accent) 22%,transparent),transparent 70%); }
+.detail-portrait svg { height:100%; }
+.character-detail h2 { font-size:48px; margin:6px 0; }
+.character-detail h3 { font-size:13px; margin:24px 0 6px; text-transform:uppercase; }
+.character-detail p { font-size:14px; line-height:1.8; }
+.character-detail .detail-tagline { font-size:18px; }
+.detail-actions { display:flex; flex-wrap:wrap; gap:8px; padding:18px 0; }
+.detail-actions button { flex:1; min-width:140px; padding:13px; border:1px solid #243b3533; border-radius:10px; background:#fffefa; color:#243b35; cursor:pointer; }
+.detail-actions button:first-child { color:var(--blue); }
+.detail-actions button:nth-child(2) { color:var(--coral); }
+button:disabled { cursor:not-allowed; opacity:.45; }
+@media(max-width:700px) {
+  .team-setup { grid-template-columns:1fr; gap:24px; }
+  .character-grid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:36px 12px; }
+  .character-card { padding:12px; }
+  .character-portrait { height:136px; }
+  .character-portrait svg { width:140px; height:165px; }
+  .character-name { font-size:24px; flex-wrap:wrap; }
+  .character-roster-heading { display:block; margin-top:36px; }
+  dialog.character-detail { inset:auto 0 0; width:100%; height:88dvh; max-height:88dvh; border-radius:24px 24px 0 0; padding:24px; }
+}
+@media(prefers-reduced-motion:reduce) { .character-card { transition:none; } }

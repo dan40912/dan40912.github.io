@@ -15,7 +15,28 @@ import {
   makeShot,
   nextRally,
   seeded,
+  ROSTER,
 } from "../model.js";
+
+test("roster has eight men and eight women with the requested defaults", () => {
+  assert.equal(ROSTER.length, 16);
+  for (const gender of ["男", "女"])
+    assert.equal(ROSTER.filter(p => p.gender === gender).length, 8);
+  assert.equal(new Set(ROSTER.map(p => p.id)).size, 16);
+  for (const [name, level] of Object.entries({ Jay: 10, Curt: 8, KK: 7, Brain: 7, Rena: 4 }))
+    assert.equal(ROSTER.find(p => p.name === name).level, level);
+  assert.deepEqual(defaults().map(p => p.level), [10, 8, 6, 7]);
+  assert.equal(defaults("women")[0].level, 4);
+});
+
+test("Brain's short hair and tied headscarf survive character sharing", () => {
+  const brain = ROSTER.find(p => p.name === "Brain");
+  const decoded = decodeCard(encodeCard(brain));
+  assert.equal(decoded.hair, "buzz");
+  assert.equal(decoded.accessory, "headscarf");
+  assert.equal(decoded.skin, "light");
+  assert.equal(decoded.level, 7);
+});
 
 function playRallies(n) {
   const rnd = seeded(4),

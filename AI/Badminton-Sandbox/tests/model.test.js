@@ -5,6 +5,7 @@ import {
   setupServe,
   serveRegion,
   legalTarget,
+  targetPresets,
   validStanding,
   actors,
   defaults,
@@ -121,7 +122,7 @@ test("100 seeded full matches finish, with legal plans, valid positions and corr
         continue;
       }
       const p = choosePlan(s, profiles, random);
-      assert(legalTarget(s, p.target));
+      assert(legalTarget(s, p.target, p.shot));
       assert(actors(s).includes(p.actor));
       const e = makeShot(s, p, profiles, { random, simulate: true });
       s = e.after;
@@ -133,6 +134,77 @@ test("100 seeded full matches finish, with legal plans, valid positions and corr
     assert(s.finished, `seed ${seed} did not finish`);
     assert.equal(Math.max(...s.wins), 2);
   }
+});
+
+test("short and long serves expose only compatible targets on either diagonal", () => {
+  for (const server of [0, 1, 2, 3]) for (const score of [0, 1]) {
+    let s = createMatch();
+    s.score[server < 2 ? 0 : 1] = score;
+    s = setupServe(s, server, server < 2 ? 2 : 0);
+    const short = targetPresets(s, "short"), long = targetPresets(s, "high");
+    assert.equal(short.length, 3);
+    assert.equal(long.length, 3);
+    for (const p of short) {
+      assert(p.label.startsWith("短"));
+      assert(legalTarget(s, p, "short"));
+      assert(!legalTarget(s, p, "high"));
+      assert.throws(() => makeShot(s, {actor: server, shot: "high", target: p}, defaults()), /有效落點/);
+    }
+    for (const p of long) {
+      assert(p.label.startsWith("長"));
+      assert(legalTarget(s, p, "flick"));
+      assert(!legalTarget(s, p, "short"));
+      assert.throws(() => makeShot(s, {actor: server, shot: "short", target: p}, defaults()), /有效落點/);
+    }
+    const r = serveRegion(s), x = (r.x0 + r.x1) / 2, z = server < 2 ? -1 : 1;
+    assert(legalTarget(s, {x, z: z * 3}, "short"));
+    assert(!legalTarget(s, {x, z: z * 3.01}, "short"));
+    assert(!legalTarget(s, {x, z: z * 4.79}, "high"));
+    assert(legalTarget(s, {x, z: z * 4.8}, "high"));
+  }
+});
+
+test("net shots stay short and lifts stay deep in rallies and direct point selection", () => {
+  for (const turn of [0, 1]) {
+    const s = {...createMatch(), phase: "rally", turn, total: 2};
+    const z = turn === 0 ? -1 : 1;
+    for (const shot of ["drop", "net", "block", "cut", "cross"]) {
+      const presets = targetPresets(s, shot);
+      assert(presets.length >= 3);
+      assert(presets.every((p) => Math.abs(p.z) <= 1.98 && legalTarget(s, p, shot)));
+      assert(!legalTarget(s, {x: 0, z: z * 6}, shot));
+    }
+    assert(targetPresets(s, "lift").every((p) => Math.abs(p.z) >= 4.8));
+    assert(!legalTarget(s, {x: 0, z: z * 0.7}, "lift"));
+    assert(!legalTarget(s, {x: 0, z: -z * 6}, "lift"));
+  }
+});
+
+test("midpoint and waist targets follow both opponents, with waist-height contact", () => {
+  const s = {...createMatch(), phase: "rally", turn: 0, total: 2, nextActor: 0};
+  s.positions[2] = {x: 1.8, z: -4};
+  s.positions[3] = {x: -1.4, z: -2.8};
+  let presets = targetPresets(s, "drive");
+  const middle = presets.find((p) => p.label === "兩人中間");
+  assert(Math.abs(middle.x - 0.2) < 1e-9);
+  assert.equal(middle.z, -3.4);
+  const waist = presets.filter((p) => p.kind === "waist");
+  assert.deepEqual(waist.map((p) => p.player), [3, 2]);
+  for (const target of waist) {
+    const e = makeShot(s, {actor: 0, shot: "drive", target}, defaults());
+    assert.equal(e.receiver, target.player);
+    assert.equal(trajectory(e, 1).h, 1.05);
+    const crossing = -e.from.z / (e.actual.z - e.from.z);
+    assert(trajectory(e, crossing).h >= 1.679999);
+    assert(Math.abs(trajectory({...e, outcome: "out"}, 1).h - 0.12) < 1e-9);
+    assert(!legalTarget(s, target, "lift"));
+    assert(!legalTarget(s, target, "net"));
+  }
+  s.positions[3] = {x: -2.2, z: -3.8};
+  presets = targetPresets(s, "drive");
+  assert.equal(presets.find((p) => p.kind === "waist" && p.player === 3).x, -2.2);
+  assert.equal(presets.find((p) => p.label === "兩人中間").z, -3.9);
+  assert(!targetPresets(createMatch(), "short").some((p) => p.kind === "waist"));
 });
 
 test("every successful flight visibly clears the net across legal target depths", () => {

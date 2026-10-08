@@ -1,3 +1,4 @@
+import {renderTeamRoster} from "./roster-ui.js?v=20261008-targets";
 import {
   clone,
   clamp,
@@ -11,6 +12,7 @@ import {
   actors,
   shotKeys,
   targetPresets,
+  targetDepth,
   legalTarget,
   choosePlan,
   makeShot,
@@ -22,6 +24,7 @@ import {
   shotOdds,
   soundFor,
   ROSTER,
+  characterPreset, migrateProfile, assignCharacter, moveTeamSlot, fitCharactersToMode, emptySlot,
   slotGender,
   genderOf,
   MAX_LEVEL,
@@ -34,10 +37,23 @@ import {
   POWER_SHOTS,
   SMASHES,
   pointLabel,
-} from "./model.js";
-import { playHit, unlockAudio } from "./audio.js";
-import { portrait, describe, escapeHTML, TEAM_COLORS } from "./characters.js";
-import { CourtRenderer, ELEVATION } from "./court.js";
+} from "./model.js?v=20261008-targets";
+import { playHit, unlockAudio } from "./audio.js?v=20261008-targets";
+import {
+  portrait,
+  describe,
+  escapeHTML,
+  TEAM_COLORS,
+} from "./characters.js?v=20261008-targets";
+import { CourtRenderer, ELEVATION } from "./court.js?v=20261008-targets";
+import {
+  SPECIALTIES,
+  specialties,
+  skillDesign,
+  skillCost,
+  skillBonus,
+  SKILL_COLORS,
+} from "./workshop.js?v=20261008-targets";
 import {
   STATS,
   STAT_MAX,
@@ -55,8 +71,8 @@ import {
   RACKETS,
   racketOf,
   effectiveStats,
-} from "./abilities.js";
-import { radarSVG } from "./radar.js";
+} from "./abilities.js?v=20261008-targets";
+import { radarSVG } from "./radar.js?v=20261008-targets";
 import {
   summarize,
   insight,
@@ -66,8 +82,8 @@ import {
   decodeCard,
   settlement,
   gameScores,
-} from "./analysis.js";
-import { shotContext } from "./coaching.js";
+} from "./analysis.js?v=20261008-targets";
+import { shotContext } from "./coaching.js?v=20261008-targets";
 const $ = (id) => document.getElementById(id),
   safe = escapeHTML;
 const STORAGE = "rally-lab-session-v2",
@@ -102,6 +118,7 @@ let preferences = {
   elevation: ELEVATION.broadcast,
   sound: true,
   outcome: "model",
+  tempo: "arcade",
 };
 const edited = new Set();
 // Set when players, format or scoring change while a match is in progress.
@@ -197,14 +214,17 @@ function load() {
       )
     )
       return;
-    profiles = data.profiles.map((p) => ({
-      ...p,
+    profiles = data.profiles.map((p) => migrateProfile({
+      ...migrateProfile({...p, name:RENAMED[p.name] ?? p.name}),
       name: RENAMED[p.name] ?? p.name,
       gender: genderOf(p),
       stats: normalizeStats(p.stats, p.level, p.style),
       skill: SKILLS[p.skill] ? p.skill : skillFor(p.style),
       racket: RACKETS[p.racket] ? p.racket : "standard",
-      skillName: typeof p.skillName === "string" ? p.skillName.slice(0, 10) : "",
+      skillName:
+        typeof p.skillName === "string" ? p.skillName.slice(0, 10) : "",
+      skillDesign: p.skillDesign ? skillDesign(p.skillDesign) : undefined,
+      specialties: specialties(p.specialties ?? migrateProfile(p).specialties),
     }));
     if (
       ["system", "reduce"].includes(data.preferences?.motion) &&
@@ -225,6 +245,7 @@ function load() {
             : ELEVATION.broadcast,
         sound: data.preferences.sound !== false,
         outcome: data.preferences.outcome === "manual" ? "manual" : "model",
+        tempo: data.preferences.tempo === "tactical" ? "tactical" : "arcade",
       };
     if (
       ["men", "women", "mixed"].includes(data.config?.mode) &&
@@ -232,6 +253,7 @@ function load() {
       [1, 3].includes(data.config?.bestOf)
     )
       config = data.config;
+    profiles = fitCharactersToMode(profiles,config.mode);
     if (
       data.match &&
       Array.isArray(data.match.positions) &&
@@ -257,36 +279,31 @@ function gender(i) {
   const m = match && !$("courtPage").hidden ? match.config.mode : config.mode;
   return slotGender(m, i);
 }
-const LOOK = ["name", "gender", "face", "hair", "skin", "accessory"];
-// Swap who the player is, but keep how they play (level, personality, style).
+// ROSTER is immutable; choosing a character instantiates its complete preset.
 function withIdentity(profile, character) {
-  const next = { ...profile };
-  LOOK.forEach((key) => (next[key] = character[key]));
-  return next;
+  return characterPreset(character.id);
 }
 function fitRosterToMode() {
-  const swapped = [];
-  profiles.forEach((p, i) => {
-    const need = slotGender(config.mode, i);
-    if (genderOf(p) === need) return;
-    const taken = new Set(profiles.map((x) => x.name)),
-      c = ROSTER.find((c) => c.gender === need && !taken.has(c.name));
-    if (!c) return;
-    swapped.push(`${p.name} → ${c.name}`);
-    profiles[i] = withIdentity(p, c);
-  });
-  return swapped;
+  const before=profiles;
+  profiles=fitCharactersToMode(profiles,config.mode);
+  return profiles.flatMap((p,i)=>p.characterId!==before[i].characterId ? [`${before[i].name} → ${p.name}`]:[]);
+}
+function changeTeam(action) {
+  try {
+    profiles=action();
+    [0,1,2,3].forEach(i=>edited.add(i));
+    markLineup(); save(); renderRoster(); return true;
+  } catch(error) { toast(error.message); return false; }
 }
 function renderRoster() {
-  $("roster").innerHTML = profiles
-    .map(
-      (p, i) =>
-        `<button class="player-card ${i > 1 ? "coral-card" : ""}" data-player="${i}" aria-label="編輯${safe(p.name)}，${p.level}級，${PERSONALITIES[p.personality]}，${STYLES[p.style]}"><div class="player-topline"><span class="player-number">${i < 2 ? "BLUE" : "CORAL"} / 0${(i % 2) + 1} · ${gender(i)}</span><span class="level-pill">LV. ${p.level} · ${tierOf(p.level).name}</span></div><div class="player-portrait">${portrait(p, i)}</div><div class="player-info"><div class="player-name">${safe(p.name)}<span>↗</span></div><div class="player-tags"><span>${PERSONALITIES[p.personality]}</span><span>${STYLES[p.style]}</span><span class="skill-chip">${SKILLS[p.skill]?.icon ?? "★"} ${safe(skillName(p))}</span><span class="racket-chip"><i style="background:${racketOf(p).colors[0]};border-color:${racketOf(p).colors[1]}"></i>${racketOf(p).name}</span></div><p class="player-desc">${describe(p)}</p><div class="card-radar">${radarSVG(effectiveStats(p), { level: p.level, skill: p.skill, color: TEAM_COLORS[i], size: 90, labels: false, title: `${p.name}的能力（含球拍）` })}</div></div></button>`,
-    )
-    .join("");
-  $("roster")
-    .querySelectorAll("[data-player]")
-    .forEach((b) => (b.onclick = () => openEditor(Number(b.dataset.player))));
+  renderTeamRoster($("roster"),profiles,config.mode,{
+    assign:(id,i)=>changeTeam(()=>assignCharacter(profiles,config.mode,id,i)),
+    move:(from,to)=>changeTeam(()=>moveTeamSlot(profiles,config.mode,from,to)),
+    remove:(i)=>changeTeam(()=>profiles.map((p,j)=>j===i?emptySlot(config.mode,i):p)),
+    edit:openEditor, error:toast,
+  });
+  const incomplete=profiles.some(p=>p.vacant);
+  $("enterCourt").disabled=incomplete;
   $("modeTabs")
     .querySelectorAll("button")
     .forEach((b) =>
@@ -297,7 +314,7 @@ function renderRoster() {
   $("enterCourt").innerHTML = match
     ? "回到球場，繼續推演 <span>↗</span>"
     : "陣容就緒，進入球場 <span>↗</span>";
-  $("navCourt").disabled = !match;
+  $("navCourt").disabled = !match || incomplete;
   settingsNotice();
   renderLineupPrompt();
 }
@@ -313,6 +330,7 @@ function settingsNotice() {
       : "";
 }
 function page(which) {
+  if(which === "court" && profiles.some(p=>p.vacant)) {toast("請先選好四位角色再進入球場");return;}
   const court = which === "court";
   if (!court) {
     running = false;
@@ -366,6 +384,7 @@ function openEditor(i) {
   editing = i;
   draft = clone(profiles[i]);
   const map = {
+    hairColor: "hairColor",
     playerName: "name",
     playerLevel: "level",
     playerPersonality: "personality",
@@ -376,6 +395,7 @@ function openEditor(i) {
     accessory: "accessory",
   };
   Object.entries(map).forEach(([id, key]) => ($(id).value = draft[key]));
+  $("identityAccent").value=draft.visualTheme?.accent || "#7b8260";
   draft.stats = normalizeStats(draft.stats, draft.level, draft.style);
   $("playerSkill").innerHTML = Object.entries(SKILLS)
     .map(
@@ -385,6 +405,20 @@ function openEditor(i) {
     .join("");
   $("playerSkill").value = draft.skill;
   $("playerSkillName").value = draft.skillName || "";
+  for (const [index, id] of ["specialtyOne", "specialtyTwo"].entries()) {
+    $(id).innerHTML =
+      `<option value="">未選擇</option>` +
+      Object.entries(SPECIALTIES)
+        .map(
+          ([key, v]) => `<option value="${key}">${v.name} · ${v.note}</option>`,
+        )
+        .join("");
+    $(id).value = specialties(draft.specialties)[index] || "";
+  }
+  const design = skillDesign(draft.skillDesign);
+  $("skillEffect").value = design.effect;
+  $("skillCost").value = design.cost;
+  $("skillColor").value = design.color;
   $("playerError").textContent = "";
   updateEditor();
   $("playerDialog").showModal();
@@ -392,13 +426,13 @@ function openEditor(i) {
 function renderPicker() {
   const need = gender(editing),
     others = new Set(
-      profiles.filter((_, i) => i !== editing).map((p) => p.name),
+      profiles.filter((_, i) => i !== editing).map((p) => p.characterId),
     );
   $("characterPicker").innerHTML = ROSTER.filter((c) => c.gender === need)
     .map((c) => {
-      const active = LOOK.every((k) => draft[k] === c[k]),
-        taken = others.has(c.name);
-      return `<button type="button" data-character="${c.id}" aria-pressed="${active}" ${taken ? "disabled" : ""} aria-label="${c.name}${taken ? "（已在陣容中）" : ""}"><span class="picker-face">${portrait(c, editing, { faceOnly: true })}</span><span>${c.name}</span></button>`;
+      const active = draft.characterId === c.id,
+        taken = others.has(c.id);
+      return `<button type="button" data-character="${c.id}" aria-pressed="${active}" ${taken ? "disabled" : ""} aria-label="${c.name}${taken ? "（已在陣容中）" : ""}"><span class="picker-face">${portrait(c, editing, { faceOnly: true })}</span><span>${c.name}</span><small>預設 ${c.level} 級</small></button>`;
     })
     .join("");
   $("characterPicker")
@@ -407,14 +441,18 @@ function renderPicker() {
       (b) =>
         (b.onclick = () => {
           const c = ROSTER.find((c) => c.id === b.dataset.character);
-          $("playerName").value = c.name;
-          $("faceShape").value = c.face;
-          $("hairStyle").value = c.hair;
-          $("skinTone").value = c.skin;
-          $("accessory").value = c.accessory;
-          draft.gender = c.gender;
+          draft = withIdentity(draft,c);
+          for(const [id,key] of Object.entries({playerName:"name", playerLevel:"level", playerPersonality:"personality", playerStyle:"style", faceShape:"face", hairStyle:"hair", skinTone:"skin", accessory:"accessory", playerSkill:"skill"})) $(id).value=draft[key];
+          $("hairColor").value=draft.hairColor; $("identityAccent").value=draft.visualTheme.accent;
+          $("playerSkillName").value="";
+          $("specialtyOne").value=draft.specialties[0]||"";
+          $("specialtyTwo").value=draft.specialties[1]||"";
+          const design=skillDesign();
+          $("skillEffect").value=design.effect; $("skillCost").value=design.cost; $("skillColor").value=design.color;
           updateEditor();
-          $("characterPicker").querySelector(`[data-character="${c.id}"]`)?.focus();
+          $("characterPicker")
+            .querySelector(`[data-character="${c.id}"]`)
+            ?.focus();
         }),
     );
 }
@@ -424,12 +462,23 @@ function updateEditor() {
     ...draft,
     skill: $("playerSkill").value || draft.skill,
     skillName: $("playerSkillName").value.trim().slice(0, 10),
+    specialties: specialties([
+      $("specialtyOne").value,
+      $("specialtyTwo").value,
+    ]),
+    skillDesign: skillDesign({
+      effect: $("skillEffect").value,
+      cost: $("skillCost").value,
+      color: $("skillColor").value,
+    }),
     name: $("playerName").value.trim(),
     level: Number($("playerLevel").value),
     personality: $("playerPersonality").value,
     style: $("playerStyle").value,
     face: $("faceShape").value,
     hair: $("hairStyle").value,
+    hairColor: $("hairColor").value,
+    visualTheme: {accent: $("identityAccent").value},
     skin: $("skinTone").value,
     accessory: $("accessory").value,
   };
@@ -440,13 +489,25 @@ function updateEditor() {
     `${editing < 2 ? "BLUE TEAM" : "CORAL TEAM"} / ${gender(editing)}`;
   $("editorDescription").textContent = describe(draft);
   syncAbilities(prev);
+  $("specialtyPreview").textContent =
+    draft.specialties
+      .map((key) => `${SPECIALTIES[key].name}：${SPECIALTIES[key].note}`)
+      .join("；") || "未選專長，保留原能力配置。";
+  $("workshopPreview").textContent =
+    `${skillName(draft)} · ${skillCost(draft)} 氣勢 · ${$("skillEffect").selectedOptions[0].textContent}。數值為遊戲調校。`;
+  const passive = draft.skill === "wall";
+  $("skillEffect").disabled = passive;
+  $("skillCost").disabled = passive;
+  if (passive)
+    $("workshopPreview").textContent =
+      `${skillName(draft)} · 100 氣勢・自動救球。可自訂名稱與配色；選主動招式可設定增益與代價。`;
   renderPicker();
   const ok = validLevel(draft.level);
   $("levelDescription").textContent = ok
     ? levelText(draft.level)
     : `請輸入 1–${MAX_LEVEL} 級`;
   $("levelDetail").textContent = ok
-    ? `${LEVEL_NOTES[draft.level]} 殺球約 ${shotSpeed("smash", draft.level)} km/h。`
+    ? `${LEVEL_NOTES[draft.level]} 含球拍與專長，殺球約 ${shotSpeed("smash", draft.level, draft)} km/h。`
     : "";
 }
 // Untouched preset stats follow level and style; hand-tuned ones are kept
@@ -477,7 +538,7 @@ function renderAbilities() {
   $("statBudget").classList.toggle("has-points", left > 0);
   renderRackets();
   $("editorRadar").innerHTML = radarSVG(effectiveStats(draft), {
-    base: draft.racket && draft.racket !== "standard" ? draft.stats : null,
+    base: draft.stats,
     level: draft.level,
     skill: draft.skill,
     skillLabel: skillName(draft),
@@ -485,11 +546,12 @@ function renderAbilities() {
     size: 240,
     title: `${draft.name || "球員"}的能力`,
   });
+  $("abilityImpact").textContent = `一般殺球約 ${shotSpeed("smash", draft.level, draft)} km/h（模型估算，未發動絕技）。能力依自身平均判斷強弱；級數決定整體實力，落點、對手防守及站位共同決定結果。`;
   const rows = $("statRows");
   if (!rows.children.length)
     rows.innerHTML = STATS.map(
       (s) =>
-        `<div class="stat-row" data-stat="${s.key}"><span class="stat-name" title="${s.note}">${s.label}</span><button type="button" data-step="-1" aria-label="${s.label}減一">−</button><output></output><button type="button" data-step="1" aria-label="${s.label}加一">＋</button></div>`,
+        `<div class="stat-row" data-stat="${s.key}"><span class="stat-name" title="${s.note}">${s.label}<small>${s.note}</small></span><button type="button" data-step="-1" aria-label="${s.label}減一">−</button><output></output><button type="button" data-step="1" aria-label="${s.label}加一">＋</button></div>`,
     ).join("");
   rows.querySelectorAll(".stat-row").forEach((row) => {
     const key = row.dataset.stat,
@@ -505,7 +567,10 @@ function renderAbilities() {
 const STAT_LABEL = Object.fromEntries(STATS.map((s) => [s.key, s.label]));
 const modText = (mods) =>
   Object.entries(mods)
-    .map(([k, v]) => `<b class="${v > 0 ? "up" : "down"}">${STAT_LABEL[k]} ${v > 0 ? "+" : ""}${v}</b>`)
+    .map(
+      ([k, v]) =>
+        `<b class="${v > 0 ? "up" : "down"}">${STAT_LABEL[k]} ${v > 0 ? "+" : ""}${v}</b>`,
+    )
     .join("");
 function renderRackets() {
   const host = $("racketPicker");
@@ -525,10 +590,14 @@ function renderRackets() {
     };
   }
   host.querySelectorAll("[data-racket]").forEach((b) => {
-    b.setAttribute("aria-checked", String(b.dataset.racket === (draft.racket || "standard")));
+    b.setAttribute(
+      "aria-checked",
+      String(b.dataset.racket === (draft.racket || "standard")),
+    );
   });
   const r = racketOf(draft);
-  $("racketNote").innerHTML = `<strong>${safe(r.name)}</strong>・${r.type}。擅長：${r.good}；不擅長：${r.bad}。雷達圖虛線是不含球拍的原始能力。`;
+  $("racketNote").innerHTML =
+    `<strong>${safe(r.name)}</strong>・${r.type}。擅長：${r.good}；不擅長：${r.bad}。雷達圖虛線是不含球拍的原始能力。`;
 }
 $("statRows").onclick = (e) => {
   const b = e.target.closest("[data-step]");
@@ -536,7 +605,11 @@ $("statRows").onclick = (e) => {
   const key = b.closest(".stat-row").dataset.stat,
     next = draft.stats[key] + Number(b.dataset.step),
     left = budgetFor(draft.level) - statTotal(draft.stats);
-  if (next < STAT_MIN || next > STAT_MAX || (Number(b.dataset.step) > 0 && left <= 0))
+  if (
+    next < STAT_MIN ||
+    next > STAT_MAX ||
+    (Number(b.dataset.step) > 0 && left <= 0)
+  )
     return;
   draft.stats = { ...draft.stats, [key]: next };
   renderAbilities();
@@ -565,7 +638,8 @@ function checkSharedCard() {
     toast("這張球員卡無法讀取，可能已損壞。");
     return;
   }
-  $("importCard").innerHTML = `<div class="import-face">${portrait(card, 0)}</div><div><strong>${safe(card.name)}</strong><p>${card.level} 級 ${tierOf(card.level).name}・${PERSONALITIES[card.personality]}・${STYLES[card.style]}</p><p class="skill-line">${SKILLS[card.skill].icon} ${safe(skillName(card))}</p><div class="import-radar">${radarSVG(card.stats, { level: card.level, skill: card.skill, skillLabel: skillName(card), size: 200, title: `${card.name}的能力` })}</div></div>`;
+  $("importCard").innerHTML =
+    `<div class="import-face">${portrait(card, 0)}</div><div><strong>${safe(card.name)}</strong><p>${card.level} 級 ${tierOf(card.level).name}・${PERSONALITIES[card.personality]}・${STYLES[card.style]}</p><p class="skill-line">${SKILLS[card.skill].icon} ${safe(skillName(card))}</p><div class="import-radar">${radarSVG(card.stats, { level: card.level, skill: card.skill, skillLabel: skillName(card), size: 200, title: `${card.name}的能力` })}</div></div>`;
   $("importSlots").innerHTML = profiles
     .map(
       (p, i) =>
@@ -578,6 +652,9 @@ function checkSharedCard() {
       (b) =>
         (b.onclick = () => {
           const i = Number(b.dataset.slot);
+          if(card.characterId && profiles.some((p,j)=>j!==i && !p.vacant && p.characterId===card.characterId)) {
+            toast("這位角色已在隊伍中，請先移除原位置再匯入");return;
+          }
           profiles[i] = clone(card);
           markLineup();
           edited.add(i);
@@ -602,19 +679,31 @@ $("statPreset").onclick = () => {
 $("playerForm").oninput = updateEditor;
 $("playerForm").onchange = updateEditor;
 $("levelDown").onclick = () => {
-  $("playerLevel").value = clamp(Number($("playerLevel").value) - 1, 1, MAX_LEVEL);
+  $("playerLevel").value = clamp(
+    Number($("playerLevel").value) - 1,
+    1,
+    MAX_LEVEL,
+  );
   updateEditor();
 };
 $("levelUp").onclick = () => {
-  $("playerLevel").value = clamp(Number($("playerLevel").value) + 1, 1, MAX_LEVEL);
+  $("playerLevel").value = clamp(
+    Number($("playerLevel").value) + 1,
+    1,
+    MAX_LEVEL,
+  );
   updateEditor();
 };
 $("playerForm").onsubmit = (e) => {
   e.preventDefault();
   updateEditor();
   if (!draft.name || !validLevel(draft.level)) {
-    $("playerError").textContent = `請填入姓名，級數須為 1–${MAX_LEVEL} 的整數。`;
+    $("playerError").textContent =
+      `請填入姓名，級數須為 1–${MAX_LEVEL} 的整數。`;
     return;
+  }
+  if(draft.characterId && profiles.some((p,i)=>i!==editing && !p.vacant && p.characterId===draft.characterId)) {
+    $("playerError").textContent="這位角色已在其他位置";return;
   }
   const before = profiles[editing];
   if (
@@ -645,7 +734,9 @@ $("modeTabs")
         renderRoster();
         save();
         if (swapped.length)
-          toast(`已換上符合賽制的球員：${swapped.join("、")}（級數、性格與球風保留）`);
+          toast(
+            `已換上符合賽制的球員：${swapped.join("、")}（套用完整人物預設）`,
+          );
       }),
   );
 $("matchPoints").onchange = () => {
@@ -711,6 +802,11 @@ function updateUI() {
     busy = !!animation || !!replay || running || reviewIndex !== null,
     ended = s.phase === "ended",
     available = actors(s);
+  document.body.classList.toggle(
+    "court-playing",
+    !!animation || running || !!replay,
+  );
+  match.config.tempo = preferences.tempo;
   if (
     !available.includes(selected) &&
     !ended &&
@@ -762,6 +858,7 @@ function updateUI() {
     busy || ended,
   );
   if (!shotKeys(s).includes(shot)) shot = shotKeys(s)[0];
+  if (target && !target.kind && !legalTarget(s, target, shot)) target = null;
   buttonList(
     "shotButtons",
     shotKeys(s).map((key) => ({
@@ -771,29 +868,49 @@ function updateUI() {
     shot,
     (item) => {
       shot = item.value;
-      note(
-        SHOTS[shot].label,
-        target ? plannedNote(s) : SHOTS[shot].note,
-      );
+      if (target && !legalTarget(s, target, shot)) target = null;
+      note(SHOTS[shot].label, target ? plannedNote(s) : SHOTS[shot].note);
       updateUI();
     },
     busy || ended,
   );
+  const recommended =
+    s.phase === "serve"
+      ? shotKeys(s)
+      : {
+          attack: ["smash", "jumpSmash", "drop"],
+          net: ["net", "cross", "kill"],
+          defense: ["lift", "block", "drive"],
+          drive: ["drive", "push", "smash"],
+          allround: ["lift", "drive", "drop"],
+        }[p.style];
+  $("shotButtons")
+    .querySelectorAll("button")
+    .forEach((b) =>
+      b.classList.toggle(
+        "recommended-shot",
+        recommended.includes(b.dataset.value) || b.dataset.value === shot,
+      ),
+    );
   const points = targetPresets(s, shot);
+  if (target?.kind) target = clone(points.find((p) =>
+    p.kind === target.kind && p.player === target.player) || null);
   buttonList(
     "targetButtons",
     points.map((p, i) => ({ label: p.label, value: i, point: p })),
-    points.findIndex((p) => target && p.x === target.x && p.z === target.z),
+    points.findIndex((p) => target && p.x === target.x && p.z === target.z &&
+      p.kind === target.kind && (!target.label || p.label === target.label)),
     (item) => {
-      target = { x: item.point.x, z: item.point.z };
+      target = clone(item.point);
       note("落點已選，準備擊球", plannedNote(s));
       updateUI();
     },
     busy || ended,
   );
+  const [near, far] = targetDepth(s, shot);
   $("targetLabel").textContent = target
-    ? `落點：橫向 ${target.x.toFixed(1)} m / 距網 ${Math.abs(target.z).toFixed(1)} m`
-    : "也可以直接點球場";
+    ? `${target.label || "自訂落點"}：距網 ${Math.abs(target.z).toFixed(1)} m${target.kind === "waist" ? " · 腰部高度" : ""}`
+    : `可點球場選擇距網 ${near.toFixed(1)}–${far.toFixed(1)} m 的位置`;
   $("courtHint").textContent =
     reviewIndex !== null
       ? "選擇其他拍數回看，或從這一拍重新推演"
@@ -868,7 +985,7 @@ function renderSkillBox(s, locked) {
   const p = profiles[selected],
     sk = SKILLS[p.skill],
     m = meterOf(s, selected),
-    full = m >= METER_FULL;
+    full = m >= skillCost(p);
   $("meterFill").style.width = `${m}%`;
   $("meterValue").textContent = full ? "MAX" : Math.round(m);
   $("skillBox").classList.toggle("charged", full);
@@ -877,10 +994,15 @@ function renderSkillBox(s, locked) {
   $("skillButton").disabled =
     !full || locked || playMode !== "manual" || sk.type !== "active";
   $("skillButton").setAttribute("aria-pressed", String(useSkill));
+  $("quickSkill").disabled = $("skillButton").disabled;
+  $("quickSkill").setAttribute("aria-pressed", String(useSkill));
+  $("quickSkill").textContent = useSkill
+    ? "已蓄招"
+    : `絕招 ${Math.min(100, Math.round((m / skillCost(p)) * 100))}%`;
   $("skillButton").innerHTML =
     sk.type === "passive"
       ? `${sk.icon} ${safe(skillName(p))}<small>${full ? "已就緒・自動發動" : "被動絕技・集滿自動發動"}</small>`
-      : `${sk.icon} ${useSkill ? "已準備：" : "發動 "}${safe(skillName(p))}<small>${full ? (playMode === "manual" ? sk.note : "全自動時由球員自行判斷") : `氣勢集滿後可發動（${Math.round(m)}/100）`}</small>`;
+      : `${sk.icon} ${useSkill ? "已準備：" : "發動 "}${safe(skillName(p))}<small>${full ? (playMode === "manual" ? sk.note : "全自動時由球員自行判斷") : `氣勢集滿後可發動（${Math.round(m)}/${skillCost(p)}）`}</small>`;
 }
 // Rally counter, game / match point banner and the court's tension overlay.
 function renderTension(s) {
@@ -891,8 +1013,10 @@ function renderTension(s) {
   $("rallyCount").classList.toggle("hot", total >= 10);
   $("pointBanner").hidden = !label;
   if (label) {
-    $("pointBanner").textContent = `${label.label} · ${label.team ? "紅" : "藍"}隊`;
-    $("pointBanner").className = `point-banner ${label.team ? "banner-coral" : "banner-blue"} ${label.label === "MATCH POINT" ? "match" : ""}`;
+    $("pointBanner").textContent =
+      `${label.label} · ${label.team ? "紅" : "藍"}隊`;
+    $("pointBanner").className =
+      `point-banner ${label.team ? "banner-coral" : "banner-blue"} ${label.label === "MATCH POINT" ? "match" : ""}`;
   }
 }
 $("skillButton").onclick = () => {
@@ -912,6 +1036,7 @@ $("skillButton").onclick = () => {
   );
   updateUI();
 };
+$("quickSkill").onclick = () => $("skillButton").click();
 // ---- Analysis: highlights, point sources, matchup test ----
 let matchupFor = null,
   matchupResult = null;
@@ -923,12 +1048,16 @@ function renderAnalysis() {
     pct = (a, b) => (b ? Math.round((a / b) * 100) : 0),
     total = teams[0].points + teams[1].points;
   const bar = total
-    ? `<div class="source-bar" role="img" aria-label="藍隊 ${teams[0].points} 分，紅隊 ${teams[1].points} 分">${[0, 1]
+    ? `<div class="source-bar" role="img" aria-label="藍隊 ${teams[0].points} 分，紅隊 ${teams[1].points} 分">${[
+        0, 1,
+      ]
         .map(
           (t) =>
             `<span class="src ${t ? "src-coral" : "src-blue"}" style="flex:${teams[t].fromWinners || 0.0001}" title="${t ? "紅" : "藍"}隊直接得分 ${teams[t].fromWinners}"></span><span class="src ${t ? "src-coral" : "src-blue"} faded" style="flex:${teams[t].fromErrors || 0.0001}" title="${t ? "紅" : "藍"}隊因對手失誤得分 ${teams[t].fromErrors}"></span>`,
         )
-        .join("")}</div><p class="source-legend">藍隊 ${teams[0].points} 分（${pct(teams[0].fromWinners, teams[0].points)}% 直接得分）・紅隊 ${teams[1].points} 分（${pct(teams[1].fromWinners, teams[1].points)}% 直接得分）。淡色是靠對手失誤拿到的分數。</p>`
+        .join(
+          "",
+        )}</div><p class="source-legend">藍隊 ${teams[0].points} 分（${pct(teams[0].fromWinners, teams[0].points)}% 直接得分）・紅隊 ${teams[1].points} 分（${pct(teams[1].fromWinners, teams[1].points)}% 直接得分）。淡色是靠對手失誤拿到的分數。</p>`
     : "";
   const cards = players
     .map(
@@ -953,18 +1082,23 @@ function renderAnalysis() {
             (r) =>
               `<div class="matchup-row"><span>${r.label}</span><div class="matchup-bar"><i style="width:${Math.round(r.rate * 100)}%"></i></div><b>${Math.round(r.rate * 100)}%</b></div>`,
           )
-          .join("")}<p>${safe(profiles[matchupFor].name)}最怕<strong>${worst.label}</strong>（每回合勝率 ${Math.round(worst.rate * 100)}%），最擅長對付<strong>${best.label}</strong>（${Math.round(best.rate * 100)}%）。</p></div>`;
+          .join(
+            "",
+          )}<p>${safe(profiles[matchupFor].name)}最怕<strong>${worst.label}</strong>（每回合勝率 ${Math.round(worst.rate * 100)}%），最擅長對付<strong>${best.label}</strong>（${Math.round(best.rate * 100)}%）。</p></div>`;
       })()
     : "";
-  $("analysis").innerHTML = `<h3>精彩回顧</h3>${moments}<h3>得分來源</h3>${bar || '<p class="empty-note">還沒有完成的回合。</p>'}<div class="analysis-grid">${cards}</div><h3>對位測試</h3><p class="muted">讓同一位球員組成雙打，對上五種球風的同級對手，各模擬 400 回合，看出強項與罩門。</p><div class="matchup-pick">${profiles
-    .map(
-      (p, i) =>
-        `<button class="button ${matchupFor === i ? "primary" : ""}" data-matchup="${i}">${safe(p.name)}</button>`,
-    )
-    .join("")}</div>${tests}`;
+  $("analysis").innerHTML =
+    `<h3>精彩回顧</h3>${moments}<h3>得分來源</h3>${bar || '<p class="empty-note">還沒有完成的回合。</p>'}<div class="analysis-grid">${cards}</div><h3>對位測試</h3><p class="muted">讓同一位球員組成雙打，對上五種球風的同級對手，各模擬 400 回合，看出強項與罩門。</p><div class="matchup-pick">${profiles
+      .map(
+        (p, i) =>
+          `<button class="button ${matchupFor === i ? "primary" : ""}" data-matchup="${i}">${safe(p.name)}</button>`,
+      )
+      .join("")}</div>${tests}`;
   $("analysis")
     .querySelectorAll("[data-highlight]")
-    .forEach((b) => (b.onclick = () => playHighlight(Number(b.dataset.highlight))));
+    .forEach(
+      (b) => (b.onclick = () => playHighlight(Number(b.dataset.highlight))),
+    );
   $("analysis")
     .querySelectorAll("[data-matchup]")
     .forEach(
@@ -983,18 +1117,26 @@ function showSettlement() {
   const st = settlement(archives, profiles, match.winner),
     pct = (v) => `${Math.round(v * 100)}%`,
     best = (key, low = false) =>
-      st.rows.reduce((a, b) => ((low ? b[key] < a[key] : b[key] > a[key]) ? b : a)).index,
-    top = { win: best("winRate"), err: best("errorRate", true), skill: best("skillRate") },
+      st.rows.reduce((a, b) =>
+        (low ? b[key] < a[key] : b[key] > a[key]) ? b : a,
+      ).index,
+    top = {
+      win: best("winRate"),
+      err: best("errorRate", true),
+      skill: best("skillRate"),
+    },
     m = profiles[st.mvp],
     mvpRow = st.rows[st.mvp];
   $("settleTitle").textContent = `${match.winner ? "紅" : "藍"}隊贏得比賽`;
-  $("settleGames").innerHTML = gameScores(records)
-    .map(
-      (g) =>
-        `<span class="${g.score[0] > g.score[1] ? "blue-won" : "coral-won"}">第 ${g.game} 局 <b>${g.score[0]} : ${g.score[1]}</b></span>`,
-    )
-    .join("") + `<span>共 ${st.rallies} 回合</span>`;
-  $("settleMvp").innerHTML = `<div class="mvp-face ${st.mvp < 2 ? "" : "coral"}">${portrait(m, st.mvp, { expression: "happy" })}</div><div><span class="mvp-badge">MVP</span><strong>${safe(m.name)}</strong><p>${st.reason}</p><p class="muted">${m.level} 級 ${tierOf(m.level).name}・${STYLES[m.style]}・${racketOf(m).name}</p></div><div class="mvp-stats"><div><b>${pct(mvpRow.winRate)}</b><span>得分率</span></div><div><b>${pct(mvpRow.errorRate)}</b><span>失誤率</span></div><div><b>${mvpRow.saves}</b><span>救球</span></div></div>`;
+  $("settleGames").innerHTML =
+    gameScores(records)
+      .map(
+        (g) =>
+          `<span class="${g.score[0] > g.score[1] ? "blue-won" : "coral-won"}">第 ${g.game} 局 <b>${g.score[0]} : ${g.score[1]}</b></span>`,
+      )
+      .join("") + `<span>共 ${st.rallies} 回合</span>`;
+  $("settleMvp").innerHTML =
+    `<div class="mvp-face ${st.mvp < 2 ? "" : "coral"}">${portrait(m, st.mvp, { expression: "happy" })}</div><div><span class="mvp-badge">MVP</span><strong>${safe(m.name)}</strong><p>${st.reason}</p><p class="muted">${m.level} 級 ${tierOf(m.level).name}・${STYLES[m.style]}・${racketOf(m).name}</p></div><div class="mvp-stats"><div><b>${pct(mvpRow.winRate)}</b><span>得分率</span></div><div><b>${pct(mvpRow.errorRate)}</b><span>失誤率</span></div><div><b>${mvpRow.saves}</b><span>救球</span></div></div>`;
   $("settleRows").innerHTML = st.rows
     .map((r) => {
       const p = profiles[r.index];
@@ -1017,9 +1159,15 @@ function playHighlight(index) {
   const events = archives[index];
   if (!events?.length || animation || running) return;
   reviewIndex = null;
-  replay = { events: clone(events), index: 0, display: clone(events[0].before) };
+  replay = {
+    events: clone(events),
+    index: 0,
+    display: clone(events[0].before),
+  };
   note("精彩回顧", `重播第 ${index + 1} 回合。播完後會回到目前進度。`);
-  document.querySelector(".arena").scrollIntoView({ behavior: "smooth", block: "center" });
+  document
+    .querySelector(".arena")
+    .scrollIntoView({ behavior: "smooth", block: "center" });
   startAnimation(replay.events[0], true);
 }
 function renderTimeline() {
@@ -1092,8 +1240,7 @@ function commit(e) {
   if (match.phase === "ended") {
     recordPoint(e);
     // Let the final landing and shout play before the report opens.
-    if (match.finished)
-      setTimeout(showSettlement, reduceMotion() ? 0 : 1100);
+    if (match.finished) setTimeout(showSettlement, reduceMotion() ? 0 : 1100);
     const autoEnd =
       playMode === "rally" || match.finished || $("pauseAtPoint").checked;
     if (autoEnd) running = false;
@@ -1116,10 +1263,15 @@ function startAnimation(e, isReplay = false) {
   // Step-in before contact, then a flight time that depends on the shot.
   const calm = reduceMotion(),
     step = POWER_SHOTS.includes(e.shot) ? 240 : 340,
-    pace = e.skill ? (SKILLS[e.skill]?.bonus.pace ?? 1) : 1,
+    pace = e.skill
+      ? (skillBonus(profiles[e.skillUser ?? e.actor], SKILLS[e.skill].bonus)
+          .pace ?? 1)
+      : 1,
     // The shot that decides a game plays out in slow motion.
     decisive = e.kind === "shot" && !!e.after?.gameEnded && !calm,
-    flight = (flightMs(e.shot, profiles[e.actor]?.level ?? 6) / pace) * (decisive ? 2.2 : 1),
+    flight =
+      (flightMs(e.shot, profiles[e.actor]?.level ?? 6) / pace) *
+      (decisive ? 2.2 : 1),
     duration = calm ? 500 : e.kind === "shot" ? step + flight : 450;
   animation = {
     event: e,
@@ -1139,6 +1291,11 @@ function startAnimation(e, isReplay = false) {
   }
   paused = false;
   updateUI();
+  if (matchMedia("(max-width:820px)").matches)
+    document.querySelector(".arena").scrollIntoView({
+      behavior: reduceMotion() ? "instant" : "smooth",
+      block: "start",
+    });
 }
 // Smash contact: a beat of hit-stop, a flash, an ink burst and a shout.
 function smashImpact(anim, now) {
@@ -1162,6 +1319,11 @@ function smashImpact(anim, now) {
       dir: Math.atan2(b.y - a.y, b.x - a.x),
       power: big ? 1.4 : power ? 1.15 : 0.85,
       gold: !!e.skill && e.skillUser === e.actor,
+      color: e.skill
+        ? SKILL_COLORS[
+            skillDesign(profiles[e.skillUser ?? e.actor].skillDesign).color
+          ]
+        : undefined,
     },
     now,
   );
@@ -1183,6 +1345,11 @@ function smashImpact(anim, now) {
             : SHOUT[e.shot] || "",
         sub: `${e.speed ?? shotSpeed(e.shot, profiles[e.actor]?.level ?? 6)} km/h`,
         gold: !!e.skill,
+        color: e.skill
+          ? SKILL_COLORS[
+              skillDesign(profiles[e.skillUser ?? e.actor].skillDesign).color
+            ]
+          : undefined,
       },
       now,
     );
@@ -1199,22 +1366,34 @@ function landingImpact(e) {
       x: e.actual.x,
       z: e.actual.z,
       h: 1.2,
-      text: e.skill === "wall" ? `${skillName(profiles[e.skillUser])}!` : "SAVE!",
+      text:
+        e.skill === "wall" ? `${skillName(profiles[e.skillUser])}!` : "SAVE!",
       sub: e.skill === "wall" ? "必殺球被擋下" : "救球美技",
       gold: e.skill === "wall",
+      color: e.skillColor || undefined,
     });
     if (preferences.sound) playHit("touch");
     return;
   }
   if (!smash && e.outcome !== "winner") return;
-  fx.spawn("splash", { x: e.actual.x, z: e.actual.z, power: smash ? 1.1 : 0.75 });
+  fx.spawn("splash", {
+    x: e.actual.x,
+    z: e.actual.z,
+    power: smash ? 1.1 : 0.75,
+  });
   if (smash && !reduceMotion()) fx.shake(3, 120);
   if (e.outcome === "winner")
     fx.spawn("shout", {
       x: e.actual.x,
       z: e.actual.z,
       h: 0.4,
-      text: e.after.finished ? "MATCH!" : e.after.gameEnded ? "GAME!" : smash ? "KILL!" : "NICE!",
+      text: e.after.finished
+        ? "MATCH!"
+        : e.after.gameEnded
+          ? "GAME!"
+          : smash
+            ? "KILL!"
+            : "NICE!",
       big: !!e.after.gameEnded,
     });
 }
@@ -1223,9 +1402,14 @@ function showCutIn(e) {
   const who = e.skillUser ?? e.actor,
     p = profiles[who],
     el = $("cutin");
-  $("cutinFace").innerHTML = portrait(p, who, { expression: "focus", faceOnly: true });
-  $("cutinWho").textContent = `${p.name} · ${SKILLS[p.skill]?.type === "passive" ? "被動絕技" : "絕技發動"}`;
+  $("cutinFace").innerHTML = portrait(p, who, {
+    expression: "focus",
+    faceOnly: true,
+  });
+  $("cutinWho").textContent =
+    `${p.name} · ${SKILLS[p.skill]?.type === "passive" ? "被動絕技" : "絕技發動"}`;
   $("cutinName").textContent = `${SKILLS[p.skill]?.icon ?? ""} ${skillName(p)}`;
+  $("cutinName").style.color = e.skillColor || SKILL_COLORS.gold;
   el.className = `cutin ${who < 2 ? "cutin-blue" : "cutin-coral"}`;
   el.hidden = false;
   // Restart the CSS animation, then hide once it has played.
@@ -1267,7 +1451,10 @@ function oddsText(s, actor, shotKey, point) {
   }
 }
 function plannedNote(s) {
-  return oddsText(s, selected, shot, target) + shotContext(s, selected, shot, target, profiles);
+  return (
+    oddsText(s, selected, shot, target) +
+    shotContext(s, selected, shot, target, profiles)
+  );
 }
 function hitManual() {
   if (!target) {
@@ -1277,11 +1464,16 @@ function hitManual() {
   }
   try {
     const e = captureEvent(
-      makeShot(match, { actor: selected, shot, target, skill: useSkill }, profiles, {
-        random,
-        simulate: preferences.outcome === "model",
-        formation: $("formationSelect").value,
-      }),
+      makeShot(
+        match,
+        { actor: selected, shot, target, skill: useSkill },
+        profiles,
+        {
+          random,
+          simulate: preferences.outcome === "model",
+          formation: $("formationSelect").value,
+        },
+      ),
     );
     useSkill = false;
     startAnimation(e);
@@ -1465,16 +1657,17 @@ function syncToggles() {
   );
   $("viewToggle").innerHTML = `視角 <span>${viewName()}</span>`;
   $("soundToggle").setAttribute("aria-pressed", String(preferences.sound));
-  $("soundToggle").innerHTML = `音效 <span>${preferences.sound ? "開" : "關"}</span>`;
+  $("soundToggle").innerHTML =
+    `音效 <span>${preferences.sound ? "開" : "關"}</span>`;
 }
 $("viewToggle").onclick = () => {
   // Step to the next preset after whichever one the current camera is closest to.
   const now =
-    preferences.view === "tactical"
-      ? 0
-      : preferences.elevation < 0.35
-        ? 2
-        : 1,
+      preferences.view === "tactical"
+        ? 0
+        : preferences.elevation < 0.35
+          ? 2
+          : 1,
     next = VIEWS[(now + 1) % VIEWS.length];
   preferences.view = next.view;
   if (next.elevation !== undefined) preferences.elevation = next.elevation;
@@ -1535,6 +1728,8 @@ $("applyCourtSettings").onclick = () => {
   preferences.motion = $("motionSetting").value;
   preferences.formation = $("formationSelect").value;
   preferences.outcome = $("outcomeSetting").value;
+  preferences.tempo = $("tempoSetting").value;
+  match.config.tempo = preferences.tempo;
   save();
   $("settingsDialog").close();
   updateUI();
@@ -1560,6 +1755,7 @@ $("restartButton").onclick = () => {
   updateUI();
 };
 $("confirmRestart").onclick = () => {
+  if(profiles.some(p=>p.vacant)){toast("請先選好四位角色再重新開賽");$("restartDialog").close();return;}
   running = false;
   paused = false;
   animation = null;
@@ -1723,11 +1919,10 @@ $("court").addEventListener("pointerdown", (e) => {
 function pickTarget(clientX, clientY) {
   if (courtLocked()) return;
   const point = renderer.point(clientX, clientY);
-  if (!legalTarget(match, point)) {
+  if (!legalTarget(match, point, shot)) {
+    const [near, far] = targetDepth(match, shot);
     toast(
-      match.phase === "serve"
-        ? "發球請選黃色斜對角接發球區內。"
-        : "請選對方半場內的落點。",
+      `${SHOTS[shot].label}請選對方${match.phase === "serve" ? "斜對角發球區" : "半場"}內，距網 ${near.toFixed(1)}–${far.toFixed(1)} m 的位置。`,
     );
     return;
   }
@@ -1911,7 +2106,10 @@ function tick(now) {
         animation.hit = true;
         if (preferences.sound) playHit(soundFor(animation.event.shot));
         const ev = animation.event;
-        if (POWER_SHOTS.includes(ev.shot) || (ev.skill && ev.skillUser === ev.actor))
+        if (
+          POWER_SHOTS.includes(ev.shot) ||
+          (ev.skill && ev.skillUser === ev.actor)
+        )
           smashImpact(animation, now);
       }
       if (animation.elapsed >= animation.duration) finishAnimation();
@@ -1920,7 +2118,11 @@ function tick(now) {
     const s = displayState(),
       trail =
         reviewIndex === null ? entries : entries.slice(0, reviewIndex + 1);
-    if (renderer.dirty || (animation && !paused) || renderer.effects.busy(now)) {
+    if (
+      renderer.dirty ||
+      (animation && !paused) ||
+      renderer.effects.busy(now)
+    ) {
       renderer.dirty = false;
       renderer.render(s, profiles, {
         animation,
@@ -1951,6 +2153,7 @@ renderRoster();
 $("formationSelect").value = preferences.formation;
 $("motionSetting").value = preferences.motion;
 $("outcomeSetting").value = preferences.outcome;
+$("tempoSetting").value = preferences.tempo;
 applyView();
 let seen = false;
 try {
@@ -1959,3 +2162,50 @@ try {
 if (!seen) showWelcome();
 checkSharedCard();
 requestAnimationFrame(tick);
+
+$("moreShots").onclick = () => {
+  const expanded = $("moreShots").getAttribute("aria-expanded") !== "true";
+  $("moreShots").setAttribute("aria-expanded", String(expanded));
+  $("shotButtons").classList.toggle("all-shots", expanded);
+  $("moreShots").textContent = expanded ? "推薦球路 −" : "全部球路 ＋";
+};
+let demoFrame = 0;
+$("trySkill").onclick = () => {
+  updateEditor();
+  cancelAnimationFrame(demoFrame);
+  const canvas = $("skillDemo"),
+    ctx = canvas.getContext("2d"),
+    start = performance.now();
+  const sk = SKILLS[draft.skill],
+    color = SKILL_COLORS[draft.skillDesign.color];
+  const speed = shotSpeed(
+    sk.force || sk.shots?.[0] || "smash",
+    draft.level,
+    draft,
+    draft.skill,
+  );
+  const duration = reduceMotion() ? 1 : Math.max(450, 1100 - speed);
+  function draw(now) {
+    const t = Math.min(1, (now - start) / duration);
+    ctx.clearRect(0, 0, 300, 140);
+    ctx.fillStyle = "#183d31";
+    ctx.fillRect(0, 0, 300, 140);
+    ctx.strokeStyle = color;
+    ctx.lineWidth = 4;
+    ctx.beginPath();
+    ctx.moveTo(30, 65);
+    ctx.lineTo(30 + 240 * t, 65);
+    ctx.stroke();
+    ctx.fillStyle = "#fff";
+    ctx.beginPath();
+    ctx.arc(30 + 240 * t, 65, 6, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.font = "14px sans-serif";
+    ctx.fillText(`${skillName(draft)} · ${speed} km/h`, 16, 26);
+    ctx.font = "12px sans-serif";
+    ctx.fillText(`${skillCost(draft)} 氣勢 · 示意試打，不影響比賽`, 16, 122);
+    if (t < 1 && $("playerDialog").open)
+      demoFrame = requestAnimationFrame(draw);
+  }
+  demoFrame = requestAnimationFrame(draw);
+};

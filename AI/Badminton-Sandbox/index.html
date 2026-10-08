@@ -16,7 +16,7 @@
       href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;600;700;800;900&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="styles.css?v=20261008-targets" />
   </head>
   <body>
     <a class="skip-link" href="#main">跳到主要內容</a>
@@ -171,25 +171,14 @@
           <div class="roster-heading">
             <div>
               <span class="section-index">02 /</span
-              ><strong>認識你的四位球員</strong>
+              ><strong>組成你的雙打陣容</strong>
             </div>
-            <span>點選角色，調整個性與外觀</span>
-          </div>
-          <div class="team-headings">
-            <div>
-              <i class="team-dot blue"></i> BLUE TEAM <span>藍隊 / 我方</span>
-            </div>
-            <b>VS</b>
-            <div>
-              <i class="team-dot coral"></i> CORAL TEAM <span>紅隊 / 對方</span>
-            </div>
+            <span>選擇位置，再從角色池加入人物</span>
           </div>
           <div class="roster" id="roster"></div>
           <div class="setup-bottom">
             <p>
-              <span>✳</span> 級數 1–18 級，參考台灣羽球推廣協會分級，預設 6 級。<br /><small
-                >性格決定冒險程度，球風決定選球傾向。</small
-              >
+              <span>✳</span> 級數 1–18 級，參考台灣羽球推廣協會分級，各角色有專屬預設級數。<br /><small>性格決定冒險程度，球風決定選球傾向。</small>
             </p>
             <button class="button primary enter-button" id="enterCourt">
               陣容就緒，進入球場 <span>↗</span>
@@ -197,7 +186,8 @@
           </div>
           <div class="lineup-prompt" id="setupLineupPrompt" hidden>
             <p>
-              <strong>陣容已變更。</strong>要保留目前比分繼續打，還是用新陣容重新開賽並重新安排發球？
+              <strong>陣容已變更。</strong
+              >要保留目前比分繼續打，還是用新陣容重新開賽並重新安排發球？
             </p>
             <button class="button" id="setupRestart">以新陣容重新開賽 ↻</button>
           </div>
@@ -213,7 +203,8 @@
           </div>
           <div class="lineup-prompt court-prompt" id="courtLineupPrompt" hidden>
             <p>
-              <strong>陣容已變更。</strong>新設定會從下一拍套用；也可以清空比分，用新陣容重新開賽。
+              <strong>陣容已變更。</strong
+              >新設定會從下一拍套用；也可以清空比分，用新陣容重新開賽。
             </p>
             <button class="button" id="courtRestart">重新開賽並安排 ↻</button
             ><button class="text-button" id="keepLineup">保留比分繼續</button>
@@ -303,6 +294,14 @@
                 <div class="result-overlay" id="resultOverlay" hidden></div>
               </div>
               <div class="transport">
+                <button
+                  class="button"
+                  id="quickSkill"
+                  disabled
+                  aria-pressed="false"
+                >
+                  絕招
+                </button>
                 <button class="button primary" id="playButton">
                   打出這一拍 <span>↗</span></button
                 ><button class="button" id="pauseButton" disabled>暫停</button
@@ -360,6 +359,14 @@
                 <fieldset>
                   <legend><span>02</span> 打什麼球？</legend>
                   <div id="shotButtons" class="shot-buttons"></div>
+                  <button
+                    id="moreShots"
+                    type="button"
+                    class="button"
+                    aria-expanded="false"
+                  >
+                    全部球路 ＋
+                  </button>
                 </fieldset>
                 <fieldset>
                   <legend><span>03</span> 選擇落點</legend>
@@ -404,7 +411,11 @@
           </details>
           <details class="match-details analysis-panel" id="analysisPanel">
             <summary>
-              <span>賽後分析 <span class="summary-sub">精彩回顧・得分來源・對位測試</span></span
+              <span
+                >賽後分析
+                <span class="summary-sub"
+                  >精彩回顧・得分來源・對位測試</span
+                ></span
               ><span>展開 ＋</span>
             </summary>
             <div id="analysis"></div>
@@ -493,10 +504,10 @@
                 ><span id="statBudget" class="stat-budget"></span>
               </div>
               <div class="ability-layout">
-                <div id="editorRadar" class="radar"></div>
+                <div><div id="editorRadar" class="radar"></div><p class="radar-caption">實線：含球拍與專長 · 虛線：原始能力<br>共用刻度 0–13；原始能力可分配 1–10</p></div>
                 <div id="statRows" class="stat-rows"></div>
               </div>
-              <button type="button" class="text-button" id="statPreset">
+              <p id="abilityImpact" class="ability-impact" aria-live="polite"></p><button type="button" class="text-button" id="statPreset">
                 依球風重新分配 ↺
               </button>
             </div>
@@ -518,6 +529,44 @@
               aria-label="自訂招式名稱"
             />
             <p id="skillNote" class="level-detail"></p>
+            <label for="specialtyOne">球員專長（最多兩項，各有取捨）</label>
+            <select id="specialtyOne" aria-label="第一專長"></select>
+            <select id="specialtyTwo" aria-label="第二專長"></select>
+            <p id="specialtyPreview" class="level-detail"></p>
+            <fieldset class="skill-workshop">
+              <legend>絕招工坊</legend>
+              <p>選擇招式特色與代價，再試打一球。</p>
+              <label for="skillEffect">主要特色</label>
+              <select id="skillEffect">
+                <option value="speed">爆發速度・球速 +12%、得分 +6%</option>
+                <option value="deceive">假動作・得分 +10%</option>
+                <option value="control">精準控制・降低失誤</option>
+              </select>
+              <label for="skillCost">發動代價</label>
+              <select id="skillCost">
+                <option value="charge">蓄力・需要 100 氣勢</option>
+                <option value="risk">
+                  冒險・70 氣勢，失誤 +6%、得分 -2.5%
+                </option>
+              </select>
+              <label for="skillColor">專屬色</label>
+              <select id="skillColor">
+                <option value="gold">雷光金</option>
+                <option value="fire">赤焰紅</option>
+                <option value="ice">冰川藍</option>
+                <option value="violet">幻影紫</option>
+              </select>
+              <p id="workshopPreview" aria-live="polite"></p>
+              <button id="trySkill" type="button" class="button">
+                試招 ↗
+              </button>
+              <canvas
+                id="skillDemo"
+                width="300"
+                height="140"
+                aria-label="絕招試打預覽"
+              ></canvas>
+            </fieldset>
             <details class="appearance-details" open>
               <summary>角色外觀</summary>
               <div class="appearance-grid">
@@ -528,11 +577,15 @@
                     <option value="angular">俐落臉型</option>
                   </select></label
                 ><label
-                  >髮型<select id="hairStyle">
+                  >髮型<select id="hairStyle"><option value="buzz">平頭</option>
                     <option value="crop">清爽短髮</option>
                     <option value="sweep">側分短髮</option>
                     <option value="bob">俐落短鮑伯</option>
                     <option value="pony">運動馬尾</option>
+                    <option value="curls">蓬鬆捲髮</option>
+                    <option value="bun">高丸子頭</option>
+                    <option value="braid">側編辮</option>
+                    <option value="mohawk">龐克短髮</option>
                   </select></label
                 ><label
                   >膚色<select id="skinTone">
@@ -541,14 +594,19 @@
                     <option value="deep">深膚色</option>
                   </select></label
                 ><label
-                  >配件<select id="accessory">
+                  >配件<select id="accessory"><option value="headscarf">綁結頭巾</option>
                     <option value="none">無配件</option>
                     <option value="band">運動頭帶</option>
                     <option value="glasses">運動眼鏡</option>
+                    <option value="visor">運動遮陽帽</option>
                   </select></label
                 >
               </div>
             </details>
+            <div class="form-grid identity-colors">
+              <label>髮色<input type="color" id="hairColor" value="#253b38" /></label>
+              <label>人物配件色<input type="color" id="identityAccent" value="#7b8260" /></label>
+            </div>
             <p id="playerError" class="field-error" role="alert"></p>
           </div>
         </div>
@@ -585,6 +643,10 @@
       ><select id="outcomeSetting">
         <option value="model">依級數與性格判定（下網、出界、得分）</option>
         <option value="manual">只推演路線，由我判定得分</option></select
+      ><label for="tempoSetting">比賽節奏</label
+      ><select id="tempoSetting">
+        <option value="arcade">爽快・進攻更有威脅，絕招得分更高</option>
+        <option value="tactical">戰術・保留原有攻守節奏</option></select
       ><label for="motionSetting">動態效果</label
       ><select id="motionSetting">
         <option value="system">依系統設定</option>
@@ -627,7 +689,11 @@
         ><button class="button primary" id="confirmRestart">重新開賽 ↗</button>
       </div>
     </dialog>
-    <dialog id="settleDialog" class="settle-dialog" aria-labelledby="settleTitle">
+    <dialog
+      id="settleDialog"
+      class="settle-dialog"
+      aria-labelledby="settleTitle"
+    >
       <div class="dialog-header">
         <span class="eyebrow">MATCH REPORT</span>
         <button
@@ -707,6 +773,6 @@
       </div>
     </dialog>
     <div id="toast" class="toast" hidden role="status"></div>
-    <script type="module" src="app.js"></script>
+    <script type="module" src="app.js?v=20261008-targets"></script>
   </body>
 </html>

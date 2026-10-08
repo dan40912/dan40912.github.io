@@ -7,18 +7,27 @@ import {
   createMatch,
   nextRally,
   choosePlan,
+  migrateProfile,
   makeShot,
   seeded,
   validLevel,
   PERSONALITIES,
   STYLES,
   shotSpeed,
-} from "./model.js";
-import { presetStats, normalizeStats, skillFor, SKILLS, RACKETS } from "./abilities.js";
+} from "./model.js?v=20261008-targets";
+import { skillDesign, specialties } from "./workshop.js?v=20261008-targets";
+import {
+  presetStats,
+  normalizeStats,
+  skillFor,
+  SKILLS,
+  RACKETS,
+} from "./abilities.js?v=20261008-targets";
 
 const shotsOf = (rally) => rally.filter((e) => e.kind === "shot");
 const speedOf = (e, profiles) =>
-  e.speed ?? shotSpeed(e.shot, profiles[e.actor]?.level ?? 6, profiles[e.actor]);
+  e.speed ??
+  shotSpeed(e.shot, profiles[e.actor]?.level ?? 6, profiles[e.actor]);
 
 // Per-player and per-team breakdown of how points were won and lost.
 export function summarize(rallies, profiles) {
@@ -37,7 +46,8 @@ export function summarize(rallies, profiles) {
     for (const e of shotsOf(rally)) {
       const me = players[e.actor];
       me.shots++;
-      if (SMASHES.includes(e.shot)) me.fastest = Math.max(me.fastest, speedOf(e, profiles));
+      if (SMASHES.includes(e.shot))
+        me.fastest = Math.max(me.fastest, speedOf(e, profiles));
       if (e.skill) players[e.skillUser ?? e.actor].skills++;
       if (e.outcome === "save") players[e.receiver].saves++;
       if (e.outcome === "winner") {
@@ -62,7 +72,9 @@ export function insight(player) {
     return player.errors
       ? `還沒有直接得分，失誤 ${player.errors} 次，先求穩再找機會。`
       : "穩穩延續回合，還在等待得分機會。";
-  const [shot, n] = Object.entries(player.byShot).sort((a, b) => b[1] - a[1])[0],
+  const [shot, n] = Object.entries(player.byShot).sort(
+      (a, b) => b[1] - a[1],
+    )[0],
     share = Math.round((n / total) * 100);
   const errorNote =
     player.errors > total ? `，但失誤 ${player.errors} 次多於得分` : "";
@@ -77,7 +89,8 @@ export function highlights(rallies, profiles) {
   rallies.forEach((rally, index) => {
     const shots = shotsOf(rally);
     if (!shots.length) return;
-    if (!longest || shots.length > longest.n) longest = { index, n: shots.length };
+    if (!longest || shots.length > longest.n)
+      longest = { index, n: shots.length };
     for (const e of shots) {
       if (SMASHES.includes(e.shot)) {
         const v = speedOf(e, profiles);
@@ -88,7 +101,11 @@ export function highlights(rallies, profiles) {
     }
   });
   if (longest && longest.n >= 3)
-    out.push({ index: longest.index, title: "最長回合", detail: `${longest.n} 拍的拉鋸` });
+    out.push({
+      index: longest.index,
+      title: "最長回合",
+      detail: `${longest.n} 拍的拉鋸`,
+    });
   if (fastest)
     out.push({
       index: fastest.index,
@@ -128,7 +145,10 @@ export function matchup(profile, { rallies = 400, seed = 11 } = {}) {
       if (s.phase === "ended") {
         played++;
         if (s.winner === 0) won++;
-        s = s.finished || s.gameEnded ? createMatch({ points: 21, bestOf: 1 }) : nextRally(s);
+        s =
+          s.finished || s.gameEnded
+            ? createMatch({ points: 21, bestOf: 1 })
+            : nextRally(s);
         continue;
       }
       const e = makeShot(s, choosePlan(s, profiles, rnd), profiles, {
@@ -144,11 +164,31 @@ export function matchup(profile, { rallies = 400, seed = 11 } = {}) {
 // Shareable player cards: a compact, validated JSON payload in the URL hash.
 const LOOKS = {
   face: ["round", "oval", "angular"],
-  hair: ["crop", "sweep", "bob", "pony"],
+  hair: ["crop", "sweep", "bob", "pony", "buzz", "curls", "bun", "braid", "mohawk"],
   skin: ["light", "warm", "deep"],
-  accessory: ["none", "band", "glasses"],
+  accessory: ["none", "band", "glasses", "headscarf", "visor"],
 };
-const CARD_KEYS = ["name", "gender", "level", "personality", "style", "face", "hair", "skin", "accessory", "stats", "skill", "skillName", "racket"];
+const CARD_KEYS = [
+  "name",
+  "gender",
+  "level",
+  "personality",
+  "style",
+  "face",
+  "hair",
+  "skin",
+  "accessory",
+  "stats",
+  "skill",
+  "skillName",
+  "racket",
+  "skillDesign",
+  "specialties",
+  "characterId",
+  "hairColor",
+  "visualTheme",
+  "tendencies",
+];
 export function encodeCard(profile) {
   const card = Object.fromEntries(CARD_KEYS.map((k) => [k, profile[k]])),
     bytes = new TextEncoder().encode(JSON.stringify(card));
@@ -162,10 +202,17 @@ export function decodeCard(text) {
       bytes = Uint8Array.from(bin, (c) => c.charCodeAt(0)),
       c = JSON.parse(new TextDecoder().decode(bytes));
     const name = typeof c.name === "string" ? c.name.trim().slice(0, 16) : "";
-    if (!name || !validLevel(c.level) || !PERSONALITIES[c.personality] || !STYLES[c.style])
+    if (
+      !name ||
+      !validLevel(c.level) ||
+      !PERSONALITIES[c.personality] ||
+      !STYLES[c.style]
+    )
       return null;
-    if (Object.entries(LOOKS).some(([k, ok]) => !ok.includes(c[k]))) return null;
-    return {
+    if (Object.entries(LOOKS).some(([k, ok]) => !ok.includes(c[k])))
+      return null;
+    return migrateProfile({
+      characterId:c.characterId, hairColor:c.hairColor, visualTheme:c.visualTheme, tendencies:c.tendencies,
       name,
       gender: c.gender === "女" ? "女" : "男",
       level: c.level,
@@ -177,9 +224,12 @@ export function decodeCard(text) {
       accessory: c.accessory,
       stats: normalizeStats(c.stats, c.level, c.style),
       skill: SKILLS[c.skill] ? c.skill : skillFor(c.style),
-      skillName: typeof c.skillName === "string" ? c.skillName.trim().slice(0, 10) : "",
+      skillName:
+        typeof c.skillName === "string" ? c.skillName.trim().slice(0, 10) : "",
       racket: RACKETS[c.racket] ? c.racket : "standard",
-    };
+      skillDesign: c.skillDesign ? skillDesign(c.skillDesign) : undefined,
+      specialties: specialties(c.specialties),
+    });
   } catch {
     return null;
   }
@@ -245,7 +295,10 @@ export function settlement(rallies, profiles, winnerTeam = null) {
       (winnerTeam !== null && team(r.index) === winnerTeam ? 4 : 0);
   }
   const mvp = rows.reduce((a, b) =>
-    b.mvpScore > a.mvpScore || (b.mvpScore === a.mvpScore && b.winRate > a.winRate) ? b : a,
+    b.mvpScore > a.mvpScore ||
+    (b.mvpScore === a.mvpScore && b.winRate > a.winRate)
+      ? b
+      : a,
   );
   // Why this player: lead with their biggest contribution.
   const reasons = [
@@ -254,7 +307,12 @@ export function settlement(rallies, profiles, winnerTeam = null) {
     mvp.skillPoints && `${mvp.skillPoints} 次絕技建功`,
     `失誤率 ${Math.round(mvp.errorRate * 100)}%`,
   ].filter(Boolean);
-  return { rows, mvp: mvp.index, reason: reasons.slice(0, 3).join("・"), rallies: total };
+  return {
+    rows,
+    mvp: mvp.index,
+    reason: reasons.slice(0, 3).join("・"),
+    rallies: total,
+  };
 }
 // Final score of each game, from the per-point records.
 export function gameScores(records) {

@@ -2,6 +2,6 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "node --test tests/model.test.js tests/court.test.js tests/coaching.test.js tests/abilities.test.js tests/analysis.test.js"
+    "test": "node --test tests/model.test.js tests/court.test.js tests/coaching.test.js tests/abilities.test.js tests/analysis.test.js tests/workshop.test.js tests/roster.test.js"
   }
 }

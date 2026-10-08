@@ -3,6 +3,7 @@
 // Stats express a player's *shape*: the model reads each stat relative to the
 // player's own average, so strengths come with matching weaknesses and level
 // stays the single measure of overall strength.
+import { specialties, SPECIALTIES } from "./workshop.js?v=20261008-targets";
 export const STATS = [
   { key: "power", label: "力量", note: "殺球、平抽的球速與得分率" },
   { key: "speed", label: "速度", note: "回位範圍，被調動時能否接到" },
@@ -12,8 +13,8 @@ export const STATS = [
 ];
 export const STAT_MIN = 1,
   STAT_MAX = 10;
-// Points to distribute grow with level: 17 at level 1, 27 at 6, 50 at 18.
-export const budgetFor = (level) => Math.min(50, 15 + level * 2);
+// Level carries overall strength; a 40-point cap keeps high-level styles distinct.
+export const budgetFor = (level) => Math.min(40, 15 + level * 2);
 const WEIGHTS = {
   allround: { power: 1, speed: 1, net: 1, defense: 1, control: 1 },
   attack: { power: 1.6, speed: 1.1, net: 0.8, defense: 0.75, control: 0.85 },
@@ -29,7 +30,9 @@ export function presetStats(style = "allround", level = 6) {
   const w = WEIGHTS[style] || WEIGHTS.allround,
     budget = budgetFor(level),
     sum = keys.reduce((n, k) => n + w[k], 0),
-    stats = Object.fromEntries(keys.map((k) => [k, clampStat((budget * w[k]) / sum)]));
+    stats = Object.fromEntries(
+      keys.map((k) => [k, clampStat((budget * w[k]) / sum)]),
+    );
   let diff = budget - statTotal(stats);
   // Hand rounding leftovers to the style's strongest (or weakest) stats first.
   const order = [...keys].sort((a, b) => w[b] - w[a]);
@@ -47,6 +50,7 @@ export function presetStats(style = "allround", level = 6) {
 export function normalizeStats(stats, level, style) {
   if (!stats || keys.some((k) => !Number.isFinite(stats[k])))
     return presetStats(style, level);
+  if (keys.every((k) => stats[k] === 10)) return presetStats(style, level);
   const out = Object.fromEntries(keys.map((k) => [k, clampStat(stats[k])])),
     budget = budgetFor(level);
   // Over budget (e.g. the level was lowered): trim the highest stats first.
@@ -168,9 +172,17 @@ export const racketOf = (p) => RACKETS[p?.racket] || RACKETS.standard;
 export function effectiveStats(p) {
   const s = p?.stats;
   if (!s) return null;
-  const mods = racketOf(p).mods;
+  const mods = { ...racketOf(p).mods };
+  specialties(p.specialties).forEach((key) =>
+    Object.entries(SPECIALTIES[key].mods).forEach(
+      ([stat, value]) => (mods[stat] = (mods[stat] || 0) + value),
+    ),
+  );
   return Object.fromEntries(
-    keys.map((k) => [k, Math.max(STAT_MIN, Math.min(STAT_MAX + 3, s[k] + (mods[k] || 0)))]),
+    keys.map((k) => [
+      k,
+      Math.max(STAT_MIN, Math.min(STAT_MAX + 3, s[k] + (mods[k] || 0))),
+    ]),
   );
 }
 export function edge(profile, key) {
@@ -246,10 +258,10 @@ export const meterOf = (s, i) => (s.meter ? s.meter[i] : 0);
 export function gainMomentum(s, event) {
   const m = (s.meter ||= [0, 0, 0, 0]);
   const add = (i, v) => (m[i] = Math.min(METER_FULL, m[i] + v));
-  add(event.actor, 1.5);
-  if (event.outcome === "winner") add(event.actor, 12);
+  add(event.actor, 5);
+  if (event.outcome === "winner") add(event.actor, 18);
   if (event.outcome === "save") add(event.receiver, 15);
   // Long rallies charge everyone: the crowd feels it too.
-  if (s.total >= 8) [0, 1, 2, 3].forEach((i) => add(i, 1.5));
+  if (s.total >= 8) [0, 1, 2, 3].forEach((i) => add(i, 2));
   if (event.skill) m[event.skillUser ?? event.actor] = 0;
 }

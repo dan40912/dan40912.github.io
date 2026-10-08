@@ -1,3 +1,4 @@
+import { radarSVG } from "../radar.js";
 import test from "node:test";
 import assert from "node:assert/strict";
 import {
@@ -16,6 +17,7 @@ import {
   makeShot,
   choosePlan,
   shotOdds,
+  shotSpeed,
   pointLabel,
   awardPoint,
   seeded,
@@ -127,7 +129,7 @@ test("rackets reshape stats without changing overall strength", async () => {
     assert(Math.abs(sum) <= 1, `${key} modifiers sum to ${sum}`);
     assert.equal(r.colors.length, 2);
   }
-  const p = { ...defaults()[0], racket: "standard" },
+  const p = { ...defaults()[0], racket: "standard", specialties: [] },
     heavy = { ...p, racket: "zf2" };
   assert.deepEqual(effectiveStats(p), p.stats);
   assert(edge(heavy, "power") > edge(p, "power"));
@@ -138,4 +140,30 @@ test("every roster character carries a real racket", async () => {
   for (const mode of ["men", "women", "mixed"])
     for (const p of defaults(mode)) assert(RACKETS[p.racket], p.name);
   assert(defaults("men").some((p) => p.name === "KK"));
+});
+
+
+test("power, defense and control change real shot outcomes at the same level", () => {
+  const {s,profiles}=rallyState();
+  profiles.forEach(p=>{p.level=8;p.racket="standard";p.stats={power:6,speed:6,net:6,defense:6,control:6};});
+  const actor=s.nextActor, plan={actor,shot:"smash",target:{x:0,z:-3.3}};
+  const baseline=shotOdds(s,plan,profiles), slow=shotSpeed("smash",8,profiles[actor]);
+  profiles[actor].stats.power=10;
+  assert.ok(shotSpeed("smash",8,profiles[actor])>slow);
+  assert.ok(shotOdds(s,plan,profiles).win>baseline.win);
+  profiles[actor].stats.power=6;
+  profiles[baseline.receiver].stats.defense=10;
+  assert.ok(shotOdds(s,plan,profiles).win<baseline.win);
+  profiles[baseline.receiver].stats.defense=6;
+  profiles[actor].stats.control=10;
+  assert.ok(shotOdds(s,plan,profiles).error<baseline.error);
+});
+
+test("radar uses five real axes with equipment-inclusive scale and base outline", () => {
+  const svg=radarSVG({power:13,speed:8,net:5,defense:3,control:6},{base:{power:10,speed:9,net:5,defense:5,control:6}});
+  assert.match(svg,/力量 13/);
+  assert.match(svg,/共用刻度 0–13/);
+  assert.match(svg,/stroke-dasharray/);
+  assert.doesNotMatch(svg,/絕技/);
+  assert.equal((svg.match(/<line /g)||[]).length,5);
 });

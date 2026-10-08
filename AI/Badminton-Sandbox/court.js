@@ -1,7 +1,13 @@
-import { clamp, sign, serveRegion, trajectory } from "./model.js";
-import { portrait, TEAM_COLORS } from "./characters.js";
-import { Effects, speedWedges } from "./effects.js";
-import { racketOf } from "./abilities.js";
+import {
+  clamp,
+  sign,
+  serveRegion,
+  targetDepth,
+  trajectory,
+} from "./model.js?v=20261008-targets";
+import { portrait, TEAM_COLORS } from "./characters.js?v=20261008-targets";
+import { Effects, speedWedges } from "./effects.js?v=20261008-targets";
+import { racketOf } from "./abilities.js?v=20261008-targets";
 // Camera rigs (metres, radians) along one elevation track the user can drag:
 // 0 = courtside seat, 0.7 = TV broadcast, 1 = high stand.
 const RIGS = [
@@ -16,7 +22,11 @@ function rigAt(e) {
     a = RIGS[i],
     b = RIGS[i + 1],
     t = (e - a.at) / (b.at - a.at);
-  return { y: lerp(a.y, b.y, t), z: lerp(a.z, b.z, t), pitch: lerp(a.pitch, b.pitch, t) };
+  return {
+    y: lerp(a.y, b.y, t),
+    z: lerp(a.z, b.z, t),
+    pitch: lerp(a.pitch, b.pitch, t),
+  };
 }
 export class CourtRenderer {
   constructor(canvas) {
@@ -179,9 +189,11 @@ export class CourtRenderer {
     const key = JSON.stringify([
       profile.face,
       profile.hair,
+      profile.hairColor,
+      profile.visualTheme?.accent,
       profile.skin,
       profile.accessory,
-      index,
+      profile.personality,
       expression,
     ]);
     if (!this.faces.has(key)) {
@@ -286,7 +298,7 @@ export class CourtRenderer {
     c.fillStyle = color;
     c.fill();
   }
-  drawCourt(state) {
+  drawCourt(state, shot) {
     const c = this.ctx,
       s = this.scale;
     this.polygon(
@@ -326,14 +338,16 @@ export class CourtRenderer {
         ],
         "#fff4",
       );
-    if (state.phase === "serve") {
-      const r = serveRegion(state);
+    if (state.phase !== "ended" && (state.phase === "serve" || shot)) {
+      const r = state.phase === "serve" ? serveRegion(state) : { x0: -3.05, x1: 3.05 };
+      const [near, far] = shot ? targetDepth(state, shot) : [1.98, 5.94];
+      const z = state.turn === 0 ? -1 : 1;
       this.polygon(
         [
-          [r.x0, r.z0],
-          [r.x1, r.z0],
-          [r.x1, r.z1],
-          [r.x0, r.z1],
+          [r.x0, z * near],
+          [r.x1, z * near],
+          [r.x1, z * far],
+          [r.x0, z * far],
         ],
         "#e7f1a342",
       );
@@ -466,14 +480,13 @@ export class CourtRenderer {
   ) {
     const c = this.ctx,
       base = this.project(p.x, p.z),
-      size =
-        this.perspective
-          ? clamp(
-              this.unitAt(p.x, p.z) * lerp(0.82, 1.02, this.wideness),
-              14,
-              lerp(92, 72, this.wideness),
-            )
-          : clamp(this.scale * 0.82, 23, 48),
+      size = this.perspective
+        ? clamp(
+            this.unitAt(p.x, p.z) * lerp(0.82, 1.02, this.wideness),
+            14,
+            lerp(92, 72, this.wideness),
+          )
+        : clamp(this.scale * 0.82, 23, 48),
       outline = "#263e35",
       jersey = TEAM_COLORS[i],
       skin = { light: "#f4d2ba", warm: "#dca77f", deep: "#a66c4d" }[
@@ -482,7 +495,15 @@ export class CourtRenderer {
     this.ellipse(base.x + 2, base.y + 2, size * 0.48, size * 0.16, "#183d3127");
     if (charged) {
       // A full momentum meter glows gold under the player's feet.
-      this.ellipse(base.x, base.y, size * 0.7, size * 0.28, "#f2d35a40", "#e0b532", 2.5);
+      this.ellipse(
+        base.x,
+        base.y,
+        size * 0.7,
+        size * 0.28,
+        "#f2d35a40",
+        "#e0b532",
+        2.5,
+      );
     }
     if (selected)
       this.ellipse(
@@ -570,7 +591,15 @@ export class CourtRenderer {
     c.save();
     c.translate(...end);
     c.rotate(swingAngle + Math.PI / 2);
-    this.ellipse(0, -size * 0.09, size * 0.105, size * 0.16, "#eaf0dc55", outline, 2.6);
+    this.ellipse(
+      0,
+      -size * 0.09,
+      size * 0.105,
+      size * 0.16,
+      "#eaf0dc55",
+      outline,
+      2.6,
+    );
     this.ellipse(0, -size * 0.09, size * 0.105, size * 0.16, null, frame, 1.5);
     c.restore();
     c.fillStyle = "#f5f3e4";
@@ -596,10 +625,9 @@ export class CourtRenderer {
     const q = this.project(ball.x, ball.z, ball.h),
       ground = this.project(ball.x, ball.z),
       c = this.ctx,
-      k =
-        this.perspective
-          ? clamp(this.unitAt(ball.x, ball.z) / 38, 0.6, 1.7)
-          : 1;
+      k = this.perspective
+        ? clamp(this.unitAt(ball.x, ball.z) / 38, 0.6, 1.7)
+        : 1;
     this.ellipse(
       ground.x,
       ground.y,
@@ -608,20 +636,36 @@ export class CourtRenderer {
       "#183d312b",
     );
     // Fast shots leave a motion streak so speed reads even in a still frame.
-    if (event && ["smash", "drive", "push"].includes(event.shot) && t > 0) {
-      const tail = trajectory(event, Math.max(0, t - (event.shot === "smash" ? 0.22 : 0.12))),
+    const powerShot =
+      event &&
+      ["smash", "jumpSmash", "stick", "slice", "kill"].includes(event.shot);
+    if (
+      event &&
+      (powerShot || event.skill || ["drive", "push"].includes(event.shot)) &&
+      t > 0
+    ) {
+      const tail = trajectory(
+          event,
+          Math.max(0, t - (event.shot === "smash" ? 0.22 : 0.12)),
+        ),
         a = this.project(tail.x, tail.z, tail.h),
         g = c.createLinearGradient(a.x, a.y, q.x, q.y);
       g.addColorStop(0, "#fffefa00");
-      g.addColorStop(1, event.shot === "smash" ? "#fff6c8e6" : "#fffefa99");
+      g.addColorStop(
+        1,
+        event.skillColor || (powerShot ? "#fff6c8e6" : "#fffefa99"),
+      );
       c.beginPath();
       c.moveTo(a.x, a.y);
       c.lineTo(q.x, q.y);
       c.strokeStyle = g;
-      c.lineWidth = (event.shot === "smash" ? 4.5 : 2.5) * k;
+      c.lineWidth =
+        (powerShot ? 4.5 : 2.5) *
+        k *
+        clamp((event.speed || 180) / 180, 0.8, 1.6);
       c.lineCap = "round";
       c.stroke();
-      if (event.shot === "smash") speedWedges(c, q, a, 1.1);
+      if (powerShot) speedWedges(c, q, a, event.skill ? 1.5 : 1.1);
     }
     c.save();
     c.translate(q.x, q.y);
@@ -666,7 +710,7 @@ export class CourtRenderer {
     const jolt = reduceMotion ? { x: 0, y: 0 } : this.effects.offset(time);
     c.save();
     c.translate(jolt.x, jolt.y);
-    this.drawCourt(state);
+    this.drawCourt(state, previewShot);
     if (tension > 0) this.effects.tension(tension, reduceMotion ? 0 : time);
     if (showTrail)
       trail
