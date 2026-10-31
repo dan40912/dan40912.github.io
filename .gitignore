@@ -9,3 +9,6 @@ AI/Auto-Trading-Prompt-Generator/*
 
 # Local dev caches (formatter, test runner) are never published.
 node_modules/
+
+# 國泰相關的工作檔只留在本機，不發佈到公開網站。
+finance/Cathay/
