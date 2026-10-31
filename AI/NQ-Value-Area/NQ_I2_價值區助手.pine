@@ -1,0 +1,279 @@
+//@version=5
+// NQ I2 價值區助手（凍結規則 v1／v2 的看盤輔助）
+// 研究用，不是投資建議；只畫線與發警報，不下單、不改規則。官方數字以「前進測試紀錄.md」為準。
+// 規則來源：forward_test/FROZEN_RULES.md（I2|5m_width0）與 FROZEN_RULES_v2.md。
+// 使用方式：NQ 單一合約（例如 NQZ2026）1 分K，建議開「延長交易時段」。換月當天不要用（凍結規則當天不做 I2）。
+indicator("NQ I2 價值區助手", shorttitle="I2 VA", overlay=true, max_labels_count=300)
+
+// ---------- 固定參數（凍結，不要改） ----------
+TZ        = "America/New_York"
+BIN       = 5.0     // 價格格寬（點）
+VA_FRAC   = 0.70    // 價值區涵蓋成交量比例
+TP1       = 55.0    // v1 止盈點數
+TP2       = 80.0    // v2 I2 止盈點數
+SL        = 145.0   // 止損點數
+LAST_V1   = 120     // v1 最晚進場：09:30 起第 120 分鐘＝11:30
+LAST_V2   = 89      // v2 最晚進場：第 89 分鐘＝10:59
+
+showV2    = input.bool(true, "顯示 v2（11:00 前進場、止盈 +80 點）")
+showTable = input.bool(true, "顯示資訊表")
+showHist  = input.bool(false, "資訊表顯示歷史統計")
+
+// ---------- 時間 ----------
+mod   = hour(time, TZ) * 60 + minute(time, TZ)        // K棒開始時間（美東，從午夜起算分鐘）
+ymd   = year(time, TZ) * 10000 + month(time, TZ) * 100 + dayofmonth(time, TZ)
+isRth = mod >= 570 and mod <= 959                     // 09:30–15:59
+idx   = mod - 570                                     // 09:30 起第幾分鐘（09:30 = 0）
+
+// ---------- 前一日成交量分布（只用美股盤中 1 分K） ----------
+var map<int, float> prof = map.new<int, float>()
+var int   profDate = na
+var float sesHi = na
+var float sesLo = na
+var float pVAL = na
+var float pVAH = na
+var float pPOC = na
+var float pdh  = na
+var float pdl  = na
+var string status = "等待開盤"
+
+// 前一個盤中時段結束 → 算出價值區（在下一根K棒、累積今天之前執行）
+finalize = not na(profDate) and (not isRth or ymd != profDate) and map.size(prof) > 0
+if finalize
+    keys = map.keys(prof)
+    array.sort(keys, order.ascending)
+    kMin = array.get(keys, 0)
+    kMax = array.get(keys, array.size(keys) - 1)
+    total = 0.0
+    poc = kMin
+    pocV = -1.0
+    for i = 0 to array.size(keys) - 1
+        k = array.get(keys, i)
+        v = map.get(prof, k)
+        total += v
+        if v > pocV                 // 由低往高掃，同量保留較低的格
+            pocV := v
+            poc := k
+    lo = poc
+    hi = poc
+    acc = pocV
+    while acc < VA_FRAC * total and (lo > kMin or hi < kMax)
+        lv = map.contains(prof, lo - 1) ? map.get(prof, lo - 1) : -1.0
+        hv = map.contains(prof, hi + 1) ? map.get(prof, hi + 1) : -1.0
+        if hv > lv                  // 同量時先往下擴張
+            hi += 1
+            acc += math.max(0.0, hv)
+        else
+            lo -= 1
+            acc += math.max(0.0, lv)
+    pPOC := poc * BIN
+    pVAL := lo * BIN
+    pVAH := (hi + 1) * BIN
+    pdh  := sesHi
+    pdl  := sesLo
+    map.clear(prof)
+    profDate := na
+    status := "等待下一個交易日開盤"
+
+if isRth and barstate.isconfirmed
+    if na(profDate)
+        profDate := ymd
+        sesHi := high
+        sesLo := low
+    else
+        sesHi := math.max(sesHi, high)
+        sesLo := math.min(sesLo, low)
+    a = int(math.floor(low / BIN))
+    b = int(math.floor(high / BIN))
+    n = b - a + 1
+    for k = a to b
+        map.put(prof, k, (map.contains(prof, k) ? map.get(prof, k) : 0.0) + volume / n)
+
+// ---------- 今天的 I2 狀態 ----------
+var int    dir     = 0        // -1 只找空、+1 只找多、0 不做
+var int    cnt     = 0
+var bool   done    = false    // 已出現第一次「連續 2 根在區內」（不論是否可進場）
+var int    sigIdx  = na
+var bool   v2ok    = false
+var int    st      = 0        // 0 無、1 等進場、2 持倉中、3 已結束
+var int    st2     = 0        // v2 同上
+var float  ePx     = na
+var float  tp1Px   = na
+var float  tp2Px   = na
+var float  slPx    = na
+var string res1    = "—"
+var string res2    = "—"
+var float  open930 = na
+
+fmt(x) => str.tostring(x, "#,##0.00")
+
+if mod == 570
+    dir := 0
+    cnt := 0
+    done := false
+    sigIdx := na
+    v2ok := false
+    st := 0
+    st2 := 0
+    ePx := na
+    tp1Px := na
+    tp2Px := na
+    slPx := na
+    res1 := "—"
+    res2 := "—"
+    open930 := open
+    if na(pVAL)
+        status := "沒有前一日價值區（換月或資料不足）：今天不做 I2"
+    else
+        dir := open > pVAH ? -1 : open < pVAL ? 1 : 0
+        status := dir == -1 ? "開盤在 VAH 之上 → 只找空" : dir == 1 ? "開盤在 VAL 之下 → 只找多" : "開盤在價值區內 → 今天不做 I2"
+    label.new(bar_index, dir == -1 ? high : low, dir == 1 ? "今天只找多 ▲" : dir == -1 ? "今天只找空 ▼" : na(pVAL) ? "今天不做 I2（無價值區）" : "今天不做 I2（開在區內）",
+              color=dir == 1 ? color.new(color.green, 0) : dir == -1 ? color.new(color.red, 0) : color.new(color.gray, 0),
+              textcolor=color.white, style=dir == -1 ? label.style_label_down : label.style_label_up, size=size.normal)
+    outside = not na(pdh) and (open > pdh or open < pdl)
+    alert("NQ 09:30 開盤 " + fmt(open) + "｜VAL " + fmt(pVAL) + "／VAH " + fmt(pVAH) + "｜" + status +
+          "｜v2 突破共振：" + (outside ? "開在前日範圍外，可做" : "開在前日範圍內，不做"), alert.freq_once_per_bar)
+
+// ---------- 盤前預判（只是提示；正式方向以 09:30 開盤價為準） ----------
+// 歷史（2024-01～2026-10，683 個可交易日）：美東 09:00 時價格在 VAL 下方 → 97% 開盤也在下方；在 VAH 上方 → 90%；在區內 → 86%。
+// 美東 08:00 時判斷：多／空約 84%，區內約 73%。更早只能當參考。
+preDir  = na(pVAL) ? 0 : close > pVAH ? -1 : close < pVAL ? 1 : 0
+preAcc  = mod >= 540 and mod < 570 ? (preDir == 1 ? "97%" : preDir == -1 ? "90%" : "86%") : mod >= 480 and mod < 570 ? (preDir == 0 ? "73%" : "84%") : "較低（美東 08:00 前，只能參考）"
+showDir = isRth ? dir : preDir
+
+// 開盤前提醒（需要延長交易時段的K棒）：美東 09:00
+if mod == 540
+    alert("NQ 開盤前｜今日 I2 價值區 VAL " + fmt(pVAL) + "、POC " + fmt(pPOC) + "、VAH " + fmt(pVAH) +
+          "｜前一日盤中高 " + fmt(pdh) + "、低 " + fmt(pdl) + "｜盤前預判：" +
+          (preDir == 1 ? "偏多（只找多）" : preDir == -1 ? "偏空（只找空）" : "在區內（可能不做）") + "，歷史準確率 " + preAcc, alert.freq_once_per_bar)
+
+// 每個完整 5 分K 收盤（09:34、09:39 … 11:29）檢查
+if isRth and barstate.isconfirmed and dir != 0 and not done and idx >= 4 and idx <= 119 and idx % 5 == 4
+    inside = close >= pVAL and close <= pVAH
+    cnt := inside ? cnt + 1 : 0
+    if cnt >= 2
+        done := true
+        ei = idx + 1
+        if (ei >= 28 and ei <= 32) or ei > LAST_V1
+            status := "訊號出現，但進場時間在禁止時段 → 今天取消"
+            alert("NQ I2：訊號出現在禁止時段（09:58–10:02），今天取消", alert.freq_once_per_bar_close)
+        else
+            sigIdx := idx
+            st := 1
+            v2ok := ei <= LAST_V2
+            st2 := v2ok ? 1 : 0
+            status := (dir == 1 ? "做多" : "做空") + "訊號成立 → 下一分鐘開盤進場" + (v2ok ? "（v1＋v2）" : "（只有 v1；v2 已過 10:59）")
+            alert("NQ I2 訊號：" + (dir == 1 ? "做多" : "做空") + "，下一分鐘開盤進場｜止損 145 點、止盈 v1 55 點" +
+                  (v2ok ? "／v2 80 點" : "（v2 不做：超過 10:59）") + "｜參考收盤 " + fmt(close), alert.freq_once_per_bar_close)
+
+// 進場K棒：開盤價就是進場價
+if st == 1 and isRth and idx == sigIdx + 1
+    ePx   := open
+    tp1Px := open + dir * TP1
+    tp2Px := open + dir * TP2
+    slPx  := open - dir * SL
+    st    := 2
+    st2   := v2ok ? 2 : 0
+    status := "已進場" + (dir == 1 ? "多" : "空") + "，持倉中"
+    alert("NQ I2 進場 " + (dir == 1 ? "多 " : "空 ") + fmt(ePx) + "｜止損 " + fmt(slPx) + "｜止盈 v1 " + fmt(tp1Px) +
+          (v2ok ? "／v2 " + fmt(tp2Px) : "") + "｜12:29 未結束就出場", alert.freq_once_per_bar)
+    label.new(bar_index, dir == 1 ? low : high, (dir == 1 ? "I2 多 " : "I2 空 ") + fmt(ePx), color=dir == 1 ? color.new(color.green, 0) : color.new(color.red, 0),
+              textcolor=color.white, style=dir == 1 ? label.style_label_up : label.style_label_down, size=size.small)
+
+// 紙上追蹤結果（同一根同時碰到 → 算停損，和凍結規則一樣保守）
+hitSL = st >= 2 and (dir == 1 ? low <= slPx : high >= slPx)
+if isRth and barstate.isconfirmed and idx >= sigIdx + 1
+    if st == 2
+        if hitSL
+            st := 3
+            res1 := "止損"
+            alert("NQ I2 v1 止損 " + fmt(slPx), alert.freq_once_per_bar_close)
+        else if (dir == 1 ? high >= tp1Px : low <= tp1Px)
+            st := 3
+            res1 := "止盈"
+            alert("NQ I2 v1 止盈 " + fmt(tp1Px), alert.freq_once_per_bar_close)
+        else if idx == 179
+            st := 3
+            res1 := "時間到 " + fmt(close)
+            alert("NQ I2 v1 12:29 時間到，收盤出場 " + fmt(close), alert.freq_once_per_bar_close)
+    if st2 == 2
+        if hitSL
+            st2 := 3
+            res2 := "止損"
+        else if (dir == 1 ? high >= tp2Px : low <= tp2Px)
+            st2 := 3
+            res2 := "止盈"
+            alert("NQ I2 v2 止盈 " + fmt(tp2Px), alert.freq_once_per_bar_close)
+        else if idx == 179
+            st2 := 3
+            res2 := "時間到 " + fmt(close)
+    if st == 3 and st2 != 2
+        status := "今天的 I2 交易已結束"
+    else if st == 3 and st2 == 2
+        status := "v1 已結束，v2 仍持倉中"
+
+// 12:29 前一分鐘提醒
+if isRth and idx == 178 and (st == 2 or st2 == 2)
+    alert("NQ I2：還有 1 分鐘到 12:29，未結束的單準備出場", alert.freq_once_per_bar)
+
+// ---------- 畫圖 ----------
+brk = finalize
+pH = plot(brk ? na : pVAH, "VAH", color=color.new(color.orange, 0), linewidth=2, style=plot.style_linebr)
+pL = plot(brk ? na : pVAL, "VAL", color=color.new(color.teal, 0), linewidth=2, style=plot.style_linebr)
+bandCol = showDir == 1 ? color.new(color.green, 85) : showDir == -1 ? color.new(color.red, 85) : color.new(color.gray, 90)
+fill(pH, pL, color=bandCol, title="價值區底色（綠＝只找多、紅＝只找空、灰＝不做）")
+plot(brk ? na : pPOC, "POC", color=color.new(color.gray, 30), linewidth=1, style=plot.style_linebr)
+plot(brk ? na : pdh, "前一日盤中高", color=color.new(color.red, 40), linewidth=1, style=plot.style_circles)
+plot(brk ? na : pdl, "前一日盤中低", color=color.new(color.green, 40), linewidth=1, style=plot.style_circles)
+showLv = isRth and idx <= 179 and (st == 2 or st2 == 2 or st == 3)
+// 只畫在圖上、不顯示在右側價格刻度（避免把上一筆交易的價位誤看成今天的）
+plot(showLv ? ePx : na, "進場價", color=color.new(color.blue, 0), style=plot.style_linebr, display=display.pane)
+plot(showLv ? slPx : na, "止損", color=color.new(color.red, 0), style=plot.style_linebr, display=display.pane)
+plot(showLv ? tp1Px : na, "止盈 v1", color=color.new(color.green, 0), style=plot.style_linebr, display=display.pane)
+plot(showLv and showV2 and v2ok ? tp2Px : na, "止盈 v2", color=color.new(color.lime, 0), style=plot.style_linebr, display=display.pane)
+bgcolor(isRth and idx >= 28 and idx <= 32 ? color.new(color.gray, 85) : na, title="09:58–10:02 不進場")
+bgcolor(isRth and idx >= 5 and idx <= LAST_V2 ? color.new(color.blue, 95) : isRth and idx > LAST_V2 and idx <= LAST_V1 ? color.new(color.purple, 96) : na, title="進場時段（藍＝v1+v2、紫＝只有 v1）")
+
+var table t = table.new(position.top_right, 2, 14, bgcolor=color.new(color.black, 20), border_width=1)
+if showTable and barstate.islast
+    dirTxt = isRth ? (dir == 1 ? "今天只找多 ▲" : dir == -1 ? "今天只找空 ▼" : "今天不做 I2") :
+             (preDir == 1 ? "盤前預判：偏多 ▲" : preDir == -1 ? "盤前預判：偏空 ▼" : "盤前預判：在區內（可能不做）")
+    dirBg  = showDir == 1 ? color.new(color.green, 0) : showDir == -1 ? color.new(color.red, 0) : color.new(color.gray, 0)
+    whyTxt = isRth ? ("開盤 " + fmt(open930) + (dir == 1 ? " 在 VAL 之下" : dir == -1 ? " 在 VAH 之上" : " 在價值區內")) :
+             ("現價 " + fmt(close) + (preDir == 1 ? " 在 VAL 之下" : preDir == -1 ? " 在 VAH 之上" : " 在價值區內") + "｜歷史準確率 " + preAcc)
+    nextTxt = showDir == 1 ? "等價格回到 " + fmt(pVAL) + "～" + fmt(pVAH) + "，連續 2 根 5分K 收在區內 → 做多" :
+              showDir == -1 ? "等價格回到 " + fmt(pVAL) + "～" + fmt(pVAH) + "，連續 2 根 5分K 收在區內 → 做空" :
+              "開盤若仍在區內，今天不做 I2"
+    table.cell(t, 0, 0, "I2 價值區助手", text_color=color.white, text_size=size.small)
+    table.cell(t, 1, 0, timeframe.period == "1" ? "1分K ✓" : "請改用 1 分K！", text_color=timeframe.period == "1" ? color.lime : color.red, text_size=size.small)
+    table.cell(t, 0, 1, "方向", text_color=color.white, text_size=size.small)
+    table.cell(t, 1, 1, dirTxt, text_color=color.white, bgcolor=dirBg, text_size=size.small)
+    table.cell(t, 0, 2, "依據", text_color=color.white, text_size=size.small)
+    table.cell(t, 1, 2, whyTxt, text_color=color.white, text_size=size.small)
+    table.cell(t, 0, 3, "下一步", text_color=color.white, text_size=size.small)
+    table.cell(t, 1, 3, nextTxt, text_color=color.white, text_size=size.small)
+    table.cell(t, 0, 4, "VAH", text_color=color.orange, text_size=size.small)
+    table.cell(t, 1, 4, fmt(pVAH), text_color=color.white, text_size=size.small)
+    table.cell(t, 0, 5, "POC", text_color=color.gray, text_size=size.small)
+    table.cell(t, 1, 5, fmt(pPOC), text_color=color.white, text_size=size.small)
+    table.cell(t, 0, 6, "VAL", text_color=color.teal, text_size=size.small)
+    table.cell(t, 1, 6, fmt(pVAL), text_color=color.white, text_size=size.small)
+    table.cell(t, 0, 7, "前日高／低", text_color=color.white, text_size=size.small)
+    table.cell(t, 1, 7, fmt(pdh) + "／" + fmt(pdl), text_color=color.white, text_size=size.small)
+    table.cell(t, 0, 8, "狀態", text_color=color.white, text_size=size.small)
+    table.cell(t, 1, 8, status, text_color=color.yellow, text_size=size.small)
+    table.cell(t, 0, 9, "進場／止損", text_color=color.white, text_size=size.small)
+    table.cell(t, 1, 9, na(ePx) ? "—" : fmt(ePx) + "／" + fmt(slPx), text_color=color.white, text_size=size.small)
+    table.cell(t, 0, 10, "最近 v1 結果", text_color=color.white, text_size=size.small)
+    table.cell(t, 1, 10, res1, text_color=color.white, text_size=size.small)
+    table.cell(t, 0, 11, "最近 v2 結果", text_color=color.white, text_size=size.small)
+    table.cell(t, 1, 11, showV2 ? res2 : "（隱藏）", text_color=color.white, text_size=size.small)
+    // 歷史回測（凍結規則 v1，2024-01～2026-10，stress 成本），只是參考，不保證未來
+    if showHist
+        table.cell(t, 0, 12, "歷史：只找多", text_color=color.lime, text_size=size.small)
+    if showHist
+        table.cell(t, 1, 12, "36% 的日子出訊號｜止盈 60%、止損 9%、時間到 31%｜每筆 +$249（68 筆，含前進測試 2 筆）", text_color=color.white, text_size=size.small)
+    if showHist
+        table.cell(t, 0, 13, "歷史：只找空", text_color=color.red, text_size=size.small)
+    if showHist
+        table.cell(t, 1, 13, "35% 的日子出訊號｜止盈 62%、止損 10%、時間到 29%｜每筆 +$115（94 筆，含前進測試 1 筆）", text_color=color.white, text_size=size.small)

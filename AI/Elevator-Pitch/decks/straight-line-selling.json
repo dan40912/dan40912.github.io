@@ -1,0 +1,170 @@
+{
+  "meta": {
+    "title": "直線銷售的三個十",
+    "duration": 60,
+    "audience": "業務與銷售人員",
+    "purpose": "教育",
+    "lang": "zh-Hant",
+    "template": "keynote",
+    "theme": "dark",
+    "accent": "#ff4a36",
+    "source": "ai"
+  },
+  "cover": {
+    "title": "客戶說「我要想想」時，他真正在想什麼？",
+    "kicker": "直線銷售",
+    "format": "16x9"
+  },
+  "distill": {
+    "bigIdea": "客戶買的不是產品，是三種確定感",
+    "problem": "多數人一開口就講功能，信任還沒建立就被藉口打斷，成交只能靠運氣。",
+    "insight": "「我要想想」不是拒絕，而是產品、你或公司某一個確定性還沒到位。",
+    "takeaway": "問單前先檢查三個十：產品、你、公司，缺哪一個就補哪一個。",
+    "storyline": [
+      {
+        "section": "hook",
+        "beat": "用「我要想想」這個熟悉的異議開場。"
+      },
+      {
+        "section": "problem",
+        "beat": "點出從功能開場、靠運氣成交的困境。"
+      },
+      {
+        "section": "insight",
+        "beat": "翻轉認知：銷售是確定性的轉移，客戶要在三件事上確定。"
+      },
+      {
+        "section": "solution",
+        "beat": "一條直線：四秒開場、主動傾聽、先結論後理由。"
+      },
+      {
+        "section": "impact",
+        "beat": "異議是訊號：用循環補足缺少的那個十。"
+      },
+      {
+        "section": "closing",
+        "beat": "呼應開場，把三個十變成問單前的檢查。"
+      }
+    ]
+  },
+  "slides": [
+    {
+      "section": "hook",
+      "layout": "question",
+      "title": "客戶說「我要想想」時，他真正在想什麼？",
+      "visual": "純黑背景，問題置中，大量留白。",
+      "notes": {
+        "message": "用每個業務都聽過的異議開場，引發好奇。",
+        "script": "客戶說「我要想想」。（停頓）他真的需要時間，還是你漏了什麼？",
+        "transition": "先看看大多數人是怎麼賣的。",
+        "seconds": 6
+      }
+    },
+    {
+      "section": "problem",
+      "layout": "statement",
+      "kicker": "問題",
+      "title": "一開口就講功能，成交只能靠運氣",
+      "subtitle": "信任還沒建立，就被一個又一個藉口打斷。",
+      "visual": "標題靠左，副標以低對比灰色呈現。",
+      "notes": {
+        "message": "從功能開場，會在建立信任前就被打斷。",
+        "script": "大多數人一開口就講產品功能。（停頓）信任還沒建立，就被一個又一個藉口打斷，成交只能靠運氣。",
+        "transition": "其實，客戶缺的不是更多資訊。",
+        "seconds": 9
+      }
+    },
+    {
+      "section": "insight",
+      "layout": "quote",
+      "quote": "銷售，是確定性的轉移。",
+      "visual": "大型引號是唯一裝飾，金句置中偏左。",
+      "notes": {
+        "message": "客戶不確定，就不會掏錢。",
+        "script": "直線銷售的核心只有一句話：（停頓）銷售，是確定性的轉移。客戶不確定，就不會掏錢。",
+        "transition": "要確定什麼？三件事。",
+        "seconds": 8
+      }
+    },
+    {
+      "section": "insight",
+      "layout": "statement",
+      "kicker": "三個十",
+      "title": "問單前，三件事都要接近十分",
+      "points": [
+        "產品：真的能解決他的痛點",
+        "你：專業、同理、值得信任",
+        "公司：售後可靠，不添麻煩"
+      ],
+      "visual": "三欄並列，編號使用強調色。",
+      "notes": {
+        "message": "產品、你、公司，任何一個不到位，成交就會延後。",
+        "script": "客戶要在三件事上都接近十分：（停頓）產品真的能解決他的問題；你這個人值得信任；公司在售後不會添麻煩。少一個，成交就會延後。",
+        "transition": "怎麼把這三個十建立起來？",
+        "seconds": 12
+      }
+    },
+    {
+      "section": "solution",
+      "layout": "diagram",
+      "kicker": "直線",
+      "title": "從開場到成交，只走一條直線",
+      "steps": [
+        {
+          "label": "開場",
+          "text": "四秒建立專業印象"
+        },
+        {
+          "label": "傾聽",
+          "text": "問出真正的痛點"
+        },
+        {
+          "label": "呈現",
+          "text": "先說結論，再給理由"
+        }
+      ],
+      "visual": "三個節點由左至右，細線依序畫出。",
+      "notes": {
+        "message": "每一步都有固定目的與順序，銷售不是即興表演。",
+        "script": "做法是一條直線：前四秒建立專業印象，（停頓）接著主動傾聽，問出真正的痛點，再先說結論、後給理由。",
+        "transition": "如果客戶還是說「我要想想」呢？",
+        "seconds": 9
+      }
+    },
+    {
+      "section": "impact",
+      "layout": "contrast",
+      "kicker": "異議",
+      "title": "「我要想想」不是拒絕，是訊號",
+      "left": {
+        "label": "反駁藉口",
+        "text": "只會換來下一個藉口"
+      },
+      "right": {
+        "label": "循環補強",
+        "text": "補足缺少的那一個十"
+      },
+      "visual": "左側低對比，右側強調色，呈現選擇。",
+      "notes": {
+        "message": "異議代表某個確定性還沒到位，補強它，而不是反駁它。",
+        "script": "當客戶說「我要想想」，不要反駁。（停頓）反駁只會換來下一個藉口。找出他缺的是哪一個十，補足它，再問一次。",
+        "transition": "所以，回到開場的那個問題。",
+        "seconds": 10
+      }
+    },
+    {
+      "section": "closing",
+      "layout": "closing",
+      "title": "下次問單前，先數三個十",
+      "subtitle": "產品、你、公司——缺哪一個，就補哪一個。",
+      "cta": "今天就用它檢查一場對話",
+      "visual": "呼應開場的極簡構圖，CTA 為強調色膠囊。",
+      "notes": {
+        "message": "呼應開場，把三個十變成每次問單前的檢查。",
+        "script": "下次問單之前，（停頓）先數一數：產品、你、公司，三個十都到了嗎？",
+        "transition": "",
+        "seconds": 6
+      }
+    }
+  ]
+}

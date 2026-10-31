@@ -1458,6 +1458,25 @@ section {
   font-weight: 700;
 }
 
+.ai-lab-cta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 28px;
+  padding: 20px 24px;
+  border: 1px solid var(--pm-border);
+  border-radius: var(--r-md);
+  background: #fff;
+}
+
+.ai-lab-cta p {
+  flex: 1 1 280px;
+  margin: 0;
+  color: var(--pm-muted);
+}
+
 .project-action:hover,
 .project-action:focus {
   background: #0b3a62;

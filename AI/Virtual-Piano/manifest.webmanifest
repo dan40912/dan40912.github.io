@@ -1,0 +1,10 @@
+{
+  "name": "Virtual Piano Studio",
+  "short_name": "Virtual Piano",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#141615",
+  "theme_color": "#141615",
+  "orientation": "any"
+}

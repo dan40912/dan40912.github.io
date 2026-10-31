@@ -1,0 +1,10 @@
+name = "elevator-pitch-proxy"
+main = "worker.js"
+compatibility_date = "2026-09-01"
+compatibility_flags = ["nodejs_compat"]
+
+[vars]
+# 允許呼叫這個代理的網站（逗號分隔）。改成你的 GitHub Pages 網址。
+ALLOWED_ORIGINS = "https://YOUR-NAME.github.io,http://localhost:5173,http://127.0.0.1:5173"
+
+# API Key 不要寫在這裡！請用：npx wrangler secret put ANTHROPIC_API_KEY
