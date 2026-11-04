@@ -1,0 +1,81 @@
+<svg viewBox="0 0 1120 660" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="ov dov">
+<title id="ov">AI 助理全景系統圖</title>
+<desc id="dov">一張圖看懂打造 AI 助理的全部概念，依三大階段歸位：① LLM 會思考（基礎：Prompt、Context、Tool Use、MCP、Skill）；② RAG 有記憶（知識引擎：Hybrid Search、Chunking、Metadata、Data Pipeline）；③ Agent 會行動（自動化與維運：Self-Reflection、Guardrails、Evaluation、Observability、Feedback、Cache、Model Agnostic、Streaming）。底層平台為 Dify、Claude/Codex 與 MCP 協定。</desc>
+<style>
+text{font-family:'Segoe UI','Noto Sans TC','PingFang TC',sans-serif;}
+.h1{font-weight:700;fill:#1f2430;}
+.sub{fill:#8a92a6;}
+.colh{font-weight:700;}
+.chip{fill:#1f2430;}
+.cap{fill:#515767;}
+</style>
+<rect x="0" y="0" width="1120" height="660" rx="20" fill="#ffffff" stroke="#e6e6ea"/>
+
+<text x="40" y="50" class="h1" font-size="28">🤖 AI 助理全景系統圖</text>
+<text x="40" y="78" class="sub" font-size="14">The Whole Picture · 一張圖看懂全部 — 一個 AI 助理 ＝ ① 會思考 ＋ ② 有記憶 ＋ ③ 會行動</text>
+
+<rect x="58" y="100" width="300" height="52" rx="14" fill="#5b6cf0"/>
+<text x="208" y="132" text-anchor="middle" font-size="18" font-weight="700" fill="#fff">① LLM — 會思考</text>
+<text x="384" y="133" text-anchor="middle" font-size="22" fill="#b9bfcc">▸</text>
+<rect x="410" y="100" width="300" height="52" rx="14" fill="#11a37f"/>
+<text x="560" y="132" text-anchor="middle" font-size="18" font-weight="700" fill="#fff">② RAG — 有記憶</text>
+<text x="736" y="133" text-anchor="middle" font-size="22" fill="#b9bfcc">▸</text>
+<rect x="762" y="100" width="300" height="52" rx="14" fill="#e08234"/>
+<text x="912" y="132" text-anchor="middle" font-size="18" font-weight="700" fill="#fff">③ Agent — 會行動</text>
+
+<text x="52" y="186" class="colh" font-size="14" fill="#5b6cf0">🧠 大腦：基礎能力</text>
+<text x="404" y="186" class="colh" font-size="14" fill="#11a37f">📚 記憶：知識引擎</text>
+<text x="756" y="186" class="colh" font-size="14" fill="#e08234">🤖 行動：自動化＋上線維運</text>
+
+<g>
+<rect x="52" y="200" width="312" height="40" rx="10" fill="#5b6cf0" fill-opacity="0.08" stroke="#5b6cf0" stroke-opacity="0.35" stroke-width="1.2"/>
+<text x="74" y="225" class="chip" font-size="14">🧠 LLM 大型語言模型</text>
+<rect x="52" y="246" width="312" height="40" rx="10" fill="#5b6cf0" fill-opacity="0.08" stroke="#5b6cf0" stroke-opacity="0.35" stroke-width="1.2"/>
+<text x="74" y="271" class="chip" font-size="14">💬 Prompt 提示工程</text>
+<rect x="52" y="292" width="312" height="40" rx="10" fill="#5b6cf0" fill-opacity="0.08" stroke="#5b6cf0" stroke-opacity="0.35" stroke-width="1.2"/>
+<text x="74" y="317" class="chip" font-size="14">🧾 Context 脈絡與記憶</text>
+<rect x="52" y="338" width="312" height="40" rx="10" fill="#5b6cf0" fill-opacity="0.08" stroke="#5b6cf0" stroke-opacity="0.35" stroke-width="1.2"/>
+<text x="74" y="363" class="chip" font-size="14">🔌 Tool Use 工具呼叫</text>
+<rect x="52" y="384" width="312" height="40" rx="10" fill="#5b6cf0" fill-opacity="0.08" stroke="#5b6cf0" stroke-opacity="0.35" stroke-width="1.2"/>
+<text x="74" y="409" class="chip" font-size="14">🔗 MCP 模型情境協定</text>
+<rect x="52" y="430" width="312" height="40" rx="10" fill="#5b6cf0" fill-opacity="0.08" stroke="#5b6cf0" stroke-opacity="0.35" stroke-width="1.2"/>
+<text x="74" y="455" class="chip" font-size="14">🎓 Skill 技能</text>
+</g>
+
+<g>
+<rect x="404" y="200" width="312" height="40" rx="10" fill="#11a37f" fill-opacity="0.08" stroke="#11a37f" stroke-opacity="0.35" stroke-width="1.2"/>
+<text x="426" y="225" class="chip" font-size="14">📚 RAG 檢索增強生成</text>
+<rect x="404" y="246" width="312" height="40" rx="10" fill="#11a37f" fill-opacity="0.08" stroke="#11a37f" stroke-opacity="0.35" stroke-width="1.2"/>
+<text x="426" y="271" class="chip" font-size="14">🔎 Hybrid Search 混合搜尋</text>
+<rect x="404" y="292" width="312" height="40" rx="10" fill="#11a37f" fill-opacity="0.08" stroke="#11a37f" stroke-opacity="0.35" stroke-width="1.2"/>
+<text x="426" y="317" class="chip" font-size="14">✂️ Chunking 切塊策略</text>
+<rect x="404" y="338" width="312" height="40" rx="10" fill="#11a37f" fill-opacity="0.08" stroke="#11a37f" stroke-opacity="0.35" stroke-width="1.2"/>
+<text x="426" y="363" class="chip" font-size="14">🏷️ Metadata Filtering 過濾</text>
+<rect x="404" y="384" width="312" height="40" rx="10" fill="#11a37f" fill-opacity="0.08" stroke="#11a37f" stroke-opacity="0.35" stroke-width="1.2"/>
+<text x="426" y="409" class="chip" font-size="14">🔄 Data Pipeline 資料管線</text>
+<rect x="404" y="430" width="312" height="40" rx="10" fill="#11a37f" fill-opacity="0.05" stroke="#11a37f" stroke-opacity="0.25" stroke-width="1.2" stroke-dasharray="4 4"/>
+<text x="426" y="455" class="sub" font-size="13">＝ 把你的私人資料變成可查知識</text>
+</g>
+
+<g>
+<rect x="756" y="200" width="312" height="40" rx="10" fill="#e08234" fill-opacity="0.08" stroke="#e08234" stroke-opacity="0.35" stroke-width="1.2"/>
+<text x="778" y="225" class="chip" font-size="14">🤖 Agent 代理 ＋ Planning 規劃</text>
+<rect x="756" y="246" width="312" height="40" rx="10" fill="#e08234" fill-opacity="0.08" stroke="#e08234" stroke-opacity="0.35" stroke-width="1.2"/>
+<text x="778" y="271" class="chip" font-size="14">🔁 Self-Reflection 自我反思</text>
+<rect x="756" y="292" width="312" height="40" rx="10" fill="#e08234" fill-opacity="0.08" stroke="#e08234" stroke-opacity="0.35" stroke-width="1.2"/>
+<text x="778" y="317" class="chip" font-size="14">🛡️ Guardrails 護欄</text>
+<rect x="756" y="338" width="312" height="40" rx="10" fill="#e08234" fill-opacity="0.08" stroke="#e08234" stroke-opacity="0.35" stroke-width="1.2"/>
+<text x="778" y="363" class="chip" font-size="14">✅ Evaluation 評估</text>
+<rect x="756" y="384" width="312" height="40" rx="10" fill="#e08234" fill-opacity="0.08" stroke="#e08234" stroke-opacity="0.35" stroke-width="1.2"/>
+<text x="778" y="409" class="chip" font-size="14">🔭 Observability 可觀測性</text>
+<rect x="756" y="430" width="312" height="40" rx="10" fill="#e08234" fill-opacity="0.08" stroke="#e08234" stroke-opacity="0.35" stroke-width="1.2"/>
+<text x="778" y="455" class="chip" font-size="14">📈 Feedback Loop 回饋迴圈</text>
+<rect x="756" y="476" width="312" height="40" rx="10" fill="#e08234" fill-opacity="0.08" stroke="#e08234" stroke-opacity="0.35" stroke-width="1.2"/>
+<text x="778" y="501" class="chip" font-size="13">⚡ Cache · Model Agnostic · Streaming</text>
+</g>
+
+<rect x="40" y="538" width="1040" height="48" rx="14" fill="#eef1f5" stroke="#e4e7ec"/>
+<text x="560" y="567" text-anchor="middle" class="cap" font-size="14">🏗️ 底層平台與協定：Dify（打造應用）　·　Claude / Codex（模型）　·　MCP（AI 萬用插頭，隨插即用接工具與資料）</text>
+
+<text x="560" y="616" text-anchor="middle" class="sub" font-size="13">讀法：① 大腦會思考　→　② 接上你的私人記憶庫　→　③ 變成會自動做事、又穩又可控的助理（顏色＝三大階段）</text>
+</svg>

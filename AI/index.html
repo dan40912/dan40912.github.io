@@ -2,118 +2,119 @@
 <html lang="zh-Hant">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>AI 實驗室｜Jay Wu</title>
-    <meta name="description" content="吳新捷 Jay Wu 的 AI 專案總覽：我怎麼用 AI 拆解問題、設計多代理人工作流，並把想法做成能操作、有測試的產品原型。">
+    <meta name="description" content="吳新捷 Jay Wu 用 AI 做的九個作品。">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://dan40912.github.io/AI/">
     <meta property="og:title" content="AI 實驗室｜Jay Wu">
-    <meta property="og:description" content="我用 AI 做的 side project：從 PRD、多代理人設計到自動化測試，看我怎麼把想法做成能用的產品。">
+    <meta property="og:description" content="吳新捷 Jay Wu 用 AI 做的九個作品。">
     <meta property="og:image" content="https://dan40912.github.io/AI/Badminton-Sandbox/docs/screenshots/court-desktop.png">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="theme-color" content="#f5f7fa" media="(prefers-color-scheme: light)">
-    <meta name="theme-color" content="#0b1118" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#f5f5f7" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#0b0c0e" media="(prefers-color-scheme: dark)">
     <link href="../assets/img/favicon.png" rel="icon">
     <link href="../assets/img/apple-touch-icon.png" rel="apple-touch-icon">
     <style>
-        /* Tokens follow the homepage palette (--pm-primary / --pm-accent) so
-           this page reads as part of the same portfolio. */
         :root {
             --primary: #0f4c81;
-            --primary-strong: #0b3a62;
-            --accent: #08a87a;
-            /* Darker accent for small text: --accent alone is under 3:1 on --bg */
-            --accent-ink: #067a59;
-            --bg: #f5f7fa;
+            --bg: #f5f5f7;
             --surface: #ffffff;
-            --surface-soft: #eef4fb;
-            --text: #1d2a35;
-            --muted: #5d6c79;
-            --border: #d9e2ea;
-            --chrome: rgba(245, 247, 250, 0.72);
-            --shadow-card: 0 1px 2px rgba(15, 76, 129, 0.06), 0 8px 24px rgba(15, 76, 129, 0.07);
-            --shadow-raised: 0 2px 4px rgba(15, 76, 129, 0.08), 0 18px 40px rgba(15, 76, 129, 0.14);
+            --surface-soft: #e9e9ee;
+            --text: #1d1d1f;
+            --muted: #6e6e73;
+            --hairline: rgba(0, 0, 0, 0.08);
+            --chrome: rgba(245, 245, 247, 0.72);
+            --glass: rgba(255, 255, 255, 0.72);
+            --shadow-shot: 0 2px 6px rgba(0, 0, 0, 0.06), 0 24px 60px rgba(0, 0, 0, 0.14);
+            --on-primary: #ffffff;
             --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
-            --r-md: 18px;
-            --r-lg: 28px;
-            --r-pill: 999px;
             color-scheme: light;
+
+            /* The image is the page: as large as the viewport allows once the
+               header, caption and thumbnail strip have taken their share. */
+            --chrome-h: 56px;
+            --cap-h: 84px;
+            --strip-h: 104px;
+            --slide-w: min(100vw - 96px, 1280px, (100svh - var(--chrome-h) - var(--cap-h) - var(--strip-h) - 32px) * 1.6);
         }
 
         @media (prefers-color-scheme: dark) {
             :root:not([data-theme="light"]) {
-                --primary: #6fb1ec;
-                --primary-strong: #9ccbf5;
-                --accent: #3fd3a6;
-                --accent-ink: #3fd3a6;
-                --bg: #0b1118;
-                --surface: #131c26;
-                --surface-soft: #18232f;
-                --text: #e8eef4;
-                --muted: #9aabba;
-                --border: #253342;
-                --chrome: rgba(11, 17, 24, 0.7);
-                --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.4), 0 8px 24px rgba(0, 0, 0, 0.3);
-                --shadow-raised: 0 2px 4px rgba(0, 0, 0, 0.5), 0 18px 40px rgba(0, 0, 0, 0.45);
+                --primary: #8fc2f2;
+                --bg: #0b0c0e;
+                --surface: #17181b;
+                --surface-soft: #232428;
+                --text: #f5f5f7;
+                --muted: #a1a1a6;
+                --hairline: rgba(255, 255, 255, 0.1);
+                --chrome: rgba(11, 12, 14, 0.7);
+                --glass: rgba(40, 41, 45, 0.72);
+                --shadow-shot: 0 2px 6px rgba(0, 0, 0, 0.5), 0 24px 60px rgba(0, 0, 0, 0.55);
+                --on-primary: #08121c;
                 color-scheme: dark;
             }
         }
 
         :root[data-theme="dark"] {
-            --primary: #6fb1ec;
-            --primary-strong: #9ccbf5;
-            --accent: #3fd3a6;
-            --accent-ink: #3fd3a6;
-            --bg: #0b1118;
-            --surface: #131c26;
-            --surface-soft: #18232f;
-            --text: #e8eef4;
-            --muted: #9aabba;
-            --border: #253342;
-            --chrome: rgba(11, 17, 24, 0.7);
-            --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.4), 0 8px 24px rgba(0, 0, 0, 0.3);
-            --shadow-raised: 0 2px 4px rgba(0, 0, 0, 0.5), 0 18px 40px rgba(0, 0, 0, 0.45);
+            --primary: #8fc2f2;
+            --bg: #0b0c0e;
+            --surface: #17181b;
+            --surface-soft: #232428;
+            --text: #f5f5f7;
+            --muted: #a1a1a6;
+            --hairline: rgba(255, 255, 255, 0.1);
+            --chrome: rgba(11, 12, 14, 0.7);
+            --glass: rgba(40, 41, 45, 0.72);
+            --shadow-shot: 0 2px 6px rgba(0, 0, 0, 0.5), 0 24px 60px rgba(0, 0, 0, 0.55);
+            --on-primary: #08121c;
             color-scheme: dark;
         }
 
         *, *::before, *::after { box-sizing: border-box; }
 
-        html { scroll-behavior: smooth; scroll-padding-top: 72px; }
+        html:has(dialog[open]) { overflow: hidden; }
 
         body {
             margin: 0;
+            min-height: 100svh;
+            display: flex;
+            flex-direction: column;
             background: var(--bg);
             color: var(--text);
-            font: 100%/1.65 -apple-system, BlinkMacSystemFont, "SF Pro Text", "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", system-ui, sans-serif;
+            font: 100%/1.5 -apple-system, BlinkMacSystemFont, "SF Pro Text", "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", system-ui, sans-serif;
             -webkit-font-smoothing: antialiased;
             text-rendering: optimizeLegibility;
         }
 
         a { color: inherit; text-decoration: none; }
-        img { display: block; max-width: 100%; }
+        img { display: block; max-width: 100%; -webkit-user-drag: none; }
+        button { font: inherit; color: inherit; border: 0; background: none; padding: 0; cursor: pointer; }
 
-        .wrap { width: min(1120px, 100% - 32px); margin-inline: auto; }
-
-        /* ---------- Translucent chrome: content scrolls underneath ---------- */
-        .chrome {
-            position: sticky;
-            top: 0;
-            z-index: 10;
-            background: var(--chrome);
-            backdrop-filter: blur(20px) saturate(180%);
-            -webkit-backdrop-filter: blur(20px) saturate(180%);
-            transition: box-shadow 0.3s var(--ease-out);
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            overflow: hidden;
+            clip-path: inset(50%);
+            white-space: nowrap;
         }
-        .chrome.is-scrolled { box-shadow: 0 1px 0 var(--border); }
 
-        .chrome .wrap {
+        a:focus-visible, button:focus-visible {
+            outline: 3px solid color-mix(in srgb, var(--primary) 60%, transparent);
+            outline-offset: 2px;
+        }
+
+        /* ---------- Chrome ---------- */
+        .chrome {
+            flex: none;
             display: flex;
             align-items: center;
             justify-content: space-between;
             gap: 16px;
-            height: 56px;
+            height: var(--chrome-h);
+            padding-inline: 16px 20px;
         }
-
         .brand { display: flex; align-items: center; gap: 10px; font-weight: 600; letter-spacing: -0.01em; }
         .brand .back {
             display: grid;
@@ -122,681 +123,800 @@
             height: 32px;
             border-radius: 50%;
             background: var(--surface-soft);
-            color: var(--primary);
+            transition: transform 0.1s ease-out;
         }
-        .chrome nav { display: flex; gap: 4px; }
-        .chrome nav a {
-            padding: 6px 12px;
-            border-radius: var(--r-pill);
-            font-size: 0.875rem;
-            color: var(--muted);
-            transition: color 0.2s, background-color 0.2s;
-        }
-        .chrome nav a:hover { color: var(--text); background: var(--surface-soft); }
+        .brand:active .back { transform: scale(0.92); }
+        .chrome-right { display: flex; align-items: center; gap: 16px; font-size: 0.875rem; color: var(--muted); }
+        .count { font-variant-numeric: tabular-nums; }
+        .chrome-right a { color: var(--text); font-weight: 500; }
 
-        /* ---------- Hero ---------- */
-        .hero { padding: clamp(56px, 10vw, 120px) 0 clamp(40px, 6vw, 72px); }
+        /* ---------- Stage ---------- */
+        .stage { position: relative; flex: 1 0 auto; display: flex; flex-direction: column; justify-content: center; overflow: hidden; }
 
-        .eyebrow {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            margin: 0 0 20px;
-            font-size: 0.875rem;
-            font-weight: 600;
-            letter-spacing: 0.02em;
-            color: var(--accent-ink);
-        }
-        .eyebrow::before {
-            content: "";
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: currentColor;
-        }
-
-        h1 {
-            margin: 0;
-            max-width: 15em;
-            font-size: clamp(2.25rem, 6vw, 4.25rem);
-            line-height: 1.1;
-            letter-spacing: -0.03em;
-            font-weight: 700;
-        }
-        h1 em {
-            font-style: normal;
-            background: linear-gradient(100deg, var(--primary), var(--accent));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-
-        .lede {
-            max-width: 36em;
-            margin: 24px 0 0;
-            font-size: clamp(1.0625rem, 1.6vw, 1.25rem);
-            line-height: 1.7;
-            color: var(--muted);
-        }
-
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(4, minmax(0, 1fr));
-            gap: 12px;
-            margin: 48px 0 0;
-            padding: 0;
-            list-style: none;
-        }
-        .stats li {
-            padding: 20px;
-            border-radius: var(--r-md);
-            background: var(--surface);
-            box-shadow: var(--shadow-card);
-        }
-        .stats strong {
-            display: block;
-            font-size: clamp(1.75rem, 3.4vw, 2.5rem);
-            line-height: 1.1;
-            letter-spacing: -0.03em;
-            font-variant-numeric: tabular-nums;
-            color: var(--primary);
-        }
-        .stats span { font-size: 0.875rem; color: var(--muted); }
-
-        /* ---------- Sections ---------- */
-        section { padding: clamp(48px, 8vw, 96px) 0; }
-
-        .section-head { max-width: 40em; margin-bottom: 40px; }
-        .section-head .kicker {
-            margin: 0 0 8px;
-            font-size: 0.8125rem;
-            font-weight: 600;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            color: var(--accent-ink);
-        }
-        h2 {
-            margin: 0;
-            font-size: clamp(1.75rem, 3.6vw, 2.75rem);
-            line-height: 1.15;
-            letter-spacing: -0.025em;
-        }
-        .section-head p:last-child { margin: 14px 0 0; color: var(--muted); font-size: 1.0625rem; }
-
-        /* ---------- Method: four steps ---------- */
-        .steps {
-            display: grid;
-            grid-template-columns: repeat(4, minmax(0, 1fr));
-            gap: 16px;
-            margin: 0;
-            padding: 0;
-            list-style: none;
-            counter-reset: step;
-        }
-        .steps li {
-            position: relative;
-            padding: 28px 24px 24px;
-            border-radius: var(--r-md);
-            background: var(--surface);
-            box-shadow: var(--shadow-card);
-            counter-increment: step;
-        }
-        .steps li::before {
-            content: "0" counter(step);
-            display: block;
-            margin-bottom: 18px;
-            font-size: 0.8125rem;
-            font-weight: 700;
-            letter-spacing: 0.06em;
-            color: var(--accent-ink);
-            font-variant-numeric: tabular-nums;
-        }
-        .steps h3 { margin: 0 0 8px; font-size: 1.1875rem; letter-spacing: -0.01em; }
-        .steps p { margin: 0; font-size: 0.9375rem; color: var(--muted); }
-        .steps .proof {
-            display: inline-block;
-            margin-top: 16px;
-            font-size: 0.8125rem;
-            font-weight: 600;
-            color: var(--primary);
-        }
-        .steps .proof::after { content: " →"; }
-
-        /* ---------- Filter (segmented control) ---------- */
-        .filter {
-            display: inline-flex;
-            flex-wrap: wrap;
-            gap: 4px;
-            margin-bottom: 28px;
-            padding: 4px;
-            border-radius: var(--r-pill);
-            background: var(--surface-soft);
-        }
-        .filter button {
-            appearance: none;
-            border: 0;
-            padding: 8px 16px;
-            border-radius: var(--r-pill);
-            background: transparent;
-            color: var(--muted);
-            font: inherit;
-            font-size: 0.875rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: background-color 0.25s var(--ease-out), color 0.25s var(--ease-out), box-shadow 0.25s var(--ease-out), transform 0.1s ease-out;
-        }
-        .filter button[aria-pressed="true"] {
-            background: var(--surface);
-            color: var(--text);
-            box-shadow: 0 1px 3px rgba(15, 30, 50, 0.12);
-        }
-
-        /* ---------- Project cards ---------- */
-        .projects {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 20px;
-        }
-
-        .card {
+        .track {
             display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            border-radius: var(--r-lg);
-            background: var(--surface);
-            box-shadow: var(--shadow-card);
-            transition: transform 0.35s var(--ease-out), box-shadow 0.35s var(--ease-out), opacity 0.3s var(--ease-out);
+            gap: 24px;
+            /* Vertical padding so the shadows aren't clipped by the scroller */
+            padding: 8px max(16px, (100% - var(--slide-w)) / 2) 0;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scrollbar-width: none;
+            overscroll-behavior-x: contain;
+            cursor: grab;
         }
-        @media (hover: hover) {
-            .card:hover { transform: translateY(-4px); box-shadow: var(--shadow-raised); }
-        }
-        .card.is-leaving { opacity: 0; transform: scale(0.98); }
-        .card.featured { grid-column: 1 / -1; display: grid; grid-template-columns: 1.15fr 1fr; }
-        /* After .featured, or its display: grid keeps a filtered-out card on screen */
-        .card[hidden] { display: none; }
+        .track::-webkit-scrollbar { display: none; }
+        .track.is-dragging { cursor: grabbing; user-select: none; }
+        .track.is-dragging * { pointer-events: none; }
 
-        /* Images are absolutely placed: a percentage height doesn't resolve inside
-           this aspect-ratio box, which let the square PWA icon overflow and crop. */
-        .media {
+        .slide {
+            flex: none;
+            width: var(--slide-w);
+            scroll-snap-align: center;
+            /* --d is the distance from centre in slides, written on scroll */
+            --d: 1;
+        }
+
+        .shot {
+            display: block;
             position: relative;
-            aspect-ratio: 16 / 9;
-            background: var(--surface-soft);
+            width: 100%;
+            aspect-ratio: 16 / 10;
             overflow: hidden;
+            border-radius: 20px;
+            background: var(--surface);
+            box-shadow: var(--shadow-shot);
+            opacity: calc(1 - 0.5 * var(--d));
+            transform: scale(calc(1 - 0.05 * var(--d)));
+            cursor: inherit;
         }
-        .media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-        .media.contain img { inset: 15%; width: 70%; height: 70%; object-fit: contain; }
-        .featured .media { aspect-ratio: auto; min-height: 100%; }
-        .featured .media img { object-position: left top; }
-
-        .body { display: flex; flex-direction: column; flex: 1; padding: 28px; }
-
-        .tag {
-            align-self: flex-start;
-            margin-bottom: 12px;
-            padding: 4px 10px;
-            border-radius: var(--r-pill);
-            background: color-mix(in srgb, var(--accent) 14%, transparent);
-            color: var(--accent-ink);
-            font-size: 0.75rem;
-            font-weight: 600;
-            letter-spacing: 0.02em;
+        .shot::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            box-shadow: inset 0 0 0 1px var(--hairline);
+            pointer-events: none;
         }
-        .card h3 { margin: 0; font-size: 1.5rem; line-height: 1.25; letter-spacing: -0.02em; }
-        .featured h3 { font-size: clamp(1.625rem, 2.6vw, 2rem); }
-        .pitch { margin: 10px 0 0; color: var(--muted); }
+        .shot picture { display: block; width: 100%; height: 100%; }
+        .shot img { width: 100%; height: 100%; object-fit: cover; object-position: left top; }
+        .shot.paper { background: #fff; }
+        .shot.paper img { object-fit: contain; object-position: center; padding: 3%; }
+        .shot:active img { transform: scale(0.985); }
+        .shot img { transition: transform 0.15s ease-out; }
 
-        /* Thinking / Tech / Delivery: the three things this page sets out to show */
-        .facets { display: grid; gap: 14px; margin: 22px 0 0; }
-        .facets div { display: grid; grid-template-columns: 4.5em 1fr; gap: 12px; align-items: baseline; }
-        .facets dt {
-            font-size: 0.75rem;
-            font-weight: 700;
-            letter-spacing: 0.06em;
-            color: var(--primary);
+        .cap {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            min-height: var(--cap-h);
+            padding: 14px 4px 4px;
+            opacity: calc(1 - var(--d));
         }
-        .facets dd { margin: 0; font-size: 0.9375rem; line-height: 1.6; }
+        .cap h2 { margin: 0; font-size: clamp(1.25rem, 2.2vw, 1.625rem); line-height: 1.2; letter-spacing: -0.02em; }
+        .cap p { margin: 4px 0 0; color: var(--muted); }
 
-        .actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: auto; padding-top: 24px; }
-        .btn {
+        .pill {
+            flex: none;
             display: inline-flex;
             align-items: center;
-            gap: 6px;
-            padding: 10px 18px;
-            border-radius: var(--r-pill);
+            padding: 9px 18px;
+            border-radius: 999px;
+            background: var(--surface-soft);
             font-size: 0.9375rem;
             font-weight: 600;
-            transition: transform 0.1s ease-out, background-color 0.2s, color 0.2s;
+            white-space: nowrap;
+            transition: transform 0.1s ease-out, background-color 0.2s;
         }
-        .btn.primary { background: var(--primary); color: #fff; }
-        :root[data-theme="dark"] .btn.primary { color: #08121c; }
-        @media (prefers-color-scheme: dark) {
-            :root:not([data-theme="light"]) .btn.primary { color: #08121c; }
+        .pill.solid { background: var(--primary); color: var(--on-primary); }
+        .pill:active { transform: scale(0.96); }
+
+        .arrow {
+            position: absolute;
+            top: calc(50% - var(--cap-h) / 2 - 22px);
+            z-index: 2;
+            display: none;
+            place-items: center;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: var(--glass);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.14);
+            transition: opacity 0.2s, transform 0.1s ease-out;
         }
-        .btn.primary:hover { background: var(--primary-strong); }
-        .btn.ghost { background: var(--surface-soft); color: var(--primary); }
-        .btn.ghost:hover { background: color-mix(in srgb, var(--primary) 14%, var(--surface-soft)); }
-
-        /* Feedback lives on the press, and it's instant */
-        .btn:active, .filter button:active, .steps .proof:active { transform: scale(0.96); transition-duration: 0.08s; }
-        .card:active { transform: scale(0.99); transition-duration: 0.1s; }
-
-        a:focus-visible, button:focus-visible {
-            outline: 3px solid color-mix(in srgb, var(--primary) 55%, transparent);
-            outline-offset: 2px;
+        .arrow:active { transform: scale(0.92); }
+        .arrow[disabled] { opacity: 0; pointer-events: none; }
+        .arrow.prev { left: 16px; }
+        .arrow.next { right: 16px; }
+        @media (hover: hover) and (pointer: fine) {
+            .arrow { display: grid; }
         }
 
-        /* ---------- Principles ---------- */
-        .principles {
-            display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
-            gap: 16px;
-            margin: 0;
+        /* ---------- Small windows: everything not on stage ---------- */
+        .strip {
+            flex: none;
+            display: flex;
+            gap: 10px;
+            height: var(--strip-h);
+            padding: 6px 16px 14px;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+        .strip::-webkit-scrollbar { display: none; }
+        /* margin:auto centres when it fits, and still scrolls from the start when it doesn't */
+        .strip > :first-child { margin-left: auto; }
+        .strip > :last-child { margin-right: auto; }
+
+        .thumb {
+            flex: none;
+            width: 112px;
+            text-align: left;
+            transition: transform 0.1s ease-out;
+        }
+        .thumb:active { transform: scale(0.96); }
+        .thumb span:first-child {
+            display: block;
+            position: relative;
+            aspect-ratio: 16 / 10;
+            overflow: hidden;
+            border-radius: 8px;
+            background: var(--surface);
+            box-shadow: 0 0 0 1px var(--hairline);
+            transition: box-shadow 0.2s, opacity 0.2s;
+        }
+        .thumb.paper span:first-child { background: #fff; }
+        .thumb img { width: 100%; height: 100%; object-fit: cover; object-position: left top; }
+        .thumb.paper img { object-fit: contain; }
+        .thumb .name {
+            display: block;
+            margin-top: 4px;
+            overflow: hidden;
+            font-size: 0.6875rem;
+            letter-spacing: 0.01em;
+            color: var(--muted);
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+        .thumb[aria-current="true"] span:first-child { box-shadow: 0 0 0 2px var(--primary); }
+        .thumb[aria-current="true"] .name { color: var(--text); font-weight: 600; }
+
+        /* ---------- Detail sheet ---------- */
+        dialog {
+            width: min(960px, 100vw - 32px);
+            max-width: none;
+            max-height: calc(100svh - 48px);
             padding: 0;
-            list-style: none;
+            overflow: hidden;
+            border: 0;
+            border-radius: 24px;
+            background: var(--surface);
+            color: var(--text);
+            box-shadow: 0 30px 90px rgba(0, 0, 0, 0.4);
+            transform-origin: 0 0;
         }
-        .principles li { padding: 24px 0 0; border-top: 2px solid var(--border); }
-        .principles h3 { margin: 0 0 8px; font-size: 1.125rem; letter-spacing: -0.01em; }
-        .principles p { margin: 0; font-size: 0.9375rem; color: var(--muted); }
-
-        /* ---------- Closing ---------- */
-        .closing {
-            margin-bottom: clamp(48px, 8vw, 96px);
-            padding: clamp(36px, 6vw, 64px);
-            border-radius: var(--r-lg);
-            background: linear-gradient(135deg, var(--primary), color-mix(in srgb, var(--primary) 55%, var(--accent)));
-            color: #fff;
+        dialog[open] { display: flex; flex-direction: column; }
+        dialog::backdrop {
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            opacity: 1;
+            transition: opacity 0.3s;
         }
-        .closing h2 { max-width: 18em; }
-        .closing p { max-width: 34em; margin: 14px 0 0; opacity: 0.86; }
-        .closing .actions { padding-top: 28px; }
-        .closing .btn.primary { background: #fff; color: #0f4c81; }
-        .closing .btn.ghost { background: rgba(255, 255, 255, 0.16); color: #fff; }
-        .closing .btn.ghost:hover { background: rgba(255, 255, 255, 0.26); }
+        @starting-style { dialog[open]::backdrop { opacity: 0; } }
+        dialog.is-closing::backdrop { opacity: 0; }
 
-        footer { padding: 0 0 40px; font-size: 0.8125rem; color: var(--muted); }
+        .sheet-body { overflow-y: auto; overscroll-behavior: contain; }
 
-        /* ---------- Entrance: a short rise, once ---------- */
-        .reveal { opacity: 0; transform: translateY(16px); transition: opacity 0.6s var(--ease-out), transform 0.6s var(--ease-out); }
-        .reveal.is-visible { opacity: 1; transform: none; }
+        .close {
+            position: absolute;
+            top: 14px;
+            right: 14px;
+            z-index: 2;
+            display: grid;
+            place-items: center;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--glass);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            box-shadow: 0 1px 6px rgba(0, 0, 0, 0.2);
+            transition: transform 0.1s ease-out;
+        }
+        .close:active { transform: scale(0.92); }
+
+        .d-shots {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scrollbar-width: none;
+            background: var(--surface-soft);
+        }
+        .d-shots::-webkit-scrollbar { display: none; }
+        .d-shots img {
+            flex: none;
+            width: 100%;
+            aspect-ratio: 16 / 10;
+            /* Leaves the title and links on screen without scrolling the sheet */
+            max-height: 56svh;
+            object-fit: cover;
+            object-position: left top;
+            scroll-snap-align: center;
+        }
+        /* With more than one image, let the next one peek so it's clearly swipeable */
+        .d-shots.many img { width: 90%; }
+        .d-shots img.paper { background: #fff; object-fit: contain; object-position: center; padding: 2%; }
+
+        .d-text { padding: 24px 28px 28px; }
+        .d-text h2 { margin: 0; font-size: 1.625rem; line-height: 1.2; letter-spacing: -0.02em; }
+        .d-text .meta { margin: 6px 0 0; font-size: 0.875rem; color: var(--muted); }
+        .d-text p.body { max-width: 38em; margin: 14px 0 0; font-size: 1.0625rem; line-height: 1.65; }
+        .d-text .note { margin: 10px 0 0; font-size: 0.8125rem; color: var(--muted); }
+        .d-links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
 
         /* ---------- Responsive ---------- */
-        @media (max-width: 960px) {
-            .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-            .card.featured { grid-template-columns: 1fr; }
-            .featured .media { aspect-ratio: 16 / 10; min-height: 0; }
-        }
         @media (max-width: 720px) {
-            .chrome nav { display: none; }
-            .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-            .steps, .projects, .principles { grid-template-columns: 1fr; }
-            .body { padding: 22px; }
+            /* Phones get portrait screenshots, sized by whichever side runs out first */
+            :root {
+                --cap-h: 96px;
+                --strip-h: 88px;
+                --slide-w: min(100vw - 40px, (100svh - var(--chrome-h) - var(--cap-h) - var(--strip-h) - 16px) * 0.625);
+            }
+            .track { gap: 12px; }
+            .shot { aspect-ratio: 5 / 8; }
+            .m-bottom .shot img { object-position: left bottom; }
+            /* Diagrams swap to portrait crops here, so they fill the frame like the rest */
+            .shot.paper img { object-fit: cover; padding: 0; }
+            .cap { align-items: flex-start; }
+            .thumb { width: 88px; }
+            dialog {
+                width: 100vw;
+                max-height: calc(100svh - 32px);
+                margin: auto 0 0;
+                border-radius: 24px 24px 0 0;
+            }
+            .d-text { padding: 20px 20px calc(24px + env(safe-area-inset-bottom)); }
         }
 
         /* ---------- Accessibility preferences ---------- */
         @media (prefers-reduced-motion: reduce) {
-            html { scroll-behavior: auto; }
-            .reveal { transform: none; transition: opacity 0.2s ease; }
-            .card, .btn, .filter button { transition: opacity 0.2s ease, background-color 0.2s, color 0.2s; }
-            .card:hover, .card:active, .btn:active, .filter button:active { transform: none; }
-            .card.is-leaving { transform: none; }
+            .shot { transform: none; }
+            .shot img, .pill, .thumb, .arrow, .close, .brand .back { transition: none; }
+            .shot:active img, .pill:active, .thumb:active, .arrow:active, .close:active { transform: none; }
         }
         @media (prefers-reduced-transparency: reduce) {
-            .chrome { background: var(--bg); backdrop-filter: none; -webkit-backdrop-filter: none; }
+            .arrow, .close { background: var(--surface); backdrop-filter: none; -webkit-backdrop-filter: none; }
+            dialog::backdrop { backdrop-filter: none; -webkit-backdrop-filter: none; background: rgba(0, 0, 0, 0.75); }
         }
         @media (prefers-contrast: more) {
-            .chrome { background: var(--bg); backdrop-filter: none; -webkit-backdrop-filter: none; box-shadow: 0 1px 0 var(--text); }
-            .card, .stats li, .steps li { box-shadow: none; border: 1px solid var(--text); }
-            .lede, .pitch, .steps p, .principles p { color: var(--text); }
+            .shot::after, .thumb span:first-child { box-shadow: inset 0 0 0 1px var(--text); }
+            .cap p, .thumb .name, .d-text .meta, .d-text .note, .chrome-right { color: var(--text); }
         }
     </style>
 </head>
 
 <body>
-    <header class="chrome" id="chrome">
-        <div class="wrap">
-            <a class="brand" href="../index.html" aria-label="回到 Jay Wu 作品集首頁">
-                <span class="back" aria-hidden="true">
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 3 5 8l5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                </span>
-                <span>Jay Wu · AI 實驗室</span>
-            </a>
-            <nav aria-label="頁面區塊">
-                <a href="#method">方法</a>
-                <a href="#projects">專案</a>
-                <a href="#principles">原則</a>
-            </nav>
+    <header class="chrome">
+        <a class="brand" href="../index.html" aria-label="回到 Jay Wu 作品集首頁">
+            <span class="back" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 3 5 8l5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+            <span>Jay Wu · AI 實驗室</span>
+        </a>
+        <div class="chrome-right">
+            <span class="count" id="count" aria-live="polite">1 / 9</span>
+            <a href="mailto:dan40912@gmail.com">寫信給我</a>
         </div>
     </header>
 
-    <main>
-        <div class="hero">
-            <div class="wrap">
-                <p class="eyebrow">AI 實驗室 · /AI</p>
-                <h1>我用 AI 把想法，<em>做成能點的東西。</em></h1>
-                <p class="lede">我是 AI Chatbot 產品經理。工作之外，我把 AI 當成一整個團隊來用：它幫我研究、扮演不同角色互相挑戰，也一起寫程式和測試。這頁整理了九個專案，以及我做這些專案的方法。</p>
-                <ul class="stats" aria-label="專案數據">
-                    <li><strong>9</strong><span>上線或公開的專案</span></li>
-                    <li><strong>39</strong><span>設計過的 AI 代理人角色</span></li>
-                    <li><strong>221</strong><span>自動化測試守住核心邏輯</span></li>
-                    <li><strong>1,000+</strong><span>回測過的交易規則組合</span></li>
-                </ul>
-            </div>
-        </div>
+    <main class="stage">
+        <h1 class="sr-only">Jay Wu 的 AI 作品</h1>
 
-        <section id="method" aria-labelledby="method-title">
-            <div class="wrap">
-                <div class="section-head reveal">
-                    <p class="kicker">How I work</p>
-                    <h2 id="method-title">四個步驟，從問題到上線</h2>
-                    <p>AI 很會產生答案，所以我把力氣花在問對問題、設下限制，以及驗證它的產出。</p>
+        <button class="arrow prev" type="button" id="prev" aria-label="上一個作品">
+            <svg width="18" height="18" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M10 3 5 8l5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <button class="arrow next" type="button" id="next" aria-label="下一個作品">
+            <svg width="18" height="18" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M6 3l5 5-5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+
+        <div class="track" id="track" role="region" aria-label="作品">
+            <article class="slide" id="p-startpray" data-short="Start Pray">
+                <button class="shot" type="button" aria-label="Start Pray，看更多">
+                    <picture><source media="(max-width: 720px)" srcset="assets/gallery/m/startpray.jpg"><img src="assets/gallery/startpray-map.jpg" alt="全球禱告室：地圖上標示各地的禱告光點" decoding="async"></picture>
+                </button>
+                <div class="cap">
+                    <div><h2>Start Pray</h2><p>用自己的聲音，為別人留一段禱告。</p></div>
+                    <button class="pill more" type="button">看更多</button>
                 </div>
-                <ol class="steps">
-                    <li class="reveal">
-                        <h3>先寫清楚問題</h3>
-                        <p>動手前先寫 PRD：誰在用、卡在哪、怎樣才算成功。AI 幫我補齊情境和例外，判斷由我來做。</p>
-                        <a class="proof" href="#p-badminton">排場工具的 PRD</a>
-                    </li>
-                    <li class="reveal">
-                        <h3>拆成互相挑戰的角色</h3>
-                        <p>不用一個萬能 prompt，而是把任務拆給不同視角的代理人，再加一位專門唱反調、一位專門防捏造的角色。</p>
-                        <a class="proof" href="#p-resume">Resume Mentor 的 30 位顧問</a>
-                    </li>
-                    <li class="reveal">
-                        <h3>一個週末做出原型</h3>
-                        <p>與其停在文件，不如直接做出能操作的版本。和 AI 結對寫程式，讓想法在真實的畫面上被檢驗。</p>
-                        <a class="proof" href="#p-sandbox">羽球模擬器</a>
-                    </li>
-                    <li class="reveal">
-                        <h3>用測試和數據驗證</h3>
-                        <p>「看起來能跑」不算完成。程式寫成自動化測試；判斷先寫好檢查標準再看結果，沒通過就誠實說沒通過。</p>
-                        <a class="proof" href="#p-nq">NQ 交易研究</a>
-                    </li>
-                </ol>
-            </div>
-        </section>
+                <template>
+                    <div class="d-shots many">
+                        <img src="assets/gallery/startpray-map.jpg" alt="全球禱告室地圖">
+                        <img src="assets/gallery/startpray-wall.jpg" alt="禱告牆首頁：此刻，有人正等待著你的一句代禱">
+                    </div>
+                    <div class="d-text">
+                        <h2>Start Pray</h2>
+                        <p class="meta">已上線 · 開源</p>
+                        <p class="body">群組裡的代禱，常常只換來一排「阿們」。這裡可以錄一段語音，讓對方一次次聽。可以匿名、可以私密，也有檢舉機制。</p>
+                        <div class="d-links">
+                            <a class="pill solid" href="https://startpray.online/" target="_blank" rel="noopener">開啟網站</a>
+                            <a class="pill" href="https://github.com/dan40912/Start-Pray" target="_blank" rel="noopener">原始碼</a>
+                        </div>
+                    </div>
+                </template>
+            </article>
 
-        <section id="projects" aria-labelledby="projects-title">
-            <div class="wrap">
-                <div class="section-head reveal">
-                    <p class="kicker">Projects</p>
-                    <h2 id="projects-title">全部專案</h2>
-                    <p>每個專案都從三個面向說明：我怎麼想、用了什麼技術、最後交付了什麼。</p>
+            <article class="slide m-bottom" id="p-pitch" data-short="Elevator Pitch">
+                <button class="shot" type="button" aria-label="Elevator Pitch，看更多">
+                    <picture><source media="(max-width: 720px)" srcset="Elevator-Pitch/decks/straight-line-cover-9x16.png"><img src="Elevator-Pitch/decks/straight-line-cover-16x9.png" alt="短講封面：客戶說「我要想想」時，他真正在想什麼？" loading="lazy" decoding="async"></picture>
+                </button>
+                <div class="cap">
+                    <div><h2>Elevator Pitch</h2><p>貼上筆記和照片，生成 60 秒短講。</p></div>
+                    <button class="pill more" type="button">看更多</button>
                 </div>
+                <template>
+                    <div class="d-shots many">
+                        <img src="Elevator-Pitch/decks/straight-line-cover-16x9.png" alt="短講封面範例">
+                        <img src="assets/gallery/pitch-tool.png" alt="短講產生器的輸入畫面">
+                    </div>
+                    <div class="d-text">
+                        <h2>Elevator Pitch</h2>
+                        <p class="meta">Claude · Cloudflare Worker</p>
+                        <p class="body">每頁超過 100 字就不能匯出。離線模式只重組原文的句子，不會多出原文沒有的數字。成品是一個 HTML 檔，沒網路也能播。</p>
+                        <div class="d-links">
+                            <a class="pill solid" href="Elevator-Pitch/">開始做</a>
+                            <a class="pill" href="Elevator-Pitch/decks/straight-line-selling.html">看範例</a>
+                        </div>
+                    </div>
+                </template>
+            </article>
 
-                <div class="filter" role="group" aria-label="篩選專案類型">
-                    <button type="button" data-filter="all" aria-pressed="true">全部</button>
-                    <button type="button" data-filter="prototype" aria-pressed="false">產品與原型</button>
-                    <button type="button" data-filter="ai" aria-pressed="false">AI 應用</button>
-                    <button type="button" data-filter="research" aria-pressed="false">研究與知識</button>
+            <article class="slide" id="p-resume" data-short="Resume Mentor">
+                <button class="shot" type="button" aria-label="Resume Mentor，看更多">
+                    <picture><source media="(max-width: 720px)" srcset="assets/gallery/m/resume.jpg"><img src="assets/gallery/resume-advisors.jpg" alt="顧問牆：招募專員、用人主管、ATS、證據官、毒舌挑刺者" loading="lazy" decoding="async"></picture>
+                </button>
+                <div class="cap">
+                    <div><h2>Resume Mentor</h2><p>37 位 AI 顧問，先審你的履歷。</p></div>
+                    <button class="pill more" type="button">看更多</button>
                 </div>
+                <template>
+                    <div class="d-shots many">
+                        <img src="assets/gallery/resume-advisors.jpg" alt="顧問牆">
+                        <img src="assets/gallery/resume-hero.png" alt="Resume Mentor 首頁：問對問題，AI 才幫得了你的履歷">
+                    </div>
+                    <div class="d-text">
+                        <h2>Resume Mentor</h2>
+                        <p class="meta">37 個 AI 角色</p>
+                        <p class="body">招募者、用人主管、ATS 各審一次，最後組成一段能貼給任何 AI 的提示詞。推薦信那組有一位專門擋捏造：沒有來源的數字不准寫進去。</p>
+                        <div class="d-links">
+                            <a class="pill solid" href="Resume-Mentor/">開啟</a>
+                            <a class="pill" href="https://github.com/dan40912/Resume-Mentor" target="_blank" rel="noopener">原始碼</a>
+                        </div>
+                    </div>
+                </template>
+            </article>
 
-                <div class="projects" id="project-list">
-                    <article class="card featured reveal" id="p-sandbox" data-kind="prototype">
-                        <div class="media">
-                            <img src="Badminton-Sandbox/docs/screenshots/court-desktop.png" alt="羽球模擬器的戰術球場：四位球員的雙打站位與球路軌跡" loading="lazy" decoding="async">
-                        </div>
-                        <div class="body">
-                            <span class="tag">產品原型 · 精選</span>
-                            <h3>羽球模擬器</h3>
-                            <p class="pitch">把腦中的雙打戰術一拍一拍打出來，再回看是哪一拍改變了局面。</p>
-                            <dl class="facets">
-                                <div><dt>思考</dt><dd>打球的人常說「那球應該打直線」，卻沒辦法驗證。我想做一個能重來、能比較的戰術沙盤。</dd></div>
-                                <div><dt>技術</dt><dd>純前端模擬引擎：16 位角色、13 種球路、能力雷達與賽後分析，55 項自動化測試。</dd></div>
-                                <div><dt>交付</dt><dd>公開上線，桌機和手機都有專屬介面，並開源完整程式碼。</dd></div>
-                            </dl>
-                            <div class="actions">
-                                <a class="btn primary" href="Badminton-Sandbox/">開始體驗</a>
-                                <a class="btn ghost" href="https://github.com/dan40912/Badminton-Sandbox" target="_blank" rel="noopener">原始碼</a>
-                            </div>
-                        </div>
-                    </article>
-
-                    <article class="card reveal" id="p-pitch" data-kind="ai">
-                        <div class="media">
-                            <img src="Elevator-Pitch/decks/straight-line-cover-16x9.png" alt="電梯簡報產生器匯出的封面範例" loading="lazy" decoding="async">
-                        </div>
-                        <div class="body">
-                            <span class="tag">AI 應用 · 生成式內容</span>
-                            <h3>Elevator Pitch 短講產生器</h3>
-                            <p class="pitch">貼上筆記和照片，產生一段約 60 秒、可以直接播放的短講。</p>
-                            <dl class="facets">
-                                <div><dt>思考</dt><dd>好的短講有固定結構：抓住注意力、建立情境、傳達核心、讓想法具體、留下記憶。我把結構和硬規則寫進工具，不讓 AI 自由發揮。</dd></div>
-                                <div><dt>技術</dt><dd>可替換的 AI 介面（離線草稿／Claude 代理／手動貼上）；生成後自動審查，不合格就請 AI 重寫一次。API Key 只放在 Cloudflare Worker。</dd></div>
-                                <div><dt>交付</dt><dd>每頁字數超標就無法匯出；完成的短講可下載成單一 HTML，離線也能播放。</dd></div>
-                            </dl>
-                            <div class="actions">
-                                <a class="btn primary" href="Elevator-Pitch/">開始製作</a>
-                                <a class="btn ghost" href="Elevator-Pitch/decks/straight-line-selling.html">看範例短講</a>
-                            </div>
-                        </div>
-                    </article>
-
-                    <article class="card reveal" id="p-nq" data-kind="research">
-                        <div class="media">
-                            <img src="NQ-Value-Area/images/03_example_1023.svg" alt="NQ 價值區規則的交易範例圖" loading="lazy" decoding="async">
-                        </div>
-                        <div class="body">
-                            <span class="tag">研究 · AI × 金融</span>
-                            <h3>NQ 價值區交易研究</h3>
-                            <p class="pitch">用三年的分鐘資料，誠實回答一個問題：這條交易規則到底有沒有用？（研究用途，非投資建議）</p>
-                            <dl class="facets">
-                                <div><dt>思考</dt><dd>先寫好穩健性檢查再看結果。測了 1,000 多種規則組合，結論是「沒有一種通過」，就照實寫；接著凍結規則，改用新資料做前進測試。</dd></div>
-                                <div><dt>技術</dt><dd>用 Python 逐分鐘重現交易邏輯、74 組指標跨年驗證，再寫成 TradingView Pine 指標；並請另一個 AI 模型扮演交易專家審查，抓出錯誤。</dd></div>
-                                <div><dt>交付</dt><dd>可直接安裝的 TradingView 指標，加上 10 份研究文件與完整的回測數據。</dd></div>
-                            </dl>
-                            <div class="actions">
-                                <a class="btn ghost" href="https://github.com/dan40912/dan40912.github.io/tree/main/AI/NQ-Value-Area" target="_blank" rel="noopener">閱讀研究</a>
-                            </div>
-                        </div>
-                    </article>
-
-                    <article class="card reveal" id="p-resume" data-kind="ai">
-                        <div class="media contain">
-                            <img src="../assets/img/ai-resume-mentor.png" alt="" loading="lazy" decoding="async">
-                        </div>
-                        <div class="body">
-                            <span class="tag">Multi-Agent</span>
-                            <h3>Resume Mentor</h3>
-                            <p class="pitch">一個由 AI 顧問組成的履歷委員會，幫你問對 AI。</p>
-                            <dl class="facets">
-                                <div><dt>思考</dt><dd>一份履歷要同時通過 ATS、招募者和用人主管，三方要的東西不一樣，所以把它們拆開來看。</dd></div>
-                                <div><dt>技術</dt><dd>30 位代理人角色，包含魔鬼代言人，以及一位專門防止 AI 捏造經歷的護欄角色。</dd></div>
-                                <div><dt>交付</dt><dd>可直接使用的提示詞流程，涵蓋履歷優化、職缺比對與面試準備。</dd></div>
-                            </dl>
-                            <div class="actions">
-                                <a class="btn primary" href="Resume-Mentor/">查看專案</a>
-                                <a class="btn ghost" href="https://github.com/dan40912/Resume-Mentor" target="_blank" rel="noopener">原始碼</a>
-                            </div>
-                        </div>
-                    </article>
-
-                    <article class="card reveal" id="p-trading" data-kind="ai">
-                        <div class="media contain">
-                            <img src="../assets/img/ai-auto-trading.png" alt="" loading="lazy" decoding="async">
-                        </div>
-                        <div class="body">
-                            <span class="tag">Multi-Agent · AI × 金融</span>
-                            <h3>Auto Trading Prompt Generator</h3>
-                            <p class="pitch">把交易員腦中的紀律，變成 AI 必須逐條遵守的提示詞。</p>
-                            <dl class="facets">
-                                <div><dt>思考</dt><dd>交易虧損多半來自紀律失守，而不是缺少分析。所以先設計風控，再談進場。</dd></div>
-                                <div><dt>技術</dt><dd>9 位分工代理人：市場掃描、風險、倉位、停利停損、安全與授權，各自把關。</dd></div>
-                                <div><dt>交付</dt><dd>填表即可產生結構化提示詞與決策檢查表，讓 AI 每次都照同一套紀律判斷。</dd></div>
-                            </dl>
-                            <div class="actions">
-                                <a class="btn primary" href="Auto-Trading-Prompt-Generator/">查看專案</a>
-                                <a class="btn ghost" href="https://github.com/dan40912/Auto-Trading-Prompt-Generator" target="_blank" rel="noopener">原始碼</a>
-                            </div>
-                        </div>
-                    </article>
-
-                    <article class="card reveal" id="p-piano" data-kind="prototype">
-                        <div class="media">
-                            <img src="assets/virtual-piano.png" alt="Virtual Piano Studio 主畫面：黑金色系的虛擬三角鋼琴" loading="lazy" decoding="async">
-                        </div>
-                        <div class="body">
-                            <span class="tag">產品原型 · Web Audio</span>
-                            <h3>Virtual Piano Studio</h3>
-                            <p class="pitch">把電腦鍵盤變成一台三角鋼琴。打開網頁，按下 A 就能彈。</p>
-                            <dl class="facets">
-                                <div><dt>思考</dt><dd>真鋼琴太貴、App 滿是廣告、網頁鋼琴一按就「嗶」一聲。我想做一台真的好聽、免費，而且資料不離開你電腦的鋼琴。</dd></div>
-                                <div><dt>技術</dt><dd>React 19、TypeScript strict 與 Tone.js，使用真實鋼琴取樣；支援 MIDI 和五線譜跟彈、一鍵和弦，共 145 項自動化測試。</dd></div>
-                                <div><dt>交付</dt><dd>不用註冊、不用安裝，桌機、平板、手機都能彈，錄音作品存在本機。</dd></div>
-                            </dl>
-                            <div class="actions">
-                                <a class="btn primary" href="Virtual-Piano/">開始彈奏</a>
-                                <a class="btn ghost" href="https://github.com/dan40912/virtual-piano" target="_blank" rel="noopener">原始碼</a>
-                            </div>
-                        </div>
-                    </article>
-
-                    <article class="card reveal" id="p-startpray" data-kind="prototype">
-                        <div class="media contain">
-                            <img src="../assets/img/ai-startpray.png" alt="" loading="lazy" decoding="async">
-                        </div>
-                        <div class="body">
-                            <span class="tag">上線產品 · 公益</span>
-                            <h3>Start Pray</h3>
-                            <p class="pitch">一面語音禱告牆：用自己的聲音，為需要的人留下一段禱告。</p>
-                            <dl class="facets">
-                                <div><dt>思考</dt><dd>群組裡的代禱請求，常常只換來一排「阿們」。我想讓陪伴多一點溫度，讓等待手術的人能一次又一次聽見有人記得他。</dd></div>
-                                <div><dt>技術</dt><dd>語音錄製與播放、全球禱告地圖、匿名與私密代禱，以及檢舉與內容管理機制。</dd></div>
-                                <div><dt>交付</dt><dd>已正式上線並開源，面對的是處在脆弱時刻的使用者，所以隱私設計一開始就放進產品裡。</dd></div>
-                            </dl>
-                            <div class="actions">
-                                <a class="btn primary" href="https://startpray.online/" target="_blank" rel="noopener">查看網站</a>
-                                <a class="btn ghost" href="https://github.com/dan40912/Start-Pray" target="_blank" rel="noopener">原始碼</a>
-                            </div>
-                        </div>
-                    </article>
-
-                    <article class="card reveal" id="p-badminton" data-kind="prototype">
-                        <div class="media contain">
-                            <img src="Badminton/assets/icons/icon-512.svg" alt="" loading="lazy" decoding="async">
-                        </div>
-                        <div class="body">
-                            <span class="tag">產品原型 · PWA</span>
-                            <h3>羽毛球排場工具</h3>
-                            <p class="pitch">讓球團場主用一支手機，就能排好今晚每一面場。</p>
-                            <dl class="facets">
-                                <div><dt>思考</dt><dd>先寫 PRD 定義成功：場主要能在 3 分鐘內匯入名單、開打第一場。</dd></div>
-                                <div><dt>技術</dt><dd>無後端 PWA，可離線使用；拖放換人、輪替排程，並用瀏覽器語音播報上場球員。</dd></div>
-                                <div><dt>交付</dt><dd>排程、名單解析與狀態轉換都有自動化測試（21 項），可在球場現場直接使用。</dd></div>
-                            </dl>
-                            <div class="actions">
-                                <a class="btn primary" href="Badminton/">開始排場</a>
-                            </div>
-                        </div>
-                    </article>
-
-                    <article class="card reveal" id="p-obsidian" data-kind="research">
-                        <div class="media">
-                            <img src="../assets/img/ai-obsidian.png" alt="" loading="lazy" decoding="async">
-                        </div>
-                        <div class="body">
-                            <span class="tag">知識系統</span>
-                            <h3>Obsidian AI 知識庫</h3>
-                            <p class="pitch">我的 AI 第二大腦，會自己長出每日與每週的整理。</p>
-                            <dl class="facets">
-                                <div><dt>思考</dt><dd>AI 領域變化太快，與其每天追新聞，不如建立一套能持續累積、可以被 AI 查詢的結構。</dd></div>
-                                <div><dt>技術</dt><dd>概念、關係地圖、應用三層筆記，搭配排程腳本與提示詞，自動產生每日快訊和每週精選。</dd></div>
-                                <div><dt>交付</dt><dd>30 多篇結構化筆記，也是我請 AI 回答問題時優先參考的知識來源。</dd></div>
-                            </dl>
-                            <div class="actions">
-                                <a class="btn ghost" href="https://github.com/dan40912/dan40912.github.io/tree/main/AI/Obsidian" target="_blank" rel="noopener">瀏覽知識庫</a>
-                            </div>
-                        </div>
-                    </article>
+            <article class="slide" id="p-sandbox" data-short="羽球模擬器">
+                <button class="shot" type="button" aria-label="羽球模擬器，看更多">
+                    <picture><source media="(max-width: 720px)" srcset="assets/gallery/m/sandbox.jpg"><img src="Badminton-Sandbox/docs/screenshots/court-desktop.png" alt="等角視角的羽球場，四位球員在雙打站位" loading="lazy" decoding="async"></picture>
+                </button>
+                <div class="cap">
+                    <div><h2>羽球模擬器</h2><p>把雙打戰術一拍一拍打出來，再回看。</p></div>
+                    <button class="pill more" type="button">看更多</button>
                 </div>
-            </div>
-        </section>
+                <template>
+                    <div class="d-shots many">
+                        <img src="Badminton-Sandbox/docs/screenshots/court-desktop.png" alt="戰術球場">
+                        <img src="assets/gallery/sandbox-roster.jpg" alt="組建雙打陣容的畫面，藍隊與紅隊各兩位角色">
+                        <img src="Badminton-Sandbox/docs/screenshots/match-analysis.png" alt="賽後分析畫面">
+                    </div>
+                    <div class="d-text">
+                        <h2>羽球模擬器</h2>
+                        <p class="meta">16 位角色 · 13 種球路 · 賽後分析</p>
+                        <p class="body">打球常講「那球應該打直線」，但沒辦法驗證。這裡可以回到某一拍重打，看另一個選擇會怎樣。</p>
+                        <div class="d-links">
+                            <a class="pill solid" href="Badminton-Sandbox/">開始玩</a>
+                            <a class="pill" href="https://github.com/dan40912/Badminton-Sandbox" target="_blank" rel="noopener">原始碼</a>
+                        </div>
+                    </div>
+                </template>
+            </article>
 
-        <section id="principles" aria-labelledby="principles-title">
-            <div class="wrap">
-                <div class="section-head reveal">
-                    <p class="kicker">Principles</p>
-                    <h2 id="principles-title">我和 AI 合作的界線</h2>
+            <article class="slide" id="p-piano" data-short="Virtual Piano">
+                <button class="shot" type="button" aria-label="Virtual Piano Studio，看更多">
+                    <picture><source media="(max-width: 720px)" srcset="assets/gallery/m/piano.jpg"><img src="assets/virtual-piano.png" alt="黑金色系的虛擬三角鋼琴" loading="lazy" decoding="async"></picture>
+                </button>
+                <div class="cap">
+                    <div><h2>Virtual Piano Studio</h2><p>電腦鍵盤就是一台鋼琴。</p></div>
+                    <button class="pill more" type="button">看更多</button>
                 </div>
-                <ul class="principles">
-                    <li class="reveal">
-                        <h3>AI 擴張選項，我負責收斂</h3>
-                        <p>讓 AI 盡量多提方案和反例，但要做什麼、不做什麼，由我決定並負責。</p>
-                    </li>
-                    <li class="reveal">
-                        <h3>機密資料不進公開模型</h3>
-                        <p>客戶資料和公司內部資訊一律不放進公開模型，side project 只用公開或自己產生的資料。</p>
-                    </li>
-                    <li class="reveal">
-                        <h3>每個產出都要能被驗證</h3>
-                        <p>程式有測試，內容有出處，提示詞有版本紀錄。說不出怎麼驗證的產出，就不算完成。</p>
-                    </li>
-                </ul>
-            </div>
-        </section>
+                <template>
+                    <div class="d-shots">
+                        <img src="assets/virtual-piano.png" alt="黑金色系的虛擬三角鋼琴">
+                    </div>
+                    <div class="d-text">
+                        <h2>Virtual Piano Studio</h2>
+                        <p class="meta">React · Tone.js</p>
+                        <p class="body">真實鋼琴取樣，可以接 MIDI、跟著五線譜彈。不用註冊，錄音只存在自己的電腦。</p>
+                        <div class="d-links">
+                            <a class="pill solid" href="Virtual-Piano/">開始彈</a>
+                            <a class="pill" href="https://github.com/dan40912/virtual-piano" target="_blank" rel="noopener">原始碼</a>
+                        </div>
+                    </div>
+                </template>
+            </article>
 
-        <div class="wrap">
-            <div class="closing reveal">
-                <h2>想聊聊 AI 產品怎麼落地？</h2>
-                <p>不論是對話式 AI、智能客服，或是想把一個想法快速做成原型，都歡迎找我交流。</p>
-                <div class="actions">
-                    <a class="btn primary" href="mailto:dan40912@gmail.com">寫信給我</a>
-                    <a class="btn ghost" href="../index.html">回到作品集</a>
+            <article class="slide" id="p-badminton" data-short="排場工具">
+                <button class="shot" type="button" aria-label="羽毛球排場工具，看更多">
+                    <picture><source media="(max-width: 720px)" srcset="assets/gallery/m/badminton.jpg"><img src="assets/gallery/badminton-courts.jpg" alt="兩面球場的排場畫面，球員分在場上區與候場區" loading="lazy" decoding="async"></picture>
+                </button>
+                <div class="cap">
+                    <div><h2>羽毛球排場工具</h2><p>一支手機，排好今晚每一面場。</p></div>
+                    <button class="pill more" type="button">看更多</button>
                 </div>
-            </div>
+                <template>
+                    <div class="d-shots many">
+                        <img src="assets/gallery/badminton-courts.jpg" alt="兩面球場的排場畫面">
+                        <img src="assets/gallery/badminton-setup.png" alt="建立活動與貼上名單的表單">
+                    </div>
+                    <div class="d-text">
+                        <h2>羽毛球排場工具</h2>
+                        <p class="meta">PWA · 可離線</p>
+                        <p class="body">PRD 定的目標：場主 3 分鐘內貼好名單、開打第一場。可以拖放換人、自動輪替、語音叫人上場。</p>
+                        <div class="d-links">
+                            <a class="pill solid" href="Badminton/">開始排場</a>
+                            <a class="pill" href="https://github.com/dan40912/dan40912.github.io/blob/main/AI/Badminton/PRD.md" target="_blank" rel="noopener">讀 PRD</a>
+                        </div>
+                    </div>
+                </template>
+            </article>
+
+            <article class="slide" id="p-trading" data-short="交易 Prompt">
+                <button class="shot" type="button" aria-label="AI 交易 Prompt 產生器，看更多">
+                    <picture><source media="(max-width: 720px)" srcset="assets/gallery/m/trading.jpg"><img src="assets/gallery/trading-modes.jpg" alt="六種模式卡片，其中「實盤自動」標示為不可用" loading="lazy" decoding="async"></picture>
+                </button>
+                <div class="cap">
+                    <div><h2>AI 交易 Prompt 產生器</h2><p>把交易紀律寫成 AI 要遵守的規則。</p></div>
+                    <button class="pill more" type="button">看更多</button>
+                </div>
+                <template>
+                    <div class="d-shots many">
+                        <img src="assets/gallery/trading-modes.jpg" alt="六種模式卡片，其中「實盤自動」標示為不可用">
+                        <img src="assets/gallery/trading-hero.jpg" alt="產生器首頁：九位 AI 角色的剪影">
+                    </div>
+                    <div class="d-text">
+                        <h2>AI 交易 Prompt 產生器</h2>
+                        <p class="meta">9 個 AI 角色</p>
+                        <p class="body">選模式、填風控，產生可以貼給 Claude 或 ChatGPT 的提示詞。實盤自動下單已停用：碰到真錢，只能唯讀，或每筆人工確認。</p>
+                        <div class="d-links">
+                            <a class="pill solid" href="Auto-Trading-Prompt-Generator/">開啟</a>
+                            <a class="pill" href="https://github.com/dan40912/Auto-Trading-Prompt-Generator" target="_blank" rel="noopener">原始碼</a>
+                        </div>
+                    </div>
+                </template>
+            </article>
+
+            <article class="slide" id="p-nq" data-short="NQ 交易研究">
+                <button class="shot paper" type="button" aria-label="NQ 交易研究，看更多">
+                    <picture><source media="(max-width: 720px)" srcset="assets/gallery/m/nq.jpg"><img src="NQ-Value-Area/images/03_example_1023.svg" alt="NQ 價值區規則的交易範例圖" loading="lazy" decoding="async"></picture>
+                </button>
+                <div class="cap">
+                    <div><h2>NQ 交易研究</h2><p>近三年分鐘資料，驗一條交易規則。</p></div>
+                    <button class="pill more" type="button">看更多</button>
+                </div>
+                <template>
+                    <div class="d-shots many">
+                        <img class="paper" src="NQ-Value-Area/images/03_example_1023.svg" alt="交易範例圖">
+                        <img class="paper" src="NQ-Value-Area/images/06_backtest.svg" alt="回測結果圖">
+                        <img class="paper" src="NQ-Value-Area/images/01_value_area.svg" alt="價值區示意圖">
+                    </div>
+                    <div class="d-text">
+                        <h2>NQ 交易研究</h2>
+                        <p class="meta">Python · TradingView</p>
+                        <p class="body">測了 1,000 多組規則，沒有一組通過跨年檢查，結果照實寫。現在規則已凍結，用新行情做前進測試。</p>
+                        <p class="note">研究用途，不是投資建議。指標不會下單。</p>
+                        <div class="d-links">
+                            <a class="pill solid" href="https://github.com/dan40912/dan40912.github.io/tree/main/AI/NQ-Value-Area" target="_blank" rel="noopener">讀研究</a>
+                        </div>
+                    </div>
+                </template>
+            </article>
+
+            <article class="slide" id="p-obsidian" data-short="Obsidian 知識庫">
+                <button class="shot paper" type="button" aria-label="Obsidian 知識庫，看更多">
+                    <picture><source media="(max-width: 720px)" srcset="assets/gallery/m/obsidian.jpg"><img src="assets/gallery/obsidian-map.svg" alt="AI 助理全景系統圖：LLM、RAG、Agent 三階段的概念地圖" loading="lazy" decoding="async"></picture>
+                </button>
+                <div class="cap">
+                    <div><h2>Obsidian 知識庫</h2><p>我整理 AI 知識的筆記。</p></div>
+                    <button class="pill more" type="button">看更多</button>
+                </div>
+                <template>
+                    <div class="d-shots many">
+                        <img class="paper" src="assets/gallery/obsidian-map.svg" alt="AI 助理全景系統圖">
+                        <img class="paper" src="assets/gallery/obsidian-rag.svg" alt="RAG 概念圖">
+                    </div>
+                    <div class="d-text">
+                        <h2>Obsidian 知識庫</h2>
+                        <p class="meta">30 多篇筆記</p>
+                        <p class="body">概念、關係圖、應用分三層整理。我問 AI 問題時，先讓它查這裡。</p>
+                        <div class="d-links">
+                            <a class="pill solid" href="https://github.com/dan40912/dan40912.github.io/tree/main/AI/Obsidian" target="_blank" rel="noopener">看筆記</a>
+                        </div>
+                    </div>
+                </template>
+            </article>
         </div>
     </main>
 
-    <footer>
-        <div class="wrap">© 吳新捷 Jay Wu · 這個頁面也是和 AI 一起做的。</div>
-    </footer>
+    <nav class="strip" id="strip" aria-label="所有作品"></nav>
+
+    <dialog id="sheet" aria-labelledby="sheet-title">
+        <button class="close" type="button" id="close" aria-label="關閉">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2 2l10 10M12 2 2 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </button>
+        <div class="sheet-body" id="sheet-body"></div>
+    </dialog>
 
     <script>
         (function () {
-            var chrome = document.getElementById("chrome");
-            var onScroll = function () { chrome.classList.toggle("is-scrolled", window.scrollY > 8); };
-            window.addEventListener("scroll", onScroll, { passive: true });
-            onScroll();
+            var track = document.getElementById("track");
+            var strip = document.getElementById("strip");
+            var count = document.getElementById("count");
+            var prev = document.getElementById("prev");
+            var next = document.getElementById("next");
+            var sheet = document.getElementById("sheet");
+            var sheetBody = document.getElementById("sheet-body");
+            var slides = Array.prototype.slice.call(track.querySelectorAll(".slide"));
+            var reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
+            var active = -1;
 
-            // Rise each block into view once; everything is visible if the API is missing.
-            var reveals = document.querySelectorAll(".reveal");
-            if ("IntersectionObserver" in window) {
-                var io = new IntersectionObserver(function (entries) {
-                    entries.forEach(function (entry) {
-                        if (entry.isIntersecting) {
-                            entry.target.classList.add("is-visible");
-                            io.unobserve(entry.target);
-                        }
-                    });
-                }, { rootMargin: "0px 0px -8% 0px" });
-                reveals.forEach(function (el) { io.observe(el); });
-            } else {
-                reveals.forEach(function (el) { el.classList.add("is-visible"); });
+            // ---------- Small windows ----------
+            var thumbs = slides.map(function (slide, i) {
+                var source = slide.querySelector(".shot");
+                var image = source.querySelector("img");
+                var thumb = document.createElement("button");
+                thumb.type = "button";
+                thumb.className = "thumb" + (source.classList.contains("paper") ? " paper" : "");
+                thumb.innerHTML = '<span><img alt="" loading="lazy" decoding="async"></span><span class="name"></span>';
+                thumb.querySelector("img").src = image.getAttribute("src");
+                thumb.querySelector(".name").textContent = slide.dataset.short;
+                thumb.addEventListener("click", function () { goTo(i); });
+                strip.appendChild(thumb);
+                return thumb;
+            });
+
+            // ---------- Where things are ----------
+            function centerOf(i) {
+                return slides[i].offsetLeft + slides[i].offsetWidth / 2 - track.clientWidth / 2;
+            }
+            function nearest(position) {
+                var best = 0;
+                slides.forEach(function (_, i) {
+                    if (Math.abs(centerOf(i) - position) < Math.abs(centerOf(best) - position)) best = i;
+                });
+                return best;
             }
 
-            // Filter: fade out what leaves, then reflow. A new click mid-fade simply
-            // re-targets, so the control never locks out input.
-            var buttons = document.querySelectorAll(".filter button");
-            var cards = document.querySelectorAll("#project-list .card");
-            var pending;
-            buttons.forEach(function (button) {
-                button.addEventListener("click", function () {
-                    var kind = button.dataset.filter;
-                    buttons.forEach(function (b) { b.setAttribute("aria-pressed", String(b === button)); });
-                    clearTimeout(pending);
-                    cards.forEach(function (card) {
-                        var show = kind === "all" || card.dataset.kind === kind;
-                        if (!show && !card.hidden) card.classList.add("is-leaving");
-                    });
-                    pending = setTimeout(function () {
-                        cards.forEach(function (card) {
-                            var show = kind === "all" || card.dataset.kind === kind;
-                            card.hidden = !show;
-                            card.classList.remove("is-leaving");
-                            card.classList.add("is-visible");
-                        });
-                    }, 220);
+            // Everything on screen is a function of the scroll position, so swipes,
+            // springs and wheel input all stay continuous and can't get out of step.
+            function render() {
+                var position = track.scrollLeft;
+                var step = slides.length > 1 ? centerOf(1) - centerOf(0) : 1;
+                slides.forEach(function (slide, i) {
+                    var d = Math.min(1, Math.abs(centerOf(i) - position) / step);
+                    slide.style.setProperty("--d", d.toFixed(3));
                 });
+                var current = nearest(position);
+                if (current === active) return;
+                active = current;
+                count.textContent = (active + 1) + " / " + slides.length;
+                prev.disabled = active === 0;
+                next.disabled = active === slides.length - 1;
+                thumbs.forEach(function (thumb, i) {
+                    if (i === active) thumb.setAttribute("aria-current", "true");
+                    else thumb.removeAttribute("aria-current");
+                });
+                var thumb = thumbs[active];
+                strip.scrollTo({
+                    left: thumb.offsetLeft + thumb.offsetWidth / 2 - strip.clientWidth / 2,
+                    behavior: reduced.matches ? "auto" : "smooth"
+                });
+            }
+            track.addEventListener("scroll", render, { passive: true });
+            window.addEventListener("resize", function () {
+                track.scrollLeft = centerOf(active);
+                render();
             });
+
+            // ---------- Spring: retargets from the live position and velocity ----------
+            var RESPONSE = 0.42;
+            var omega = 2 * Math.PI / RESPONSE;
+            var raf = 0, x = 0, velocity = 0, target = 0, last = 0;
+
+            function stopSpring() {
+                if (raf) cancelAnimationFrame(raf);
+                raf = 0;
+                velocity = 0;
+                track.style.scrollSnapType = "";
+            }
+            function tick(now) {
+                var dt = Math.min(now - last, 32) / 1000;
+                last = now;
+                // Critically damped: no overshoot, whatever velocity it inherited
+                velocity += (-omega * omega * (x - target) - 2 * omega * velocity) * dt;
+                x += velocity * dt;
+                track.scrollLeft = x;
+                if (Math.abs(x - target) < 0.5 && Math.abs(velocity) < 8) {
+                    track.scrollLeft = target;
+                    stopSpring();
+                    return;
+                }
+                raf = requestAnimationFrame(tick);
+            }
+            function springTo(position, initialVelocity) {
+                if (reduced.matches) {
+                    stopSpring();
+                    track.scrollLeft = position;
+                    return;
+                }
+                target = position;
+                if (initialVelocity !== undefined) velocity = initialVelocity;
+                if (!raf) {
+                    x = track.scrollLeft;
+                    last = performance.now();
+                    track.style.scrollSnapType = "none";
+                    raf = requestAnimationFrame(tick);
+                }
+            }
+            function goTo(i) {
+                springTo(centerOf(Math.max(0, Math.min(slides.length - 1, i))));
+            }
+
+            // Native scrolling takes over as soon as the person does
+            track.addEventListener("wheel", function () { if (raf) stopSpring(); }, { passive: true });
+            track.addEventListener("touchstart", function () { if (raf) stopSpring(); }, { passive: true });
+
+            // Mid-flight, step from where it's heading so repeated presses add up
+            function stepBy(delta) {
+                goTo((raf ? nearest(target) : active) + delta);
+            }
+            prev.addEventListener("click", function () { stepBy(-1); });
+            next.addEventListener("click", function () { stepBy(1); });
+            document.addEventListener("keydown", function (event) {
+                if (sheet.open) return;
+                if (event.key === "ArrowLeft") { event.preventDefault(); stepBy(-1); }
+                if (event.key === "ArrowRight") { event.preventDefault(); stepBy(1); }
+            });
+
+            // ---------- Mouse drag: touch already gets this from the browser ----------
+            var drag = null, suppressClick = false;
+
+            function project(v) {
+                var rate = 0.998;
+                return (v / 1000) * rate / (1 - rate);
+            }
+            function rubberband(overshoot, dimension) {
+                var c = 0.55;
+                return (overshoot * dimension * c) / (dimension + c * Math.abs(overshoot));
+            }
+
+            track.addEventListener("pointerdown", function (event) {
+                if (event.pointerType !== "mouse" || event.button !== 0) return;
+                if (raf) stopSpring();
+                drag = { id: event.pointerId, startX: event.clientX, startScroll: track.scrollLeft, moving: false, history: [] };
+            });
+            track.addEventListener("pointermove", function (event) {
+                if (!drag || event.pointerId !== drag.id) return;
+                var dx = event.clientX - drag.startX;
+                if (!drag.moving) {
+                    if (Math.abs(dx) < 10) return;
+                    drag.moving = true;
+                    drag.startX = event.clientX;
+                    dx = 0;
+                    track.setPointerCapture(event.pointerId);
+                    track.classList.add("is-dragging");
+                    track.style.scrollSnapType = "none";
+                    track.style.transition = "none";
+                }
+                var wanted = drag.startScroll - dx;
+                var max = track.scrollWidth - track.clientWidth;
+                var clamped = Math.max(0, Math.min(max, wanted));
+                track.scrollLeft = clamped;
+                track.style.transform = wanted === clamped ? "" : "translateX(" + rubberband(clamped - wanted, track.clientWidth) + "px)";
+                drag.history.push({ x: event.clientX, t: event.timeStamp });
+                if (drag.history.length > 6) drag.history.shift();
+            });
+            function endDrag(event) {
+                if (!drag || event.pointerId !== drag.id) return;
+                var ended = drag;
+                drag = null;
+                if (!ended.moving) return;
+                suppressClick = true;
+                setTimeout(function () { suppressClick = false; }, 0);
+                track.classList.remove("is-dragging");
+                track.style.transition = "transform 0.4s var(--ease-out)";
+                track.style.transform = "";
+                var first = ended.history[0], lastPoint = ended.history[ended.history.length - 1];
+                var elapsed = first && lastPoint ? lastPoint.t - first.t : 0;
+                var v = elapsed > 0 ? -(lastPoint.x - first.x) / elapsed * 1000 : 0;
+                springTo(centerOf(nearest(track.scrollLeft + project(v))), v);
+            }
+            track.addEventListener("pointerup", endDrag);
+            track.addEventListener("pointercancel", endDrag);
+            track.addEventListener("dragstart", function (event) { event.preventDefault(); });
+
+            // ---------- Detail sheet: grows out of the image that opened it ----------
+            var EASE = "cubic-bezier(0.22, 1, 0.36, 1)";
+            var openedFrom = null, sheetAnimation = null;
+
+            function originOf(element) {
+                var from = element.getBoundingClientRect();
+                var to = sheet.getBoundingClientRect();
+                var scale = from.width / sheet.offsetWidth;
+                return "translate(" + (from.left - to.left) + "px," + (from.top - to.top) + "px) scale(" + scale + ")";
+            }
+            function openSheet(slide) {
+                var content = slide.querySelector("template").content.cloneNode(true);
+                sheetBody.replaceChildren(content);
+                sheetBody.scrollTop = 0;
+                var title = sheetBody.querySelector("h2");
+                title.id = "sheet-title";
+                openedFrom = slide.querySelector(".shot");
+                sheet.classList.remove("is-closing");
+                sheet.showModal();
+                if (sheetAnimation) sheetAnimation.cancel();
+                if (reduced.matches) {
+                    sheetAnimation = sheet.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 200 });
+                    return;
+                }
+                sheetAnimation = sheet.animate(
+                    [{ transform: originOf(openedFrom), opacity: 0.3 }, { transform: "none", opacity: 1 }],
+                    { duration: 440, easing: EASE }
+                );
+            }
+            function closeSheet() {
+                if (!sheet.open || sheet.classList.contains("is-closing")) return;
+                var style = getComputedStyle(sheet);
+                var fromTransform = style.transform === "none" ? "none" : style.transform;
+                var fromOpacity = style.opacity;
+                sheet.classList.add("is-closing");
+                if (sheetAnimation) sheetAnimation.cancel();
+                var frames = reduced.matches
+                    ? [{ opacity: fromOpacity }, { opacity: 0 }]
+                    : [{ transform: fromTransform, opacity: fromOpacity }, { transform: originOf(openedFrom), opacity: 0 }];
+                sheetAnimation = sheet.animate(frames, { duration: reduced.matches ? 150 : 300, easing: EASE, fill: "forwards" });
+                sheetAnimation.onfinish = function () {
+                    sheet.close();
+                    sheet.classList.remove("is-closing");
+                    sheetAnimation.cancel();
+                };
+            }
+            document.getElementById("close").addEventListener("click", closeSheet);
+            sheet.addEventListener("cancel", function (event) { event.preventDefault(); closeSheet(); });
+            sheet.addEventListener("click", function (event) {
+                if (event.target !== sheet) return;
+                var box = sheet.getBoundingClientRect();
+                var inside = event.clientX >= box.left && event.clientX <= box.right && event.clientY >= box.top && event.clientY <= box.bottom;
+                if (!inside) closeSheet();
+            });
+
+            // A neighbour's image brings it to the centre; the centred one opens
+            slides.forEach(function (slide, i) {
+                function activate() {
+                    if (suppressClick) return;
+                    if (i === active) openSheet(slide);
+                    else goTo(i);
+                }
+                slide.querySelector(".shot").addEventListener("click", activate);
+                slide.querySelector(".more").addEventListener("click", activate);
+            });
+
+            // ---------- Start ----------
+            var linked = location.hash ? slides.findIndex(function (s) { return "#" + s.id === location.hash; }) : -1;
+            if (linked > 0) track.scrollLeft = centerOf(linked);
+            render();
         })();
     </script>
 </body>

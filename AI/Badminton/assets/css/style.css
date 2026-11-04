@@ -306,7 +306,18 @@ button {
 
 .topbar__actions {
   display: flex;
+  flex-wrap: wrap;
+  align-items: center;
   gap: var(--space-2);
+}
+
+/* 按鈕維持原本寬度，避免空間不足時文字被擠成一字一行 */
+.topbar__actions > * {
+  flex: none;
+}
+
+.topbar__actions .btn {
+  white-space: nowrap;
 }
 
 .court-switcher {
@@ -653,8 +664,15 @@ button {
 }
 
 @media (max-width: 720px) {
+  /* 手機上整條工具列固定在頂部會佔掉太多畫面，只固定場地切換 */
+  .topbar {
+    position: static;
+    box-shadow: none;
+  }
+
   .court-switcher {
     display: flex;
+    top: 0;
   }
 
   .courts-grid {
@@ -662,12 +680,28 @@ button {
   }
 
   .court-card {
-    scroll-margin-top: 116px;
+    scroll-margin-top: 68px;
   }
 
   .topbar__stats {
     order: 3;
     width: 100%;
+  }
+
+  /* 單列左右滑動，貼齊螢幕邊緣，讓被切到的按鈕提示還能往右滑 */
+  .topbar__actions {
+    order: 4;
+    flex-wrap: nowrap;
+    width: calc(100% + 2 * var(--space-4));
+    margin-inline: calc(-1 * var(--space-4));
+    padding-inline: var(--space-4);
+    overflow-x: auto;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .topbar__actions::-webkit-scrollbar {
+    display: none;
   }
 
   .main-content {
