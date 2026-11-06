@@ -15,6 +15,7 @@
     <meta name="theme-color" content="#0b0c0e" media="(prefers-color-scheme: dark)">
     <link href="../assets/img/favicon.png" rel="icon">
     <link href="../assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+    <link href="../assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
     <style>
         :root {
             --primary: #0f4c81;
@@ -103,6 +104,79 @@
         a:focus-visible, button:focus-visible {
             outline: 3px solid color-mix(in srgb, var(--primary) 60%, transparent);
             outline-offset: 2px;
+        }
+
+        /* ---------- Portfolio navigation ---------- */
+        #ai-header {
+            position: fixed;
+            z-index: 20;
+            top: 50%;
+            left: 15px;
+            transform: translateY(-50%);
+        }
+        #ai-header ul { margin: 0; padding: 0; list-style: none; }
+        #ai-header li { position: relative; white-space: nowrap; }
+        #ai-header .nav-link {
+            display: flex;
+            align-items: center;
+            width: 56px;
+            height: 56px;
+            margin-bottom: 8px;
+            padding: 10px 18px;
+            overflow: hidden;
+            border-radius: 999px;
+            background: var(--surface-soft);
+            color: var(--text);
+            font-size: 15px;
+            transition: width 0.25s var(--ease-out), color 0.25s var(--ease-out), background 0.25s var(--ease-out);
+        }
+        #ai-header .nav-link i { flex: none; font-size: 20px; }
+        #ai-header .nav-link span { display: none; padding-left: 12px; }
+        #ai-header .nav-link:hover, #ai-header .nav-link:focus-visible {
+            width: max-content;
+            max-width: 240px;
+            background: var(--primary);
+            color: var(--on-primary);
+        }
+        #ai-header .nav-link:hover span, #ai-header .nav-link:focus-visible span { display: block; }
+        .ai-mobile-nav-toggle { display: none; }
+        @media (min-width: 992px) {
+            body { padding-left: 100px; }
+            :root { --slide-w: min(100vw - 196px, 1280px, (100svh - var(--chrome-h) - var(--cap-h) - var(--strip-h) - 32px) * 1.6); }
+        }
+        @media (max-width: 991px) {
+            #ai-header {
+                top: 0;
+                bottom: 0;
+                left: -300px;
+                width: 300px;
+                padding: 72px 15px 15px;
+                overflow-y: auto;
+                transform: none;
+                border-right: 1px solid var(--hairline);
+                background: var(--surface);
+                transition: left 0.25s var(--ease-out);
+            }
+            #ai-header .nav-link { width: 100%; }
+            #ai-header .nav-link span { display: block; }
+            body.mobile-nav-active { overflow: hidden; }
+            body.mobile-nav-active #ai-header { left: 0; }
+            .ai-mobile-nav-toggle {
+                position: fixed;
+                z-index: 21;
+                top: 10px;
+                left: 12px;
+                display: grid;
+                place-items: center;
+                width: 38px;
+                height: 38px;
+                border-radius: 12px;
+                background: var(--glass);
+                backdrop-filter: blur(16px);
+                -webkit-backdrop-filter: blur(16px);
+            }
+            .ai-mobile-nav-toggle i { font-size: 24px; }
+            .chrome { padding-left: 58px; }
         }
 
         /* ---------- Chrome ---------- */
@@ -399,6 +473,24 @@
 </head>
 
 <body>
+    <button class="ai-mobile-nav-toggle" type="button" aria-label="開啟導覽" aria-controls="ai-header" aria-expanded="false">
+        <i class="bx bx-menu" aria-hidden="true"></i>
+    </button>
+    <header id="ai-header">
+        <nav class="nav-menu" aria-label="主要導覽">
+            <ul>
+                <li><a href="../index.html#hero" class="nav-link"><i class="bx bx-home" aria-hidden="true"></i><span>首頁</span></a></li>
+                <li><a href="../index.html#about" class="nav-link"><i class="bx bx-user" aria-hidden="true"></i><span>關於我</span></a></li>
+                <li><a href="../index.html#expertise" class="nav-link"><i class="bx bx-grid-alt" aria-hidden="true"></i><span>核心專長</span></a></li>
+                <li><a href="../index.html#experience" class="nav-link"><i class="bx bx-briefcase-alt-2" aria-hidden="true"></i><span>職涯經歷</span></a></li>
+                <li><a href="../index.html#projects" class="nav-link"><i class="bx bx-book-content" aria-hidden="true"></i><span>專案案例</span></a></li>
+                <li><a href="../index.html#expertise" class="nav-link"><i class="bx bx-code-alt" aria-hidden="true"></i><span>技能</span></a></li>
+                <li><a href="../index.html#contact" class="nav-link"><i class="bx bx-envelope" aria-hidden="true"></i><span>聯絡我</span></a></li>
+                <li><a href="../index-en.html" class="nav-link"><i class="bx bx-globe" aria-hidden="true"></i><span>English</span></a></li>
+            </ul>
+        </nav>
+    </header>
+
     <header class="chrome">
         <a class="brand" href="../index.html" aria-label="回到 Jay Wu 作品集首頁">
             <span class="back" aria-hidden="true">
@@ -427,7 +519,7 @@
                     <picture><source media="(max-width: 720px)" srcset="assets/gallery/m/startpray.jpg"><img src="assets/gallery/startpray-map.jpg" alt="全球禱告室：地圖上標示各地的禱告光點" decoding="async"></picture>
                 </button>
                 <div class="cap">
-                    <div><h2>Start Pray</h2><p>用自己的聲音，為別人留一段禱告。</p></div>
+                    <div><h2>Start Pray</h2><p>讓代禱不只停在「阿們」，也能被聽見、再聽見。</p></div>
                     <button class="pill more" type="button">看更多</button>
                 </div>
                 <template>
@@ -438,7 +530,7 @@
                     <div class="d-text">
                         <h2>Start Pray</h2>
                         <p class="meta">已上線 · 開源</p>
-                        <p class="body">群組裡的代禱，常常只換來一排「阿們」。這裡可以錄一段語音，讓對方一次次聽。可以匿名、可以私密，也有檢舉機制。</p>
+                        <p class="body">想為人代禱，群組裡常只留下幾個「阿們」，真正的心聲很快就被訊息淹沒。Start Pray 讓你用語音分享代禱，讓對方在需要時能再聽一次；可以匿名、設為私密，也能檢舉不當內容，讓陪伴更有溫度，也有安全邊界。</p>
                         <div class="d-links">
                             <a class="pill solid" href="https://startpray.online/" target="_blank" rel="noopener">開啟網站</a>
                             <a class="pill" href="https://github.com/dan40912/Start-Pray" target="_blank" rel="noopener">原始碼</a>
@@ -452,7 +544,7 @@
                     <picture><source media="(max-width: 720px)" srcset="Elevator-Pitch/decks/straight-line-cover-9x16.png"><img src="Elevator-Pitch/decks/straight-line-cover-16x9.png" alt="短講封面：客戶說「我要想想」時，他真正在想什麼？" loading="lazy" decoding="async"></picture>
                 </button>
                 <div class="cap">
-                    <div><h2>Elevator Pitch</h2><p>貼上筆記和照片，生成 60 秒短講。</p></div>
+                    <div><h2>Elevator Pitch</h2><p>把零散筆記，變成一段一開口就抓住人的短講。</p></div>
                     <button class="pill more" type="button">看更多</button>
                 </div>
                 <template>
@@ -463,7 +555,7 @@
                     <div class="d-text">
                         <h2>Elevator Pitch</h2>
                         <p class="meta">Claude · Cloudflare Worker</p>
-                        <p class="body">每頁超過 100 字就不能匯出。離線模式只重組原文的句子，不會多出原文沒有的數字。成品是一個 HTML 檔，沒網路也能播。</p>
+                        <p class="body">臨上台才發現，筆記很多，能說的重點很少。貼上素材與照片，把零散內容整理成 60 秒短講，再匯出成獨立 HTML，沒網路也能播放。離線模式只重組原文句子，不會憑空補出未提供的數字。</p>
                         <div class="d-links">
                             <a class="pill solid" href="Elevator-Pitch/">開始做</a>
                             <a class="pill" href="Elevator-Pitch/decks/straight-line-selling.html">看範例</a>
@@ -477,7 +569,7 @@
                     <picture><source media="(max-width: 720px)" srcset="assets/gallery/m/resume.jpg"><img src="assets/gallery/resume-advisors.jpg" alt="顧問牆：招募專員、用人主管、ATS、證據官、毒舌挑刺者" loading="lazy" decoding="async"></picture>
                 </button>
                 <div class="cap">
-                    <div><h2>Resume Mentor</h2><p>37 位 AI 顧問，先審你的履歷。</p></div>
+                    <div><h2>Resume Mentor</h2><p>別再猜履歷為何沒回音，讓 37 位 AI 輪番挑錯。</p></div>
                     <button class="pill more" type="button">看更多</button>
                 </div>
                 <template>
@@ -488,7 +580,7 @@
                     <div class="d-text">
                         <h2>Resume Mentor</h2>
                         <p class="meta">37 個 AI 角色</p>
-                        <p class="body">招募者、用人主管、ATS 各審一次，最後組成一段能貼給任何 AI 的提示詞。推薦信那組有一位專門擋捏造：沒有來源的數字不准寫進去。</p>
+                        <p class="body">履歷投出去像掉進黑箱：沒有回音，也不知道問題在哪。讓招募者、用人主管、ATS 等角色分頭審閱，再整理成可交給任何 AI 的修改提示。推薦信有專責角色查證，沒有來源的數字不會讓它寫進去。</p>
                         <div class="d-links">
                             <a class="pill solid" href="https://resume-mentor.jaywuintw.chatgpt.site" target="_blank" rel="noopener">開啟</a>
                             <a class="pill" href="https://github.com/dan40912/Resume-Mentor" target="_blank" rel="noopener">原始碼</a>
@@ -502,7 +594,7 @@
                     <picture><source media="(max-width: 720px)" srcset="assets/gallery/m/sandbox.jpg"><img src="Badminton-Sandbox/docs/screenshots/court-desktop.png" alt="等角視角的羽球場，四位球員在雙打站位" loading="lazy" decoding="async"></picture>
                 </button>
                 <div class="cap">
-                    <div><h2>羽球模擬器</h2><p>把雙打戰術一拍一拍打出來，再回看。</p></div>
+                    <div><h2>羽球模擬器</h2><p>「那球如果打直線呢？」把每個選擇重打一遍。</p></div>
                     <button class="pill more" type="button">看更多</button>
                 </div>
                 <template>
@@ -514,7 +606,7 @@
                     <div class="d-text">
                         <h2>羽球模擬器</h2>
                         <p class="meta">16 位角色 · 13 種球路 · 賽後分析</p>
-                        <p class="body">打球常講「那球應該打直線」，但沒辦法驗證。這裡可以回到某一拍重打，看另一個選擇會怎樣。</p>
+                        <p class="body">場上常聽到「剛剛那球應該打直線」，卻很難知道另一種選擇會怎樣。把雙打回合倒回任一拍，換個球路重打，再用賽後分析比較結果，讓戰術討論有畫面也有依據。</p>
                         <div class="d-links">
                             <a class="pill solid" href="Badminton-Sandbox/">開始玩</a>
                             <a class="pill" href="https://github.com/dan40912/Badminton-Sandbox" target="_blank" rel="noopener">原始碼</a>
@@ -528,7 +620,7 @@
                     <picture><source media="(max-width: 720px)" srcset="assets/gallery/m/piano.jpg"><img src="assets/virtual-piano.png" alt="黑金色系的虛擬三角鋼琴" loading="lazy" decoding="async"></picture>
                 </button>
                 <div class="cap">
-                    <div><h2>Virtual Piano Studio</h2><p>電腦鍵盤就是一台鋼琴。</p></div>
+                    <div><h2>Virtual Piano Studio</h2><p>沒有琴房也能練：鍵盤、MIDI、琴譜都能接上。</p></div>
                     <button class="pill more" type="button">看更多</button>
                 </div>
                 <template>
@@ -538,7 +630,7 @@
                     <div class="d-text">
                         <h2>Virtual Piano Studio</h2>
                         <p class="meta">React · Tone.js</p>
-                        <p class="body">真實鋼琴取樣，可以接 MIDI、跟著五線譜彈。不用註冊，錄音只存在自己的電腦。</p>
+                        <p class="body">想練琴，身邊卻沒有琴？用電腦鍵盤就能彈，也能接 MIDI、載入琴譜跟著練。不必註冊，錄音留在自己的裝置，練習不必等琴房空出來。</p>
                         <div class="d-links">
                             <a class="pill solid" href="https://virtual-piano-studio.jaywuintw.chatgpt.site" target="_blank" rel="noopener">開始彈</a>
                             <a class="pill" href="https://github.com/dan40912/virtual-piano" target="_blank" rel="noopener">原始碼</a>
@@ -552,7 +644,7 @@
                     <picture><source media="(max-width: 720px)" srcset="assets/gallery/m/badminton.jpg"><img src="assets/gallery/badminton-courts.jpg" alt="兩面球場的排場畫面，球員分在場上區與候場區" loading="lazy" decoding="async"></picture>
                 </button>
                 <div class="cap">
-                    <div><h2>羽毛球排場工具</h2><p>一支手機，排好今晚每一面場。</p></div>
+                    <div><h2>羽毛球排場工具</h2><p>人一多、場一開，排場別再靠喊名和手寫表。</p></div>
                     <button class="pill more" type="button">看更多</button>
                 </div>
                 <template>
@@ -563,7 +655,7 @@
                     <div class="d-text">
                         <h2>羽毛球排場工具</h2>
                         <p class="meta">PWA · 可離線</p>
-                        <p class="body">PRD 定的目標：場主 3 分鐘內貼好名單、開打第一場。可以拖放換人、自動輪替、語音叫人上場。</p>
+                        <p class="body">名單一長、球場一多，人工叫號和抄寫很容易亂。貼上球員名單，拖放安排場上與候場位置；每場結束自動輪替，還能語音提醒下一組。資料留在瀏覽器，也支援離線排場。</p>
                         <div class="d-links">
                             <a class="pill solid" href="Badminton/">開始排場</a>
                             <a class="pill" href="https://github.com/dan40912/dan40912.github.io/blob/main/AI/Badminton/PRD.md" target="_blank" rel="noopener">讀 PRD</a>
@@ -577,7 +669,7 @@
                     <picture><source media="(max-width: 720px)" srcset="assets/gallery/m/trading.jpg"><img src="assets/gallery/trading-modes.jpg" alt="六種模式卡片，其中「實盤自動」標示為不可用" loading="lazy" decoding="async"></picture>
                 </button>
                 <div class="cap">
-                    <div><h2>AI 交易 Prompt 產生器</h2><p>把交易紀律寫成 AI 要遵守的規則。</p></div>
+                    <div><h2>AI 交易 Prompt 產生器</h2><p>把「憑感覺進場」改寫成 AI 也得遵守的規則。</p></div>
                     <button class="pill more" type="button">看更多</button>
                 </div>
                 <template>
@@ -588,7 +680,7 @@
                     <div class="d-text">
                         <h2>AI 交易 Prompt 產生器</h2>
                         <p class="meta">9 個 AI 角色</p>
-                        <p class="body">選模式、填風控，產生可以貼給 Claude 或 ChatGPT 的提示詞。實盤自動下單已停用：碰到真錢，只能唯讀，或每筆人工確認。</p>
+                        <p class="body">交易最難的往往不是找訊號，而是守住自己訂下的規則。選擇使用情境、填入風控條件，產出可交給 Claude 或 ChatGPT 的提示詞。實盤自動下單已停用；涉及真實資金時，只能唯讀或逐筆人工確認。</p>
                         <div class="d-links">
                             <a class="pill solid" href="Auto-Trading-Prompt-Generator/">開啟</a>
                             <a class="pill" href="https://github.com/dan40912/Auto-Trading-Prompt-Generator" target="_blank" rel="noopener">原始碼</a>
@@ -602,7 +694,7 @@
                     <picture><source media="(max-width: 720px)" srcset="assets/gallery/m/nq.jpg"><img src="NQ-Value-Area/images/03_example_1023.svg" alt="NQ 價值區規則的交易範例圖" loading="lazy" decoding="async"></picture>
                 </button>
                 <div class="cap">
-                    <div><h2>NQ 交易研究</h2><p>近三年分鐘資料，驗一條交易規則。</p></div>
+                    <div><h2>NQ 交易研究</h2><p>一條看起來會賺的 NQ 規則，拿三年資料驗到見真章。</p></div>
                     <button class="pill more" type="button">看更多</button>
                 </div>
                 <template>
@@ -614,7 +706,7 @@
                     <div class="d-text">
                         <h2>NQ 交易研究</h2>
                         <p class="meta">Python · TradingView</p>
-                        <p class="body">測了 1,000 多組規則，沒有一組通過跨年檢查，結果照實寫。現在規則已凍結，用新行情做前進測試。</p>
+                        <p class="body">回測裡最漂亮的規則，可能只是剛好適配過去。這項研究用近三年分鐘資料測試超過 1,000 組設定，沒有一組通過跨年檢查；規則凍結後，改用新行情做前進測試。</p>
                         <p class="note">研究用途，不是投資建議。指標不會下單。</p>
                         <div class="d-links">
                             <a class="pill solid" href="https://github.com/dan40912/dan40912.github.io/tree/main/AI/NQ-Value-Area" target="_blank" rel="noopener">讀研究</a>
@@ -628,7 +720,7 @@
                     <picture><source media="(max-width: 720px)" srcset="assets/gallery/m/obsidian.jpg"><img src="assets/gallery/obsidian-map.svg" alt="AI 助理全景系統圖：LLM、RAG、Agent 三階段的概念地圖" loading="lazy" decoding="async"></picture>
                 </button>
                 <div class="cap">
-                    <div><h2>Obsidian 知識庫</h2><p>我整理 AI 知識的筆記。</p></div>
+                    <div><h2>Obsidian 知識庫</h2><p>把散落的 AI 知識，連成能回頭查的地圖。</p></div>
                     <button class="pill more" type="button">看更多</button>
                 </div>
                 <template>
@@ -639,7 +731,7 @@
                     <div class="d-text">
                         <h2>Obsidian 知識庫</h2>
                         <p class="meta">30 多篇筆記</p>
-                        <p class="body">概念、關係圖、應用分三層整理。我問 AI 問題時，先讓它查這裡。</p>
+                        <p class="body">AI 知識散在筆記和對話裡，下次遇到問題又得從頭找。把概念、關聯與應用分層整理成 30 多篇筆記和圖譜；提問時先查自己的知識庫，再讓 AI 接著回答。</p>
                         <div class="d-links">
                             <a class="pill solid" href="https://github.com/dan40912/dan40912.github.io/tree/main/AI/Obsidian" target="_blank" rel="noopener">看筆記</a>
                         </div>
@@ -670,6 +762,26 @@
             var slides = Array.prototype.slice.call(track.querySelectorAll(".slide"));
             var reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
             var active = -1;
+
+            // ---------- Portfolio navigation ----------
+            var mobileNavToggle = document.querySelector(".ai-mobile-nav-toggle");
+            var mobileNavIcon = mobileNavToggle.querySelector("i");
+            var setMobileNav = function (isOpen) {
+                document.body.classList.toggle("mobile-nav-active", isOpen);
+                mobileNavToggle.setAttribute("aria-expanded", String(isOpen));
+                mobileNavToggle.setAttribute("aria-label", isOpen ? "關閉導覽" : "開啟導覽");
+                mobileNavIcon.classList.toggle("bx-menu", !isOpen);
+                mobileNavIcon.classList.toggle("bx-x", isOpen);
+            };
+            mobileNavToggle.addEventListener("click", function () {
+                setMobileNav(!document.body.classList.contains("mobile-nav-active"));
+            });
+            document.querySelectorAll("#ai-header .nav-link").forEach(function (link) {
+                link.addEventListener("click", function () { setMobileNav(false); });
+            });
+            document.addEventListener("keydown", function (event) {
+                if (event.key === "Escape") setMobileNav(false);
+            });
 
             // ---------- Small windows ----------
             var thumbs = slides.map(function (slide, i) {
